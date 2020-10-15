@@ -1,0 +1,32 @@
+- id: '1601307642952'
+  alias: Printer Shutoff
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: switch.major_laser_printer
+    for: 00:15:00
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - type: turn_off
+    device_id: cc99ed6aff6a11ea940fe1f9a75d2527
+    entity_id: switch.major_laser_printer
+    domain: switch
+  mode: single
+- id: '1601312737081'
+  alias: Kettle Shutoff
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: switch.kettle
+    for: 00:15:00
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - type: turn_off
+    device_id: cc9c28d8ff6a11ea876cbbcc11d5e81d
+    entity_id: switch.kettle
+    domain: switch
+  mode: single

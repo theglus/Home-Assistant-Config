@@ -1,0 +1,36 @@
+
+# Configure a default setup of Home Assistant (frontend, api, etc)
+default_config:
+
+# Text to speech
+tts:
+  - platform: google_translate
+
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+
+# --- Recorder ---
+recorder:
+  auto_purge: true
+  purge_keep_days: 7
+  commit_interval: 5
+  exclude:
+    entities:
+      - sensor.pixel_3_detected_activity
+      
+# --- Devices ---
+      
+# Dyson
+dyson:
+  username: !secret dyson_username
+  password: !secret dyson_password
+  language: US
+  devices:
+    - device_id: !secret kirby_device_id
+      device_ip: !secret kirby_device_ip
+      
+# --- Sensorss --- 
+sensor:
+  - platform: google_wifi
