@@ -1,0 +1,14 @@
+# --- LOFT ---
+# Bedside Light Group
+Bedside:
+  name: Bedside Lights
+  entities:
+    - light.upstairs_loft_jeffrey_s_light
+    - light.upstairs_loft_tiffany_s_light
+# --- Office ---
+# Office Light Group
+Office:
+  name: Office Lights
+  entities:
+    - light.downstairs_office_overhead_light
+    - light.downstairs_office_overhead_light_2
