@@ -31,6 +31,6 @@ dyson:
     - device_id: !secret kirby_device_id
       device_ip: !secret kirby_device_ip
       
-# --- Sensorss --- 
+# --- Sensors --- 
 sensor:
   - platform: google_wifi
