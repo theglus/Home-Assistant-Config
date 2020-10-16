@@ -7,7 +7,7 @@
 !.gitignore
 !*.md
 !*.sh
-!*lovelace/*
+!*lovelace/*.yaml
 !*.js*
 
 
