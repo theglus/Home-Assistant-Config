@@ -1,0 +1,24 @@
+type: glance
+entities:
+  - entity: group.bedside
+    tap_action:
+      action: toggle
+    hold_action:
+      action: more-info
+    icon: 'mdi:desk-lamp'
+    name: Bedside
+  - entity: light.upstairs_loft_bed_light
+    tap_action:
+      action: toggle
+    hold_action:
+      action: more-info
+    name: Ceiling
+  - entity: light.upstairs_loft_desk_light
+    tap_action:
+      action: toggle
+    hold_action:
+      action: more-info
+    name: Floor
+state_color: true
+title: Loft
+show_state: true
