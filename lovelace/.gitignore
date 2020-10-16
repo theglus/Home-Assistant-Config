@@ -1,5 +1,5 @@
 # WARNING: Make your GitHub repo Private if you are using this as it is
-# Example .gitignore file for your config dir.
+# Example .gitignore file for your lovelace dir.
 # An * ensures that everything will be ignored.
 *
 # You can whitelist files/folders with !, these will not be ignored.
@@ -7,7 +7,6 @@
 !.gitignore
 !*.md
 !*.sh
-!*lovelace/
 !*.js*
 
 
