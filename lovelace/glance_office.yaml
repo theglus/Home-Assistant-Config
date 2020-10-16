@@ -1,7 +1,7 @@
 type: glance
 # --- All Ceiling Lights ---
 entities:
-  - entity: light.office_lights
+  - entity: group.office
     tap_action:
       action: toggle
     hold_action:
