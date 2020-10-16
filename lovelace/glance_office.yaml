@@ -1,4 +1,5 @@
 type: glance
+# --- All Ceiling Lights ---
 entities:
   - entity: light.office_lights
     tap_action:
@@ -7,6 +8,7 @@ entities:
       action: more-info
     name: Ceiling
     icon: 'mdi:dome-light'
+# --- Desk Ceiling Light ---
   - entity: light.downstairs_office_overhead_light
     tap_action:
       action: toggle
@@ -14,6 +16,7 @@ entities:
       action: more-info
     name: Desk
     icon: 'mdi:desk'
+# --- Bed Ceiling Light ---
   - entity: light.downstairs_office_overhead_light_2
     tap_action:
       action: toggle
@@ -21,6 +24,7 @@ entities:
       action: more-info
     name: Bed
     icon: 'mdi:bed-outline'
+# --- Major Laser Printer ---
   - entity: switch.major_laser_printer
     tap_action:
       action: toggle
