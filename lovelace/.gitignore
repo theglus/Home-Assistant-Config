@@ -9,11 +9,6 @@
 !*.sh
 !*.js*
 
-
-# Comment these 2 lines if you don't want to include your SSH keys
-!.ssh/
-!id_rsa*
-
 # Comment this if you don't want to include your Node-RED flows.
 # This is only valid if you install Node-RED as Home Assistant Add-on
 # !node-red/
