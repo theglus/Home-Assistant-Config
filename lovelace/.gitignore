@@ -1,5 +1,5 @@
 # WARNING: Make your GitHub repo Private if you are using this as it is
-# Example .gitignore file for your config dir.
+# Example .gitignore file for your lovelace dir.
 # An * ensures that everything will be ignored.
 *
 # You can whitelist files/folders with !, these will not be ignored.
@@ -7,13 +7,7 @@
 !.gitignore
 !*.md
 !*.sh
-!*lovelace/
 !*.js*
-
-
-# Comment these 2 lines if you don't want to include your SSH keys
-!.ssh/
-!id_rsa*
 
 # Comment this if you don't want to include your Node-RED flows.
 # This is only valid if you install Node-RED as Home Assistant Add-on
