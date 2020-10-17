@@ -14,8 +14,8 @@ scene: !include scenes.yaml
 # --- Recorder ---
 recorder:
   auto_purge: true
-  purge_keep_days: 7
-  commit_interval: 5
+  purge_keep_days: 5
+  commit_interval: 1
   exclude:
     entities:
       - sensor.pixel_3_detected_activity
