@@ -60,8 +60,8 @@ Home Assistant Configuration &amp; Documentation for my Smart House.
 - Ceiling
 - Floor
 - Bedside lights (group)
-  - Jeffrey’s light
-  - Tiffany’s light
+  - J’s light
+  - T’s light
 #### Devices
 - Dyson Pure Cool TP04 purifying fan
 - Lenovo Smart clock
@@ -76,5 +76,13 @@ Home Assistant Configuration &amp; Documentation for my Smart House.
 #### Devices
 - Google Nest Mini
 - Kasa dual plug
-  - Jeffrey’s toothbrush
-  - Tiffany’s toothbrush
+  - J's toothbrush
+  - T’s toothbrush
+## Lovelace Layout
+### Home
+- All lights
+- Entryway
+- Living
+- Office
+- Loft
+- Loft Bathroom
