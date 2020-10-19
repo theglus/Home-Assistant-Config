@@ -8,6 +8,7 @@ Home Assistant Configuration &amp; Documentation for my Smart House.
 - Front Door
 - Stair LED strip
 - Pendant
+
 #### Sensors
 - Aqara door sensor
 - Ultrasonic Sensor
@@ -21,6 +22,7 @@ Home Assistant Configuration &amp; Documentation for my Smart House.
 - Ceiling (group)
   - Living
   - Kitchen
+
 #### Devices
 - Kettle
 - Frigidaire AC
@@ -36,6 +38,7 @@ Home Assistant Configuration &amp; Documentation for my Smart House.
   - Lenovo charger
   - iPad charger
 - Robot vacuum
+
 #### Sensors
 - Aqara water sensor
 - Aqara temp/humidity sensor
@@ -46,15 +49,18 @@ Home Assistant Configuration &amp; Documentation for my Smart House.
   - Bed
 - Pendant 
 - Table lamp
+
 #### Devices
 - Major Laser Printer
 - Google Home Mini
 - Dyson Pure Cool DP04 purifying fan
+
 #### Sensors
 - Dyson Pure Cool DP04 purifying fan
   - Temp
   - Humidity
   - Air quality
+
 ### Loft
 #### Lights
 - Ceiling
@@ -62,22 +68,25 @@ Home Assistant Configuration &amp; Documentation for my Smart House.
 - Bedside lights (group)
   - J’s light
   - T’s light
+
 #### Devices
 - Dyson Pure Cool TP04 purifying fan
 - Lenovo Smart clock
 - Nest Hub Mini
+
 #### Sensors
 - Dyson Pure Cool TP04 purifying fan
   - Temp
   - Humidity
   - Air quality
-### Loft Bathroom
 
+### Loft Bathroom
 #### Devices
 - Google Nest Mini
 - Kasa dual plug
   - J's toothbrush
   - T’s toothbrush
+
 ## Lovelace Layout
 ### Home
 - All lights
@@ -86,3 +95,21 @@ Home Assistant Configuration &amp; Documentation for my Smart House.
 - Office
 - Loft
 - Loft Bathroom
+
+### Entryway
+- Marquee
+- Stairs
+- Front Door
+- Stair LED strip
+
+### Living Room
+- Yumi Lamp
+- Kettle
+- Frigidaire AC
+
+### Office
+- Ceiling (group)
+  - Desk    
+  - Bed
+- Major Laser Printer
+
