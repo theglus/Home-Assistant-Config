@@ -113,3 +113,5 @@ Home Assistant Configuration &amp; Documentation for my Smart House.
   - Bed
 - Major Laser Printer
 
+# To-dos
+- See git issues
