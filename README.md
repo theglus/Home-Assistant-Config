@@ -3,18 +3,19 @@ Home Assistant Configuration &amp; Documentation for my Smart House.
 ## Devices by Room
 ### Entryway
 
-#### Lights
+Lights
 - Stairs
 - Front Door
 - Stair LED strip
 - Pendant
 
-#### Sensors
+Sensors
 - Aqara door sensor
 - Ultrasonic Sensor
-- Living Room
 
-#### Lights
+Living Room
+
+Lights
 - Yumi Lamp
 - Overhang 
   - Dining
@@ -23,7 +24,7 @@ Home Assistant Configuration &amp; Documentation for my Smart House.
   - Living
   - Kitchen
 
-#### Devices
+Devices
 - Kettle
 - Frigidaire AC
 - Google Home Mini
