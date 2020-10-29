@@ -1,7 +1,6 @@
-# Printer Shutoff
 - id: '1601307642952'
   alias: Printer Shutoff
-  description: ''
+  description: Shutoff plug to printer 15-minutes after device has been switched on.
   trigger:
   - platform: state
     entity_id: switch.major_laser_printer
@@ -15,10 +14,9 @@
     entity_id: switch.major_laser_printer
     domain: switch
   mode: single
-# Kettle Shutoff
 - id: '1601312737081'
   alias: Kettle Shutoff
-  description: ''
+  description: Shutoff plug to kettle 15-minutes after device has been switched on.
   trigger:
   - platform: state
     entity_id: switch.kettle
@@ -31,4 +29,15 @@
     device_id: cc9c28d8ff6a11ea876cbbcc11d5e81d
     entity_id: switch.kettle
     domain: switch
+  mode: single
+- id: '1604002955198'
+  alias: Charge toothbrushes
+  description: 'Start charging toothbrushes at 12 am and stop at 4 am. '
+  trigger:
+  - platform: time
+    at: 00:00:00
+  condition: []
+  action:
+  - service: script.4_hour_toothbrush_trickle_charge
+    data: {}
   mode: single
