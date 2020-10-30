@@ -21,7 +21,6 @@ recorder:
       - sensor.pixel_3_detected_activity
       
 # --- Devices ---
-      
 # Dyson
 dyson:
   username: !secret dyson_username
