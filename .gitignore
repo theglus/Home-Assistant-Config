@@ -27,3 +27,4 @@ secrets.yaml
 .cloud
 .google.token 
 home-assistant.log
+google_calendars.yaml
