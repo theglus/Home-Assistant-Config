@@ -20,6 +20,11 @@ recorder:
     entities:
       - sensor.pixel_3_detected_activity
       
+# --- Goolge Cal ---
+google:
+  client_id: !secret google_client_id
+  client_secret: !secret google_client_secret
+
 # --- Devices ---
 # Dyson
 dyson:
@@ -39,5 +44,13 @@ media_player:
       com.hulu.plus: Hulu
       
 # --- Sensors --- 
+# Google WiFi
 sensor:
   - platform: google_wifi
+
+# Workday
+binary_sensor:
+  - platform: workday
+    country: US
+    workdays: [mon, tue, wed, thu, fri]
+    excludes: [sat, sun]
