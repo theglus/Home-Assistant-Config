@@ -20,6 +20,11 @@ recorder:
     entities:
       - sensor.pixel_3_detected_activity
       
+# --- Goolge Cal ---
+google:
+  client_id: !secret google_client_id
+  client_secret: !secret google_client_secret
+
 # --- Devices ---
 # Dyson
 dyson:
