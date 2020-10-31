@@ -11,6 +11,16 @@ automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
 
+# Telegram
+telegram_bot:
+  - platform: polling
+    api_key: !secret telegram_bot_key
+    allowed_chat_ids: !secret telegram_bot_chat_ids
+    
+notify:
+  - name: telegram
+    platform: telegram
+    chat_id: !secret telegram_bot_main_chat_id
 # --- Recorder ---
 recorder:
   auto_purge: true
@@ -19,6 +29,7 @@ recorder:
   exclude:
     entities:
       - sensor.pixel_3_detected_activity
+      - media_player.sony_xbr_55x900h
       
 # --- Goolge Cal ---
 google:
