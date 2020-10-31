@@ -41,7 +41,6 @@
   - service: script.4_hour_toothbrush_trickle_charge
     data: {}
   mode: single
-# Nighttime Volume
 - id: '1604018556590'
   alias: Nighttime volume
   description: ''
@@ -89,4 +88,16 @@
     data:
       entity_id: media_player.loft_nest_hub
       volume_level: '0.60'
+  mode: single
+- id: '1604110722335'
+  alias: New Automation
+  description: ''
+  trigger:
+  - platform: event
+    event_type: homeassistant_start
+  condition: []
+  action:
+  - service: notify.telegram
+    data:
+      message: Home Assistant good to go
   mode: single
