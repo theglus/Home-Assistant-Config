@@ -90,14 +90,28 @@
       volume_level: '0.60'
   mode: single
 - id: '1604110722335'
-  alias: New Automation
+  alias: Server Boot Up
   description: ''
   trigger:
-  - platform: event
-    event_type: homeassistant_start
+  - platform: homeassistant
+    event: start
   condition: []
   action:
   - service: notify.telegram
     data:
-      message: Home Assistant good to go
+      message: Home Assistant is ready for business.
+      title: 'Server:'
+  mode: single
+- id: '1604122122599'
+  alias: Server Reboot
+  description: ''
+  trigger:
+  - platform: homeassistant
+    event: shutdown
+  condition: []
+  action:
+  - service: notify.telegram
+    data:
+      message: I'll be back.
+      title: 'Server:'
   mode: single
