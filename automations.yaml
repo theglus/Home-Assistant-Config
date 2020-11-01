@@ -100,7 +100,7 @@
   - service: notify.telegram
     data:
       message: Home Assistant is ready for business.
-      title: 'Server:'
+      title: '🛎️ Server:'
   mode: single
 - id: '1604122122599'
   alias: Server Reboot
@@ -113,7 +113,7 @@
   - service: notify.telegram
     data:
       message: I'll be back.
-      title: 'Server:'
+      title: '🛎️ Server:'
   mode: single
 - id: '1604123458236'
   alias: Alert Front Door
@@ -127,7 +127,7 @@
     for:
       hours: 0
       minutes: 0
-      seconds: 10
+      seconds: 15
   condition: []
   action:
   - service: notify.telegram
@@ -150,4 +150,19 @@
     data:
       message: Ice Bear peed!
       title: '🚨 ALERT:'
+  mode: single
+- id: '1604159666251'
+  alias: Notification Printer
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.hp_laserjet_m14_m17
+    from: unavailable
+    to: stopped
+  condition: []
+  action:
+  - service: notify.telegram
+    data:
+      message: Ready to print.
+      title: '🖨️ Major Laser Printer:'
   mode: single
