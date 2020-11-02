@@ -64,6 +64,10 @@
     data:
       entity_id: media_player.loft_nest_hub
       volume_level: '0.50'
+  - service: notify.telegram
+    data:
+      message: Time for tea!
+      title: 🤫 Farnsworth
   mode: single
 - id: '1604027659401'
   alias: Volume daytime
@@ -88,6 +92,10 @@
     data:
       entity_id: media_player.loft_nest_hub
       volume_level: '0.60'
+  - service: notify.telegram
+    data:
+      message: I'm loud and proud, deal with it.
+      title: '📢 Farnsworth:'
   mode: single
 - id: '1604110722335'
   alias: Server Boot Up
@@ -158,11 +166,51 @@
   - platform: state
     entity_id: sensor.hp_laserjet_m14_m17
     from: unavailable
-    to: stopped
+    to: idle
   condition: []
   action:
   - service: notify.telegram
     data:
       message: Ready to print.
       title: '🖨️ Major Laser Printer:'
+  mode: single
+- id: '1604213608944'
+  alias: Confirmation Door Closed
+  description: Confirming door is closed.
+  trigger:
+  - type: not_opened
+    platform: device
+    device_id: 2687f04f008c11eb9e18b192b354e7d1
+    entity_id: binary_sensor.openclose_2
+    domain: binary_sensor
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 5
+  condition: []
+  action:
+  - service: notify.telegram
+    data:
+      message: Front door is closed!
+      title: '🚪 CONFIRMED:'
+  mode: single
+- id: '1604222655903'
+  alias: Notification Tea
+  description: ''
+  trigger:
+  - platform: device
+    type: turned_on
+    device_id: cc9c28d8ff6a11ea876cbbcc11d5e81d
+    entity_id: switch.kettle
+    domain: switch
+    for:
+      hours: 0
+      minutes: 3
+      seconds: 0
+  condition: []
+  action:
+  - service: notify.telegram
+    data:
+      message: Time for tea!
+      title: '☕ Kettle:'
   mode: single
