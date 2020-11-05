@@ -53,6 +53,13 @@ media_player:
     host: !secret shield_ip
     apps:
       com.hulu.plus: Hulu
+
+# Sonny
+media_player:
+  - platform: androidtv
+    name: Shield TV
+    host: !secret sonny_ip
+    apps:
       
 # --- Sensors --- 
 # Google WiFi
