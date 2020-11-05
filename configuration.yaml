@@ -37,7 +37,7 @@ recorder:
   exclude:
     entities:
       - sensor.pixel_3_detected_activity
-      - media_player.sony_xbr_55x900h
+      - media_player.sonny_cast
       
 # --- Devices ---
 # Dyson
@@ -52,7 +52,7 @@ dyson:
 # Shield
 media_player:
   - platform: androidtv
-    name: Shield TV
+    name: SHIELD TV
     host: !secret shield_ip
     apps:
       com.hulu.plus: Hulu
