@@ -36,7 +36,6 @@ recorder:
   commit_interval: 1
   exclude:
     entities:
-      - sensor.pixel_3_detected_activity
       - media_player.sonny_cast
       
 # --- Devices ---
