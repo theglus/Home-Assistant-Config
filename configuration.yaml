@@ -57,6 +57,22 @@ media_player:
   - platform: androidtv
     name: Sonny TV
     host: !secret sonny_ip
+    
+# Winston
+vacuum:
+  - platform: xiaomi_miio
+    host: !secret winston_host
+    token: !secret winston_token
+    name: Winston
+
+camera:
+  - platform: xiaomi_cloud_map_extractor
+    host: !secret winston_host
+    token: !secret winston_token
+    username: !secret winston_username
+    password: !secret winston_password
+    draw: ["all"]
+    country: us
 # --- Sensors --- 
 # Google WiFi
 sensor:
