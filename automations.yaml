@@ -214,3 +214,48 @@
       message: Time for tea!
       title: '☕ Kettle:'
   mode: single
+- id: '1604730376272'
+  alias: Vacuum Clean
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: vacuum.winston
+    from: docked
+    to: cleaning
+  condition: []
+  action:
+  - service: notify.telegram
+    data:
+      message: Off to tidy up. Cheerio!
+      title: '🤹🏻‍ Winston:'
+  mode: single
+- id: '1604730577982'
+  alias: Vacuum Done
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: vacuum.winston
+    from: cleaning
+    to: returning
+  condition: []
+  action:
+  - service: notify.telegram
+    data:
+      message: I've completed cleaning the residence. I'm off to retire. Cheerio!
+      title: '🤹🏻‍ Winston:'
+  mode: single
+- id: '1604730811526'
+  alias: Vacuum Docked
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: vacuum.winston
+    from: returning
+    to: docked
+  condition: []
+  action:
+  - service: notify.telegram
+    data:
+      message: Happy to have been of service.
+      title: '🤹🏻‍ Winston:'
+  mode: single
