@@ -10,7 +10,7 @@ group: !include groups.yaml
 automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
-device: !include devices.yaml
+devices: !include devices.yaml
 
 # --- Telegram ---
 # Bot
