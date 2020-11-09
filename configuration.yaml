@@ -39,6 +39,42 @@ recorder:
   exclude:
     entities:
       - media_player.sonny_cast
+
+# --- Devices ---
+# Dyson
+dyson:
+  username: !secret dyson_username
+  password: !secret dyson_password
+  language: US
+  devices:
+    - device_id: !secret kirby_device_id
+      device_ip: !secret kirby_device_ip
+      
+# Shield
+media_player:
+  - platform: androidtv
+    name: SHIELD TV
+    host: !secret shield_ip
+# Sonny
+  - platform: androidtv
+    name: Sonny TV
+    host: !secret sonny_ip
+    
+# Winston
+vacuum:
+  - platform: xiaomi_miio
+    host: !secret winston_host
+    token: !secret winston_token
+    name: Winston
+
+camera:
+  - platform: xiaomi_cloud_map_extractor
+    host: !secret winston_host
+    token: !secret winston_token
+    username: !secret winston_username
+    password: !secret winston_password
+    draw: ["all"]
+    country: us
       
 # --- Sensors --- 
 # Google WiFi
