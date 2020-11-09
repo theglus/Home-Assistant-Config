@@ -93,7 +93,12 @@ camera:
       - walls
       - zones
     map_transformation:
-      scale: 100
+      scale: 2
+      trim:
+        top: 20
+        bottom: 20
+        left: 40
+        right: 40
     scan_interval:
       seconds: 1
 
