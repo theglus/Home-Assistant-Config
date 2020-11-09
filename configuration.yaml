@@ -95,14 +95,13 @@ camera:
     map_transformation:
       scale: 1
       trim:
-        top: 20
-        bottom: 20
-        left: 20
-        right: 20
+        top: 25
+        bottom: 25
+        left: 25
+        right: 25
     scan_interval:
       seconds: 1
 
-      
 # --- Sensors --- 
 # Google WiFi
 sensor:
