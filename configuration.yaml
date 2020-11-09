@@ -94,11 +94,11 @@ camera:
       - zones
     map_transformation:
       scale: 1
-       trim:
-         top: 10
-         bottom: 20
-         left: 30
-         right: 40
+      trim:
+        top: 10
+        bottom: 20
+        left: 30
+        right: 40
     scan_interval:
       seconds: 1
 
