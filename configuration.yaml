@@ -74,7 +74,24 @@ camera:
     draw: ["all"]
     country: us
     attributes:
-      - calibration_points 
+      - calibration_points
+      - charger
+      - goto
+      - goto_path
+      - goto_predicted_path
+      - image
+      - is_empty
+      - map_name
+      - no_go_areas
+      - no_mopping_areas
+      - obstacles
+      - path
+      - room_numbers
+      - rooms
+      - vacuum_position
+      - vacuum_room
+      - walls
+      - zones
       
 # --- Sensors --- 
 # Google WiFi
