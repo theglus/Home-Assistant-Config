@@ -99,6 +99,8 @@ camera:
         bottom: 22
         left: 22
         right: 22
+    colors:
+        color_map_outside: [3, 169, 244]
     scan_interval:
       seconds: 1
 
