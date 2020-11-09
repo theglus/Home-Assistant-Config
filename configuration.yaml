@@ -92,6 +92,9 @@ camera:
       - vacuum_room
       - walls
       - zones
+    scan_interval:
+      seconds: 1
+
       
 # --- Sensors --- 
 # Google WiFi
