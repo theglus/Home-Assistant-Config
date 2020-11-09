@@ -98,6 +98,7 @@ camera:
          top: 10
          bottom: 20
          left: 30
+         right: 40
     scan_interval:
       seconds: 1
 
