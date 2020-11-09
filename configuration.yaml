@@ -73,6 +73,8 @@ camera:
     password: !secret winston_password
     draw: ["all"]
     country: us
+    attributes:
+      - calibration_points 
       
 # --- Sensors --- 
 # Google WiFi
