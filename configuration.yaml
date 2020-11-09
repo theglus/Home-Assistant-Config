@@ -92,6 +92,8 @@ camera:
       - vacuum_room
       - walls
       - zones
+    map_transformation:
+      scale: 2
     scan_interval:
       seconds: 1
 
