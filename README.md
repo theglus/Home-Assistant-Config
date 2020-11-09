@@ -116,3 +116,4 @@ Devices
 
 # To-dos
 - See git issues
+- Integrations test
