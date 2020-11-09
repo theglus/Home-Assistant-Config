@@ -95,10 +95,10 @@ camera:
     map_transformation:
       scale: 1
       trim:
-        top: 10
-        bottom: 10
-        left: 10
-        right: 10
+        top: 20
+        bottom: 20
+        left: 20
+        right: 20
     scan_interval:
       seconds: 1
 
