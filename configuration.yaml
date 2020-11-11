@@ -120,6 +120,10 @@ camera:
 # Google WiFi
 sensor:
   - platform: google_wifi
+# HA Uptime
+  - platform: uptime
+    name: Time Online
+    unit_of_measurement: hours
 
 # Workday
 binary_sensor:
