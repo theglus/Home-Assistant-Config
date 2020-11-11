@@ -124,6 +124,12 @@ sensor:
   - platform: uptime
     name: Time Online
     unit_of_measurement: hours
+# HA system monitor
+  - platform: systemmonitor 
+    resources: 
+      - type: memory_use_percent
+      - type: processor_use
+      - type: processor_temperature
 
 # Workday
 binary_sensor:
