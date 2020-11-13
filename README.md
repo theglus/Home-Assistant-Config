@@ -1,7 +1,7 @@
 # Home-Assistant-Config
 Home Assistant Configuration &amp; Documentation for my Smart House.
 
-# Devices + services used with Home Assistant
+### Devices + services used with Home Assistant
 - Hubs
   - Hue Bridge
   - Raspbee II
