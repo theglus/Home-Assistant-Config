@@ -25,6 +25,7 @@ Home Assistant Configuration &amp; Documentation for my Smart House.
  * Weather + Climate
    * Dyson 
 ## Architecture
-![My Home Assistant Architecture](/architecure.png)
+![My Home Assistant Architecture]
+(architecure.png)
  * To-dos
    * See git issues
