@@ -26,6 +26,6 @@ Home Assistant Configuration &amp; Documentation for my Smart House.
    * Dyson 
 ## Architecture
 ![My Home Assistant Architecture]
-(architecure.png)
+(/architecure.png)
  * To-dos
    * See git issues
