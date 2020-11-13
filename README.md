@@ -2,34 +2,34 @@
 Home Assistant Configuration &amp; Documentation for my Smart House.
 
 ### Devices + services used with Home Assistant
-- Hubs
-  - Hue Bridge
-  - Raspbee II
+ * Hubs
+   * Hue Bridge
+   * Raspbee II
   
-- Lights + Switches
-  - Hue bulbs
-  - Hue plug
-  - Lutron Aurora
-  - Sengled LED strip
-  - TP Link Kasa plugs
+ * Lights + Switches
+   * Hue bulbs
+   * Hue plug
+   * Lutron Aurora
+   * Sengled LED strip
+   * TP Link Kasa plugs
   
-- Media
-  - Sony Bravia
-  - Denon AVR-S960H
-  - NVIDIA Shield Pro
+ * Media
+   * Sony Bravia
+   * Denon AVR-S960H
+   * NVIDIA Shield Pro
   
-- Notifications
-  - Telegram
+ * Notifications
+   * Telegram
 
-- Sensors
-  - Aqara door sensor
-  - Aqara water sensor
+ * Sensors
+   * Aqara door sensor
+   * Aqara water sensor
 
-- Voice Integrations
-  - Google Home with Nabu Casa
+ * Voice Integrations
+   * Google Home with Nabu Casa
   
-- Weather + Climate
-  - Dyson
-
-# To-dos
-- See git issues
+ * Weather + Climate
+   * Dyson
+   
+ * To-dos
+   * See git issues
