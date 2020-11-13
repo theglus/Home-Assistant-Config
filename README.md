@@ -1,7 +1,7 @@
 # Home-Assistant-Config
 Home Assistant Configuration &amp; Documentation for my Smart House.
 
-### Devices + services used with Home Assistant
+## Devices + services used with Home Assistant
  * Hubs
    * Hue Bridge
    * Raspbee II
@@ -23,6 +23,8 @@ Home Assistant Configuration &amp; Documentation for my Smart House.
  * Voice Integrations
    * Google Home with Nabu Casa 
  * Weather + Climate
-   * Dyson   
+   * Dyson 
+## Architecture
+![My Home Assistant Architecture](architecure.png)
  * To-dos
    * See git issues
