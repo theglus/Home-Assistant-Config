@@ -130,7 +130,10 @@ sensor:
       - type: memory_use_percent
       - type: processor_use
       - type: processor_temperature
-
+# Speedtest
+speedtestdotnet:
+  scan_interval:
+    hours: 2
 # Workday
 binary_sensor:
   - platform: workday
