@@ -1,0 +1,135 @@
+  - title: ha
+    path: ha
+    icon: 'mdi:home-assistant'
+    badges: []
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: glance
+            entities:
+              - entity: sensor.time_online
+                name: Uptime
+              - entity: binary_sensor.updater
+            title: Home Assistant
+          - type: horizontal-stack
+            cards:
+              - type: 'custom:mini-graph-card'
+                entities:
+                  - sensor.processor_use_percent
+                show: null
+                color_thresholds:
+                  - value: 25
+                    color: '#6aa84f'
+                  - value: 50
+                    color: '#f1c232'
+                  - value: 75
+                    color: '#e69138'
+                  - value: 100
+                    color: '#cc0000'
+                line_width: 8
+                font_size: 75
+              - type: 'custom:mini-graph-card'
+                entities:
+                  - sensor.memory_use_percent
+                show: null
+                color_thresholds:
+                  - value: 25
+                    color: '#6aa84f'
+                  - value: 50
+                    color: '#f1c232'
+                  - value: 75
+                    color: '#e69138'
+                  - value: 100
+                    color: '#cc0000'
+                line_width: 8
+                font_size: 75
+              - type: 'custom:mini-graph-card'
+                entities:
+                  - sensor.processor_temperature
+                show: null
+                color_thresholds:
+                  - value: 122
+                    color: '#6aa84f'
+                  - value: 140
+                    color: '#f1c232'
+                  - value: 176
+                    color: '#e69138'
+                  - value: 200
+                    color: '#cc0000'
+                line_width: 8
+                font_size: 75
+          - type: glance
+            entities:
+              - entity: zone.home
+                icon: 'mdi:home-assistant'
+                name: Hassio
+                tap_action:
+                  action: call-service
+                  service: homeassistant.restart
+              - entity: zone.home
+                icon: 'mdi:cogs'
+                name: Automation
+                tap_action:
+                  action: call-service
+                  service: Automation.reload
+              - entity: zone.home
+                icon: 'mdi:script-text'
+                name: Script
+                tap_action:
+                  action: call-service
+                  service: homeassistant.restart
+              - entity: zone.home
+                icon: 'mdi:group'
+                name: Groups
+                tap_action:
+                  action: call-service
+                  service: group.reload
+            title: Restart Services
+            show_state: false
+      - type: vertical-stack
+        cards:
+          - type: glance
+            entities:
+              - entity: sensor.google_wifi_uptime
+                name: Uptime
+              - entity: zone.home
+                icon: 'mdi:speedometer'
+                name: Speed Test
+                tap_action:
+                  action: call-service
+                  service: speedtestdotnet.speedtest
+            title: Network
+          - type: horizontal-stack
+            cards:
+              - type: 'custom:mini-graph-card'
+                entities:
+                  - sensor.speedtest_download
+                decimals: 0
+                show: null
+                color_thresholds:
+                  - value: 500
+                    color: '#6aa84f'
+                  - value: 250
+                    color: '#93c47d'
+                  - value: 150
+                    color: '#b6d7a8'
+                  - value: 75
+                    color: '#f1c232 - value: 99 color: '
+                  - value: 50
+                    color: '#cc0000'
+              - type: 'custom:mini-graph-card'
+                entities:
+                  - sensor.speedtest_upload
+                decimals: 0
+                show: null
+                color_thresholds:
+                  - value: 500
+                    color: '#6aa84f'
+                  - value: 250
+                    color: '#93c47d'
+                  - value: 150
+                    color: '#b6d7a8'
+                  - value: 75
+                    color: '#f1c232 - value: 99 color: '
+                  - value: 50
+                    color: '#cc0000'
