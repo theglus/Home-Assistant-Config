@@ -39,6 +39,7 @@ recorder:
       - media_player.sonny_cast
 
 # --- Devices ---
+# deCONZ
 # Dyson
 dyson:
   username: !secret dyson_username
@@ -120,20 +121,24 @@ camera:
 # Google WiFi
 sensor:
   - platform: google_wifi
+  
 # HA Uptime
   - platform: uptime
     name: Time Online
     unit_of_measurement: hours
+    
 # HA system monitor
   - platform: systemmonitor 
     resources: 
       - type: memory_use_percent
       - type: processor_use
       - type: processor_temperature
+      
 # Speedtest
 speedtestdotnet:
   scan_interval:
     hours: 2
+    
 # Workday
 binary_sensor:
   - platform: workday
