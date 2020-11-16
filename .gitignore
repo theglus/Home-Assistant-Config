@@ -8,8 +8,7 @@
 !*.md
 !*.sh
 !*lovelace/
-!*img/*
-!*img/av/*
+**img/*
 !*.js*
 
 
