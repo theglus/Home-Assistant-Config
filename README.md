@@ -26,5 +26,9 @@ Home Assistant Configuration &amp; Documentation for my Smart House.
    * Dyson 
 ## Architecture
 ![My Home Assistant Architecture](architecture.png)
+## Audio & Video
+| Denon 960H | Polk S35 | Polk S10 | Polk S15 | Sony TV |
+| --- | --- | --- | --- | -- |
+| !denon.png | test | test | test | test |
  * To-dos
    * See git issues
