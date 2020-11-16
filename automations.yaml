@@ -19,10 +19,10 @@
   description: Shutoff plug to kettle 15-minutes after device has been switched on.
   trigger:
   - platform: state
-    entity_id: switch.kettle
     for: 00:15:00
     from: 'off'
     to: 'on'
+    entity_id: switch.kettle
   condition: []
   action:
   - type: turn_off
@@ -129,8 +129,8 @@
   trigger:
   - type: opened
     platform: device
-    device_id: 2687f04f008c11eb9e18b192b354e7d1
-    entity_id: binary_sensor.openclose_2
+    device_id: 2b286a18941c258ce855c86cfc4788e9
+    entity_id: binary_sensor.frontdoor
     domain: binary_sensor
     for:
       hours: 0
@@ -180,13 +180,9 @@
   trigger:
   - type: not_opened
     platform: device
-    device_id: 2687f04f008c11eb9e18b192b354e7d1
-    entity_id: binary_sensor.openclose_2
+    device_id: 2b286a18941c258ce855c86cfc4788e9
+    entity_id: binary_sensor.frontdoor
     domain: binary_sensor
-    for:
-      hours: 0
-      minutes: 0
-      seconds: 5
   condition: []
   action:
   - service: notify.telegram
