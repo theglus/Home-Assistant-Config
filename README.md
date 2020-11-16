@@ -34,8 +34,8 @@ I recently built out my home theater system centered around my Denon S960H + NVI
 
 I have a Levovo Smart Tab M8 that is docked in my living room that I use to access the _Home Theater_ view in Home Assistant. This view is very much a WIP progress and is my focus over the coming weeks.
 ## Home Assistant Hardware
-| Pi 4 Model B 4GB | Raspbee II | SanDisk Extreme 64GB MicroSD |
-| --- | --- | --- |
-| ![Raspberry Pi 4 Model B 4GB](img/ha_hardware/pi_4.jpg) | ![Raspbee II](img/ha_hardware/raspbee_II.jpg) | ![SanDisk Extreme 64GB MicroSD](img/ha_hardware/sandisk_64.jpg) |
+| Raspberry Pi 4 Model B 4GB | Raspbee II | SanDisk Extreme 64GB MicroSD | Case |
+| --- | --- | --- | --- |
+| ![Raspberry Pi 4 Model B 4GB](img/ha_hardware/pi_4.jpg) | ![Raspbee II](img/ha_hardware/raspbee_II.jpg) | ![SanDisk Extreme 64GB MicroSD](img/ha_hardware/sandisk_64.jpg) | Placeholder |
  * To-dos
    * See git issues
