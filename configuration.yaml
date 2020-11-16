@@ -39,6 +39,7 @@ recorder:
       - media_player.sonny_cast
 
 # --- Devices ---
+# deCONZ
 # Dyson
 dyson:
   username: !secret dyson_username
@@ -71,14 +72,73 @@ camera:
     token: !secret winston_token
     username: !secret winston_username
     password: !secret winston_password
-    draw: ["all"]
     country: us
-      
+    colors:
+      color_map_outside: [3, 169, 244]
+    room_colors: 
+      # Hallway
+      16: [253, 211, 82]
+      # Living Room
+      17: [106, 191, 209]
+      # Kitchen
+      18: [145, 200, 255]
+      # Office
+      19: [245, 142, 110]
+      # Bathroom
+      20: [7, 152, 183]
+    draw: ["all"]
+    map_transformation:
+      scale: 2
+      trim:
+        top: 22
+        bottom: 22
+        left: 22
+        right: 22
+    attributes:
+      - calibration_points
+      - charger
+      - goto
+      - goto_path
+      - goto_predicted_path
+      - image
+      - is_empty
+      - map_name
+      - no_go_areas
+      - no_mopping_areas
+      - obstacles
+      - path
+      - room_numbers
+      - rooms
+      - vacuum_position
+      - vacuum_room
+      - walls
+      - zones
+    scan_interval:
+      seconds: 1
+    auto_update: true
+
 # --- Sensors --- 
 # Google WiFi
 sensor:
   - platform: google_wifi
-
+  
+# HA Uptime
+  - platform: uptime
+    name: Time Online
+    unit_of_measurement: hours
+    
+# HA system monitor
+  - platform: systemmonitor 
+    resources: 
+      - type: memory_use_percent
+      - type: processor_use
+      - type: processor_temperature
+      
+# Speedtest
+speedtestdotnet:
+  scan_interval:
+    hours: 2
+    
 # Workday
 binary_sensor:
   - platform: workday
