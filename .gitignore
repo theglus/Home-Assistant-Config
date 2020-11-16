@@ -8,7 +8,10 @@
 !*.md
 !*.sh
 !*lovelace/
+!*img/*
+!*img/av/*
 !*.js*
+
 
 
 # Comment these 2 lines if you don't want to include your SSH keys
