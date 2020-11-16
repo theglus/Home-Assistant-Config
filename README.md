@@ -31,6 +31,7 @@ I recently built out my home theater system centered around my Denon S960H + NVI
 | Denon 960H | Polk S35 | Polk S10 | Polk S15 | NVIDIA SHIELD TV Pro | Sony TV |
 | --- | --- | --- | --- | --- | --- |
 | ![Denon](img/av/denon.png) | ![Polk S35](img/av/polk_s35.jpg) | ![Polk S10](img/av/polk_s10.jpg) | ![Polk S15](img/av/polk_s15.jpg) | ![NVIDIA SHIELD TV Pro](img/av/nvidia_shield_tv_pro.jpg) | ![Sony](img/av/sony_x900h.jpg) |
+
 I have a Levovo Smart Tab M8 that is docked in my living room that I use to access the _Home Theater_ view in Home Assistant. This view is very much a WIP progress and is my focus over the coming weeks.
 ## Home Assistant Hardware
 | Raspberry Pi 4 Model B 4GB | Raspbee II | SanDisk Extreme 64GB MicroSD |
