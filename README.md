@@ -40,6 +40,7 @@ I'm pretty deep into the Hue ecosystem sans my Sengled lightstrip. As a result I
 | Hue Starter Kit | BR30 White Ambiance | Hue Color | Sengled Light Strip |
 | --- | --- | --- | --- |
 | ![Hue Starter Kit](img/lighting/hue_starter.jpg) | ![BR30 White Ambiance](img/lighting/hue_br30.jpg) | ![Hue Color](img/lighting/hue_color.jpeg) | ![Sengled Light Strip](img/lighting/sengled_ledstrip.jpg) |
+
 The only light outside the Hue ecosystem is my Sengled LED strip. I needed 6 feet of LEDs just for my stairs not to mention the other areas of the apartment, it would have been $79 for 6.5' of Hue lights where Sengled was ~$60 for 16.5'. The LED strip is hooked up directly to the Raspbee II. 
 ## Security
 WIP
