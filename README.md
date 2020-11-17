@@ -28,9 +28,12 @@ I recently replaced my Eufy robovac due to it's tendency to try to kill itself b
 
 # Home Automation Components
 ## Home Assistant Hardware
+My Home Assistant setup is pretty basic but it gets the job done without any hiccups. I originally planned on booting off of a USB drive, but gave up after the first couple failed attempts in favor in spending the time to actually setup my smart home. I'm exploring the idea of moving the DB and logs a Sandisk USB, but I'm unsure if that will resolve the sluggish page loading. What would make the most sense would be to go the SSD boot route, but it's pretty low on my priority list. 
 | Raspberry Pi 4 Model B 4GB | Raspbee II | SanDisk Extreme 64GB MicroSD | Argon Neo Case |
 | --- | --- | --- | --- |
 | ![Raspberry Pi 4 Model B 4GB](img/ha_hardware/pi_4.jpg) | ![Raspbee II](img/ha_hardware/raspbee_II.jpg) | ![SanDisk Extreme 64GB MicroSD](img/ha_hardware/sandisk_64.jpg) | ![Argon Neo Pi case](img/ha_hardware/argon_neo.jpg) |
+
+I opted to go the Zigbee route primarily because I really like the Aqara platform. I landed on the Raspbee II over the Conbee as it just seemed like a more elegant solution. It's a little bit of a pain to initially setup, but after that it's smooth sailing. 
 ## Home Assistant Software + Architecture
 ![My Home Assistant Architecture](architecture.png) 
 ## Voice Assistant
