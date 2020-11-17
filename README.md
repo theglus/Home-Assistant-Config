@@ -36,9 +36,11 @@ I recently replaced my Eufy robovac due to it's tendency to try to kill itself b
 ## Voice Assistant
 WIP
 ## Lighting
+I'm pretty deep into the Hue ecosystem sans my Sengled lightstrip. As a result I have my lights paired directly to the Hue app using the Hue bridge. The main reason I did this instead of utilizing my Raspbee II was so I can ensure my lights remain functional regardless of if Home Assistant is operational. This allows me a lot more flexibility to work with Home Assistant without adversely effecting the other people in my household. 
 | Hue Starter Kit | BR30 White Ambiance | Hue Color | Sengled Light Strip |
 | --- | --- | --- | --- |
 | ![Hue Starter Kit](img/lighting/hue_starter.jpg) | ![BR30 White Ambiance](img/lighting/hue_br30.jpg) | ![Hue Color](img/lighting/hue_color.jpeg) | ![Sengled Light Strip](img/lighting/sengled_ledstrip.jpg) |
+The only light outside the Hue ecosystem is my Sengled LED strip. I needed 6 feet of LEDs just for my stairs not to mention the other areas of the apartment, it would have been $79 for 6.5' of Hue lights where Sengled was ~$60 for 16.5'. The LED strip is hooked up directly to the Raspbee II. 
 ## Security
 WIP
 ## Plugs
