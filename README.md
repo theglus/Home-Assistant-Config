@@ -36,7 +36,9 @@ I recently replaced my Eufy robovac due to it's tendency to try to kill itself b
 ## Voice Assistant
 WIP
 ## Lighting
-WIP
+| Hue Starter Kit | BR30 White Ambiance | Hue Color | Sengled Light Strip |
+| --- | --- | --- | --- |
+| ![Hue Starter Kit](img/lighting/hue_starter.jpg) | ![BR30 White Ambiance](img/lighting/hue_br30.jpg) | ![Hue Color](img/lighting/hue_color.jpeg) | ![Sengled Light Strip](img/lighting/sengled_ledstrip.jpg) |
 ## Security
 WIP
 ## Plugs
