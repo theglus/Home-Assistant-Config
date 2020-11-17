@@ -16,6 +16,16 @@ I have a series of Google Home and Nest Mini's scattered throughout the apartmen
 | ![Google Home Mini](img/av/google_mini.jpg) | ![Google Nest Hub](img/av/google_nest_hub.jpg) | ![Lenovo Smart Clock](img/av/lenovo_smart_clock.jpg) |
 
 The Google Nest Hub lives in the loft and is used as a control panel, picture frame, and alarm clock. The Lenovo Smart Clock lives in the downstairs bedroom (referred to in HA as Office) for use as an alarm clock and simplified control panel.
+# Appliances
+## Climate
+My climate situation is pretty simple, just a fan and portable AC. The Dyson air purifying fan (Kirby) lives in the loft and is WiFi enabled. Shortly after purchase I realized it lacked the ability to integrate with Google Assistant, this became a huge driver in me exploring Home Assistant. I was pleasantly surprised to learn it contains a `temperature`, `humidity`, `aqi`, and `dust` sesnor. I successfully integrated Kirby with Home Assistant and am utilizing the `tempurature` and `humidity` sensors in my Lovelace dashboard. 
+I have plans to create a comprehensive fan/purifier control card as a keystone for my climate view in HA.
+| Dyson Pure Cool Purifying Fan TP04 | Frigidaire Cool Connect Portable AC FGPC1244T1 |
+| --- | --- |
+| ![Dyson TP04](img/appliance/dyson_tp04.jpg) | ![Frigidaire](img/appliance/frigidaire.jpg) |
+
+My apartment has casement windows so my AC options were fairly limited. The Frigidaire Cool Connect Portable AC (Ice Bear) was an easy decision due to it's high BTUs, small footprint, and WiFi conductivity. Unfortunately the smart functionality is incredibly limited and the Frigidaire app is complete garabage. I have yet to figure out a strategy to get Ice Bear into Home Assistant, but haven't given up hope!
+
 # Home Automation Components
 ## Home Assistant Hardware
 | Raspberry Pi 4 Model B 4GB | Raspbee II | SanDisk Extreme 64GB MicroSD | Argon Neo Case |
