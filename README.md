@@ -1,13 +1,21 @@
 # Home-Assistant-Config
 Home Assistant Configuration &amp; Documentation for my Smart House.
 ## Devices + services used with Home Assistant
-## Audio & Video
+# Audio & Video
+## Home Theater
 I recently built out my home theater system centered around my Denon S960H + NVIDIA SHIELD TV Pro and managed by Home Assistant using `denonavr`, `androidtv`, and `media_player`. The system is primarly controlled using the NVIDIA SHIELD Toblerone as it can accomplish almost everything I need via CEC. The main gaps currently in the system are the following Denon buttons `Setup`, `Options`, `Info`, `Back`, `ECO`, `Input` and the following Sony Bravia buttons `Settings`, `Home`. I currently have a _Home Theater_ Lovelace view which I use to control powering one or many entities (TV, AV, Shield) as well as switching between `AUTO` and `SETTING` Denon sound modes. 
 | Denon 960H | Polk S35 | Polk S10 | Polk S15 | NVIDIA SHIELD TV Pro | Sony TV |
 | --- | --- | --- | --- | --- | --- |
 | ![Denon](img/av/denon.png) | ![Polk S35](img/av/polk_s35.jpg) | ![Polk S10](img/av/polk_s10.jpg) | ![Polk S15](img/av/polk_s15.jpg) | ![NVIDIA SHIELD TV Pro](img/av/nvidia_shield_tv_pro.jpg) | ![Sony](img/av/sony_x900h.jpg) |
 
 I have a Levovo Smart Tab M8 that is docked in my living room that I use to access the _Home Theater_ view in Home Assistant. This view is very much a WIP progress and is my focus over the coming weeks.
+## Multi Room Audio
+I have a series of Google Home and Nest Mini's scattered throughout the apartment for the purpose of multi-room audio. The audio quality is subpar, but it gets the job done for now. I eventually plan on augmenting the audio with several Denon Home speakers.
+| Google Home/Nest Mini | Google Nest Hub | Lenovo Smart Clock |
+| --- | --- | --- | 
+| ![Google Home Mini](img/av/google_mini.jpg) | ![Google Nest Hub](img/av/google_nest_hub.jpg) | ![Lenovo Smart Clock](img/av/lenovo_smart_clock.jpg) |
+
+The Google Nest Hub lives in the loft and is used as a control panel, picture frame, and alarm clock. The Lenovo Smart Clock lives in the downstairs bedroom (referred to in HA as Office) for use as an alarm clock and simplified control panel.
 # Home Automation Components
 ## Home Assistant Hardware
 | Raspberry Pi 4 Model B 4GB | Raspbee II | SanDisk Extreme 64GB MicroSD | Argon Neo Case |
