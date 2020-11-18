@@ -38,7 +38,7 @@ I opted to go the Zigbee route primarily because I really like the Aqara platfor
 ![My Home Assistant Architecture](architecture.png) 
 ## Voice Assistant
 I'm currently utilizing Nabu Casa to leverage Google Assistant via the aforementioned Google Home devices to enable voice controls. I mainly use voice commands to trigger the lights, music, and theater system. I would like to setup voice commands for Winston and Kirby in the near future. 
-## Lightingi haven't
+## Lighting
 I'm pretty deep into the Hue ecosystem sans my Sengled lightstrip. As a result I have my lights paired directly to the Hue app using the Hue bridge. The main reason I did this instead of utilizing my Raspbee II was so I can ensure my lights remain functional regardless of if Home Assistant is operational. This allows me a lot more flexibility to work with Home Assistant without adversely effecting the other people in my household. 
 | Hue Starter Kit | BR30 White Ambiance | Hue Color | Sengled Light Strip |
 | --- | --- | --- | --- |
