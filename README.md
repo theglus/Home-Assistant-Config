@@ -45,8 +45,6 @@ I'm pretty deep into the Hue ecosystem sans my Sengled lightstrip. As a result I
 | ![Hue Starter Kit](img/lighting/hue_starter.jpg) | ![BR30 White Ambiance](img/lighting/hue_br30.jpg) | ![Hue Color](img/lighting/hue_color.jpeg) | ![Sengled Light Strip](img/lighting/sengled_ledstrip.jpg) |
 
 The only light outside the Hue ecosystem is my Sengled LED strip. I needed 6 feet of LEDs just for my stairs not to mention the other areas of the apartment, it would have been $79 for 6.5' of Hue lights where Sengled was ~$60 for 16.5'. The LED strip is hooked up directly to the Raspbee II. 
-## Security
-WIP
 ## Switches + Outlets
 I have a series of smart plugs which I use to control various appliances. Currently I have my printer (Major Laser Printer) and my kitchen kettle hooked up to two Kasa HS103 outlets which I control mainly through automations and Google Assistant. I recently purchased a Kasa 3-outlet surge protector which I have yet to determine how I will utilize.
 | Hue Smart Plug | [Kasa HS103 Smart Plug](https://smile.amazon.com/gp/product/B07B8W2KHZ/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&psc=1) | Kasa 3-plug Surge | Lutron Aurora | 
