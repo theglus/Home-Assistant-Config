@@ -63,7 +63,7 @@ My Home Assistant setup is pretty basic but it gets the job done without any hic
 
 I opted to go the Zigbee route primarily because I really like the Aqara platform. I landed on the Raspbee II over the Conbee as it just seemed like a more elegant solution. It's a little bit of a pain to initially setup, but after that it's smooth sailing. 
 ## Home Assistant Software + Architecture
-![My Home Assistant Architecture](architecture.png) 
+![My Home Assistant Architecture](img/architecture.png) 
 ## Voice Assistant
 I'm currently utilizing Nabu Casa to leverage Google Assistant via the aforementioned Google Home devices to enable voice controls. I mainly use voice commands to trigger the lights, music, and theater system. I would like to setup voice commands for Winston and Kirby in the near future. 
 ## Lighting
