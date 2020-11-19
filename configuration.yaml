@@ -1,33 +1,13 @@
+#################################################################
+## Home Assistant - Core Configuration
+#################################################################
 
 # Configure a default setup of Home Assistant (frontend, api, etc)
 default_config:
 
-# Text to speech
-tts:
-  - platform: google_translate
-
-group: !include groups.yaml
-automation: !include automations.yaml
-script: !include scripts.yaml
-scene: !include scenes.yaml
-
-# --- Telegram ---
-# Bot
-telegram_bot:
-  - platform: polling
-    api_key: !secret telegram_bot_key
-    allowed_chat_ids: !secret telegram_bot_chat_ids
-
-# Notifications    
-notify:
-  - name: telegram
-    platform: telegram
-    chat_id: !secret telegram_bot_main_chat_id
-
-# --- Goolge Cal ---
-google:
-  client_id: !secret google_client_id
-  client_secret: !secret google_client_secret
+#################################################################
+## Components
+#################################################################
 
 # --- Recorder ---
 recorder:
@@ -38,8 +18,45 @@ recorder:
     entities:
       - media_player.sonny_cast
 
-# --- Devices ---
-# deCONZ
+# Text to speech
+tts:
+  - platform: google_translate
+
+#################################################################
+## Notifications
+#################################################################
+
+# Telegram bot
+telegram_bot:
+  - platform: polling
+    api_key: !secret telegram_bot_key
+    allowed_chat_ids: !secret telegram_bot_chat_ids
+
+# Notifications    
+notify:
+# Telegram
+  - name: telegram
+    platform: telegram
+    chat_id: !secret telegram_bot_main_chat_id
+
+#################################################################
+## Software Integrations
+#################################################################
+
+# Google Cal
+google:
+  client_id: !secret google_client_id
+  client_secret: !secret google_client_secret
+
+# Speedtest
+speedtestdotnet:
+  scan_interval:
+    hours: 2
+
+#################################################################
+## Device Integrations
+#################################################################
+
 # Dyson
 dyson:
   username: !secret dyson_username
@@ -48,17 +65,7 @@ dyson:
   devices:
     - device_id: !secret kirby_device_id
       device_ip: !secret kirby_device_ip
-      
-# Shield
-media_player:
-  - platform: androidtv
-    name: SHIELD TV
-    host: !secret shield_ip
-# Sonny
-  - platform: androidtv
-    name: Sonny TV
-    host: !secret sonny_ip
-    
+
 # Winston
 vacuum:
   - platform: xiaomi_miio
@@ -66,7 +73,12 @@ vacuum:
     token: !secret winston_token
     name: Winston
 
+#################################################################
+## Camera Integrations
+#################################################################
+
 camera:
+# Winston lidar
   - platform: xiaomi_cloud_map_extractor
     host: !secret winston_host
     token: !secret winston_token
@@ -117,31 +129,47 @@ camera:
       seconds: 1
     auto_update: true
 
-# --- Sensors --- 
-# Google WiFi
+#################################################################
+## Media Players
+#################################################################
+
+media_player:
+# Shield
+  - platform: androidtv
+    name: SHIELD TV
+    host: !secret shield_ip
+# Sonny
+  - platform: androidtv
+    name: Sonny TV
+    host: !secret sonny_ip
+
+#################################################################
+## Sensors
+#################################################################
+
 sensor:
+# Google WiFi
   - platform: google_wifi
-  
 # HA Uptime
   - platform: uptime
     name: Time Online
-    unit_of_measurement: hours
-    
+    unit_of_measurement: hours  
 # HA system monitor
   - platform: systemmonitor 
     resources: 
       - type: memory_use_percent
       - type: processor_use
       - type: processor_temperature
-      
-# Speedtest
-speedtestdotnet:
-  scan_interval:
-    hours: 2
-    
-# Workday
+         
 binary_sensor:
+# Workday
   - platform: workday
     country: US
     workdays: [mon, tue, wed, thu, fri]
     excludes: [sat, sun]
+
+######## INCLUDES ########
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
