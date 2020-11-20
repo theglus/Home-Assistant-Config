@@ -12,11 +12,9 @@
 !*.js*
 
 # Comment this if you don't want to include your Node-RED flows.
-
-# This is only valid if you install Node-RED as Home Assistant Add-on
 # !node-red/
 
-# Uncomment this if you don' want to include secrets.yaml 
+# Ignore secrets.yaml 
 secrets.yaml
 
 # Ignore these files/folders
