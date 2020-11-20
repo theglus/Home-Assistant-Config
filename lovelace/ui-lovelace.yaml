@@ -1,5 +1,13 @@
+#################################################################
+#----------------------------------------------------------------
+## Lovelace - Default Dashboard
+#----------------------------------------------------------------
+#################################################################
 title: Loft
 views:
+#################################################################
+## Main View
+#################################################################
   - path: default_view
     title: Home
     panel: false
@@ -153,6 +161,9 @@ views:
             state_color: true
             title: Loft
             show_state: true
+#################################################################
+## Vacuum View
+#################################################################  
   - title: Winston
     path: winston
     icon: 'mdi:robot-vacuum-variant'
@@ -242,6 +253,9 @@ views:
                   - 1
             rooms:
               - all
+#################################################################
+## Home Theater View
+#################################################################  
   - title: Home Theater
     path: home-theater
     icon: 'mdi:theater'
@@ -287,6 +301,9 @@ views:
               - entity: script.sound_mode_stereo
                 tap_action:
                   action: toggle
+#################################################################
+## Climate Control View
+#################################################################                  
   - title: Climate Control
     path: climate-control
     icon: 'mdi:home-thermometer-outline'
@@ -294,6 +311,9 @@ views:
       - entity: sensor.kirby_temperature
       - entity: sensor.kirby_humidity
     cards: []
+#################################################################
+## System Monitor View
+################################################################# 
   - title: ha
     path: ha
     icon: 'mdi:home-assistant'
