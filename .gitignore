@@ -7,8 +7,6 @@
 !.gitignore
 !*.md
 !*.sh
-!*lovelace/
-**img/*
 !*.js*
 
 # Comment this if you don't want to include your Node-RED flows.
