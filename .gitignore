@@ -18,9 +18,12 @@ known_devices.yaml
 *.db
 *.log
 *.pyc
+
 _pycache_
 .HA_VERSION
 deps/
+home-assistant_v2.db-shm 
+home-assistant_v2.db-wal
 tts/
 
 # Add-ons
