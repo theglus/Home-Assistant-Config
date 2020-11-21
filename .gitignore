@@ -1,28 +1,47 @@
-# WARNING: Make your GitHub repo Private if you are using this as it is
-# Example .gitignore file for your config dir.
-# An * ensures that everything will be ignored.
+# By default, ignore all files
 *
-# You can whitelist files/folders with !, these will not be ignored.
-!*.yaml
+# Eventually I will change this, but for now, I'll write in what I want to be shared.
+
+# Share this file
 !.gitignore
+
+# Git Modules
+!.gitmodules
+
+# Share Markdown files & images
 !*.md
+!img/*.png
+!img/*.jpg
+!img/appliance/*.png
+!img/appliance/*.jpg
+!img/av/*.png
+!img/av/*.jpg
+!img/ha_hardware/*.png
+!img/ha_hardware/*.jpg
+!img/lighting/*.png
+!img/lighting/*.jpg
+!img/switches/*.png
+!img/switches/*.jpg
+
+# Explicitly allow YAML files
+!*.yaml
+
+# Any scripts that I may write
 !*.sh
-!*lovelace/
-**img/*
-!*.js*
 
+# Allow the following subfolders
+!automations
+!custom_components
+!img
+!scripts
+!www
 
-
-# Comment these 2 lines if you don't want to include your SSH keys
-!.ssh/
-!id_rsa*
-
-# Comment this if you don't want to include your Node-RED flows.
-# This is only valid if you install Node-RED as Home Assistant Add-on
-# !node-red/
-
-# Uncomment this if you don' want to include secrets.yaml 
+# Ignore Sensitive File
 secrets.yaml
+known_devices.yaml
+entity_registry.yaml
+ip_bans.yaml
+customize.yaml
 
 # Ignore these files/folders
 .storage
