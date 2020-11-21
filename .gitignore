@@ -34,7 +34,7 @@
 !custom_components
 !img
 !scripts
-!www
+!www/
 
 # Ignore Sensitive File
 secrets.yaml
