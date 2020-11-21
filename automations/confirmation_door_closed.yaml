@@ -1,0 +1,21 @@
+#################################################################
+## Confirmation Door Closed
+#
+## Confirming door is closed.
+#################################################################
+- id: '1604213608944'
+  alias: Confirmation Door Closed
+  description: Confirming door is closed.
+  trigger:
+  - type: not_opened
+    platform: device
+    device_id: 2b286a18941c258ce855c86cfc4788e9
+    entity_id: binary_sensor.frontdoor
+    domain: binary_sensor
+  condition: []
+  action:
+  - service: notify.telegram
+    data:
+      message: Front door is closed!
+      title: '🚪 CONFIRMED:'
+  mode: single

@@ -1,0 +1,20 @@
+#################################################################
+## Vacuum Docked
+#
+## Notify Farnsworth when Winston has returned to dock. 
+#################################################################
+- id: '1604730811526'
+  alias: Vacuum Docked
+  description: 'Notify Farnsworth when Winston has returned to dock. '
+  trigger:
+  - platform: state
+    entity_id: vacuum.winston
+    from: returning
+    to: docked
+  condition: []
+  action:
+  - service: notify.telegram
+    data:
+      message: Happy to have been of service.
+      title: '🤹🏻‍ Winston:'
+  mode: single
