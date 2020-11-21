@@ -10,10 +10,9 @@ ip_bans.yaml
 known_devices.yaml
 
 # Ignore System Files
-*DS_Store
 .cloud
+.DS_Store
 .storage
-
 
 # DB, Log, and Cache
 *.db
