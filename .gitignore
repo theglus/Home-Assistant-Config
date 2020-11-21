@@ -16,7 +16,9 @@ known_devices.yaml
 
 # DB, Log, and Cache
 *.db
+*.json
 *.log
+*.py
 *.pyc
 
 _pycache_
