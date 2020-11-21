@@ -17,6 +17,7 @@ known_devices.yaml
 # DB, Log, and Cache
 *.db
 *.log
+*.pyc
 _pycache_
 .HA_VERSION
 deps/
