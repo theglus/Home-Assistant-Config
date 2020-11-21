@@ -43,7 +43,7 @@
   mode: single
 - id: '1604018556590'
   alias: Volume nighttime
-  description: ''
+  description: 'Turn down volume of Google Home device at 10 pm.'
   trigger:
   - platform: time
     at: '22:00:00'
@@ -71,7 +71,7 @@
   mode: single
 - id: '1604027659401'
   alias: Volume daytime
-  description: ''
+  description: 'Turn up volume of Google Home device at 9 am.'
   trigger:
   - platform: time
     at: 09:00:00
@@ -99,7 +99,7 @@
   mode: single
 - id: '1604110722335'
   alias: Server Boot Up
-  description: ''
+  description: 'Telegram notification when server has booted up.'
   trigger:
   - platform: homeassistant
     event: start
@@ -112,7 +112,7 @@
   mode: single
 - id: '1604122122599'
   alias: Server Reboot
-  description: ''
+  description: 'Telegram notification that alerts of server reboot, restart, or shutdown.'
   trigger:
   - platform: homeassistant
     event: shutdown
@@ -161,7 +161,7 @@
   mode: single
 - id: '1604159666251'
   alias: Notification Printer
-  description: ''
+  description: 'Notify Farnsworth when Major Laser Printer is ready.'
   trigger:
   - platform: state
     entity_id: sensor.hp_laserjet_m14_m17
@@ -192,7 +192,7 @@
   mode: single
 - id: '1604222655903'
   alias: Notification Tea
-  description: ''
+  description: 'Notify Farnsworth when tea is ready.'
   trigger:
   - platform: device
     type: turned_on
@@ -212,7 +212,7 @@
   mode: single
 - id: '1604730376272'
   alias: Vacuum Clean
-  description: ''
+  description: 'Notify Farnsworth when Winston starts cleaning.'
   trigger:
   - platform: state
     entity_id: vacuum.winston
@@ -227,7 +227,7 @@
   mode: single
 - id: '1604730577982'
   alias: Vacuum Done
-  description: ''
+  description: 'Notify Farnsworth when Winston has completed cleaning.'
   trigger:
   - platform: state
     entity_id: vacuum.winston
@@ -242,7 +242,7 @@
   mode: single
 - id: '1604730811526'
   alias: Vacuum Docked
-  description: ''
+  description: 'Notify Farnsworth when Winston has returned to dock.'
   trigger:
   - platform: state
     entity_id: vacuum.winston
