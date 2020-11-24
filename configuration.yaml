@@ -20,7 +20,6 @@ recorder:
       - weather
     entity_globs: 
       - sensor.weather_*
-      - sensor.kirby_*
     entities:
       - media_player.sonny_cast
 
