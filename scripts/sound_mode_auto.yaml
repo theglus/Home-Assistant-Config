@@ -1,6 +1,3 @@
-#################################################################
-## Set Denon Sound Mode to Auto
-#################################################################
 sound_mode_auto:
   alias: Sound Mode Auto
   sequence:
@@ -10,3 +7,12 @@ sound_mode_auto:
     entity_id: media_player.dennis
   mode: single
   icon: mdi:surround-sound
+sound_mode_stereo:
+  alias: Sound Mode Stereo
+  sequence:
+  - service: media_player.select_sound_mode
+    data:
+      sound_mode: STEREO
+    entity_id: media_player.dennis
+  mode: single
+  icon: mdi:surround-sound-2-0
