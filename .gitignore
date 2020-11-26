@@ -12,7 +12,6 @@ known_devices.yaml
 # Ignore System Files
 .cloud
 .DS_Store
-.ssh
 .storage
 
 # DB, Log, and Cache
