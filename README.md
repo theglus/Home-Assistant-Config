@@ -80,5 +80,3 @@ I have a series of smart plugs which I use to control various appliances. Curren
 | ![Hue Smart Plug](img/switches/hue_plug.jpg) | ![Kasa HS103](img/switches/kasa_plugs.jpg) | ![Kasa Surge](img/switches/kasa_surge.jpg) | ![Lutron Aurora](img/switches/lutron_aurora.jpg) |
 
 My old school analog marquee is controlled by the Hue plug which I opted for due to it's ability to be integrated with my other lights via the Hue ecosystem. Lastly, sometimes it's just quicker and quieter to turn on the lights with a switch, being a renter replacing my wall switches isn't appealing. Luckily I discovered Lutron Aurora dimmers which not only gives me a physical button but also a dimmer which I can map to one or many lights. I'm hoping to figure out a way to map secondary actions (double click, triple click, etc.), but the feasiblity is TBD.
-
-Thanks for reading, please star if your are interested in the project.
