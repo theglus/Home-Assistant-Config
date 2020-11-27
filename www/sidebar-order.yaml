@@ -1,0 +1,9 @@
+order:
+  - item: map
+    hide: true
+  - item: history
+    hide: true
+  - item: logbook
+    bottom: true
+  - item: media browser
+    hide: true
