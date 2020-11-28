@@ -9,3 +9,9 @@ order:
     hide: true
   - item: calendar 
     hide: true
+  - item: Entities
+    href: /config/entities
+    icon: mdi:one-up
+  - item: Debug
+    href: /hassio/system
+    icon: mdi:bacteria-outline
