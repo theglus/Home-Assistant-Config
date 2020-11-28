@@ -103,7 +103,14 @@ camera:
       19: [245, 142, 110]
       # Bathroom
       20: [7, 152, 183]
-    draw: ["all"]
+    draw:
+      - charger
+      - path
+      - goto_path
+      - predicted_path
+      - no_go_zones
+      - vacuum_position
+      - virtual_walls
     map_transformation:
       scale: 2
       trim:
