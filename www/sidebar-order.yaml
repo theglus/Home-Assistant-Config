@@ -6,12 +6,16 @@ order:
   - item: logbook
     hide: true
   - item: media-browser
+    href: /media-browser
     hide: true
   - item: calendar 
+    href: /calendar
     hide: true
-  - new_item: Entities
+  - new_item: true
+    item: Entities
     href: /config/entities
     icon: mdi:one-up
-  - new_item: Debug
+  - new_item: true
+    item: Debug
     href: /hassio/system
     icon: mdi:bacteria-outline
