@@ -1,6 +1,7 @@
 order:
   - item: Overview
   - item: File Editor
+  - item: HACS
   - item: Portainer
   - new_item: true
     item: Entities
