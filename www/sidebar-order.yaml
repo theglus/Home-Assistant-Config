@@ -5,13 +5,13 @@ order:
     hide: true
   - item: logbook
     hide: true
-  - item: media browser
+  - item: media-browser
     hide: true
   - item: calendar 
     hide: true
-  - item: Entities
+  - new_item: Entities
     href: /config/entities
     icon: mdi:one-up
-  - item: Debug
+  - new_item: Debug
     href: /hassio/system
     icon: mdi:bacteria-outline
