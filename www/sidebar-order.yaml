@@ -1,16 +1,7 @@
 order:
-  - item: map
-    hide: true
-  - item: history
-    hide: true
-  - item: logbook
-    hide: true
-  - item: media-browser
-    href: /media-browser
-    hide: true
-  - item: calendar 
-    href: /calendar
-    hide: true
+  - item: Overview
+  - item: File Editor
+  - item: Portainer
   - new_item: true
     item: Entities
     href: /config/entities
@@ -18,4 +9,16 @@ order:
   - new_item: true
     item: Debug
     href: /hassio/system
-    icon: mdi:bacteria-outline
+    icon: mdi:bacteria-outline 
+  - item: Map
+    hide: true
+  - item: History
+    hide: true
+  - item: Logbook
+    hide: true
+  - item: Media Browser
+    href: /media-browser
+    hide: true
+  - item: Calendar 
+    href: /calendar
+    hide: true
