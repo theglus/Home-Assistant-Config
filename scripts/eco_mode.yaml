@@ -1,0 +1,14 @@
+#################################################################
+## Enable Denon Eco mode
+#################################################################
+eco_on:
+  alias: ECO Mode On
+  sequence:
+  - service: rest_command.eco_on
+#################################################################
+## Disable Denon Eco mode
+#################################################################
+eco_off:
+  alias: ECO Mode Off
+  sequence:
+  - service: rest_command.eco_off

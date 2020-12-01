@@ -1,0 +1,11 @@
+#################################################################
+## Android TV Enter command
+#################################################################
+nav_enter:
+  alias: Navigate Enter
+  sequence:
+    - service: androidtv.adb_command
+      data:
+        entity_id: media_player.shield_tv
+        command: "ENTER"
+  mode: single
