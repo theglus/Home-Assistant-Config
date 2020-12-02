@@ -26,10 +26,14 @@ recorder:
 #  History
 history:
   exclude:
-    domains:
-      - *
+#   domains:
+#     - 
     entity_globs: 
-      - *
+      - automation.*
+      - script.*
+      - light.*
+      - sensor.*
+      - switch.*
       
 # Text to speech
 tts:
