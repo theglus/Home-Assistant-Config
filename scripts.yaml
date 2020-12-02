@@ -38,3 +38,75 @@ sound_mode_stereo:
     entity_id: media_player.dennis
   mode: single
   icon: mdi:surround-sound-2-0
+eco_on:
+  alias: ECO Mode On
+  sequence:
+  - service: rest_command.eco_on
+eco_off:
+  alias: ECO Mode Off
+  sequence:
+  - service: rest_command.eco_off
+nav_back:
+  alias: Navigate Back
+  sequence:
+    - service: androidtv.adb_command
+      data:
+        entity_id: media_player.shield_tv
+        command: "BACK"
+  mode: single
+nav_down:
+  alias: Navigate Down
+  sequence:
+    - service: androidtv.adb_command
+      data:
+        entity_id: media_player.shield_tv
+        command: "DOWN"
+  mode: single
+nav_enter:
+  alias: Navigate Enter
+  sequence:
+    - service: androidtv.adb_command
+      data:
+        entity_id: media_player.shield_tv
+        command: "ENTER"
+  mode: single
+nav_home:
+  alias: Navigate Home
+  sequence:
+    - service: androidtv.adb_command
+      data:
+        entity_id: media_player.shield_tv
+        command: "HOME"
+  mode: single
+nav_left:
+  alias: Navigate Left
+  sequence:
+    - service: androidtv.adb_command
+      data:
+        entity_id: media_player.shield_tv
+        command: "LEFT"
+  mode: single
+nav_right:
+  alias: Navigate Right
+  sequence:
+    - service: androidtv.adb_command
+      data:
+        entity_id: media_player.shield_tv
+        command: "RIGHT"
+  mode: single
+nav_down:
+  alias: Navigate Down
+  sequence:
+    - service: androidtv.adb_command
+      data:
+        entity_id: media_player.shield_tv
+        command: "DOWN"
+  mode: single
+toggle_power:
+  alias: Toggle Shield Power
+  sequence:
+    - service: androidtv.adb_command
+      data:
+        entity_id: media_player.shield_tv
+        command: "POWER"
+  mode: single
