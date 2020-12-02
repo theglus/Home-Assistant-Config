@@ -28,7 +28,7 @@ history:
   include:
     entity_globs:
      - sensor.kirby_*
-  exclude:
+# exclude:
 #   domains:
 #     - 
 #   entity_globs: 
