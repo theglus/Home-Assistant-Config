@@ -102,3 +102,11 @@ toggle_power:
         entity_id: media_player.shield_tv
         command: "POWER"
   mode: single
+  nav_up:
+alias: Navigate Up
+  sequence:
+    - service: androidtv.adb_command
+      data:
+        entity_id: media_player.shield_tv
+        command: "UP"
+  mode: single
