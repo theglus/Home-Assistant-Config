@@ -27,13 +27,9 @@ recorder:
 history:
   exclude:
     domains:
-      - automation
-      - script
-      - updater
-      - media_player
-      - weather
+      - *
     entity_globs: 
-      - sensor.weather_*
+      - *
       
 # Text to speech
 tts:
