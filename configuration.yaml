@@ -25,16 +25,18 @@ recorder:
 
 #  History
 history:
-# include:
+  include:
+    entity_globs:
+     - sensor.kirby_*
   exclude:
 #   domains:
 #     - 
-    entity_globs: 
-      - automation.*
-      - script.*
-      - light.*
-      - sensor.*
-      - switch.*
+#   entity_globs: 
+#     - automation.*
+#     - script.*
+#     - light.*
+#     - sensor.*
+#     - switch.*
       
 # Text to speech
 tts:
