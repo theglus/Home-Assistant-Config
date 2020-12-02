@@ -30,7 +30,7 @@ history:
 #   domains:
 #     - 
     entity_globs: 
-     - automation.*
+      - automation.*
       - script.*
       - light.*
       - sensor.*
