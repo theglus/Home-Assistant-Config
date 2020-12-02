@@ -9,7 +9,7 @@ default_config:
 ## Components
 #################################################################
 
-# --- Recorder ---
+# Recorder
 recorder:
   auto_purge: true
   purge_keep_days: 5
@@ -23,6 +23,18 @@ recorder:
     entities:
       - media_player.sonny_cast
 
+#  History
+history:
+  exclude:
+    domains:
+      - automation
+      - script
+      - updater
+      - media_player
+      - weather
+    entity_globs: 
+      - sensor.weather_*
+      
 # Text to speech
 tts:
   - platform: google_translate
