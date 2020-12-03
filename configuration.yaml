@@ -15,8 +15,15 @@ recorder:
   purge_keep_days: 5
   commit_interval: 1
   include:
+    entities:
+      - sensor.memory_use_percent
+      - sensor.speedtest_download
+      - sensor.speedtest_upload  
+      - sensor.temperature_media      
     entity_globs:
       - sensor.kirby_*
+      - sensor.processor_*    
+
 # exclude:
 #   domains:
 #     - media_player
