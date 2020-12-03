@@ -53,7 +53,8 @@ nav_back:
       data:
         entity_id: media_player.shield_tv
         command: "BACK"
-  mode: single
+  mode: parallel
+  icon: mdi:step-backward
 nav_down:
   alias: Navigate Down
   sequence:
@@ -61,7 +62,8 @@ nav_down:
       data:
         entity_id: media_player.shield_tv
         command: "DOWN"
-  mode: single
+  mode: parallel
+  icon: mdi:chevron-down-circle-outline
 nav_enter:
   alias: Navigate Enter
   sequence:
@@ -69,7 +71,8 @@ nav_enter:
       data:
         entity_id: media_player.shield_tv
         command: "ENTER"
-  mode: single
+  mode: parallel
+  icon: mdi:cursor-default-click-outline
 nav_home:
   alias: Navigate Home
   sequence:
@@ -77,7 +80,8 @@ nav_home:
       data:
         entity_id: media_player.shield_tv
         command: "HOME"
-  mode: single
+  mode: parallel
+  icon: mdi:home-circle-outline
 nav_left:
   alias: Navigate Left
   sequence:
@@ -85,7 +89,8 @@ nav_left:
       data:
         entity_id: media_player.shield_tv
         command: "LEFT"
-  mode: single
+  mode: parallel
+  icon: mdi:chevron-left-circle-outline
 nav_right:
   alias: Navigate Right
   sequence:
@@ -93,7 +98,8 @@ nav_right:
       data:
         entity_id: media_player.shield_tv
         command: "RIGHT"
-  mode: single
+  mode: parallel
+  icon: mdi:chevron-right-circle-outline
 toggle_power:
   alias: Toggle Shield Power
   sequence:
@@ -101,7 +107,8 @@ toggle_power:
       data:
         entity_id: media_player.shield_tv
         command: "POWER"
-  mode: single
+  mode: parallel
+  icon: mdi:power
 nav_up:
   alias: Navigate Up
   sequence:
@@ -109,4 +116,5 @@ nav_up:
       data:
         entity_id: media_player.shield_tv
         command: "UP"
-  mode: single
+  mode: parallel
+  icon: mdi:chevron-up-circle-outline
