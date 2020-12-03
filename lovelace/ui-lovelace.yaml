@@ -260,47 +260,236 @@ views:
     path: home-theater
     icon: 'mdi:theater'
     panel: false
-    badges:
-      - entity: media_player.sonny_tv
-      - entity: media_player.shield_tv
-      - entity: media_player.dennis
+    badges: []
     cards:
-      - type: vertical-stack
+      - type: 'custom:vertical-stack-in-card'
         cards:
-          - type: picture-glance
-            title: TV
-            image: 'https://cdn.mos.cms.futurecdn.net/j7zrucNfWgCKfSabRa52cM.png'
-            entities:
-              - entity: media_player.sonny_tv
-                icon: 'mdi:power'
-              - entity: media_player.sonny_cast
-                icon: 'mdi:video-input-svideo'
-              - entity: media_player.sonny_cast
-                icon: 'mdi:cog'
-          - type: picture-glance
-            title: SHIELD
+          - type: picture-elements
+            image: /local/icons/LHarmonyBG.jpg
+            elements:
+              - type: image
+                image: /local/icons/media_icons/power.svg
+                entity: script.toggle_power
+                tap_action:
+                  action: toggle
+                style:
+                  top: 10em
+                  left: 10%
+                  width: 54px
+                  height: 54px
+                  background-color: 'rgb(255, 255, 255, 0.0)'
+                  filter: invert(0.20)
+                  border-radius: 4px
+                  z-index: 2
+              - type: image
+                image: /local/icons/media_icons/netflix.svg
+                style:
+                  top: 10em
+                  left: 25%
+                  width: 54px
+                  height: 54px
+                  background-color: 'rgb(255, 255, 255, 0.0)'
+                  filter: invert(0.20)
+                  border-radius: 4px
+                  z-index: 2
+              - type: image
+                image: /local/icons/media_icons/hulu.svg
+                style:
+                  top: 10em
+                  left: 40%
+                  width: 54px
+                  height: 54px
+                  background-color: 'rgb(255, 255, 255, 0.0)'
+                  filter: invert(0.20)
+                  border-radius: 4px
+                  z-index: 2
+              - type: image
+                image: /local/icons/media_icons/remote.svg
+                style:
+                  top: 10em
+                  left: 55%
+                  width: 54px
+                  height: 54px
+                  background-color: 'rgb(255, 255, 255, 0.0)'
+                  filter: invert(0.20)
+                  border-radius: 4px
+                  z-index: 2
+              - type: image
+                image: /local/icons/media_icons/chevron-up.svg
+                entity: script.nav_up
+                tap_action:
+                  action: toggle
+                style:
+                  top: 4em
+                  left: 80%
+                  width: 54px
+                  height: 54px
+                  background-color: 'rgb(255, 255, 255, 0.0)'
+                  filter: invert(0.20)
+                  border-radius: 4px
+                  z-index: 2
+              - type: image
+                image: /local/icons/media_icons/circle-empty.svg
+                entity: script.nav_enter
+                tap_action:
+                  action: toggle
+                style:
+                  top: 8em
+                  left: 80%
+                  width: 70px
+                  height: 70px
+                  background-color: 'rgb(255, 255, 255, 0.0)'
+                  filter: invert(0.20)
+                  border-radius: 4px
+                  z-index: 2
+              - type: image
+                image: /local/icons/media_icons/chevron-down.svg
+                entity: script.nav_down
+                tap_action:
+                  action: toggle
+                style:
+                  top: 12em
+                  left: 80%
+                  width: 54px
+                  height: 54px
+                  background-color: 'rgb(255, 255, 255, 0.0)'
+                  filter: invert(0.20)
+                  border-radius: 4px
+                  z-index: 2
+              - type: image
+                image: /local/icons/media_icons/chevron-left.svg
+                entity: script.nav_left
+                tap_action:
+                  action: toggle
+                style:
+                  top: 8em
+                  left: 68%
+                  width: 54px
+                  height: 54px
+                  background-color: 'rgb(255, 255, 255, 0.0)'
+                  filter: invert(0.20)
+                  border-radius: 4px
+                  z-index: 2
+              - type: image
+                image: /local/icons/media_icons/chevron-right.svg
+                entity: script.nav_right
+                tap_action:
+                  action: toggle
+                style:
+                  top: 8em
+                  left: 92%
+                  width: 54px
+                  height: 54px
+                  background-color: 'rgb(255, 255, 255, 0.0)'
+                  filter: invert(0.20)
+                  border-radius: 4px
+                  z-index: 2
+              - type: image
+                image: /local/icons/media_icons/horizontal_Rule.png
+                style:
+                  top: 13em
+                  left: 35%
+                  width: 60%
+                  height: 2px
+                  filter: invert(0.20)
+                  border-radius: 4px
+      - type: 'custom:vertical-stack-in-card'
+        cards:
+          - type: picture-elements
             image: >-
-              https://www.nvidia.com/content/dam/en-zz/Solutions/SHIELD/specs/shield-tv-pro/nvidia-shield-tv-pro-og-image-1200x630.jpg
-            entities:
-              - entity: media_player.shield_tv
-                icon: 'mdi:power'
-              - entity: media_player.sonny_cast
-                icon: 'mdi:cog'
-          - type: picture-glance
-            title: AV
-            image: >-
-              https://www.altermanaudio.com/Photosweb/Denonphotos/DenonAVR960.png
-            entities:
-              - entity: media_player.dennis
-                tap_action:
-                  action: toggle
-                icon: 'mdi:power'
-              - entity: script.sound_mode_auto
-                tap_action:
-                  action: toggle
-              - entity: script.sound_mode_stereo
-                tap_action:
-                  action: toggle
+              https://raw.githubusercontent.com/mattclair/Home-AssistantConfig/master/www/icons/media_icons/LHarmonyBG.jpg
+            elements:
+              - type: image
+                image: /local/icons/media_icons/power.svg
+                style:
+                  top: 10em
+                  left: 10%
+                  width: 54px
+                  height: 54px
+                  background-color: 'rgb(255, 255, 255, 0.0)'
+                  filter: invert(0.20)
+                  border-radius: 4px
+                  z-index: 2
+              - type: image
+                image: >-
+                  https://raw.githubusercontent.com/theglus/Home-Assistant-Config/76ccbb0e4778cd3e1798b5b0474f52d5d7fc56eb/www/icons/media_icons/netflix.svg
+                style:
+                  top: 10em
+                  left: 25%
+                  width: 54px
+                  height: 54px
+                  background-color: 'rgb(255, 255, 255, 0.0)'
+                  filter: invert(0.20)
+                  border-radius: 4px
+                  z-index: 2
+              - type: image
+                image: /local/icons/media_icons/eco.svg
+                style:
+                  top: 10em
+                  left: 40%
+                  width: 54px
+                  height: 54px
+                  background-color: 'rgb(255, 255, 255, 0.0)'
+                  filter: invert(0.20)
+                  border-radius: 4px
+                  z-index: 2
+              - type: image
+                image: /local/icons/media_icons/remote.svg
+                style:
+                  top: 10em
+                  left: 55%
+                  width: 54px
+                  height: 54px
+                  background-color: 'rgb(255, 255, 255, 0.0)'
+                  filter: invert(0.20)
+                  border-radius: 4px
+                  z-index: 2
+              - type: image
+                image: >-
+                  https://raw.githubusercontent.com/theglus/Home-Assistant-Config/master/www/icons/media_icons/vol_-.png
+                style:
+                  top: 12em
+                  left: 85%
+                  width: 54px
+                  height: 54px
+                  background-color: 'rgb(255, 255, 255, 0.0)'
+                  filter: invert(0.20)
+                  border-radius: 4px
+                  z-index: 2
+              - type: image
+                image: >-
+                  https://raw.githubusercontent.com/theglus/Home-Assistant-Config/master/www/icons/media_icons/vol_%2B.png
+                tap_action: call-service
+                service: script.volume_up
+                style:
+                  top: 8em
+                  left: 85%
+                  width: 54px
+                  height: 54px
+                  background-color: 'rgb(255, 255, 255, 0.0)'
+                  filter: invert(0.20)
+                  border-radius: 4px
+                  z-index: 2
+              - type: image
+                image: >-
+                  https://raw.githubusercontent.com/theglus/Home-Assistant-Config/master/www/icons/media_icons/volBorder.png
+                style:
+                  top: 11em
+                  left: 85%
+                  width: 69px
+                  height: 155px
+                  filter: invert(0.20)
+                  border-radius: 4px
+                  z-index: 1
+              - type: image
+                image: /local/icons/media_icons/horizontal_Rule.png
+                style:
+                  top: 13em
+                  left: 35%
+                  width: 60%
+                  height: 2px
+                  filter: invert(0.20)
+                  border-radius: 4px
 #################################################################
 ## Climate Control View
 #################################################################                  
