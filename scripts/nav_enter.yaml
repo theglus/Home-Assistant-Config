@@ -8,4 +8,5 @@ nav_enter:
       data:
         entity_id: media_player.shield_tv
         command: "ENTER"
-  mode: single
+  mode: parallel
+  icon: mdi:cursor-default-click-outline

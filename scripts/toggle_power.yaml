@@ -8,4 +8,5 @@ toggle_power:
       data:
         entity_id: media_player.shield_tv
         command: "POWER"
-  mode: single
+  mode: parallel
+  icon: mdi:power

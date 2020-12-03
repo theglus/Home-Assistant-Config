@@ -8,4 +8,5 @@ nav_right:
       data:
         entity_id: media_player.shield_tv
         command: "RIGHT"
-  mode: single
+  mode: parallel
+  icon: mdi:chevron-right-circle-outline

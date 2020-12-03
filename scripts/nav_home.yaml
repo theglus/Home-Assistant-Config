@@ -8,4 +8,5 @@ nav_home:
       data:
         entity_id: media_player.shield_tv
         command: "HOME"
-  mode: single
+  mode: parallel
+  icon: mdi:home-circle-outline

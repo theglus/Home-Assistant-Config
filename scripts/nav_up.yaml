@@ -8,4 +8,5 @@ nav_up:
       data:
         entity_id: media_player.shield_tv
         command: "UP"
-  mode: single
+  mode: parallel
+  icon: mdi:chevron-up-circle-outline
