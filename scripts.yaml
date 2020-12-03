@@ -118,3 +118,12 @@ nav_up:
         command: "UP"
   mode: parallel
   icon: mdi:chevron-up-circle-outline
+remote_finder:
+  alias: Remote Finder
+  icon: mdi:target
+  mode: single
+  sequence:
+  - data:
+      command: am start -a android.intent.action.VIEW -d -n com.nvidia.remotelocator/.ShieldRemoteLocatorActivity
+      entity_id: media_player.shiled_tv
+    service: androidtv.adb_command
