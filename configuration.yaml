@@ -24,30 +24,6 @@ recorder:
       - sensor.kirby_*
       - sensor.processor_*    
 
-# exclude:
-#   domains:
-#     - media_player
-#     - weather
-#   entity_globs: 
-#     - sensor.weather_*
-#   entities:
-#     - media_player.sonny_cast
-
-# History
-# history:
-#   include:
-#     entity_globs:
-#      - sensor.kirby_*
-# exclude:
-#   domains:
-#     - 
-#   entity_globs: 
-#     - automation.*
-#     - script.*
-#     - light.*
-#     - sensor.*
-#     - switch.*
-      
 # Text to speech
 tts:
   - platform: google_translate
