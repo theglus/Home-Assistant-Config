@@ -41,7 +41,7 @@ sound_mode_stereo:
 eco_on:
   alias: ECO Mode On
   sequence:
-    - service: "rest_command.eco_on"
+    - service: rest_command.eco_on
 eco_off:
   alias: ECO Mode Off
   sequence:
