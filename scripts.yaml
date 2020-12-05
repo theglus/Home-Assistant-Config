@@ -41,11 +41,17 @@ sound_mode_stereo:
 eco_on:
   alias: ECO Mode On
   sequence:
-  - service: rest_command.eco_on
+  - service: denonavr.get_command
+    data:
+      entity_id: media_player.dennis
+      command: rest_command.eco_on
 eco_off:
   alias: ECO Mode Off
   sequence:
-  - service: rest_command.eco_off
+  - service: denonavr.get_command
+    data:
+      entity_id: media_player.dennis
+      command: rest_command.eco_on
 nav_back:
   alias: Navigate Back
   sequence:
