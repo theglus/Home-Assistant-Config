@@ -1,4 +1,4 @@
   eco_on:
-    url: 'http://192.168.86.187/goform/formiPhoneAppDirect.xml?ECOON'
+    url: '/goform/formiPhoneAppDirect.xml?ECOON'
   eco_off:
-    url: 'http://192.168.86.187/goform/formiPhoneAppDirect.xml?ECOOFF'
+    url: '/goform/formiPhoneAppDirect.xml?ECOOFF'
