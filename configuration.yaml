@@ -188,7 +188,7 @@ switch:
           service: script.eco_on
         turn_off:
           service: script.eco_off
-       icon: mdi:leaf
+        icon: mdi:leaf
 
 ######## INCLUDES ########
 group: !include groups.yaml
