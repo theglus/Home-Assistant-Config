@@ -174,6 +174,20 @@ binary_sensor:
     workdays: [mon, tue, wed, thu, fri]
     excludes: [sat, sun]
 
+#################################################################
+## Switches
+#################################################################
+
+switch:
+# Denon ECO Switch
+  - platform: template
+    switches:
+      eco:
+        turn_on:
+          service: script.eco_on
+        turn_off:
+          service: script.eco_off
+
 ######## INCLUDES ########
 group: !include groups.yaml
 automation: !include automations.yaml
