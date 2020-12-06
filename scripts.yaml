@@ -45,6 +45,7 @@ eco_on:
       data:
         entity_id: media_player.dennis
         command: /goform/formiPhoneAppDirect.xml?ECOON
+  icon: mdi:leaf  
 eco_off:
   alias: ECO Mode Off
   sequence:
@@ -52,6 +53,7 @@ eco_off:
       data:
         entity_id: media_player.dennis
         command: /goform/formiPhoneAppDirect.xml?ECOOFF
+    icon: mdi:leaf
 nav_back:
   alias: Navigate Back
   sequence:
@@ -59,7 +61,7 @@ nav_back:
       data:
         entity_id: media_player.shield_tv
         command: "BACK"
-  mode: parallel
+  mode: queued
   icon: mdi:step-backward
 nav_down:
   alias: Navigate Down
@@ -68,7 +70,7 @@ nav_down:
       data:
         entity_id: media_player.shield_tv
         command: "DOWN"
-  mode: parallel
+  mode: queued
   icon: mdi:chevron-down-circle-outline
 nav_enter:
   alias: Navigate Enter
@@ -77,7 +79,7 @@ nav_enter:
       data:
         entity_id: media_player.shield_tv
         command: "ENTER"
-  mode: parallel
+  mode: queued
   icon: mdi:cursor-default-click-outline
 nav_home:
   alias: Navigate Home
@@ -86,7 +88,7 @@ nav_home:
       data:
         entity_id: media_player.shield_tv
         command: "HOME"
-  mode: parallel
+  mode: queued
   icon: mdi:home-circle-outline
 nav_left:
   alias: Navigate Left
@@ -95,7 +97,7 @@ nav_left:
       data:
         entity_id: media_player.shield_tv
         command: "LEFT"
-  mode: parallel
+  mode: queued
   icon: mdi:chevron-left-circle-outline
 nav_right:
   alias: Navigate Right
@@ -104,7 +106,7 @@ nav_right:
       data:
         entity_id: media_player.shield_tv
         command: "RIGHT"
-  mode: parallel
+  mode: queued
   icon: mdi:chevron-right-circle-outline
 toggle_power:
   alias: Toggle Shield Power
@@ -113,7 +115,7 @@ toggle_power:
       data:
         entity_id: media_player.shield_tv
         command: "POWER"
-  mode: parallel
+  mode: queued
   icon: mdi:power
 nav_up:
   alias: Navigate Up
@@ -122,7 +124,7 @@ nav_up:
       data:
         entity_id: media_player.shield_tv
         command: "UP"
-  mode: parallel
+  mode: queued
   icon: mdi:chevron-up-circle-outline
 remote_finder:
   alias: Remote Finder

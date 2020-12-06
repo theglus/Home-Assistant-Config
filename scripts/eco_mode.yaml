@@ -8,6 +8,7 @@ eco_on:
       data:
         entity_id: media_player.dennis
         command: /goform/formiPhoneAppDirect.xml?ECOON
+  icon: mdi:leaf  
 #################################################################
 ## Disable Denon Eco mode
 #################################################################
@@ -18,3 +19,4 @@ eco_off:
       data:
         entity_id: media_player.dennis
         command: /goform/formiPhoneAppDirect.xml?ECOOFF
+  icon: mdi:leaf
