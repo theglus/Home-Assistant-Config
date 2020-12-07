@@ -166,6 +166,20 @@ sensor:
       - type: memory_use_percent
       - type: processor_use
       - type: processor_temperature
+# Denon Receiver Volume Template Sensor
+  - platform: template
+    sensors:
+      denon_volume:
+        value_template: >
+          {% if is_state('media_player.dennis', 'on')  %}
+            {% set n = states.media_player.dennis.attributes.volume_level | float %}
+            {{ '%.1f'%( n*100.0|round(0.0) ) }}
+          {% else %}
+            "0"
+          {% endif %}
+        friendly_name: Reciever Volume Level
+        unit_of_measurement: "%"
+        icon_template: mdi:volume-medium
          
 binary_sensor:
 # Workday
@@ -194,9 +208,9 @@ switch:
       denon_menu:
         friendly_name: "Denon Menu"
         turn_on:
-          service: script.menu_on
+          service: script.av_menu_on
         turn_off:
-          service: script.menu_off
+          service: script.av_menu_off
 
 ######## INCLUDES ########
 group: !include groups.yaml

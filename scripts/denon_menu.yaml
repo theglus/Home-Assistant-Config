@@ -1,7 +1,7 @@
 #################################################################
 ## Denon Menu On
 #################################################################
-menu_on:
+av_menu_on:
   alias: Denon Menu On
   sequence:
     - service: denonavr.get_command
@@ -13,7 +13,7 @@ menu_on:
 #################################################################
 ## Denon Menu Off
 #################################################################
-menu_off:
+av_menu_off:
   alias: Denon Menu Off
   sequence:
     - service: denonavr.get_command
