@@ -53,7 +53,7 @@ eco_off:
       data:
         entity_id: media_player.dennis
         command: /goform/formiPhoneAppDirect.xml?ECOOFF
-    icon: mdi:leaf
+  icon: mdi:leaf
 nav_back:
   alias: Navigate Back
   sequence:
@@ -136,3 +136,21 @@ remote_finder:
         am start -a android.intent.action.VIEW -d -n com.nvidia.remotelocator/.ShieldRemoteLocatorActivity
       entity_id: media_player.shield_tv
     service: androidtv.adb_command
+launch_netflix:
+  alias: Launch Netflix
+  sequence:
+    - service: androidtv.adb_command
+      data:
+        entity_id: media_player.shield_tv
+        command: "am start -a android.intent.action.VIEW -d -n com.netflix.ninja/.MainActivity"
+  mode: queued
+  icon: mdi:netflix
+launch_hulu:
+  alias: Launch Hulu
+  sequence:
+    - service: androidtv.adb_command
+      data:
+        entity_id: media_player.shield_tv
+        command: "am start -a android.intent.action.VIEW -d -n com.hulu.livingroomplus/.MainActivity"
+  mode: queued
+  icon: mdi:hulu
