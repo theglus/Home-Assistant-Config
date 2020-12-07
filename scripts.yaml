@@ -56,6 +56,24 @@ eco_off:
         command: /goform/formiPhoneAppDirect.xml?ECOOFF
   mode: single
   icon: mdi:leaf
+menu_on:
+  alias: Denon Menu On
+  sequence:
+    - service: denonavr.get_command
+      data:
+        entity_id: media_player.dennis
+        command: /goform/formiPhoneAppDirect.xml?MNMEN%20ON
+  mode: single
+  icon: mdi:tune-vertical
+menu_off:
+  alias: Denon Menu Off
+  sequence:
+    - service: denonavr.get_command
+      data:
+        entity_id: media_player.dennis
+        command: /goform/formiPhoneAppDirect.xml?MNMEN%20OFF
+  mode: single
+  icon: mdi:tune-vertical
 nav_back:
   alias: Navigate Back
   sequence:
