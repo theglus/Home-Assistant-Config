@@ -11,10 +11,6 @@ order:
     item: Debug
     href: /hassio/system
     icon: mdi:bacteria-outline 
-  - new_item: true
-    item: Logs
-    href: /config/logs
-    icon: mdi:campfire
   - item: Map
     hide: true
   - item: History
