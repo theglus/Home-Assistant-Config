@@ -175,17 +175,17 @@ sensor:
         entity_id: sensor.date
         value_template: "{{ states.automation | list | length }}"
    # Count Scripts
-       count_scripts:
-         entity_id: sensor.date
-         value_template: "{{ states.script| list | length }}"
+      count_scripts:
+        entity_id: sensor.date
+        value_template: "{{ states.script| list | length }}"
    # Count Sensors
-       count_sensors:
-         entity_id: sensor.date
-         value_template: "{{ states.sensor | list | length }}"
+      count_sensors:
+        entity_id: sensor.date
+        value_template: "{{ states.sensor | list | length }}"
    # Count Switches
-       count_switches:
-         entity_id: sensor.date
-         value_template: "{{ states.switch | list | length }}"
+      count_switches:
+        entity_id: sensor.date
+        value_template: "{{ states.switch | list | length }}"
 # HA System Monitor
   - platform: systemmonitor 
     resources: 
