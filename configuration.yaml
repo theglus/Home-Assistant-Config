@@ -167,16 +167,16 @@ sensor:
         icon_template: mdi:volume-medium
 # Google WiFi
 #  - platform: google_wifi
-# HA Uptime
-  - platform: uptime
-    name: Time Online
-    unit_of_measurement: hours  
-# HA system monitor
+# HA System Monitor
   - platform: systemmonitor 
     resources: 
       - type: memory_use_percent
       - type: processor_use
       - type: processor_temperature
+# HA Uptime
+  - platform: uptime
+    name: Time Online
+    unit_of_measurement: hours  
          
 binary_sensor:
 # Workday
