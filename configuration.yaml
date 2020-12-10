@@ -179,6 +179,7 @@ sensor:
     unit_of_measurement: minutes  
 # HA Latest Version
   - platform: version
+    name: Latest Version
          
 binary_sensor:
 # Workday
