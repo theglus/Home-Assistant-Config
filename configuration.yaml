@@ -155,7 +155,7 @@ media_player:
 
 sensor:
 # Google WiFi
-  - platform: google_wifi
+#  - platform: google_wifi
 # HA Uptime
   - platform: uptime
     name: Time Online
