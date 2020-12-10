@@ -155,6 +155,16 @@ media_player:
 #################################################################
 
 sensor:
+# Denon Receiver Volume Template Sensor
+  - platform: template
+    sensors:
+      denon_volume:
+        value_template: >
+          {% if is_state('media_player.dennis', 'on')  %}
+            {{ (state_attr('media_player.dennis', 'volume_level') * 100) | int }}
+          {% endif %}
+        friendly_name: Receiver Volume Level
+        icon_template: mdi:volume-medium
 # Google WiFi
 #  - platform: google_wifi
 # HA Uptime
@@ -167,16 +177,6 @@ sensor:
       - type: memory_use_percent
       - type: processor_use
       - type: processor_temperature
-# Denon Receiver Volume Template Sensor
-  - platform: template
-    sensors:
-      denon_volume:
-        value_template: >
-          {% if is_state('media_player.dennis', 'on')  %}
-            {{ (state_attr('media_player.dennis', 'volume_level') * 100) | int }}
-          {% endif %}
-        friendly_name: Receiver Volume Level
-        icon_template: mdi:volume-medium
          
 binary_sensor:
 # Workday
