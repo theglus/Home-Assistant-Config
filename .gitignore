@@ -30,6 +30,7 @@ home-assistant_v2.db-wal
 tts/
 
 # Add-ons
+custom_components/mail_and_packages/
 esphome
 
 
