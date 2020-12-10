@@ -23,6 +23,7 @@ recorder:
       - sensor.time_online    
     entity_globs:
       - sensor.kirby_*
+      - sensor.mail_*
       - sensor.processor_*    
 
 # Text to speech
