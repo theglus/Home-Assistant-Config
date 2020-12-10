@@ -168,24 +168,24 @@ sensor:
 # Google WiFi
 #  - platform: google_wifi
 # HA Component counts
- - platform: template
-   sensors:
-  # Count Automations 
-     count_automations:
-       entity_id: sensor.date
-       value_template: "{{ states.automation | list | length }}"
-  # Count Scripts
-      count_scripts:
+  - platform: template
+    sensors:
+   # Count Automations 
+      count_automations:
         entity_id: sensor.date
-        value_template: "{{ states.script| list | length }}"
-  # Count Sensors
-      count_sensors:
-        entity_id: sensor.date
-        value_template: "{{ states.sensor | list | length }}"
-  # Count Switches
-      count_switches:
-        entity_id: sensor.date
-        value_template: "{{ states.switch | list | length }}"
+        value_template: "{{ states.automation | list | length }}"
+   # Count Scripts
+       count_scripts:
+         entity_id: sensor.date
+         value_template: "{{ states.script| list | length }}"
+   # Count Sensors
+       count_sensors:
+         entity_id: sensor.date
+         value_template: "{{ states.sensor | list | length }}"
+   # Count Switches
+       count_switches:
+         entity_id: sensor.date
+         value_template: "{{ states.switch | list | length }}"
 # HA System Monitor
   - platform: systemmonitor 
     resources: 
