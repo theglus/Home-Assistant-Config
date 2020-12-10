@@ -19,7 +19,8 @@ recorder:
       - sensor.memory_use_percent
       - sensor.speedtest_download
       - sensor.speedtest_upload  
-      - sensor.temperature_media      
+      - sensor.temperature_media  
+      - sensor.time_online    
     entity_globs:
       - sensor.kirby_*
       - sensor.processor_*    
