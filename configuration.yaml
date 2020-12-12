@@ -84,7 +84,7 @@ vacuum:
 # NMAP Device Tracker
 device_tracker:
   - platform: nmap_tracker
-    hosts: 192.168.86.0/24
+    hosts: 192.168.86.1/24
 
 #################################################################
 ## Camera Integrations
