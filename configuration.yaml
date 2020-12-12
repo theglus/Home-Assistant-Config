@@ -103,7 +103,7 @@ device_tracker:
     # Loft Bathroom
       - !secret loft_bathroom_ip
      # Living Room Speaker
-     -  !secret livingroom_speaker_ip
+      - !secret livingroom_speaker_ip
     # Kettle
       - !secret kettle_ip
     # Visa iPhone
@@ -112,8 +112,8 @@ device_tracker:
       - !secret tardis_ip
     # Kirby
       - !secret kirby_device_ip
-     # M8 Tablet
-     -  !secret m8_ip
+    # M8 Tablet
+      - !secret m8_ip
     # Winston
       - !secret winston_host
     # Major Laser Printer
