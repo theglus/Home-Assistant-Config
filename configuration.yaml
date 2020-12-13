@@ -86,46 +86,47 @@ device_tracker:
   - platform: nmap_tracker
     hosts: 192.168.86.1/24
     exclude:
-    # Shield
-      - !secret shield_ip
-    # Tiffany's iPhone
-      - !secret tiffany_iphone_ip
-    # Farnsworth
-      - !secret farnsworth_ip
-    # Office speaker
-      - !secret office_speaker_ip
+# Laptops + Phones
     # Macintoshbook Pro
       - !secret macintoshbook_pro_ip
+    # M8 Tablet
+      - !secret m8_ip
+    # TARDIS
+      - !secret tardis_ip
+# Home Theater
+    # Shield
+      - !secret shield_ip
+    # Farnsworth
+      - !secret farnsworth_ip
     # Sonny
-      - !secret sonny_ip
+      - !secret sonny_ip  
+    # Dennis
+      - !secret dennis_ip       
+# Google Home Devices
+    # Office speaker
+      - !secret office_speaker_ip
     # Loft Nest Hub
       - !secret loft_nest_hub_ip
     # Loft Bathroom
       - !secret loft_bathroom_ip
-     # Living Room Speaker
+    # Living Room Speaker
       - !secret livingroom_speaker_ip
+# Smart Devices
     # Kettle
       - !secret kettle_ip
-    # Visa iPhone
-      - !secret visa_iphone_ip
-    # TARDIS
-      - !secret tardis_ip
     # Kirby
       - !secret kirby_device_ip
-    # M8 Tablet
-      - !secret m8_ip
+    # Hue Bridge
+      - !secret hue_bridge_ip
     # Winston
       - !secret winston_host
     # Major Laser Printer
       - !secret major_laser_printer_ip
-    # Hue Bridge
-      - !secret hue_bridge_ip
     # Toothbrush plug
       - !secret toothbrush_ip
     # Surge protector
       - !secret surge_ip
-    # Dennis
-      - !secret dennis_ip   
+
 
 #################################################################
 ## Camera Integrations
