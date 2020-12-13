@@ -202,6 +202,20 @@ media_player:
 ## Sensors
 #################################################################
 
+person:
+  - name: Jeffrey
+    id: e43b4b421723479691a6cd90b6a96ded
+    device_tracker:
+      - device_tracker.pixel
+  - name: Tiffy
+    id: d6982b73f52645a0b661ce607e75f76c
+    device_tracker:
+      - device_tracker.tiffy_iphone
+
+#################################################################
+## Sensors
+#################################################################
+
 sensor:
 # Denon Receiver Volume Template Sensor
   - platform: template
