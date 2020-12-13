@@ -268,6 +268,12 @@ sensor:
         value_template: "{{ states.switch | list | length }}"
         friendly_name: Switches      
         icon_template: mdi:abacus            
+## Do I Need a Jacket      
+#  - platform: scrape   
+#    resource: https://doineedajacket.com/weather/94107
+#    name: Jacket
+#    select: ".dinaj_h1 h1"
+#    value_template: '{{ value.split(":")[1] }}'
 # HA System Monitor
   - platform: systemmonitor 
     resources: 
@@ -281,12 +287,6 @@ sensor:
 # HA Latest Version
   - platform: version
     name: Latest Version
-# Do I Need a Jacket      
-  - platform: scrape   
-    resource: https://doineedajacket.com/weather/94107
-    name: Jacket
-    select: ".dinaj_h1 h1"
-    value_template: '{{ value.split(":")[1] }}'
 
 binary_sensor:
 # Workday
