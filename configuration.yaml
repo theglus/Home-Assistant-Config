@@ -219,6 +219,26 @@ sensor:
 #    name: Jacket
 #    select: ".dinaj_h1 h1"
 #    value_template: '{{ value.split(":")[1] }}'
+# Core Release
+  - platform: scrape
+      resource: "https://github.com/home-assistant/core/releases/latest"
+      select: ".release-header a[href]"
+      name: Core Release
+# Mac Release
+  - platform: scrape
+      resource: "https://github.com/home-assistant/iOS/releases/latest"
+      select: ".release-header a[href]"
+      name: Mac Release
+# OS Release
+  - platform: scrape
+      resource: "https://github.com/home-assistant/operating-system/releases/latest"
+      select: ".release-header a[href]"
+      name: OS Release
+# Supervisor Release
+  - platform: scrape
+      resource: "https://github.com/home-assistant/supervisor/releases/latest"
+      select: ".release-header a[href]"
+      name: Supervisor Release
 # HA System Monitor
   - platform: systemmonitor 
     resources: 
