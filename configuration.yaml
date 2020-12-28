@@ -223,7 +223,6 @@ sensor:
 # HA Uptime
   - platform: uptime
     name: Time Online
-    unit_of_measurement: minutes  
 # HA Latest Version
   - platform: version
     name: Latest Version
