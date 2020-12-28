@@ -19,7 +19,12 @@ recorder:
       - sensor.memory_use_percent
       - sensor.speedtest_download
       - sensor.speedtest_upload  
-      - sensor.temperature_media  
+      - sensor.temperature_media
+      - sensor.humidity_media
+      - sensor.pressure_media
+      - sensor.temperature_living_room   
+      - sensor.humidity_living_room
+      - sensor.pressure_living_room  
       - sensor.time_online    
     entity_globs:
       - sensor.kirby_*
