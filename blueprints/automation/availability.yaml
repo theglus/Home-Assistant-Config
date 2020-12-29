@@ -9,6 +9,7 @@ blueprint:
       description: Sensor to monitor in order to trigger the scene.
       selector:
         entity:
+        state:
     duration:
       name: Duration
       description: What period to wait before triggering the scene? (HH:MM:SS)   
@@ -35,5 +36,5 @@ trigger:
   for: !input duration
 
 action:
-  scene: !input busy_scene
-  scene: !input free_scene
+  choose: !input busy_scene
+  choose: !input free_scene
