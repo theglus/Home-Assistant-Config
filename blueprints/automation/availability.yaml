@@ -12,17 +12,28 @@ blueprint:
     duration:
       name: Duration
       description: What period to wait before triggering the scene? (HH:MM:SS)   
-    trigger_scene:
-      name: Scene
-      description: Scene to be triggered.
+    busy_scene:
+      name: Busy Scene
+      description: Scene to indicate busy state.
+      selector:
+        entity:
+    free_scene:
+      name: Free Scene
+      description: Scene to indicate free state.
       selector:
         entity:
 
 trigger:
   platform: device
   entity_id: !input trigger_sensor
-  domain: binary_sensor
+  domain: sensor
+  for: !input duration
+
+  platform: device
+  entity_id: !input trigger_sensor
+  domain: sensor
   for: !input duration
 
 action:
-  scene: !input trigger_scene
+  scene: !input busy_scene
+  scene: !input free_scene
