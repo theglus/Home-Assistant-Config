@@ -1,6 +1,6 @@
 blueprint:
   name: Shutoff timer
-  description: Shutoff device after it has be on for a defined interval.
+  description: Shutoff device after it has been on for a defined interval.
   domain: automation
 
   input:
