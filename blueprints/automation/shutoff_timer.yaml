@@ -4,9 +4,9 @@ blueprint:
   domain: automation
 
   input:
-    Switch:
-      name: Switch
-      description: Which switch to monitor and toggle?
+    trigger_device:
+      name: Device
+      description: Which device to monitor and toggle?
       selector:
         entity:
           domain: switch
@@ -16,13 +16,13 @@ blueprint:
 
 trigger:
   platform: state
-  entity_id: !input Switch
+  entity_id: !input trigger_device
   for: !input duration
   from: 'off'
   to: 'on'
 
 action: 
   type: turn_off
-  entity_id: !input Switch
+  entity_id: !input trigger_device
 
 mode: single
