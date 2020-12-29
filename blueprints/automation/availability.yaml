@@ -1,0 +1,28 @@
+blueprint:
+  name: Availability
+  description: Changes scene depending on laptop camera state.
+  domain: automation
+
+  input:
+    trigger_sensor:
+      name: Sensor
+      description: Sensor to monitor in order to trigger the scene.
+      selector:
+        entity:
+    duration:
+      name: Duration
+      description: What period to wait before triggering the scene? (HH:MM:SS)   
+    trigger_scene:
+      name: Scene
+      description: Scene to be triggered.
+      selector:
+        entity:
+
+trigger:
+  platform: device
+  entity_id: !input trigger_sensor
+  domain: binary_sensor
+  for: !input duration
+
+action:
+  scene: !input trigger_scene
