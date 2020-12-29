@@ -8,11 +8,9 @@ blueprint:
       description: Which device to monitor and toggle?
       selector:
         entity:
-    trigger_time:
+    trigger_duration:
       name: Duration
-      description: What period to wait before toggling state?
-      selector:
-        time:          
+      description: What period to wait before toggling state? (HH:MM:SS)      
 
 trigger:
   platform: state
@@ -23,7 +21,7 @@ trigger:
 
 action: 
   type: turn_off
-  entity_id: !input trigger_device
+  entity_id: !input trigger_duration
   domain: switch
 
 mode: single
