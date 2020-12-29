@@ -1,0 +1,29 @@
+blueprint:
+  name: Shutoff device after it has be on for a defined interval.
+  domain: automation
+
+  input:
+    trigger_device:
+      name: Device
+      description: Which device to monitor and toggle?
+      selector:
+        entity:
+    trigger_time:
+      name: Duration
+      description: What period to wait before toggling state?
+      selector:
+        time:          
+
+trigger:
+  platform: state
+  entity_id: !input trigger_device
+  for: !input trigger_time
+  from: 'off'
+  to: 'on'
+
+action: 
+  type: turn_off
+  entity_id: !input trigger_device
+  domain: switch
+
+mode: single
