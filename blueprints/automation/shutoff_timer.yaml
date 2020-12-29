@@ -6,12 +6,12 @@ blueprint:
   input:
     trigger_device:
       name: Device
-      description: Which device to monitor and toggle?
+      description: Which device to monitor and shutoff?
       selector:
         entity:
     duration:
       name: Duration
-      description: What period to wait before toggling state? (HH:MM:SS)   
+      description: What period to wait before shutting off device? (HH:MM:SS)   
 
 trigger:
   platform: state
