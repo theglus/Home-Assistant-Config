@@ -36,5 +36,5 @@ trigger:
   for: !input duration
 
 action:
-  choose: !input busy_scene
-  choose: !input free_scene
+  scene: !input busy_scene
+  scene: !input free_scene
