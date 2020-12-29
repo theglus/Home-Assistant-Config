@@ -10,7 +10,9 @@ blueprint:
         entity:
     trigger_duration:
       name: Duration
-      description: What period to wait before toggling state? (HH:MM:SS)      
+      description: What period to wait before toggling state? (HH:MM:SS)  
+      selector:
+        time:    
 
 trigger:
   platform: state
