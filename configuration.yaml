@@ -16,8 +16,8 @@ recorder:
   commit_interval: 1
   include:
     entities:
-      - device_tracker.keys
-      - device_tracker.pixel_3
+#     - device_tracker.keys
+#     - device_tracker.pixel_3
       - sensor.humidity_living_room
       - sensor.humidity_media      
       - sensor.memory_use_percent
