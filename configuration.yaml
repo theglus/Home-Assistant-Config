@@ -217,7 +217,7 @@ sensor:
         value_template: "{{ states.switch | list | length }}"
         friendly_name: Switches      
         icon_template: mdi:abacus            
-## Do I Need a Jacket      
+# Do I Need a Jacket      
 #  - platform: scrape   
 #    resource: https://doineedajacket.com/weather/94107
 #    name: Jacket
