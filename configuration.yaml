@@ -18,6 +18,8 @@ recorder:
     entities:
       - device_tracker.keys
       - device_tracker.pixel_3
+      - person.j*
+      - person.t*
       - sensor.humidity_living_room
       - sensor.humidity_media      
       - sensor.memory_use_percent
@@ -29,7 +31,6 @@ recorder:
       - sensor.temperature_media
       - sensor.time_online    
     entity_globs:
-      - person.*
       - sensor.kirby_*
       - sensor.mail_*
       - sensor.processor_*    
