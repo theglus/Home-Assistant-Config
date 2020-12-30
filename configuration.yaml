@@ -18,8 +18,8 @@ recorder:
     entities:
       - device_tracker.keys
       - device_tracker.pixel_3
-      - person.jeffrey_
-      - person.tiffany_
+      - person.jeffrey_*
+      - person.tiffany_*
       - sensor.humidity_living_room
       - sensor.humidity_media      
       - sensor.memory_use_percent
