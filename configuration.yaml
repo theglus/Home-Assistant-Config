@@ -30,10 +30,10 @@ recorder:
       - sensor.temperature_media
       - sensor.time_online    
     entity_globs:
+      - person.jeffrey_*
+      - person.tiffany_*      
       - sensor.kirby_*
       - sensor.mail_*
-      - person.jeffrey_*
-      - person.tiffany_*
       - sensor.processor_*    
 
 # Text to speech
