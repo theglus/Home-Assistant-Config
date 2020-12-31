@@ -21,6 +21,8 @@ logger:
     homeassistant.config_entries: critical
     # Update of camera.xiaomi_cloud_map_extractor is taking over 10 seconds 
     homeassistant.helpers.entity: error
+    # Custom integration for xiaomi_cloud_map_extractor 
+    homeassistant.loader: error
 
 # Recorder
 recorder:
