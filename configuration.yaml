@@ -9,6 +9,15 @@ default_config:
 ## Components
 #################################################################
 
+# Logger
+logger:
+  default: info
+  logs:
+    # Config entry for ipp not ready yet 
+    homeassistant.config_entries: critical
+    # Error fetching ipp data
+    homeassistant.components.ipp: critical
+
 # Recorder
 recorder:
   auto_purge: true
