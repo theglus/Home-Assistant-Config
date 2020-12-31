@@ -13,10 +13,14 @@ default_config:
 logger:
   default: info
   logs:
-    # Config entry for ipp not ready yet 
-    homeassistant.config_entries: critical
     # Error fetching ipp data
     homeassistant.components.ipp: critical
+    # Setup of media_player platform androidtv is taking over 10 seconds. 
+    homeassistant.components.media_player: error
+    # Config entry for ipp not ready yet 
+    homeassistant.config_entries: critical
+    # Update of camera.xiaomi_cloud_map_extractor is taking over 10 seconds 
+    homeassistant.helpers.entity: error
 
 # Recorder
 recorder:
