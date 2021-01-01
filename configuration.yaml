@@ -283,6 +283,9 @@ binary_sensor:
 #################################################################
 
 switch:
+# SwitchBot for Header
+  - platform: switchBot
+    mac: !secret switchbot_mac  
 # Denon ECO Switch
   - platform: template
     switches:
