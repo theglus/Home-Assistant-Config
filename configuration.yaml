@@ -166,6 +166,16 @@ camera:
 ## Media Players
 #################################################################
 
+climate:
+  - platform: generic_thermostat
+    name: Living Room
+    heater: switch.switchbot
+    target_sensor: sensor.temperature_living_room
+
+#################################################################
+## Media Players
+#################################################################
+
 media_player:
 # Shield
   - platform: androidtv
