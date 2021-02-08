@@ -2,7 +2,6 @@
 
 # Ignore Sensitive File
 .google.token 
-customize.yaml
 entity_registry.yaml
 secrets.yaml
 google_calendars.yaml
