@@ -11,7 +11,7 @@ Downstairs:
 # Upstairs Light Group
 Upstairs: 
   name: Upstairs Lights
-  entitites: 
+  entities: 
     - light.loft 
     - light.hallway_marquee
     - light.stair
