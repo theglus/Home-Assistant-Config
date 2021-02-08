@@ -270,7 +270,7 @@
       rotate_counter_clockwise:
       - type: brightness_decrease
         device_id: 7faeb9e5857511b167cb40d31e810446
-        entity_id: light.downstairs_living_room_yumi_lamp
+        entity_id: light.hue_color_lamp_1_2
         domain: light
       cube_shake:
       - service: media_player.media_play_pause
@@ -291,6 +291,10 @@
         device_id: 6b3f010b852f90f27f83b82eb13178a3
         entity_id: light.dino_panel
         domain: light
+      two_to_two:
+      - service: switch.toggle
+        data: {}
+        entity_id: switch.switchbot
 - id: '1609272260246'
   alias: 'Office: Busy'
   description: ''
@@ -298,7 +302,7 @@
   - type: turned_on
     platform: device
     device_id: 0d90cb630ecad3945965440c0dabc6cf
-    entity_id: binary_sensor.jeffreys_macbook_pro_facetime_hd_camera
+    entity_id: binary_sensor.jeffreys_macbook_pro_camera_in_use
     domain: binary_sensor
     for:
       hours: 0
@@ -315,7 +319,7 @@
   - type: turned_off
     platform: device
     device_id: 0d90cb630ecad3945965440c0dabc6cf
-    entity_id: binary_sensor.jeffreys_macbook_pro_facetime_hd_camera
+    entity_id: binary_sensor.jeffreys_macbook_pro_camera_in_use
     domain: binary_sensor
     for:
       hours: 0
@@ -325,3 +329,11 @@
   action:
   - scene: scene.office_available
   mode: single
+- id: '1612565703660'
+  alias: Shutoff Shredder
+  description: ''
+  use_blueprint:
+    path: shutoff_timer.yaml
+    input:
+      trigger_device: switch.phone_soap
+      duration: 00:05:00
