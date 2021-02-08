@@ -2,17 +2,17 @@
 ## Hue Zones
 #################################################################
 # Loft Bedside Lights
-light.bedside 
+light.bedside:
   icon: mdi:desk-lamp
 # Downstairs Lights
-light.downstairs 
+light.downstairs:
   icon: mdi-home-floor-g
 # Office Overhead Lights
-light.overhead
+light.overhead:
   icon: mdi:dome-light
 # Track Lights
-light.track 
+light.track:
   icon: mdi:track-light
 # Upstairs Lights
-light.upstairs
+light.upstairs:
   icon: mdi-home-roof
