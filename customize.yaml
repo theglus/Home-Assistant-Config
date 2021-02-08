@@ -3,16 +3,21 @@
 #################################################################
 # Loft Bedside Lights
 light.bedside:
+  friendly-name: Bedside Lights
   icon: mdi:desk-lamp
 # Downstairs Lights
 light.downstairs:
+  friendly-name: Downstairs Lights
   icon: mdi:home-floor-g
 # Office Overhead Lights
 light.overhead:
+  friendly-name: Overhead Lights
   icon: mdi:dome-light
 # Track Lights
 light.track:
+  friendly-name: Track Lights
   icon: mdi:track-light
 # Upstairs Lights
 light.upstairs:
+  friendly-name: Upstairs Lights
   icon: mdi:home-roof
