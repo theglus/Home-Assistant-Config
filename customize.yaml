@@ -19,5 +19,5 @@ light.track:
   icon: mdi:track-light
 # Upstairs Lights
 light.upstairs:
-  friendly-name: Upstairs Lights
+  friendly-name: "Upstairs Lights"
   icon: mdi:home-roof
