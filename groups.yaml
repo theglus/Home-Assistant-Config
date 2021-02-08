@@ -1,20 +1,46 @@
 # --- GLOBAL ---
+# Downstairs Light Group
+Downstairs: 
+  name: Downstairs Lights
+  entities: 
+    - group.overhead
+    - group.track
+    - light.dino_panel
+    - light.hallway_runner
+  icon: 'mdi:home-floor-g'
+# Upstairs Light Group
+Upstairs: 
+  name: Upstairs Lights
+  entitites: 
+    - light.loft 
+    - light.hallway_marquee
+    - light.stair
+  icon: 'mdi:home-roof'
 # --- LOFT ---
 # Bedside Light Group
-# Bedside:
-#   name: Bedside Lights
-#   entities:
-#     - light.upstairs_loft_jeffrey_s_light
-#     - light.upstairs_loft_tiffany_s_light
-#   icon: 'mdi:desk-lamp'
+Bedside:
+  name: Bedside Lights
+  entities:
+    - light.jeffreys_lamp
+    - light.tiffanys_lamp
+  icon: 'mdi:desk-lamp'
 # --- OFFICE ---
 # Office Light Group
-# Office:
-#   name: Office Lights
-#   entities:
-#     - light.downstairs_office_overhead_light
-#     - light.downstairs_office_overhead_light_2
-#   icon: 'mdi:dome-light'
+Overhead:
+  name: Overhead Lights
+  entities:
+    - light.overhead_bed
+    - light.overhead_desk
+  icon: 'mdi:dome-light'
 # --- HALLWAY ---
 # --- LIVING ROOM ---
+# Track Lighting
+Track:
+  name: Track Lights
+  entities:
+    - light.left_track
+    - light.center_track
+    - light.right_track
+  icon: 'mdi:track-light'
+
 # --- LOFT BATHROOM ---
