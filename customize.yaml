@@ -1,23 +1,38 @@
 #################################################################
+## Hue Rooms
+#################################################################
+# Hallway
+light.hallway:
+  icon: mdi:coat-rack
+# Living Room
+light.living_room:
+  icon: mdi:sofa
+# Loft
+light.loft:
+  icon: mdi:bed-king
+# Office
+light.office:
+  icon: mdi:desk
+#################################################################
 ## Hue Zones
 #################################################################
 # Loft Bedside Lights
-light.bedside:
-  friendly-name: Bedside Lights
-  icon: mdi:desk-lamp
+# light.bedside:
+#   friendly-name: Bedside Lights
+#   icon: mdi:desk-lamp
 # Downstairs Lights
-light.downstairs:
-  friendly-name: Downstairs Lights
-  icon: mdi:home-floor-g
+# light.downstairs:
+#   friendly-name: Downstairs Lights
+#   icon: mdi:home-floor-g
 # Office Overhead Lights
-light.overhead:
-  friendly-name: Overhead Lights
-  icon: mdi:dome-light
+# light.overhead:
+#   friendly-name: Overhead Lights
+#   icon: mdi:dome-light
 # Track Lights
-light.track:
-  friendly-name: Track Lights
-  icon: mdi:track-light
+# light.track:
+#   friendly-name: Track Lights
+#   icon: mdi:track-light
 # Upstairs Lights
-light.upstairs:
-  friendly-name: "Upstairs Lights"
-  icon: mdi:home-roof
+# light.upstairs:
+#   friendly-name: "Upstairs Lights"
+#   icon: mdi:home-roof
