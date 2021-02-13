@@ -1,0 +1,19 @@
+#################################################################
+## Sunrise Alarm
+#
+## Turn on bedside light 25 minutes before next alarm. 
+#################################################################
+- id: '1613026584789'
+  alias: Rise and Shine
+  description: ''
+  use_blueprint:
+    path: wake-up.yaml
+    input:
+      light_entity: light.jeffreys_lamp
+      timestamp_sensor: sensor.pixel_3_next_alarm
+      end_brightness: '254'
+      start_brightness: '1'
+      check_entity: binary_sensor.pixel_3_is_charging
+      manual_time: '8:00:00'
+      sunrise_duration: '25'
+      min_mired: '450'
