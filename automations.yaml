@@ -129,13 +129,14 @@
   trigger:
   - type: opened
     platform: device
-    device_id: 2b286a18941c258ce855c86cfc4788e9
-    entity_id: binary_sensor.frontdoor
+    device_id: a13166182e71a12ccc046137e74cde66
+    entity_id: binary_sensor.front_door
     domain: binary_sensor
     for:
       hours: 0
       minutes: 0
-      seconds: 15
+      seconds: 10
+      milliseconds: 0
   condition: []
   action:
   - service: notify.telegram
@@ -180,9 +181,14 @@
   trigger:
   - type: not_opened
     platform: device
-    device_id: 2b286a18941c258ce855c86cfc4788e9
-    entity_id: binary_sensor.frontdoor
+    device_id: a13166182e71a12ccc046137e74cde66
+    entity_id: binary_sensor.front_door
     domain: binary_sensor
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 5
+      milliseconds: 0
   condition: []
   action:
   - service: notify.telegram
@@ -329,11 +335,33 @@
   action:
   - scene: scene.office_available
   mode: single
-- id: '1612565703660'
-  alias: Shutoff Shredder
+- id: '1613026584789'
+  alias: Rise and Shine
   description: ''
   use_blueprint:
-    path: shutoff_timer.yaml
+    path: wake-up.yaml
     input:
-      trigger_device: switch.phone_soap
-      duration: 00:05:00
+      light_entity: light.jeffreys_lamp
+      timestamp_sensor: sensor.pixel_3_next_alarm
+      end_brightness: '254'
+      start_brightness: '1'
+      check_entity: binary_sensor.pixel_3_is_charging
+      manual_time: '8:00:00'
+      sunrise_duration: '25'
+      min_mired: '450'
+- id: '1613169784553'
+  alias: Shutoff Shredder
+  description: Shutoff plug to paper shredder 2-minutes after device has been switched
+    on.
+  trigger:
+  - platform: state
+    entity_id: switch.paper_shredder
+    for: 00:02:00
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - service: switch.turn_off
+    data: {}
+    entity_id: switch.paper_shredder
+  mode: single
