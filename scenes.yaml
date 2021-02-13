@@ -50,3 +50,171 @@
       supported_features: 63
       state: 'on'
   icon: mdi:briefcase-check-outline
+- id: '1613186250437'
+  name: TV Time
+  entities:
+    light.left_track:
+      min_mireds: 153
+      max_mireds: 500
+      effect_list:
+      - colorloop
+      - random
+      brightness: 255
+      hs_color:
+      - 296.538
+      - 81.569
+      rgb_color:
+      - 242
+      - 46
+      - 255
+      xy_color:
+      - 0.367
+      - 0.154
+      effect: none
+      friendly_name: Left Track Light
+      icon: mdi:track-light
+      supported_features: 63
+      state: 'on'
+    light.center_track:
+      min_mireds: 153
+      max_mireds: 500
+      effect_list:
+      - colorloop
+      - random
+      brightness: 255
+      hs_color:
+      - 296.538
+      - 81.569
+      rgb_color:
+      - 242
+      - 46
+      - 255
+      xy_color:
+      - 0.367
+      - 0.154
+      effect: none
+      friendly_name: Center Track Light
+      icon: mdi:track-light
+      supported_features: 63
+      state: 'on'
+    light.right_track:
+      min_mireds: 153
+      max_mireds: 500
+      effect_list:
+      - colorloop
+      - random
+      brightness: 255
+      hs_color:
+      - 296.538
+      - 81.569
+      rgb_color:
+      - 242
+      - 46
+      - 255
+      xy_color:
+      - 0.367
+      - 0.154
+      effect: none
+      friendly_name: Right Track Light
+      icon: mdi:track-light
+      supported_features: 63
+      state: 'on'
+    light.yumi_lamp:
+      min_mireds: 153
+      max_mireds: 500
+      effect_list:
+      - colorloop
+      - random
+      brightness: 128
+      hs_color:
+      - 298.947
+      - 67.059
+      rgb_color:
+      - 251
+      - 83
+      - 255
+      xy_color:
+      - 0.373
+      - 0.173
+      effect: none
+      friendly_name: Yumi Light
+      icon: mdi:ceiling-light
+      supported_features: 63
+      state: 'on'
+  icon: mdi:theater
+- id: '1613186836913'
+  name: Illuminate
+  entities:
+    light.left_track:
+      min_mireds: 153
+      max_mireds: 500
+      effect_list:
+      - colorloop
+      - random
+      brightness: 255
+      color_temp: 370
+      effect: none
+      friendly_name: Left Track Light
+      icon: mdi:track-light
+      supported_features: 63
+      state: 'on'
+    light.center_track:
+      min_mireds: 153
+      max_mireds: 500
+      effect_list:
+      - colorloop
+      - random
+      brightness: 255
+      color_temp: 370
+      effect: none
+      friendly_name: Center Track Light
+      icon: mdi:track-light
+      supported_features: 63
+      state: 'on'
+    light.right_track:
+      min_mireds: 153
+      max_mireds: 500
+      effect_list:
+      - colorloop
+      - random
+      brightness: 255
+      color_temp: 370
+      effect: none
+      friendly_name: Right Track Light
+      icon: mdi:track-light
+      supported_features: 63
+      state: 'on'
+    light.hue_color_lamp_1:
+      min_mireds: 153
+      max_mireds: 500
+      effect_list:
+      - colorloop
+      - random
+      brightness: 255
+      color_temp: 370
+      effect: none
+      friendly_name: Kitchen Light
+      supported_features: 63
+      state: 'on'
+    light.yumi_lamp:
+      min_mireds: 153
+      max_mireds: 500
+      effect_list:
+      - colorloop
+      - random
+      brightness: 255
+      hs_color:
+      - 298.947
+      - 67.059
+      rgb_color:
+      - 251
+      - 83
+      - 255
+      xy_color:
+      - 0.373
+      - 0.173
+      effect: none
+      friendly_name: Yumi Light
+      icon: mdi:ceiling-light
+      supported_features: 63
+      state: 'on'
