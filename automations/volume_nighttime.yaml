@@ -27,6 +27,6 @@
       volume_level: '0.50'
   - service: notify.telegram
     data:
-      message: iet time!
+      message: Quiet time!
       title: 🤫 Farnsworth
   mode: single
