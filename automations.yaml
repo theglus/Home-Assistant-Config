@@ -150,9 +150,14 @@
   trigger:
   - type: moist
     platform: device
-    device_id: 59fde1c1008c11eb9ebc61195a9c7004
-    entity_id: binary_sensor.water_3
+    device_id: 6bd7ff509b62f7b1c7fbd08263ceb018
+    entity_id: binary_sensor.water
     domain: binary_sensor
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 0
+      milliseconds: 0
   condition: []
   action:
   - service: notify.telegram
