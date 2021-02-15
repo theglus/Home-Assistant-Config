@@ -1,12 +1,34 @@
+
+#################################################################
+## Global
+#################################################################
 # Downstairs Light Group
 - platform: group
   name: Downstairs
   entities: 
-    - group.overhead
-    - group.track
+#    - group.overhead
+#    - group.track
     - light.dino_panel
     - light.hallway_runner
     - light.potter_lamp
     - light.kitchen
     - light.yumi_lamp
   icon: 'mdi:home-floor-g'
+# Upstairs Light Group
+- platform: group
+  name: Upstairs
+  entities: 
+    - light.loft 
+    - light.hallway_marquee
+    - light.stair
+  icon: 'mdi:home-roof'
+#################################################################
+## Loft
+#################################################################
+# Bedside Light Group
+- platform: group
+  name: Bedside
+  entities:
+    - light.jeffreys_lamp
+    - light.tiffanys_lamp
+  icon: 'mdi:desk-lamp'
