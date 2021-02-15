@@ -13,7 +13,6 @@
     - light.potter_lamp
     - light.kitchen
     - light.yumi_lamp
-  icon: 'mdi:home-floor-g'
 # Upstairs Light Group
 - platform: group
   name: Upstairs
@@ -21,7 +20,6 @@
     - light.loft 
     - light.hallway_marquee
     - light.stair
-  icon: 'mdi:home-roof'
 #################################################################
 ## Loft
 #################################################################
@@ -31,4 +29,3 @@
   entities:
     - light.jeffreys_lamp
     - light.tiffanys_lamp
-  icon: 'mdi:desk-lamp'
