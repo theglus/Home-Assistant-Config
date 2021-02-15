@@ -29,3 +29,22 @@
   entities:
     - light.jeffreys_lamp
     - light.tiffanys_lamp
+#################################################################
+## Office
+#################################################################
+# Office Light Group
+- platform: group
+  name: Overhead
+  entities:
+    - light.overhead_bed
+    - light.overhead_desk
+#################################################################
+## Living Room
+#################################################################
+# Track Lighting
+- platform: group
+  name: Track
+  entities:
+    - light.left_track
+    - light.center_track
+    - light.right_track
