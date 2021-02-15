@@ -1,5 +1,5 @@
 # Downstairs Light Group
--platform: group
+- platform: group
   name: Downstairs
   entities: 
     - group.overhead
