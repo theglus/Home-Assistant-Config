@@ -141,10 +141,10 @@ cards:
             ## Hallway Marquee  
             #----------------------------------------------------------------         
             - type: 'custom:button-card'
+              entity: light.hallway_marquee
               aspect_ratio: 1/1
               tap_action:
                 action: toggle
-              entity: light.hallway_marquee
               style: |
                 ha-card:hover {
                   transform: scale(1.05);

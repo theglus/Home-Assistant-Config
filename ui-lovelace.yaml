@@ -857,7 +857,6 @@ cards:
                       - color: 'rgb(255, 122, 0)'
               hold_action:
                 action: more-info
-
       - type: vertical-stack
         cards:
           - type: weather-forecast
