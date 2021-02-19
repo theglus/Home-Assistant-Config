@@ -7,9 +7,17 @@ cards:
         background: rgba(0,0,0,.3);
         box-shadow: none;
         }
+    #################################################################
+    #----------------------------------------------------------------
+    ## Toggle Nav
+    #----------------------------------------------------------------
+    #################################################################
     entities:
       - type: 'custom:paper-buttons-row'
         buttons:
+          #################################################################
+          ## Entryway Button
+          #################################################################          
           - entity: input_select.lighttoggle
             name: false
             icon: 'hass:coat-rack'
@@ -31,6 +39,9 @@ cards:
               service_data:
                 entity_id: input_select.lighttoggle
                 option: Entryway
+          #################################################################
+          ## Office Button
+          #################################################################                     
           - entity: input_select.lighttoggle
             name: false
             icon: 'hass:desk'
@@ -52,6 +63,9 @@ cards:
               service_data:
                 entity_id: input_select.lighttoggle
                 option: Office
+          #################################################################
+          ## Living Room Button
+          #################################################################                     
           - entity: input_select.lighttoggle
             name: false
             icon: 'hass:sofa'
@@ -73,6 +87,9 @@ cards:
               service_data:
                 entity_id: input_select.lighttoggle
                 option: Living Room
+          #################################################################
+          ## Kitchen Button
+          #################################################################
           - entity: input_select.lighttoggle
             name: false
             icon: 'hass:fridge'
@@ -94,11 +111,19 @@ cards:
               service_data:
                 entity_id: input_select.lighttoggle
                 option: Kitchen
+  #################################################################
+  #----------------------------------------------------------------
+  ## Expanded
+  #----------------------------------------------------------------
+  #################################################################                
   - type: 'custom:state-switch'
     entity: input_select.lighttoggle
     default: Entryway
     transition: flip
     states:
+      #################################################################
+      ## Entrway Controls
+      #################################################################
       Entryway:
         type: 'custom:mod-card'
         style: |
@@ -112,6 +137,9 @@ cards:
           type: grid
           columns: 3
           cards:
+            #----------------------------------------------------------------
+            ## Hallway Marquee  
+            #----------------------------------------------------------------         
             - type: 'custom:button-card'
               aspect_ratio: 1/1
               tap_action:
@@ -144,6 +172,9 @@ cards:
                       - color: var(--button-card-light-color)
               hold_action:
                 action: more-info
+            #----------------------------------------------------------------
+            ## Hallway Runner  
+            #----------------------------------------------------------------
             - type: 'custom:button-card'
               aspect_ratio: 1/1
               entity: light.hallway_runner
@@ -178,6 +209,9 @@ cards:
                 action: toggle
               hold_action:
                 action: more-info
+            #----------------------------------------------------------------
+            ## Potter Lamp  
+            #----------------------------------------------------------------
             - type: 'custom:button-card'
               aspect_ratio: 1/1
               entity: light.potter_lamp
@@ -213,6 +247,9 @@ cards:
                 action: toggle
               hold_action:
                 action: more-info
+            #----------------------------------------------------------------
+            ## Front Door Sensor  
+            #----------------------------------------------------------------               
             - type: 'custom:button-card'
               entity: binary_sensor.front_door
               aspect_ratio: 1/1
@@ -242,6 +279,9 @@ cards:
                       - background: 'rgba(255,255,255,.8)'
                       - border: 1px solid white
                       - box-shadow: '0 0 10px, inset 0 0 5px'
+      #################################################################
+      ## Office Controls
+      #################################################################
       Office:
         type: 'custom:mod-card'
         style: |
@@ -256,6 +296,9 @@ cards:
           type: grid
           columns: 3
           cards:
+            #----------------------------------------------------------------
+            ## Office Overhead Lights  
+            #----------------------------------------------------------------
             - type: 'custom:button-card'
               aspect_ratio: 1/1
               tap_action:
@@ -289,6 +332,9 @@ cards:
                       - color: var(--button-card-light-color)
               hold_action:
                 action: more-info
+            #----------------------------------------------------------------
+            ## Office Desk Light  
+            #----------------------------------------------------------------
             - type: 'custom:button-card'
               aspect_ratio: 1/1
               entity: light.overhead_desk
@@ -322,6 +368,9 @@ cards:
                 action: toggle
               hold_action:
                 action: more-info
+            #----------------------------------------------------------------
+            ## Office Bed Light  
+            #----------------------------------------------------------------
             - type: 'custom:button-card'
               aspect_ratio: 1/1
               entity: light.overhead_bed
@@ -357,6 +406,9 @@ cards:
                 action: toggle
               hold_action:
                 action: more-info
+            #----------------------------------------------------------------
+            ## Printer
+            #----------------------------------------------------------------
             - type: 'custom:button-card'
               aspect_ratio: 1/1
               tap_action:
@@ -390,6 +442,9 @@ cards:
                       - color: var(--button-card-light-color)
               hold_action:
                 action: more-info
+      #################################################################
+      ## Living Room Controls
+      #################################################################
       Living Room:
         type: 'custom:mod-card'
         style: |
@@ -404,6 +459,9 @@ cards:
           type: grid
           columns: 3
           cards:
+            #----------------------------------------------------------------
+            ## Track Light
+            #----------------------------------------------------------------            
             - type: 'custom:button-card'
               aspect_ratio: 1/1
               tap_action:
@@ -437,6 +495,9 @@ cards:
                       - color: var(--button-card-light-color)
               hold_action:
                 action: more-info
+            #----------------------------------------------------------------
+            ## Garden Light
+            #----------------------------------------------------------------                
             - type: 'custom:button-card'
               aspect_ratio: 1/1
               tap_action:
@@ -470,6 +531,9 @@ cards:
                       - color: var(--button-card-light-color)
               hold_action:
                 action: more-info
+            #----------------------------------------------------------------
+            ## Yumi Lamp
+            #----------------------------------------------------------------                
             - type: 'custom:button-card'
               aspect_ratio: 1/1
               tap_action:
@@ -503,6 +567,9 @@ cards:
                       - color: var(--button-card-light-color)
               hold_action:
                 action: more-info
+            #----------------------------------------------------------------
+            ## Left Track
+            #----------------------------------------------------------------                
             - type: 'custom:button-card'
               aspect_ratio: 1/1
               tap_action:
@@ -536,6 +603,9 @@ cards:
                       - color: var(--button-card-light-color)
               hold_action:
                 action: more-info
+            #----------------------------------------------------------------
+            ## Center Track
+            #----------------------------------------------------------------                
             - type: 'custom:button-card'
               aspect_ratio: 1/1
               tap_action:
@@ -569,6 +639,9 @@ cards:
                       - color: var(--button-card-light-color)
               hold_action:
                 action: more-info
+            #----------------------------------------------------------------
+            ## Right Track
+            #----------------------------------------------------------------    
             - type: 'custom:button-card'
               aspect_ratio: 1/1
               tap_action:
@@ -602,6 +675,9 @@ cards:
                       - color: var(--button-card-light-color)
               hold_action:
                 action: more-info
+            #----------------------------------------------------------------
+            ## Heater
+            #----------------------------------------------------------------                    
             - type: 'custom:button-card'
               entity: switch.switchbot
               icon: 'hass:fan'
@@ -634,6 +710,9 @@ cards:
                       - box-shadow: '0 0 10px, inset 0 0 5px'
               tap_action:
                 action: toggle
+            #----------------------------------------------------------------
+            ## Shield
+            #----------------------------------------------------------------                    
             - type: 'custom:button-card'
               icon: 'hass:television-classic'
               name: TV
@@ -670,6 +749,9 @@ cards:
                     name:
                       - color: 'rgba(0,0,0,.6)'
                       - font-weight: bold
+      #################################################################
+      ## Kitchen Controls
+      #################################################################
       Kitchen:
         type: 'custom:mod-card'
         style: |
@@ -684,6 +766,9 @@ cards:
           type: grid
           columns: 3
           cards:
+            #----------------------------------------------------------------
+            ## Kitchen Track
+            #----------------------------------------------------------------                
             - type: 'custom:button-card'
               aspect_ratio: 1/1
               tap_action:
@@ -717,6 +802,9 @@ cards:
                       - color: var(--button-card-light-color)
               hold_action:
                 action: more-info
+            #----------------------------------------------------------------
+            ## Nanoleaf Dino Panesl
+            #----------------------------------------------------------------                    
             - type: 'custom:button-card'
               icon: 'mdi:google-downasaur'
               entity: light.dino_panel
@@ -749,6 +837,9 @@ cards:
                     name:
                       - color: 'rgba(0,0,0,.6)'
                       - font-weight: bold
+            #----------------------------------------------------------------
+            ## Kettle
+            #----------------------------------------------------------------                          
             - type: 'custom:button-card'
               aspect_ratio: 1/1
               tap_action:
