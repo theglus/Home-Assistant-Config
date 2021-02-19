@@ -155,36 +155,7 @@ cards:
             #----------------------------------------------------------------         
             - type: 'custom:button-card'
               entity: light.hallway_marquee
-              aspect_ratio: 1/1
-              tap_action:
-                action: toggle
-              style: |
-                ha-card:hover {
-                  transform: scale(1.05);
-                  box-shadow: 0 0 10px;
-                  }
-              styles:
-                name:
-                  - padding: 8px 1em
-                  - font-family: Roboto
-                  - font-size: 20px
-                card:
-                  - border-radius: 30px
-                  - background: 'rgba(255,255,255,.1)'
-              state:
-                - value: 'on'
-                  styles:
-                    card:
-                      - background: 'rgba(255,255,255,.8)'
-                      - border: 1px solid white
-                      - box-shadow: '0 0 10px, inset 0 0 5px'
-                    name:
-                      - font-weight: bold
-                      - color: 'rgba(0,0,0,.6)'
-                    icon:
-                      - color: var(--button-card-light-color)
-              hold_action:
-                action: more-info
+              template: test
             #----------------------------------------------------------------
             ## Hallway Runner  
             #----------------------------------------------------------------

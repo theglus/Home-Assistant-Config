@@ -1,0 +1,679 @@
+#################################################################
+#----------------------------------------------------------------
+## Lovelace - Default Dashboard
+#----------------------------------------------------------------
+#################################################################
+title: Loft
+views:
+#################################################################
+## Main View
+#################################################################
+  - path: default_view
+    title: Home
+    panel: false
+    icon: 'mdi:home'
+    badges:
+      - entity: person.jeffrey_glusman
+      - entity: sensor.kirby_temperature
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: weather-forecast
+            entity: weather.loft
+          - type: sensor
+            entity: sensor.kirby_temperature
+            graph: line
+      - type: vertical-stack
+        cards:
+          - type: glance
+            entities:
+              - entity: light.hallway
+                tap_action:
+                  action: toggle
+                hold_action:
+                  action: more-info
+                name: Entryway
+                icon: 'mdi:exit-run'
+              - entity: light.living_room
+                tap_action:
+                  action: toggle
+                hold_action:
+                  action: more-info
+                name: Living
+                icon: 'mdi:sofa'
+              - entity: light.office
+                tap_action:
+                  action: toggle
+                hold_action:
+                  action: more-info
+                name: Office
+                icon: 'mdi:desk'
+              - entity: light.loft
+                tap_action:
+                  action: toggle
+                hold_action:
+                  action: more-info
+                name: Loft
+                icon: 'mdi:bed-outline'
+            state_color: true
+            title: Home
+            show_state: true
+          - type: glance
+            entities:
+              - entity: light.upstairs_hallway_marquee
+                tap_action:
+                  action: toggle
+                name: Marquee
+              - entity: light.upstairs_hallway_stair_light
+                tap_action:
+                  action: toggle
+                hold_action:
+                  action: more-info
+                name: Ceiling
+              - entity: binary_sensor.frontdoor
+                tap_action:
+                  action: none
+                name: Front Door
+              - entity: light.downstairs_hallway_runner_light
+                tap_action:
+                  action: toggle
+                hold_action:
+                  action: more-info
+                name: Stair
+              - entity: light.downstairs_hallway_potter_lamp
+                tap_action:
+                  action: toggle
+                hold_action:
+                  action: more-info
+                name: Console
+            show_color: true
+            title: Entryway
+      - type: vertical-stack
+        cards:
+          - type: glance
+            entities:
+              - entity: group.office
+                tap_action:
+                  action: toggle
+                hold_action:
+                  action: more-info
+                name: Ceiling
+              - entity: light.downstairs_office_overhead_light
+                tap_action:
+                  action: toggle
+                hold_action:
+                  action: more-info
+                name: Desk
+                icon: 'mdi:desk'
+              - entity: light.downstairs_office_overhead_light_2
+                tap_action:
+                  action: toggle
+                hold_action:
+                  action: more-info
+                name: Bed
+                icon: 'mdi:bed-outline'
+              - entity: switch.major_laser_printer
+                tap_action:
+                  action: toggle
+                hold_action:
+                  action: more-info
+                name: Major Laser
+                icon: 'mdi:printer'
+            show_color: true
+            title: Office
+            show_state: true
+          - type: glance
+            entities:
+              - entity: light.downstairs_living_room_yumi_lamp
+                tap_action:
+                  action: toggle
+                hold_action:
+                  action: more-info
+                name: Yumi Lamp
+              - entity: switch.kettle
+                tap_action:
+                  action: toggle
+                hold_action:
+                  action: more-info
+            show_color: true
+            title: Living Room
+            show_state: true
+          - type: glance
+            entities:
+              - entity: group.bedside
+                tap_action:
+                  action: toggle
+                hold_action:
+                  action: more-info
+                name: Bedside
+              - entity: light.upstairs_loft_bed_light
+                tap_action:
+                  action: toggle
+                hold_action:
+                  action: more-info
+                name: Ceiling
+              - entity: light.upstairs_loft_desk_light
+                tap_action:
+                  action: toggle
+                hold_action:
+                  action: more-info
+                name: Floor
+            state_color: true
+            title: Loft
+            show_state: true
+#################################################################
+## Vacuum View
+#################################################################  
+  - title: Winston
+    path: winston
+    icon: 'mdi:robot-vacuum-variant'
+    panel: false
+    badges: []
+    cards:
+      - type: 'custom:vertical-stack-in-card'
+        cards:
+          - type: 'custom:vacuum-card'
+            entity: vacuum.winston
+            stats:
+              default:
+                - attribute: filter_left
+                  unit: hours
+                  subtitle: Filter
+                - attribute: side_brush_left
+                  unit: hours
+                  subtitle: Side bish
+                - attribute: main_brush_left
+                  unit: hours
+                  subtitle: Main bish
+                - attribute: sensor_dirty_left
+                  unit: hours
+                  subtitle: Sensors
+              cleaning:
+                - attribute: cleaned_area
+                  unit: m2
+                  subtitle: Cleaning area
+                - attribute: cleaning_time
+                  unit: minutes
+                  subtitle: Cleaning time
+            actions:
+              - name: Clean hallway
+                service: script.clean_hallway
+                icon: 'mdi:door'
+              - name: Clean guest bathroom
+                service: script.clean_bathroom
+                icon: 'mdi:shower'
+              - name: Clean office
+                service: script.clean_office
+                icon: 'mdi:desk'
+              - name: Clean living room
+                service: script.clean_living_room
+                icon: 'mdi:sofa'
+              - name: Clean kitchen
+                service: script.clean_kitchen
+                icon: 'mdi:silverware-fork-knife'
+          - type: 'custom:xiaomi-vacuum-map-card'
+            entity: vacuum.winston
+            map_camera: camera.xiaomi_cloud_map_extractor
+            camera_calibration: enable
+            zones:
+              - - - 26710
+                  - 22064
+                  - 32110
+                  - 23314
+                  - 1
+                - - 27265
+                  - 20396
+                  - 32115
+                  - 22096
+                  - 1
+              - - - 26644
+                  - 23295
+                  - 32094
+                  - 26045
+                  - 1
+              - - - 23464
+                  - 20509
+                  - 26664
+                  - 24009
+                  - 1
+                - - 26606
+                  - 20742
+                  - 27206
+                  - 21942
+                  - 1
+              - - - 20984
+                  - 23974
+                  - 26934
+                  - 26024
+                  - 1
+              - - - 21143
+                  - 21284
+                  - 23293
+                  - 23984
+                  - 1
+            rooms:
+              - all
+#################################################################
+## Home Theater View
+#################################################################  
+  - type: 'custom:vertical-stack-in-card'
+    cards:
+      - type: picture-elements
+        image: /local/img/LHarmonyBG.jpg
+        elements:
+          - type: image
+            image: /local/icons/media_icons/power.svg
+            entity: script.toggle_power
+            tap_action:
+              action: toggle
+            show_state: null
+            style:
+              top: 10em
+              left: 10%
+              width: 54px
+              height: 54px
+              background-color: 'rgb(255, 255, 255, 0.0)'
+              filter: invert(0.20)
+              border-radius: 4px
+              z-index: 2
+          - type: image
+            image: /local/icons/media_icons/netflix.svg
+            entity: script.launch_netflix
+            tap_action:
+              action: toggle
+            style:
+              top: 10em
+              left: 25%
+              width: 54px
+              height: 54px
+              background-color: 'rgb(255, 255, 255, 0.0)'
+              filter: invert(0.20)
+              border-radius: 4px
+              z-index: 2
+          - type: image
+            image: /local/icons/media_icons/hulu.svg
+            entity: script.launch_netflix
+            tap_action:
+              action: toggle
+            style:
+              top: 10em
+              left: 40%
+              width: 54px
+              height: 54px
+              background-color: 'rgb(255, 255, 255, 0.0)'
+              filter: invert(0.20)
+              border-radius: 4px
+              z-index: 2
+          - type: image
+            image: /local/icons/media_icons/remote.svg
+            entity: script.remote_finder
+            _action:
+              action: toggle
+            style:
+              top: 10em
+              left: 55%
+              width: 54px
+              height: 54px
+              background-color: 'rgb(255, 255, 255, 0.0)'
+              filter: invert(0.20)
+              border-radius: 4px
+              z-index: 2
+          - type: image
+            image: /local/icons/media_icons/chevron-up.svg
+            entity: script.nav_up
+            tap_action:
+              action: toggle
+            style:
+              top: 4em
+              left: 80%
+              width: 54px
+              height: 54px
+              background-color: 'rgb(255, 255, 255, 0.0)'
+              filter: invert(0.20)
+              border-radius: 4px
+              z-index: 2
+          - type: image
+            image: /local/icons/media_icons/circle-empty.svg
+            entity: script.nav_enter
+            tap_action:
+              action: toggle
+            style:
+              top: 8em
+              left: 80%
+              width: 70px
+              height: 70px
+              background-color: 'rgb(255, 255, 255, 0.0)'
+              filter: invert(0.20)
+              border-radius: 4px
+              z-index: 2
+          - type: image
+            image: /local/icons/media_icons/chevron-down.svg
+            entity: script.nav_down
+            tap_action:
+              action: toggle
+            style:
+              top: 12em
+              left: 80%
+              width: 54px
+              height: 54px
+              background-color: 'rgb(255, 255, 255, 0.0)'
+              filter: invert(0.20)
+              border-radius: 4px
+              z-index: 2
+          - type: image
+            image: /local/icons/media_icons/chevron-left.svg
+            entity: script.nav_left
+            tap_action:
+              action: toggle
+            style:
+              top: 8em
+              left: 68%
+              width: 54px
+              height: 54px
+              background-color: 'rgb(255, 255, 255, 0.0)'
+              filter: invert(0.20)
+              border-radius: 4px
+              z-index: 2
+          - type: image
+            image: /local/icons/media_icons/chevron-right.svg
+            entity: script.nav_right
+            tap_action:
+              action: toggle
+            style:
+              top: 8em
+              left: 92%
+              width: 54px
+              height: 54px
+              background-color: 'rgb(255, 255, 255, 0.0)'
+              filter: invert(0.20)
+              border-radius: 4px
+              z-index: 2
+          - type: image
+            image: /local/icons/media_icons/home.svg
+            entity: script.nav_home
+            tap_action:
+              action: toggle
+            style:
+              top: 16em
+              left: 88%
+              width: 35px
+              height: 35px
+              background-color: 'rgb(255, 255, 255, 0.0)'
+              filter: invert(0.20)
+              border-radius: 4px
+              z-index: 2
+          - type: image
+            image: /local/icons/media_icons/back.svg
+            entity: script.nav_back
+            tap_action:
+              action: toggle
+            style:
+              top: 16em
+              left: 72%
+              width: 35px
+              height: 35px
+              background-color: 'rgb(255, 255, 255, 0.0)'
+              filter: invert(0.20)
+              border-radius: 4px
+              z-index: 2
+          - type: image
+            image: /local/icons/media_icons/horizontal_Rule.png
+            style:
+              top: 13em
+              left: 35%
+              width: 60%
+              height: 2px
+              filter: invert(0.20)
+              border-radius: 4px
+  - type: 'custom:vertical-stack-in-card'
+    cards:
+      - type: picture-elements
+        image: /local/img/denon_card.png
+        elements:
+          - type: image
+            image: /local/icons/media_icons/surround-sound.svg
+            entity: script.sound_mode_auto
+            tap_action:
+              action: toggle
+            style:
+              top: 10em
+              left: 11%
+              width: 54px
+              height: 54px
+              background-color: 'rgb(255, 255, 255, 0.0)'
+              filter: invert(0.20)
+              border-radius: 4px
+              z-index: 2
+          - type: image
+            image: /local/icons/media_icons/stereo.svg
+            entity: script.sound_mode_stereo
+            tap_action:
+              action: toggle
+            style:
+              top: 10em
+              left: 25%
+              width: 54px
+              height: 54px
+              background-color: 'rgb(255, 255, 255, 0.0)'
+              filter: invert(0.20)
+              border-radius: 4px
+              z-index: 2
+          - type: image
+            image: /local/icons/media_icons/eco.svg
+            entity: switch.eco
+            tap_action:
+              action: toggle
+            style:
+              top: 10em
+              left: 40%
+              width: 54px
+              height: 54px
+              background-color: 'rgb(255, 255, 255, 0.0)'
+              filter: invert(0.20)
+              border-radius: 4px
+              z-index: 2
+          - type: image
+            image: /local/icons/media_icons/menu.svg
+            entity: switch.denon_menu
+            tap_action:
+              action: toggle
+            style:
+              top: 10em
+              left: 55%
+              width: 54px
+              height: 54px
+              background-color: 'rgb(255, 255, 255, 0.0)'
+              filter: invert(0.20)
+              border-radius: 4px
+              z-index: 2
+          - type: image
+            image: local/icons/media_icons/vol_-.png
+            style:
+              top: 12em
+              left: 85%
+              width: 54px
+              height: 54px
+              background-color: 'rgb(255, 255, 255, 0.0)'
+              filter: invert(0.20)
+              border-radius: 4px
+              z-index: 2
+          - type: image
+            image: local/icons/media_icons/vol_%2B.png
+            tap_action: call-service
+            service: script.volume_up
+            style:
+              top: 8em
+              left: 85%
+              width: 54px
+              height: 54px
+              background-color: 'rgb(255, 255, 255, 0.0)'
+              filter: invert(0.20)
+              border-radius: 4px
+              z-index: 2
+          - type: image
+            image: /local/icons/media_icons/volBorder.png
+            style:
+              top: 11em
+              left: 85%
+              width: 69px
+              height: 155px
+              filter: invert(0.20)
+              border-radius: 4px
+              z-index: 1
+          - type: image
+            image: /local/icons/media_icons/horizontal_Rule.png
+            style:
+              top: 13em
+              left: 35%
+              width: 60%
+              height: 2px
+              filter: invert(0.20)
+      - type: entities
+        entities:
+          - input_number.denon_volume
+#################################################################
+## Climate Control View
+#################################################################                  
+  - title: Climate Control
+    path: climate-control
+    icon: 'mdi:home-thermometer-outline'
+    badges:
+      - entity: sensor.kirby_temperature
+      - entity: sensor.kirby_humidity
+    cards: []
+#################################################################
+## System Monitor View
+################################################################# 
+  - title: ha
+    path: ha
+    icon: 'mdi:home-assistant'
+    badges: []
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: glance
+            entities:
+              - entity: sensor.time_online
+                name: Uptime
+              - entity: binary_sensor.updater
+            title: Home Assistant
+          - type: horizontal-stack
+            cards:
+              - type: 'custom:mini-graph-card'
+                entities:
+                  - sensor.processor_use_percent
+                show: null
+                color_thresholds:
+                  - value: 25
+                    color: '#6aa84f'
+                  - value: 50
+                    color: '#f1c232'
+                  - value: 75
+                    color: '#e69138'
+                  - value: 100
+                    color: '#cc0000'
+                line_width: 8
+                font_size: 75
+              - type: 'custom:mini-graph-card'
+                entities:
+                  - sensor.memory_use_percent
+                show: null
+                color_thresholds:
+                  - value: 25
+                    color: '#6aa84f'
+                  - value: 50
+                    color: '#f1c232'
+                  - value: 75
+                    color: '#e69138'
+                  - value: 100
+                    color: '#cc0000'
+                line_width: 8
+                font_size: 75
+              - type: 'custom:mini-graph-card'
+                entities:
+                  - sensor.processor_temperature
+                show: null
+                color_thresholds:
+                  - value: 122
+                    color: '#6aa84f'
+                  - value: 140
+                    color: '#f1c232'
+                  - value: 176
+                    color: '#e69138'
+                  - value: 200
+                    color: '#cc0000'
+                line_width: 8
+                font_size: 75
+          - type: glance
+            entities:
+              - entity: zone.home
+                icon: 'mdi:home-assistant'
+                name: Hassio
+                tap_action:
+                  action: call-service
+                  service: homeassistant.restart
+              - entity: zone.home
+                icon: 'mdi:cogs'
+                name: Automation
+                tap_action:
+                  action: call-service
+                  service: Automation.reload
+              - entity: zone.home
+                icon: 'mdi:script-text'
+                name: Script
+                tap_action:
+                  action: call-service
+                  service: homeassistant.restart
+              - entity: zone.home
+                icon: 'mdi:group'
+                name: Groups
+                tap_action:
+                  action: call-service
+                  service: group.reload
+            title: Restart Services
+            show_state: false
+      - type: vertical-stack
+        cards:
+          - type: glance
+            entities:
+              - entity: sensor.google_wifi_uptime
+                name: Uptime
+              - entity: zone.home
+                icon: 'mdi:speedometer'
+                name: Speed Test
+                tap_action:
+                  action: call-service
+                  service: speedtestdotnet.speedtest
+            title: Network
+          - type: horizontal-stack
+            cards:
+              - type: 'custom:mini-graph-card'
+                entities:
+                  - sensor.speedtest_download
+                decimals: 0
+                color_thresholds:
+                  - value: 500
+                    color: '#6aa84f'
+                  - value: 250
+                    color: '#93c47d'
+                  - value: 150
+                    color: '#b6d7a8'
+                  - value: 75
+                    color: '#f1c232 - value: 99 color: '
+                  - value: 50
+                    color: '#cc0000'
+              - type: 'custom:mini-graph-card'
+                entities:
+                  - sensor.speedtest_upload
+                decimals: 0
+                color_thresholds:
+                  - value: 500
+                    color: '#6aa84f'
+                  - value: 250
+                    color: '#93c47d'
+                  - value: 150
+                    color: '#b6d7a8'
+                  - value: 75
+                    color: '#f1c232 - value: 99 color: '
+                  - value: 50
+                    color: '#cc0000'
