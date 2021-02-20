@@ -125,6 +125,7 @@
                       - 244
                       - 38
                       - 255
+                template: color_action
               - type: custom:button-card
                 styles:
                   card: 
@@ -138,6 +139,7 @@
                       - 70
                       - 255
                       - 236
+                template: color_action
               - type: custom:button-card
                 styles:
                   card:
