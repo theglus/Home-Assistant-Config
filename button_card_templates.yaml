@@ -50,7 +50,7 @@
         [top: 74%, left: 11%, line-height: 2vw, position: absolute]
       card:
         [font-family: Sf Display, letter-spacing: 0.05vw, font-weight: 400, color: 'rgba(255, 255, 255, 0.3)', font-size: 1.34vw, 
-        background-color: 'rgba(115, 115, 115, 0.2)', border-radius: 2.083vw, box-shadow: none, transition: none]
+        background-color: 'rgba(115, 115, 115, 0.2)', border-radius: 0.8vw, box-shadow: none, transition: none]
       custom_fields:
         circle:
           [top: 8.5%, left: 56.2%, width: 3.5vw, position: absolute, letter-spacing: 0.03vw]
