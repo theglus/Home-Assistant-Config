@@ -140,7 +140,6 @@
                       - 255
                       - 236
                 template: color_action
-    template: ['icon_format']
 
   color_action:
     styles:
