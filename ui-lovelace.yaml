@@ -11,856 +11,856 @@ views:
       - entity: person.tiffany_conaway
       - entity: sensor.temperature_living_room
     cards:
-    type: vertical-stack
-    cards:
-      - type: entities
-        style: |
-          ha-card {
-            border-radius: 30px;
-            background: rgba(0,0,0,.3);
-            box-shadow: none;
-            }
-        #################################################################
-        #----------------------------------------------------------------
-        ## Toggle Nav
-        #----------------------------------------------------------------
-        #################################################################
-        entities:
-          - type: 'custom:paper-buttons-row'
-            buttons:
-              #################################################################
-              ## Entryway Button
-              #################################################################          
-              - entity: input_select.lighttoggle
-                name: false
-                icon: 'hass:coat-rack'
-                state_styles:
-                  Entrway:
-                    button:
-                      background: 'rgba(255,255,255,.5)'
-                      box-shadow: '0 0 15px rgba(255,255,255,.6)'
-                style:
-                  button:
-                    - background: 'rgba(255,255,255,.1)'
-                    - border-radius: 25px
-                    - padding: 20px
-                  icon:
-                    - '--mdc-icon-size': 40px
-                tap_action:
-                  action: call-service
-                  service: input_select.select_option
-                  service_data:
-                    entity_id: input_select.lighttoggle
-                    option: Entryway
-              #################################################################
-              ## Office Button
-              #################################################################                     
-              - entity: input_select.lighttoggle
-                name: false
-                icon: 'hass:desk'
-                state_styles:
-                  Office:
-                    button:
-                      background: 'rgba(255,255,255,.5)'
-                      box-shadow: '0 0 15px rgba(255,255,255,.6)'
-                style:
-                  button:
-                    - background: 'rgba(255,255,255,.1)'
-                    - border-radius: 25px
-                    - padding: 20px
-                  icon:
-                    - '--mdc-icon-size': 40px
-                tap_action:
-                  action: call-service
-                  service: input_select.select_option
-                  service_data:
-                    entity_id: input_select.lighttoggle
-                    option: Office
-              #################################################################
-              ## Living Room Button
-              #################################################################                     
-              - entity: input_select.lighttoggle
-                name: false
-                icon: 'hass:sofa'
-                state_styles:
-                  Living Room:
-                    button:
-                      background: 'rgba(255,255,255,.5)'
-                      box-shadow: '0 0 15px rgba(255,255,255,.6)'
-                style:
-                  button:
-                    - background: 'rgba(255,255,255,.1)'
-                    - border-radius: 25px
-                    - padding: 20px
-                  icon:
-                    - '--mdc-icon-size': 40px
-                tap_action:
-                  action: call-service
-                  service: input_select.select_option
-                  service_data:
-                    entity_id: input_select.lighttoggle
-                    option: Living Room
-              #################################################################
-              ## Kitchen Button
-              #################################################################
-              - entity: input_select.lighttoggle
-                name: false
-                icon: 'hass:fridge'
-                state_styles:
-                  Kitchen:
-                    button:
-                      background: 'rgba(255,255,255,.5)'
-                      box-shadow: '0 0 15px rgba(255,255,255,.6)'
-                style:
-                  button:
-                    - background: 'rgba(255,255,255,.1)'
-                    - border-radius: 25px
-                    - padding: 20px
-                  icon:
-                    - '--mdc-icon-size': 40px
-                tap_action:
-                  action: call-service
-                  service: input_select.select_option
-                  service_data:
-                    entity_id: input_select.lighttoggle
-                    option: Kitchen
-      #################################################################
-      #----------------------------------------------------------------
-      ## Expanded
-      #----------------------------------------------------------------
-      #################################################################                
-      - type: 'custom:state-switch'
-        entity: input_select.lighttoggle
-        default: Entryway
-        transition: flip
-        states:
-          #################################################################
-          ## Entrway Controls
-          #################################################################
-          Entryway:
-            type: 'custom:mod-card'
-            style: |
-              ha-card {
-                background: rgba(0,0,0,.3);
-                padding: 10px;
-                border-radius: 35px;
-                margin-top: none;
-                }
-            card:
-              type: grid
-              columns: 3
-              cards:
-                #----------------------------------------------------------------
-                ## Hallway Marquee  
-                #----------------------------------------------------------------         
-                - type: 'custom:button-card'
-                  entity: light.hallway_marquee
-                  template: test
-                #----------------------------------------------------------------
-                ## Hallway Runner  
-                #----------------------------------------------------------------
-                - type: 'custom:button-card'
-                  aspect_ratio: 1/1
-                  entity: light.hallway_runner
-                  name: Runner
-                  style: |
-                    ha-card:hover {
-                      transform: scale(1.05);
-                      box-shadow: 0 0 10px;
-                      }
-                  styles:
-                    name:
-                      - padding: 8px 1em
-                      - font-family: Roboto
-                      - font-size: 20px
-                    card:
-                      - border-radius: 30px
-                      - background: 'rgba(255,255,255,.1)'
-                  state:
-                    - value: 'on'
-                      styles:
-                        card:
-                          - background: 'rgba(255,255,255,.8)'
-                          - border: 1px solid white
-                          - box-shadow: '0 0 10px, inset 0 0 5px'
-                        name:
-                          - font-weight: bold
-                          - color: 'rgba(0,0,0,.6)'
-                        state: null
-                        icon:
-                          - color: var(--button-card-light-color)
-                  tap_action:
-                    action: toggle
-                  hold_action:
-                    action: more-info
-                #----------------------------------------------------------------
-                ## Potter Lamp  
-                #----------------------------------------------------------------
-                - type: 'custom:button-card'
-                  aspect_ratio: 1/1
-                  entity: light.potter_lamp
-                  name: Lamp
-                  style: |
-                    ha-card:hover {
-                      transform: scale(1.05);
-                      box-shadow: 0 0 10px;
-                      }
-                  styles:
-                    name:
-                      - padding: 8px 1em
-                      - font-family: Roboto
-                      - font-size: 20px
-                    card:
-                      - border-radius: 30px
-                      - background: 'rgba(255,255,255,.1)'
-                  state:
-                    - value: 'on'
-                      styles:
-                        card:
-                          - background: 'rgba(255,255,255,.8)'
-                          - border: 1px solid white
-                          - box-shadow: '0 0 10px, inset 0 0 5px'
-                        name:
-                          - font-weight: bold
-                          - color: 'rgba(0,0,0,.6)'
-                        state:
-                          - color: 'rgba(0, 0, 0, 0.6)'
-                        icon:
-                          - color: var(--button-card-light-color)
-                  tap_action:
-                    action: toggle
-                  hold_action:
-                    action: more-info
-                #----------------------------------------------------------------
-                ## Front Door Sensor  
-                #----------------------------------------------------------------               
-                - type: 'custom:button-card'
-                  entity: binary_sensor.front_door
-                  aspect_ratio: 1/1
-                  style: |
-                    ha-card:hover {
-                      transform: scale(1.05);
-                      box-shadow: 0 0 10px;
-                      }
-                  styles:
-                    name:
-                      - padding: 8px .75em
-                      - font-family: Roboto
-                      - font-size: 20px
-                    card:
-                      - border-radius: 30px
-                      - background: 'rgba(255,255,255,.1)'
-                  state:
-                    - value: 'on'
-                      spin: true
-                      styles:
-                        icon:
-                          - color: 'rgb(1, 182, 253)'
-                        name:
-                          - font-weight: bold
-                          - color: 'rgba(0,0,0,.6)'
-                        card:
-                          - background: 'rgba(255,255,255,.8)'
-                          - border: 1px solid white
-                          - box-shadow: '0 0 10px, inset 0 0 5px'
-          #################################################################
-          ## Office Controls
-          #################################################################
-          Office:
-            type: 'custom:mod-card'
-            style: |
-              ha-card {
-                background: rgba(0,0,0,.3);
-                padding: 10px;
-                border-radius: 35px;
-                margin-right: 10px;
-                margin-top: none;
-                }
-            card:
-              type: grid
-              columns: 3
-              cards:
-                #----------------------------------------------------------------
-                ## Office Overhead Lights  
-                #----------------------------------------------------------------
-                - type: 'custom:button-card'
-                  aspect_ratio: 1/1
-                  tap_action:
-                    action: toggle
-                  entity: light.overhead
-                  name: Ceiling
-                  style: |
-                    ha-card:hover {
-                      transform: scale(1.05);
-                      box-shadow: 0 0 10px;
-                      }
-                  styles:
-                    name:
-                      - padding: 8px 1em
-                      - font-family: Roboto
-                      - font-size: 20px
-                    card:
-                      - border-radius: 30px
-                      - background: 'rgba(255,255,255,.1)'
-                  state:
-                    - value: 'on'
-                      styles:
-                        card:
-                          - background: 'rgba(255,255,255,.8)'
-                          - border: 1px solid white
-                          - box-shadow: '0 0 10px, inset 0 0 5px'
-                        name:
-                          - font-weight: bold
-                          - color: 'rgba(0,0,0,.6)'
-                        icon:
-                          - color: var(--button-card-light-color)
-                  hold_action:
-                    action: more-info
-                #----------------------------------------------------------------
-                ## Office Desk Light  
-                #----------------------------------------------------------------
-                - type: 'custom:button-card'
-                  aspect_ratio: 1/1
-                  entity: light.overhead_desk
-                  name: Desk
-                  style: |
-                    ha-card:hover {
-                      transform: scale(1.05);
-                      box-shadow: 0 0 10px;
-                      }
-                  styles:
-                    name:
-                      - padding: 8px 1em
-                      - font-family: Roboto
-                      - font-size: 20px
-                    card:
-                      - border-radius: 30px
-                      - background: 'rgba(255,255,255,.1)'
-                  state:
-                    - value: 'on'
-                      styles:
-                        card:
-                          - background: 'rgba(255,255,255,.8)'
-                          - border: 1px solid white
-                          - box-shadow: '0 0 10px, inset 0 0 5px'
-                        name:
-                          - font-weight: bold
-                          - color: 'rgba(0,0,0,.6)'
-                        icon:
-                          - color: var(--button-card-light-color)
-                  tap_action:
-                    action: toggle
-                  hold_action:
-                    action: more-info
-                #----------------------------------------------------------------
-                ## Office Bed Light  
-                #----------------------------------------------------------------
-                - type: 'custom:button-card'
-                  aspect_ratio: 1/1
-                  entity: light.overhead_bed
-                  name: Bed
-                  style: |
-                    ha-card:hover {
-                      transform: scale(1.05);
-                      box-shadow: 0 0 10px;
-                      }
-                  styles:
-                    name:
-                      - padding: 8px 1em
-                      - font-family: Roboto
-                      - font-size: 20px
-                    card:
-                      - border-radius: 30px
-                      - background: 'rgba(255,255,255,.1)'
-                  state:
-                    - value: 'on'
-                      styles:
-                        card:
-                          - background: 'rgba(255,255,255,.8)'
-                          - border: 1px solid white
-                          - box-shadow: '0 0 10px, inset 0 0 5px'
-                        name:
-                          - font-weight: bold
-                          - color: 'rgba(0,0,0,.6)'
-                        state:
-                          - color: 'rgba(0, 0, 0, 0.6)'
-                        icon:
-                          - color: var(--button-card-light-color)
-                  tap_action:
-                    action: toggle
-                  hold_action:
-                    action: more-info
-                #----------------------------------------------------------------
-                ## Printer
-                #----------------------------------------------------------------
-                - type: 'custom:button-card'
-                  aspect_ratio: 1/1
-                  tap_action:
-                    action: toggle
-                  entity: switch.major_laser_printer
-                  name: Major Laser
-                  style: |
-                    ha-card:hover {
-                      transform: scale(1.05);
-                      box-shadow: 0 0 10px;
-                      }
-                  styles:
-                    name:
-                      - padding: 8px 1em
-                      - font-family: Roboto
-                      - font-size: 20px
-                    card:
-                      - border-radius: 30px
-                      - background: 'rgba(255,255,255,.1)'
-                  state:
-                    - value: 'on'
-                      styles:
-                        card:
-                          - background: 'rgba(255,255,255,.8)'
-                          - border: 1px solid white
-                          - box-shadow: '0 0 10px, inset 0 0 5px'
-                        name:
-                          - font-weight: bold
-                          - color: 'rgba(0,0,0,.6)'
-                        icon:
-                          - color: var(--button-card-light-color)
-                  hold_action:
-                    action: more-info
-          #################################################################
-          ## Living Room Controls
-          #################################################################
-          Living Room:
-            type: 'custom:mod-card'
-            style: |
-              ha-card {
-                background: rgba(0,0,0,.3);
-                padding: 10px;
-                border-radius: 35px;
-                margin-right: 10px;
-                margin-top: none;
-                }
-            card:
-              type: grid
-              columns: 3
-              cards:
-                #----------------------------------------------------------------
-                ## Track Light
-                #----------------------------------------------------------------            
-                - type: 'custom:button-card'
-                  aspect_ratio: 1/1
-                  tap_action:
-                    action: toggle
-                  entity: light.track
-                  name: Track
-                  style: |
-                    ha-card:hover {
-                      transform: scale(1.05);
-                      box-shadow: 0 0 10px;
-                      }
-                  styles:
-                    name:
-                      - padding: 8px 1em
-                      - font-family: Roboto
-                      - font-size: 20px
-                    card:
-                      - border-radius: 30px
-                      - background: 'rgba(255,255,255,.1)'
-                  state:
-                    - value: 'on'
-                      styles:
-                        card:
-                          - background: 'rgba(255,255,255,.8)'
-                          - border: 1px solid white
-                          - box-shadow: '0 0 10px, inset 0 0 5px'
-                        name:
-                          - font-weight: bold
-                          - color: 'rgba(0,0,0,.6)'
-                        icon:
-                          - color: var(--button-card-light-color)
-                  hold_action:
-                    action: more-info
-                #----------------------------------------------------------------
-                ## Garden Light
-                #----------------------------------------------------------------                
-                - type: 'custom:button-card'
-                  aspect_ratio: 1/1
-                  tap_action:
-                    action: toggle
-                  entity: light.garden
-                  name: Ceiling
-                  style: |
-                    ha-card:hover {
-                      transform: scale(1.05);
-                      box-shadow: 0 0 10px;
-                      }
-                  styles:
-                    name:
-                      - padding: 8px 1em
-                      - font-family: Roboto
-                      - font-size: 20px
-                    card:
-                      - border-radius: 30px
-                      - background: 'rgba(255,255,255,.1)'
-                  state:
-                    - value: 'on'
-                      styles:
-                        card:
-                          - background: 'rgba(255,255,255,.8)'
-                          - border: 1px solid white
-                          - box-shadow: '0 0 10px, inset 0 0 5px'
-                        name:
-                          - font-weight: bold
-                          - color: 'rgba(0,0,0,.6)'
-                        icon:
-                          - color: var(--button-card-light-color)
-                  hold_action:
-                    action: more-info
-                #----------------------------------------------------------------
-                ## Yumi Lamp
-                #----------------------------------------------------------------                
-                - type: 'custom:button-card'
-                  aspect_ratio: 1/1
-                  tap_action:
-                    action: toggle
-                  entity: light.yumi_lamp
-                  name: Lamp
-                  style: |
-                    ha-card:hover {
-                      transform: scale(1.05);
-                      box-shadow: 0 0 10px;
-                      }
-                  styles:
-                    name:
-                      - padding: 8px 1em
-                      - font-family: Roboto
-                      - font-size: 20px
-                    card:
-                      - border-radius: 30px
-                      - background: 'rgba(255,255,255,.1)'
-                  state:
-                    - value: 'on'
-                      styles:
-                        card:
-                          - background: 'rgba(255,255,255,.8)'
-                          - border: 1px solid white
-                          - box-shadow: '0 0 10px, inset 0 0 5px'
-                        name:
-                          - font-weight: bold
-                          - color: 'rgba(0,0,0,.6)'
-                        icon:
-                          - color: var(--button-card-light-color)
-                  hold_action:
-                    action: more-info
-                #----------------------------------------------------------------
-                ## Left Track
-                #----------------------------------------------------------------                
-                - type: 'custom:button-card'
-                  aspect_ratio: 1/1
-                  tap_action:
-                    action: toggle
-                  entity: light.left_track
-                  name: Left
-                  style: |
-                    ha-card:hover {
-                      transform: scale(1.05);
-                      box-shadow: 0 0 10px;
-                      }
-                  styles:
-                    name:
-                      - padding: 8px 1em
-                      - font-family: Roboto
-                      - font-size: 20px
-                    card:
-                      - border-radius: 30px
-                      - background: 'rgba(255,255,255,.1)'
-                  state:
-                    - value: 'on'
-                      styles:
-                        card:
-                          - background: 'rgba(255,255,255,.8)'
-                          - border: 1px solid white
-                          - box-shadow: '0 0 10px, inset 0 0 5px'
-                        name:
-                          - font-weight: bold
-                          - color: 'rgba(0,0,0,.6)'
-                        icon:
-                          - color: var(--button-card-light-color)
-                  hold_action:
-                    action: more-info
-                #----------------------------------------------------------------
-                ## Center Track
-                #----------------------------------------------------------------                
-                - type: 'custom:button-card'
-                  aspect_ratio: 1/1
-                  tap_action:
-                    action: toggle
-                  entity: light.center_track
-                  name: Center
-                  style: |
-                    ha-card:hover {
-                      transform: scale(1.05);
-                      box-shadow: 0 0 10px;
-                      }
-                  styles:
-                    name:
-                      - padding: 8px 1em
-                      - font-family: Roboto
-                      - font-size: 20px
-                    card:
-                      - border-radius: 30px
-                      - background: 'rgba(255,255,255,.1)'
-                  state:
-                    - value: 'on'
-                      styles:
-                        card:
-                          - background: 'rgba(255,255,255,.8)'
-                          - border: 1px solid white
-                          - box-shadow: '0 0 10px, inset 0 0 5px'
-                        name:
-                          - font-weight: bold
-                          - color: 'rgba(0,0,0,.6)'
-                        icon:
-                          - color: var(--button-card-light-color)
-                  hold_action:
-                    action: more-info
-                #----------------------------------------------------------------
-                ## Right Track
-                #----------------------------------------------------------------    
-                - type: 'custom:button-card'
-                  aspect_ratio: 1/1
-                  tap_action:
-                    action: toggle
-                  entity: light.right_track
-                  name: Right
-                  style: |
-                    ha-card:hover {
-                      transform: scale(1.05);
-                      box-shadow: 0 0 10px;
-                      }
-                  styles:
-                    name:
-                      - padding: 8px 1em
-                      - font-family: Roboto
-                      - font-size: 20px
-                    card:
-                      - border-radius: 30px
-                      - background: 'rgba(255,255,255,.1)'
-                  state:
-                    - value: 'on'
-                      styles:
-                        card:
-                          - background: 'rgba(255,255,255,.8)'
-                          - border: 1px solid white
-                          - box-shadow: '0 0 10px, inset 0 0 5px'
-                        name:
-                          - font-weight: bold
-                          - color: 'rgba(0,0,0,.6)'
-                        icon:
-                          - color: var(--button-card-light-color)
-                  hold_action:
-                    action: more-info
-                #----------------------------------------------------------------
-                ## Heater
-                #----------------------------------------------------------------                    
-                - type: 'custom:button-card'
-                  entity: switch.switchbot
-                  icon: 'hass:fan'
-                  aspect_ratio: 1/1
-                  style: |
-                    ha-card:hover {
-                      transform: scale(1.05);
-                      box-shadow: 0 0 10px;
-                      }
-                  styles:
-                    name:
-                      - padding: 8px .75em
-                      - font-family: Roboto
-                      - font-size: 20px
-                    card:
-                      - border-radius: 30px
-                      - background: 'rgba(255,255,255,.1)'
-                  state:
-                    - value: 'on'
-                      spin: true
-                      styles:
-                        icon:
-                          - color: 'rgb(255, 122, 0)'
-                        name:
-                          - font-weight: bold
-                          - color: 'rgba(0,0,0,.6)'
-                        card:
-                          - background: 'rgba(255,255,255,.8)'
-                          - border: 1px solid white
-                          - box-shadow: '0 0 10px, inset 0 0 5px'
-                  tap_action:
-                    action: toggle
-                #----------------------------------------------------------------
-                ## Shield
-                #----------------------------------------------------------------                    
-                - type: 'custom:button-card'
-                  icon: 'hass:television-classic'
-                  name: TV
-                  aspect_ratio: 1/1
-                  style: |
-                    ha-card:hover {
-                      transform: scale(1.05);
-                      box-shadow: 0 0 10px;
-                      }
-                  styles:
-                    state:
-                      - color: 'rgba(255,255,255,1)'
-                      - font-size: 20px
-                    card:
-                      - border-radius: 30px
-                      - font-family: DM Sans
-                      - background: 'rgba(255,255,255,.1'
-                  tap_action:
-                    action: toggle
-                  entity: media_player.shield_tv
-                  show_state: true
-                  state:
-                    - value: playing
-                      styles:
-                        card:
-                          - background: 'rgba(255,255,255,.8)'
-                          - border: 1px solid white
-                          - box-shadow: '0 0 10px, inset 0 0 5px'
-                        state:
-                          - animation: blink 2s ease infinite
-                          - color: 'rgb(100,100,255)'
-                        icon:
-                          - color: 'rgb(100,100,255)'
-                        name:
-                          - color: 'rgba(0,0,0,.6)'
-                          - font-weight: bold
-          #################################################################
-          ## Kitchen Controls
-          #################################################################
-          Kitchen:
-            type: 'custom:mod-card'
-            style: |
-              ha-card {
-                background: rgba(0,0,0,.3);
-                padding: 10px;
-                border-radius: 35px;
-                margin-right: 10px;
-                margin-top: none;
-                }
-            card:
-              type: grid
-              columns: 3
-              cards:
-                #----------------------------------------------------------------
-                ## Kitchen Track
-                #----------------------------------------------------------------                
-                - type: 'custom:button-card'
-                  aspect_ratio: 1/1
-                  tap_action:
-                    action: toggle
-                  entity: light.kitchen
-                  name: Track
-                  style: |
-                    ha-card:hover {
-                      transform: scale(1.05);
-                      box-shadow: 0 0 10px;
-                      }
-                  styles:
-                    name:
-                      - padding: 8px 1em
-                      - font-family: Roboto
-                      - font-size: 20px
-                    card:
-                      - border-radius: 30px
-                      - background: 'rgba(255,255,255,.1)'
-                  state:
-                    - value: 'on'
-                      styles:
-                        card:
-                          - background: 'rgba(255,255,255,.8)'
-                          - border: 1px solid white
-                          - box-shadow: '0 0 10px, inset 0 0 5px'
-                        name:
-                          - font-weight: bold
-                          - color: 'rgba(0,0,0,.6)'
-                        icon:
-                          - color: var(--button-card-light-color)
-                  hold_action:
-                    action: more-info
-                #----------------------------------------------------------------
-                ## Nanoleaf Dino Panesl
-                #----------------------------------------------------------------                    
-                - type: 'custom:button-card'
-                  icon: 'mdi:google-downasaur'
-                  entity: light.dino_panel
-                  name: Dino
-                  aspect_ratio: 1/1
-                  style: |
-                    ha-card:hover {
-                      transform: scale(1.05);
-                      box-shadow: 0 0 10px;
-                      }
-                  styles:
-                    card:
-                      - border-radius: 30px
-                      - background: 'rgba(255,255,255,.1)'
-                    name:
-                      - padding: 8px
-                      - font-family: Roboto
-                      - font-size: 20px
-                  tap_action:
-                    action: toggle
-                  state:
-                    - value: 'on'
-                      styles:
-                        card:
-                          - background: 'rgba(255,255,255,.8)'
-                          - border: 1px solid white
-                          - box-shadow: '0 0 10px, inset 0 0 5px'
-                        icon:
-                          - color: var(--button-card-light-color)
-                        name:
-                          - color: 'rgba(0,0,0,.6)'
-                          - font-weight: bold
-                #----------------------------------------------------------------
-                ## Kettle
-                #----------------------------------------------------------------                          
-                - type: 'custom:button-card'
-                  aspect_ratio: 1/1
-                  tap_action:
-                    action: toggle
-                  entity: switch.kettle
-                  name: Kettle
-                  style: |
-                    ha-card:hover {
-                      transform: scale(1.05);
-                      box-shadow: 0 0 10px;
-                      }
-                  styles:
-                    name:
-                      - padding: 8px 1em
-                      - font-family: Roboto
-                      - font-size: 20px
-                    card:
-                      - border-radius: 30px
-                      - background: 'rgba(255,255,255,.1)'
-                  state:
-                    - value: 'on'
-                      styles:
-                        card:
-                          - background: 'rgba(255,255,255,.8)'
-                          - border: 1px solid white
-                          - box-shadow: '0 0 10px, inset 0 0 5px'
-                        name:
-                          - font-weight: bold
-                          - color: 'rgba(0,0,0,.6)'
-                        icon:
-                          - color: 'rgb(255, 122, 0)'
-                  hold_action:
-                    action: more-info
       - type: vertical-stack
         cards:
-          - type: weather-forecast
-            entity: weather.loft
+          - type: entities
+            style: |
+              ha-card {
+                border-radius: 30px;
+                background: rgba(0,0,0,.3);
+                box-shadow: none;
+                }
+            #################################################################
+            #----------------------------------------------------------------
+            ## Toggle Nav
+            #----------------------------------------------------------------
+            #################################################################
+            entities:
+              - type: 'custom:paper-buttons-row'
+                buttons:
+                  #################################################################
+                  ## Entryway Button
+                  #################################################################          
+                  - entity: input_select.lighttoggle
+                    name: false
+                    icon: 'hass:coat-rack'
+                    state_styles:
+                      Entrway:
+                        button:
+                          background: 'rgba(255,255,255,.5)'
+                          box-shadow: '0 0 15px rgba(255,255,255,.6)'
+                    style:
+                      button:
+                        - background: 'rgba(255,255,255,.1)'
+                        - border-radius: 25px
+                        - padding: 20px
+                      icon:
+                        - '--mdc-icon-size': 40px
+                    tap_action:
+                      action: call-service
+                      service: input_select.select_option
+                      service_data:
+                        entity_id: input_select.lighttoggle
+                        option: Entryway
+                  #################################################################
+                  ## Office Button
+                  #################################################################                     
+                  - entity: input_select.lighttoggle
+                    name: false
+                    icon: 'hass:desk'
+                    state_styles:
+                      Office:
+                        button:
+                          background: 'rgba(255,255,255,.5)'
+                          box-shadow: '0 0 15px rgba(255,255,255,.6)'
+                    style:
+                      button:
+                        - background: 'rgba(255,255,255,.1)'
+                        - border-radius: 25px
+                        - padding: 20px
+                      icon:
+                        - '--mdc-icon-size': 40px
+                    tap_action:
+                      action: call-service
+                      service: input_select.select_option
+                      service_data:
+                        entity_id: input_select.lighttoggle
+                        option: Office
+                  #################################################################
+                  ## Living Room Button
+                  #################################################################                     
+                  - entity: input_select.lighttoggle
+                    name: false
+                    icon: 'hass:sofa'
+                    state_styles:
+                      Living Room:
+                        button:
+                          background: 'rgba(255,255,255,.5)'
+                          box-shadow: '0 0 15px rgba(255,255,255,.6)'
+                    style:
+                      button:
+                        - background: 'rgba(255,255,255,.1)'
+                        - border-radius: 25px
+                        - padding: 20px
+                      icon:
+                        - '--mdc-icon-size': 40px
+                    tap_action:
+                      action: call-service
+                      service: input_select.select_option
+                      service_data:
+                        entity_id: input_select.lighttoggle
+                        option: Living Room
+                  #################################################################
+                  ## Kitchen Button
+                  #################################################################
+                  - entity: input_select.lighttoggle
+                    name: false
+                    icon: 'hass:fridge'
+                    state_styles:
+                      Kitchen:
+                        button:
+                          background: 'rgba(255,255,255,.5)'
+                          box-shadow: '0 0 15px rgba(255,255,255,.6)'
+                    style:
+                      button:
+                        - background: 'rgba(255,255,255,.1)'
+                        - border-radius: 25px
+                        - padding: 20px
+                      icon:
+                        - '--mdc-icon-size': 40px
+                    tap_action:
+                      action: call-service
+                      service: input_select.select_option
+                      service_data:
+                        entity_id: input_select.lighttoggle
+                        option: Kitchen
+          #################################################################
+          #----------------------------------------------------------------
+          ## Expanded
+          #----------------------------------------------------------------
+          #################################################################                
+          - type: 'custom:state-switch'
+            entity: input_select.lighttoggle
+            default: Entryway
+            transition: flip
+            states:
+              #################################################################
+              ## Entrway Controls
+              #################################################################
+              Entryway:
+                type: 'custom:mod-card'
+                style: |
+                  ha-card {
+                    background: rgba(0,0,0,.3);
+                    padding: 10px;
+                    border-radius: 35px;
+                    margin-top: none;
+                    }
+                card:
+                  type: grid
+                  columns: 3
+                  cards:
+                    #----------------------------------------------------------------
+                    ## Hallway Marquee  
+                    #----------------------------------------------------------------         
+                    - type: 'custom:button-card'
+                      entity: light.hallway_marquee
+                      template: test
+                    #----------------------------------------------------------------
+                    ## Hallway Runner  
+                    #----------------------------------------------------------------
+                    - type: 'custom:button-card'
+                      aspect_ratio: 1/1
+                      entity: light.hallway_runner
+                      name: Runner
+                      style: |
+                        ha-card:hover {
+                          transform: scale(1.05);
+                          box-shadow: 0 0 10px;
+                          }
+                      styles:
+                        name:
+                          - padding: 8px 1em
+                          - font-family: Roboto
+                          - font-size: 20px
+                        card:
+                          - border-radius: 30px
+                          - background: 'rgba(255,255,255,.1)'
+                      state:
+                        - value: 'on'
+                          styles:
+                            card:
+                              - background: 'rgba(255,255,255,.8)'
+                              - border: 1px solid white
+                              - box-shadow: '0 0 10px, inset 0 0 5px'
+                            name:
+                              - font-weight: bold
+                              - color: 'rgba(0,0,0,.6)'
+                            state: null
+                            icon:
+                              - color: var(--button-card-light-color)
+                      tap_action:
+                        action: toggle
+                      hold_action:
+                        action: more-info
+                    #----------------------------------------------------------------
+                    ## Potter Lamp  
+                    #----------------------------------------------------------------
+                    - type: 'custom:button-card'
+                      aspect_ratio: 1/1
+                      entity: light.potter_lamp
+                      name: Lamp
+                      style: |
+                        ha-card:hover {
+                          transform: scale(1.05);
+                          box-shadow: 0 0 10px;
+                          }
+                      styles:
+                        name:
+                          - padding: 8px 1em
+                          - font-family: Roboto
+                          - font-size: 20px
+                        card:
+                          - border-radius: 30px
+                          - background: 'rgba(255,255,255,.1)'
+                      state:
+                        - value: 'on'
+                          styles:
+                            card:
+                              - background: 'rgba(255,255,255,.8)'
+                              - border: 1px solid white
+                              - box-shadow: '0 0 10px, inset 0 0 5px'
+                            name:
+                              - font-weight: bold
+                              - color: 'rgba(0,0,0,.6)'
+                            state:
+                              - color: 'rgba(0, 0, 0, 0.6)'
+                            icon:
+                              - color: var(--button-card-light-color)
+                      tap_action:
+                        action: toggle
+                      hold_action:
+                        action: more-info
+                    #----------------------------------------------------------------
+                    ## Front Door Sensor  
+                    #----------------------------------------------------------------               
+                    - type: 'custom:button-card'
+                      entity: binary_sensor.front_door
+                      aspect_ratio: 1/1
+                      style: |
+                        ha-card:hover {
+                          transform: scale(1.05);
+                          box-shadow: 0 0 10px;
+                          }
+                      styles:
+                        name:
+                          - padding: 8px .75em
+                          - font-family: Roboto
+                          - font-size: 20px
+                        card:
+                          - border-radius: 30px
+                          - background: 'rgba(255,255,255,.1)'
+                      state:
+                        - value: 'on'
+                          spin: true
+                          styles:
+                            icon:
+                              - color: 'rgb(1, 182, 253)'
+                            name:
+                              - font-weight: bold
+                              - color: 'rgba(0,0,0,.6)'
+                            card:
+                              - background: 'rgba(255,255,255,.8)'
+                              - border: 1px solid white
+                              - box-shadow: '0 0 10px, inset 0 0 5px'
+              #################################################################
+              ## Office Controls
+              #################################################################
+              Office:
+                type: 'custom:mod-card'
+                style: |
+                  ha-card {
+                    background: rgba(0,0,0,.3);
+                    padding: 10px;
+                    border-radius: 35px;
+                    margin-right: 10px;
+                    margin-top: none;
+                    }
+                card:
+                  type: grid
+                  columns: 3
+                  cards:
+                    #----------------------------------------------------------------
+                    ## Office Overhead Lights  
+                    #----------------------------------------------------------------
+                    - type: 'custom:button-card'
+                      aspect_ratio: 1/1
+                      tap_action:
+                        action: toggle
+                      entity: light.overhead
+                      name: Ceiling
+                      style: |
+                        ha-card:hover {
+                          transform: scale(1.05);
+                          box-shadow: 0 0 10px;
+                          }
+                      styles:
+                        name:
+                          - padding: 8px 1em
+                          - font-family: Roboto
+                          - font-size: 20px
+                        card:
+                          - border-radius: 30px
+                          - background: 'rgba(255,255,255,.1)'
+                      state:
+                        - value: 'on'
+                          styles:
+                            card:
+                              - background: 'rgba(255,255,255,.8)'
+                              - border: 1px solid white
+                              - box-shadow: '0 0 10px, inset 0 0 5px'
+                            name:
+                              - font-weight: bold
+                              - color: 'rgba(0,0,0,.6)'
+                            icon:
+                              - color: var(--button-card-light-color)
+                      hold_action:
+                        action: more-info
+                    #----------------------------------------------------------------
+                    ## Office Desk Light  
+                    #----------------------------------------------------------------
+                    - type: 'custom:button-card'
+                      aspect_ratio: 1/1
+                      entity: light.overhead_desk
+                      name: Desk
+                      style: |
+                        ha-card:hover {
+                          transform: scale(1.05);
+                          box-shadow: 0 0 10px;
+                          }
+                      styles:
+                        name:
+                          - padding: 8px 1em
+                          - font-family: Roboto
+                          - font-size: 20px
+                        card:
+                          - border-radius: 30px
+                          - background: 'rgba(255,255,255,.1)'
+                      state:
+                        - value: 'on'
+                          styles:
+                            card:
+                              - background: 'rgba(255,255,255,.8)'
+                              - border: 1px solid white
+                              - box-shadow: '0 0 10px, inset 0 0 5px'
+                            name:
+                              - font-weight: bold
+                              - color: 'rgba(0,0,0,.6)'
+                            icon:
+                              - color: var(--button-card-light-color)
+                      tap_action:
+                        action: toggle
+                      hold_action:
+                        action: more-info
+                    #----------------------------------------------------------------
+                    ## Office Bed Light  
+                    #----------------------------------------------------------------
+                    - type: 'custom:button-card'
+                      aspect_ratio: 1/1
+                      entity: light.overhead_bed
+                      name: Bed
+                      style: |
+                        ha-card:hover {
+                          transform: scale(1.05);
+                          box-shadow: 0 0 10px;
+                          }
+                      styles:
+                        name:
+                          - padding: 8px 1em
+                          - font-family: Roboto
+                          - font-size: 20px
+                        card:
+                          - border-radius: 30px
+                          - background: 'rgba(255,255,255,.1)'
+                      state:
+                        - value: 'on'
+                          styles:
+                            card:
+                              - background: 'rgba(255,255,255,.8)'
+                              - border: 1px solid white
+                              - box-shadow: '0 0 10px, inset 0 0 5px'
+                            name:
+                              - font-weight: bold
+                              - color: 'rgba(0,0,0,.6)'
+                            state:
+                              - color: 'rgba(0, 0, 0, 0.6)'
+                            icon:
+                              - color: var(--button-card-light-color)
+                      tap_action:
+                        action: toggle
+                      hold_action:
+                        action: more-info
+                    #----------------------------------------------------------------
+                    ## Printer
+                    #----------------------------------------------------------------
+                    - type: 'custom:button-card'
+                      aspect_ratio: 1/1
+                      tap_action:
+                        action: toggle
+                      entity: switch.major_laser_printer
+                      name: Major Laser
+                      style: |
+                        ha-card:hover {
+                          transform: scale(1.05);
+                          box-shadow: 0 0 10px;
+                          }
+                      styles:
+                        name:
+                          - padding: 8px 1em
+                          - font-family: Roboto
+                          - font-size: 20px
+                        card:
+                          - border-radius: 30px
+                          - background: 'rgba(255,255,255,.1)'
+                      state:
+                        - value: 'on'
+                          styles:
+                            card:
+                              - background: 'rgba(255,255,255,.8)'
+                              - border: 1px solid white
+                              - box-shadow: '0 0 10px, inset 0 0 5px'
+                            name:
+                              - font-weight: bold
+                              - color: 'rgba(0,0,0,.6)'
+                            icon:
+                              - color: var(--button-card-light-color)
+                      hold_action:
+                        action: more-info
+              #################################################################
+              ## Living Room Controls
+              #################################################################
+              Living Room:
+                type: 'custom:mod-card'
+                style: |
+                  ha-card {
+                    background: rgba(0,0,0,.3);
+                    padding: 10px;
+                    border-radius: 35px;
+                    margin-right: 10px;
+                    margin-top: none;
+                    }
+                card:
+                  type: grid
+                  columns: 3
+                  cards:
+                    #----------------------------------------------------------------
+                    ## Track Light
+                    #----------------------------------------------------------------            
+                    - type: 'custom:button-card'
+                      aspect_ratio: 1/1
+                      tap_action:
+                        action: toggle
+                      entity: light.track
+                      name: Track
+                      style: |
+                        ha-card:hover {
+                          transform: scale(1.05);
+                          box-shadow: 0 0 10px;
+                          }
+                      styles:
+                        name:
+                          - padding: 8px 1em
+                          - font-family: Roboto
+                          - font-size: 20px
+                        card:
+                          - border-radius: 30px
+                          - background: 'rgba(255,255,255,.1)'
+                      state:
+                        - value: 'on'
+                          styles:
+                            card:
+                              - background: 'rgba(255,255,255,.8)'
+                              - border: 1px solid white
+                              - box-shadow: '0 0 10px, inset 0 0 5px'
+                            name:
+                              - font-weight: bold
+                              - color: 'rgba(0,0,0,.6)'
+                            icon:
+                              - color: var(--button-card-light-color)
+                      hold_action:
+                        action: more-info
+                    #----------------------------------------------------------------
+                    ## Garden Light
+                    #----------------------------------------------------------------                
+                    - type: 'custom:button-card'
+                      aspect_ratio: 1/1
+                      tap_action:
+                        action: toggle
+                      entity: light.garden
+                      name: Ceiling
+                      style: |
+                        ha-card:hover {
+                          transform: scale(1.05);
+                          box-shadow: 0 0 10px;
+                          }
+                      styles:
+                        name:
+                          - padding: 8px 1em
+                          - font-family: Roboto
+                          - font-size: 20px
+                        card:
+                          - border-radius: 30px
+                          - background: 'rgba(255,255,255,.1)'
+                      state:
+                        - value: 'on'
+                          styles:
+                            card:
+                              - background: 'rgba(255,255,255,.8)'
+                              - border: 1px solid white
+                              - box-shadow: '0 0 10px, inset 0 0 5px'
+                            name:
+                              - font-weight: bold
+                              - color: 'rgba(0,0,0,.6)'
+                            icon:
+                              - color: var(--button-card-light-color)
+                      hold_action:
+                        action: more-info
+                    #----------------------------------------------------------------
+                    ## Yumi Lamp
+                    #----------------------------------------------------------------                
+                    - type: 'custom:button-card'
+                      aspect_ratio: 1/1
+                      tap_action:
+                        action: toggle
+                      entity: light.yumi_lamp
+                      name: Lamp
+                      style: |
+                        ha-card:hover {
+                          transform: scale(1.05);
+                          box-shadow: 0 0 10px;
+                          }
+                      styles:
+                        name:
+                          - padding: 8px 1em
+                          - font-family: Roboto
+                          - font-size: 20px
+                        card:
+                          - border-radius: 30px
+                          - background: 'rgba(255,255,255,.1)'
+                      state:
+                        - value: 'on'
+                          styles:
+                            card:
+                              - background: 'rgba(255,255,255,.8)'
+                              - border: 1px solid white
+                              - box-shadow: '0 0 10px, inset 0 0 5px'
+                            name:
+                              - font-weight: bold
+                              - color: 'rgba(0,0,0,.6)'
+                            icon:
+                              - color: var(--button-card-light-color)
+                      hold_action:
+                        action: more-info
+                    #----------------------------------------------------------------
+                    ## Left Track
+                    #----------------------------------------------------------------                
+                    - type: 'custom:button-card'
+                      aspect_ratio: 1/1
+                      tap_action:
+                        action: toggle
+                      entity: light.left_track
+                      name: Left
+                      style: |
+                        ha-card:hover {
+                          transform: scale(1.05);
+                          box-shadow: 0 0 10px;
+                          }
+                      styles:
+                        name:
+                          - padding: 8px 1em
+                          - font-family: Roboto
+                          - font-size: 20px
+                        card:
+                          - border-radius: 30px
+                          - background: 'rgba(255,255,255,.1)'
+                      state:
+                        - value: 'on'
+                          styles:
+                            card:
+                              - background: 'rgba(255,255,255,.8)'
+                              - border: 1px solid white
+                              - box-shadow: '0 0 10px, inset 0 0 5px'
+                            name:
+                              - font-weight: bold
+                              - color: 'rgba(0,0,0,.6)'
+                            icon:
+                              - color: var(--button-card-light-color)
+                      hold_action:
+                        action: more-info
+                    #----------------------------------------------------------------
+                    ## Center Track
+                    #----------------------------------------------------------------                
+                    - type: 'custom:button-card'
+                      aspect_ratio: 1/1
+                      tap_action:
+                        action: toggle
+                      entity: light.center_track
+                      name: Center
+                      style: |
+                        ha-card:hover {
+                          transform: scale(1.05);
+                          box-shadow: 0 0 10px;
+                          }
+                      styles:
+                        name:
+                          - padding: 8px 1em
+                          - font-family: Roboto
+                          - font-size: 20px
+                        card:
+                          - border-radius: 30px
+                          - background: 'rgba(255,255,255,.1)'
+                      state:
+                        - value: 'on'
+                          styles:
+                            card:
+                              - background: 'rgba(255,255,255,.8)'
+                              - border: 1px solid white
+                              - box-shadow: '0 0 10px, inset 0 0 5px'
+                            name:
+                              - font-weight: bold
+                              - color: 'rgba(0,0,0,.6)'
+                            icon:
+                              - color: var(--button-card-light-color)
+                      hold_action:
+                        action: more-info
+                    #----------------------------------------------------------------
+                    ## Right Track
+                    #----------------------------------------------------------------    
+                    - type: 'custom:button-card'
+                      aspect_ratio: 1/1
+                      tap_action:
+                        action: toggle
+                      entity: light.right_track
+                      name: Right
+                      style: |
+                        ha-card:hover {
+                          transform: scale(1.05);
+                          box-shadow: 0 0 10px;
+                          }
+                      styles:
+                        name:
+                          - padding: 8px 1em
+                          - font-family: Roboto
+                          - font-size: 20px
+                        card:
+                          - border-radius: 30px
+                          - background: 'rgba(255,255,255,.1)'
+                      state:
+                        - value: 'on'
+                          styles:
+                            card:
+                              - background: 'rgba(255,255,255,.8)'
+                              - border: 1px solid white
+                              - box-shadow: '0 0 10px, inset 0 0 5px'
+                            name:
+                              - font-weight: bold
+                              - color: 'rgba(0,0,0,.6)'
+                            icon:
+                              - color: var(--button-card-light-color)
+                      hold_action:
+                        action: more-info
+                    #----------------------------------------------------------------
+                    ## Heater
+                    #----------------------------------------------------------------                    
+                    - type: 'custom:button-card'
+                      entity: switch.switchbot
+                      icon: 'hass:fan'
+                      aspect_ratio: 1/1
+                      style: |
+                        ha-card:hover {
+                          transform: scale(1.05);
+                          box-shadow: 0 0 10px;
+                          }
+                      styles:
+                        name:
+                          - padding: 8px .75em
+                          - font-family: Roboto
+                          - font-size: 20px
+                        card:
+                          - border-radius: 30px
+                          - background: 'rgba(255,255,255,.1)'
+                      state:
+                        - value: 'on'
+                          spin: true
+                          styles:
+                            icon:
+                              - color: 'rgb(255, 122, 0)'
+                            name:
+                              - font-weight: bold
+                              - color: 'rgba(0,0,0,.6)'
+                            card:
+                              - background: 'rgba(255,255,255,.8)'
+                              - border: 1px solid white
+                              - box-shadow: '0 0 10px, inset 0 0 5px'
+                      tap_action:
+                        action: toggle
+                    #----------------------------------------------------------------
+                    ## Shield
+                    #----------------------------------------------------------------                    
+                    - type: 'custom:button-card'
+                      icon: 'hass:television-classic'
+                      name: TV
+                      aspect_ratio: 1/1
+                      style: |
+                        ha-card:hover {
+                          transform: scale(1.05);
+                          box-shadow: 0 0 10px;
+                          }
+                      styles:
+                        state:
+                          - color: 'rgba(255,255,255,1)'
+                          - font-size: 20px
+                        card:
+                          - border-radius: 30px
+                          - font-family: DM Sans
+                          - background: 'rgba(255,255,255,.1'
+                      tap_action:
+                        action: toggle
+                      entity: media_player.shield_tv
+                      show_state: true
+                      state:
+                        - value: playing
+                          styles:
+                            card:
+                              - background: 'rgba(255,255,255,.8)'
+                              - border: 1px solid white
+                              - box-shadow: '0 0 10px, inset 0 0 5px'
+                            state:
+                              - animation: blink 2s ease infinite
+                              - color: 'rgb(100,100,255)'
+                            icon:
+                              - color: 'rgb(100,100,255)'
+                            name:
+                              - color: 'rgba(0,0,0,.6)'
+                              - font-weight: bold
+              #################################################################
+              ## Kitchen Controls
+              #################################################################
+              Kitchen:
+                type: 'custom:mod-card'
+                style: |
+                  ha-card {
+                    background: rgba(0,0,0,.3);
+                    padding: 10px;
+                    border-radius: 35px;
+                    margin-right: 10px;
+                    margin-top: none;
+                    }
+                card:
+                  type: grid
+                  columns: 3
+                  cards:
+                    #----------------------------------------------------------------
+                    ## Kitchen Track
+                    #----------------------------------------------------------------                
+                    - type: 'custom:button-card'
+                      aspect_ratio: 1/1
+                      tap_action:
+                        action: toggle
+                      entity: light.kitchen
+                      name: Track
+                      style: |
+                        ha-card:hover {
+                          transform: scale(1.05);
+                          box-shadow: 0 0 10px;
+                          }
+                      styles:
+                        name:
+                          - padding: 8px 1em
+                          - font-family: Roboto
+                          - font-size: 20px
+                        card:
+                          - border-radius: 30px
+                          - background: 'rgba(255,255,255,.1)'
+                      state:
+                        - value: 'on'
+                          styles:
+                            card:
+                              - background: 'rgba(255,255,255,.8)'
+                              - border: 1px solid white
+                              - box-shadow: '0 0 10px, inset 0 0 5px'
+                            name:
+                              - font-weight: bold
+                              - color: 'rgba(0,0,0,.6)'
+                            icon:
+                              - color: var(--button-card-light-color)
+                      hold_action:
+                        action: more-info
+                    #----------------------------------------------------------------
+                    ## Nanoleaf Dino Panesl
+                    #----------------------------------------------------------------                    
+                    - type: 'custom:button-card'
+                      icon: 'mdi:google-downasaur'
+                      entity: light.dino_panel
+                      name: Dino
+                      aspect_ratio: 1/1
+                      style: |
+                        ha-card:hover {
+                          transform: scale(1.05);
+                          box-shadow: 0 0 10px;
+                          }
+                      styles:
+                        card:
+                          - border-radius: 30px
+                          - background: 'rgba(255,255,255,.1)'
+                        name:
+                          - padding: 8px
+                          - font-family: Roboto
+                          - font-size: 20px
+                      tap_action:
+                        action: toggle
+                      state:
+                        - value: 'on'
+                          styles:
+                            card:
+                              - background: 'rgba(255,255,255,.8)'
+                              - border: 1px solid white
+                              - box-shadow: '0 0 10px, inset 0 0 5px'
+                            icon:
+                              - color: var(--button-card-light-color)
+                            name:
+                              - color: 'rgba(0,0,0,.6)'
+                              - font-weight: bold
+                    #----------------------------------------------------------------
+                    ## Kettle
+                    #----------------------------------------------------------------                          
+                    - type: 'custom:button-card'
+                      aspect_ratio: 1/1
+                      tap_action:
+                        action: toggle
+                      entity: switch.kettle
+                      name: Kettle
+                      style: |
+                        ha-card:hover {
+                          transform: scale(1.05);
+                          box-shadow: 0 0 10px;
+                          }
+                      styles:
+                        name:
+                          - padding: 8px 1em
+                          - font-family: Roboto
+                          - font-size: 20px
+                        card:
+                          - border-radius: 30px
+                          - background: 'rgba(255,255,255,.1)'
+                      state:
+                        - value: 'on'
+                          styles:
+                            card:
+                              - background: 'rgba(255,255,255,.8)'
+                              - border: 1px solid white
+                              - box-shadow: '0 0 10px, inset 0 0 5px'
+                            name:
+                              - font-weight: bold
+                              - color: 'rgba(0,0,0,.6)'
+                            icon:
+                              - color: 'rgb(255, 122, 0)'
+                      hold_action:
+                        action: more-info
+          - type: vertical-stack
+            cards:
+              - type: weather-forecast
+                entity: weather.loft
   - title: Winston
     path: winston
     icon: 'mdi:robot-vacuum-variant'
