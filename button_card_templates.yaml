@@ -33,7 +33,7 @@
   base:
     aspect_ratio: 1/1
     show_state: true
-    show_icon: true
+    show_icon: false
     state:
       - value: 'on'
         styles:
