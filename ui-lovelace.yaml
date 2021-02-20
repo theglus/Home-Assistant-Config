@@ -170,7 +170,7 @@ views:
                       entity: light.potter_lamp
                       name: Lamp
                       custom_fields:
-                        icon_shade: >
+                        icon_hue: >
                           [[[ const state = entity.state === 'on' ? 'animate' : null;
                           return `<svg viewBox="0 0 50 50"><style>@keyframes animate{0%{transform: scale(0.85);}20%{transform: scale(1.1);}40%{transform: scale(0.95);}60%{transform: scale(1.03);}80%{transform: scale(0.97);}100%{transform: scale(1);}}.animate{animation: animate 0.8s; transform-origin: center;}</style>
                           <path fill="#9da0a2" d="M26.4 25.6c.6-.3 1.1-.7 1.1-1.3L25 17.9l-2.5 6.4c0 .7.6 1.1 1.1 1.3v20.8h-5.5v2.7h13.7v-2.7h-5.5V25.6z"/>
