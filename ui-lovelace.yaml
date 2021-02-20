@@ -277,9 +277,6 @@ views:
                     ## Right Track
                     #----------------------------------------------------------------    
                     - type: 'custom:button-card'
-                      aspect_ratio: 1/1
-                      tap_action:
-                        action: toggle
                       entity: light.right_track
                       name: Right
                       template: test
