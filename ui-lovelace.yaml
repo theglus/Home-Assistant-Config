@@ -168,9 +168,9 @@ views:
                     #----------------------------------------------------------------
                     - type: 'custom:button-card'
                       entity: light.potter_lamp
-                      name: Lamp                    
-                      template: light      
-                      template: icon_format                
+                      name: Lamp  
+                      template: icon_format                  
+                      template: light                 
                     #----------------------------------------------------------------
                     ## Front Door Sensor  
                     #----------------------------------------------------------------               
