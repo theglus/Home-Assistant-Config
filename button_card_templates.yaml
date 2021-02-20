@@ -95,7 +95,7 @@
                   service: light.turn_on
                   service_data:
                     entity_id: '[[[ return entity.entity_id ]]]'
-                    color_temp: 153
+                    color_temp: 370
                 template: color_action
               - type: custom:button-card
                 styles:
@@ -106,7 +106,7 @@
                   service: light.turn_on
                   service_data:
                     entity_id: '[[[ return entity.entity_id ]]]'
-                    color_temp: 326
+                    color_temp: 500
                 template: color_action
             - type: custom:hui-element
               card_type: horizontal-stack
@@ -121,7 +121,10 @@
                   service: light.turn_on
                   service_data:
                     entity_id: '[[[ return entity.entity_id ]]]'
-                    color_temp: 500
+                    rgb_color:
+                      - 244
+                      - 38
+                      - 255
                 template: color_action
               - type: custom:button-card
                 styles:
