@@ -41,11 +41,6 @@
           name: [color: 'rgba(0, 0, 0, 0.6)']
           state: [color: 'rgba(0, 0, 0, 0.6)']
     tap_action:
-      ui_sound: |
-        [[[ if (entity.state === 'off' && states['switch.galaxy_tab_a_screensaver'].state === 'off') {
-        hass.callService('media_player', 'play_media', {entity_id: 'media_player.tablet', media_content_id: '/local/sound/on.m4a', media_content_type: 'music'}); }
-        else if (entity.state === 'on' && states['switch.galaxy_tab_a_screensaver'].state === 'off') {
-        hass.callService('media_player', 'play_media', {entity_id: 'media_player.tablet', media_content_id: '/local/sound/off.m4a', media_content_type: 'music'}); } ]]]
       action: toggle
       haptic: light
     styles:
