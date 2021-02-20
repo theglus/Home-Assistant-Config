@@ -30,8 +30,38 @@
     hold_action:
       action: more-info
 
+  base:
+    aspect_ratio: 1/1
+    show_state: true
+    show_icon: false
+    state:
+      - value: 'on'
+        styles:
+          card: [background-color: 'rgba(255, 255, 255, 0.8)']
+          name: [color: 'rgba(0, 0, 0, 0.6)']
+          state: [color: 'rgba(0, 0, 0, 0.6)']
+    tap_action:
+      ui_sound: |
+        [[[ if (entity.state === 'off' && states['switch.galaxy_tab_a_screensaver'].state === 'off') {
+        hass.callService('media_player', 'play_media', {entity_id: 'media_player.tablet', media_content_id: '/local/sound/on.m4a', media_content_type: 'music'}); }
+        else if (entity.state === 'on' && states['switch.galaxy_tab_a_screensaver'].state === 'off') {
+        hass.callService('media_player', 'play_media', {entity_id: 'media_player.tablet', media_content_id: '/local/sound/off.m4a', media_content_type: 'music'}); } ]]]
+      action: toggle
+      haptic: light
+    styles:
+      name:
+        [top: 57.7%, left: 11%, line-height: 2vw, position: absolute]
+      state:
+        [top: 74%, left: 11%, line-height: 2vw, position: absolute]
+      card:
+        [font-family: Sf Display, letter-spacing: 0.05vw, font-weight: 400, color: 'rgba(255, 255, 255, 0.3)', font-size: 1.34vw, 
+        background-color: 'rgba(115, 115, 115, 0.2)', border-radius: 0.8vw, box-shadow: none, transition: none]
+      custom_fields:
+        circle:
+          [top: 8.5%, left: 56.2%, width: 3.5vw, position: absolute, letter-spacing: 0.03vw]
+
   light:
-    template: ['test']
+    template: ['base']
     custom_fields:
       circle: >
         [[[ if (entity.state === 'on' && entity.attributes.brightness) {
@@ -121,3 +151,8 @@
                       smooth_color_wheel: true
                       consolidate_entities: true
                 template: color_action
+
+  color_action:
+    styles:
+      card:
+        [border-radius: 50%, height: 4em, width: 4em, margin: 4px]
