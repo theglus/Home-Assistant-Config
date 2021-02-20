@@ -57,7 +57,6 @@
 
   light:
     template: ['base']
-    template: ['icon_format']
     custom_fields:
       circle: >
         [[[ if (entity.state === 'on' && entity.attributes.brightness) {
@@ -141,6 +140,7 @@
                       - 255
                       - 236
                 template: color_action
+    template: ['icon_format']
 
   color_action:
     styles:
