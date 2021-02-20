@@ -45,9 +45,9 @@
       haptic: light
     styles:
       name:
-        [top: 57.7%, left: 11%, line-height: 2vw, position: absolute]
+        [top: 57.7%, left: 11%, line-height: 2vw]
       state:
-        [top: 74%, left: 11%, line-height: 2vw, position: absolute]
+        [top: 74%, left: 11%, line-height: 2vw]
       card:
         [font-family: Sf Display, letter-spacing: 0.05vw, font-weight: 400, color: 'rgba(255, 255, 255, 0.3)', font-size: 1.34vw, 
         background-color: 'rgba(115, 115, 115, 0.2)', border-radius: 2.083vw, box-shadow: none, transition: none]
