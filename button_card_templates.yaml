@@ -140,29 +140,6 @@
                       - 255
                       - 236
                 template: color_action
-              - type: custom:button-card
-                styles:
-                  card:
-                    [background: 'radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 80%), 
-                    conic-gradient(rgb(120, 39, 230), rgb(230, 34, 231), rgb(228, 5, 136), rgb(228, 25, 25), 
-                    rgb(229, 105, 30), rgb(232, 226, 46), rgb(125, 230, 41), rgb(52, 232, 40), rgb(51, 231, 92), 
-                    rgb(52, 232, 224), rgb(32, 125, 229), rgb(18, 39, 229), rgb(120, 39, 230))']
-                tap_action:
-                  action: fire-dom-event
-                  browser_mod:
-                    command: popup
-                    title: '[[[ return entity.attributes.friendly_name ]]]'
-                    card:
-                      type: custom:light-entity-card
-                      entity: '[[[ return entity.entity_id ]]]'
-                      brightness: false
-                      color_temp: true
-                      full_width_sliders: false
-                      hide_header: true
-                      show_slider_percent: true
-                      smooth_color_wheel: true
-                      consolidate_entities: true
-                template: color_action
 
   color_action:
     styles:
