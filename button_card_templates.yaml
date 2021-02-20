@@ -89,7 +89,7 @@
               - type: custom:button-card
                 styles:
                   card:
-                    [background: '#d8d9e1']
+                    [background: '#ffe7c0']
                 tap_action:
                   action: call-service
                   service: light.turn_on
@@ -100,7 +100,7 @@
               - type: custom:button-card
                 styles:
                   card:
-                    [background: '#d5b08d']
+                    [background: '#ffa200']
                 tap_action:
                   action: call-service
                   service: light.turn_on
@@ -115,7 +115,7 @@
               - type: custom:button-card
                 styles:
                   card: 
-                    [background: '#ce944b']
+                    [background: '#f426ff']
                 tap_action:
                   action: call-service
                   service: light.turn_on
@@ -125,7 +125,19 @@
                       - 244
                       - 38
                       - 255
-                template: color_action
+              - type: custom:button-card
+                styles:
+                  card: 
+                    [background: '#46ffec']
+                tap_action:
+                  action: call-service
+                  service: light.turn_on
+                  service_data:
+                    entity_id: '[[[ return entity.entity_id ]]]'
+                    rgb_color:
+                      - 70
+                      - 255
+                      - 236
               - type: custom:button-card
                 styles:
                   card:
