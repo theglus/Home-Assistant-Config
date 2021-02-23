@@ -166,6 +166,8 @@ views:
                             icon_animate:
                               [top: 11%, left: 5%, width: 2.85em, position: absolute]                  
                         template: light     
+                        hold_action:
+                          action: none
                     #----------------------------------------------------------------
                     ## Hallway Runner  
                     #----------------------------------------------------------------
@@ -332,6 +334,8 @@ views:
                             icon_animate:
                               [top: 11%, left: 5%, width: 2.85em, position: absolute]                  
                         template: light    
+                        hold_action:
+                          action: none                      
                     #----------------------------------------------------------------
                     ## Yumi Lamp
                     #----------------------------------------------------------------                
