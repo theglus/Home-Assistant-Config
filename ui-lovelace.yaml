@@ -155,14 +155,34 @@ views:
                     #----------------------------------------------------------------         
                     - type: 'custom:button-card'
                       entity: light.hallway_marquee
-                      template: test
+                      custom_fields:
+                          icon_animate: >
+                            [[[ const state = entity.state === 'on' ? 'animate' : null;
+                            return `<svg viewBox="0 0 50 50"><style>@keyframes animate{0%{transform: scale(0.85);}20%{transform: scale(1.1);}40%{transform: scale(0.95);}60%{transform: scale(1.03);}80%{transform: scale(0.97);}100%{transform: scale(1);}}.animate{animation: animate 0.8s; transform-origin: center;}</style>
+                            <path fill="#9da0a2" d="M26.4 25.6c.6-.3 1.1-.7 1.1-1.3L25 17.9l-2.5 6.4c0 .7.6 1.1 1.1 1.3v20.8h-5.5v2.7h13.7v-2.7h-5.5V25.6z"/>
+                            <path class="${state}" fill="var(--button-card-light-color-no-temperature)" d="M24.6.9l-9.4.5c-.6.1-1.9 0-2.5 2.1s-2.4 9.1-4 16.9c-.2.7-.5 2-.5 2.3s-.4 1.6.9 1.6c.8.1 7.4.3 15.9.3 8.6 0 15.1-.3 15.9-.3 1.3-.1.9-1.3.9-1.6s-.3-1.6-.5-2.3c-1.6-7.8-3.4-14.8-4-16.9s-1.9-2-2.5-2.1c-1.6-.2-6.9-.4-9.4-.5"/> </svg>`;]]]
+                        styles:
+                          custom_fields:
+                            icon_animate:
+                              [top: 11%, left: 5%, width: 2.85em, position: absolute]                  
+                        template: light     
                     #----------------------------------------------------------------
                     ## Hallway Runner  
                     #----------------------------------------------------------------
                     - type: 'custom:button-card'
                       entity: light.hallway_runner
                       name: Runner
-                      template: test
+                      custom_fields:
+                          icon_animate: >
+                            [[[ const state = entity.state === 'on' ? 'animate' : null;
+                            return `<svg viewBox="0 0 50 50"><style>@keyframes animate{0%{transform: scale(0.85);}20%{transform: scale(1.1);}40%{transform: scale(0.95);}60%{transform: scale(1.03);}80%{transform: scale(0.97);}100%{transform: scale(1);}}.animate{animation: animate 0.8s; transform-origin: center;}</style>
+                            <path fill="#9da0a2" d="M26.4 25.6c.6-.3 1.1-.7 1.1-1.3L25 17.9l-2.5 6.4c0 .7.6 1.1 1.1 1.3v20.8h-5.5v2.7h13.7v-2.7h-5.5V25.6z"/>
+                            <path class="${state}" fill="var(--button-card-light-color-no-temperature)" d="M24.6.9l-9.4.5c-.6.1-1.9 0-2.5 2.1s-2.4 9.1-4 16.9c-.2.7-.5 2-.5 2.3s-.4 1.6.9 1.6c.8.1 7.4.3 15.9.3 8.6 0 15.1-.3 15.9-.3 1.3-.1.9-1.3.9-1.6s-.3-1.6-.5-2.3c-1.6-7.8-3.4-14.8-4-16.9s-1.9-2-2.5-2.1c-1.6-.2-6.9-.4-9.4-.5"/> </svg>`;]]]
+                        styles:
+                          custom_fields:
+                            icon_animate:
+                              [top: 11%, left: 5%, width: 2.85em, position: absolute]                  
+                        template: light     
                     #----------------------------------------------------------------
                     ## Potter Lamp  
                     #----------------------------------------------------------------
@@ -209,21 +229,51 @@ views:
                     - type: 'custom:button-card'
                       entity: light.overhead
                       name: Ceiling
-                      template: test
+                      custom_fields:
+                          icon_animate: >
+                            [[[ const state = entity.state === 'on' ? 'animate' : null;
+                            return `<svg viewBox="0 0 50 50"><style>@keyframes animate{0%{transform: scale(0.85);}20%{transform: scale(1.1);}40%{transform: scale(0.95);}60%{transform: scale(1.03);}80%{transform: scale(0.97);}100%{transform: scale(1);}}.animate{animation: animate 0.8s; transform-origin: center;}</style>
+                            <path fill="#9da0a2" d="M26.4 25.6c.6-.3 1.1-.7 1.1-1.3L25 17.9l-2.5 6.4c0 .7.6 1.1 1.1 1.3v20.8h-5.5v2.7h13.7v-2.7h-5.5V25.6z"/>
+                            <path class="${state}" fill="var(--button-card-light-color-no-temperature)" d="M24.6.9l-9.4.5c-.6.1-1.9 0-2.5 2.1s-2.4 9.1-4 16.9c-.2.7-.5 2-.5 2.3s-.4 1.6.9 1.6c.8.1 7.4.3 15.9.3 8.6 0 15.1-.3 15.9-.3 1.3-.1.9-1.3.9-1.6s-.3-1.6-.5-2.3c-1.6-7.8-3.4-14.8-4-16.9s-1.9-2-2.5-2.1c-1.6-.2-6.9-.4-9.4-.5"/> </svg>`;]]]
+                        styles:
+                          custom_fields:
+                            icon_animate:
+                              [top: 11%, left: 5%, width: 2.85em, position: absolute]                  
+                        template: light     
                     #----------------------------------------------------------------
                     ## Office Desk Light  
                     #----------------------------------------------------------------
                     - type: 'custom:button-card'
                       entity: light.overhead_desk
                       name: Desk
-                      template: test
+                      custom_fields:
+                          icon_animate: >
+                            [[[ const state = entity.state === 'on' ? 'animate' : null;
+                            return `<svg viewBox="0 0 50 50"><style>@keyframes animate{0%{transform: scale(0.85);}20%{transform: scale(1.1);}40%{transform: scale(0.95);}60%{transform: scale(1.03);}80%{transform: scale(0.97);}100%{transform: scale(1);}}.animate{animation: animate 0.8s; transform-origin: center;}</style>
+                            <path fill="#9da0a2" d="M26.4 25.6c.6-.3 1.1-.7 1.1-1.3L25 17.9l-2.5 6.4c0 .7.6 1.1 1.1 1.3v20.8h-5.5v2.7h13.7v-2.7h-5.5V25.6z"/>
+                            <path class="${state}" fill="var(--button-card-light-color-no-temperature)" d="M24.6.9l-9.4.5c-.6.1-1.9 0-2.5 2.1s-2.4 9.1-4 16.9c-.2.7-.5 2-.5 2.3s-.4 1.6.9 1.6c.8.1 7.4.3 15.9.3 8.6 0 15.1-.3 15.9-.3 1.3-.1.9-1.3.9-1.6s-.3-1.6-.5-2.3c-1.6-7.8-3.4-14.8-4-16.9s-1.9-2-2.5-2.1c-1.6-.2-6.9-.4-9.4-.5"/> </svg>`;]]]
+                        styles:
+                          custom_fields:
+                            icon_animate:
+                              [top: 11%, left: 5%, width: 2.85em, position: absolute]                  
+                        template: light     
                     #----------------------------------------------------------------
                     ## Office Bed Light  
                     #----------------------------------------------------------------
                     - type: 'custom:button-card'
                       entity: light.overhead_bed
                       name: Bed
-                      template: test
+                      custom_fields:
+                          icon_animate: >
+                            [[[ const state = entity.state === 'on' ? 'animate' : null;
+                            return `<svg viewBox="0 0 50 50"><style>@keyframes animate{0%{transform: scale(0.85);}20%{transform: scale(1.1);}40%{transform: scale(0.95);}60%{transform: scale(1.03);}80%{transform: scale(0.97);}100%{transform: scale(1);}}.animate{animation: animate 0.8s; transform-origin: center;}</style>
+                            <path fill="#9da0a2" d="M26.4 25.6c.6-.3 1.1-.7 1.1-1.3L25 17.9l-2.5 6.4c0 .7.6 1.1 1.1 1.3v20.8h-5.5v2.7h13.7v-2.7h-5.5V25.6z"/>
+                            <path class="${state}" fill="var(--button-card-light-color-no-temperature)" d="M24.6.9l-9.4.5c-.6.1-1.9 0-2.5 2.1s-2.4 9.1-4 16.9c-.2.7-.5 2-.5 2.3s-.4 1.6.9 1.6c.8.1 7.4.3 15.9.3 8.6 0 15.1-.3 15.9-.3 1.3-.1.9-1.3.9-1.6s-.3-1.6-.5-2.3c-1.6-7.8-3.4-14.8-4-16.9s-1.9-2-2.5-2.1c-1.6-.2-6.9-.4-9.4-.5"/> </svg>`;]]]
+                        styles:
+                          custom_fields:
+                            icon_animate:
+                              [top: 11%, left: 5%, width: 2.85em, position: absolute]                  
+                        template: light     
                     #----------------------------------------------------------------
                     ## Printer
                     #----------------------------------------------------------------
@@ -254,42 +304,102 @@ views:
                     - type: 'custom:button-card'
                       entity: light.track
                       name: Track
-                      template: test
+                      custom_fields:
+                          icon_animate: >
+                            [[[ const state = entity.state === 'on' ? 'animate' : null;
+                            return `<svg viewBox="0 0 50 50"><style>@keyframes animate{0%{transform: scale(0.85);}20%{transform: scale(1.1);}40%{transform: scale(0.95);}60%{transform: scale(1.03);}80%{transform: scale(0.97);}100%{transform: scale(1);}}.animate{animation: animate 0.8s; transform-origin: center;}</style>
+                            <path fill="#9da0a2" d="M26.4 25.6c.6-.3 1.1-.7 1.1-1.3L25 17.9l-2.5 6.4c0 .7.6 1.1 1.1 1.3v20.8h-5.5v2.7h13.7v-2.7h-5.5V25.6z"/>
+                            <path class="${state}" fill="var(--button-card-light-color-no-temperature)" d="M24.6.9l-9.4.5c-.6.1-1.9 0-2.5 2.1s-2.4 9.1-4 16.9c-.2.7-.5 2-.5 2.3s-.4 1.6.9 1.6c.8.1 7.4.3 15.9.3 8.6 0 15.1-.3 15.9-.3 1.3-.1.9-1.3.9-1.6s-.3-1.6-.5-2.3c-1.6-7.8-3.4-14.8-4-16.9s-1.9-2-2.5-2.1c-1.6-.2-6.9-.4-9.4-.5"/> </svg>`;]]]
+                        styles:
+                          custom_fields:
+                            icon_animate:
+                              [top: 11%, left: 5%, width: 2.85em, position: absolute]                  
+                        template: light    
                     #----------------------------------------------------------------
                     ## Garden Light
                     #----------------------------------------------------------------                
                     - type: 'custom:button-card'
                       entity: light.garden
                       name: Ceiling
-                      template: test
+                      custom_fields:
+                          icon_animate: >
+                            [[[ const state = entity.state === 'on' ? 'animate' : null;
+                            return `<svg viewBox="0 0 50 50"><style>@keyframes animate{0%{transform: scale(0.85);}20%{transform: scale(1.1);}40%{transform: scale(0.95);}60%{transform: scale(1.03);}80%{transform: scale(0.97);}100%{transform: scale(1);}}.animate{animation: animate 0.8s; transform-origin: center;}</style>
+                            <path fill="#9da0a2" d="M26.4 25.6c.6-.3 1.1-.7 1.1-1.3L25 17.9l-2.5 6.4c0 .7.6 1.1 1.1 1.3v20.8h-5.5v2.7h13.7v-2.7h-5.5V25.6z"/>
+                            <path class="${state}" fill="var(--button-card-light-color-no-temperature)" d="M24.6.9l-9.4.5c-.6.1-1.9 0-2.5 2.1s-2.4 9.1-4 16.9c-.2.7-.5 2-.5 2.3s-.4 1.6.9 1.6c.8.1 7.4.3 15.9.3 8.6 0 15.1-.3 15.9-.3 1.3-.1.9-1.3.9-1.6s-.3-1.6-.5-2.3c-1.6-7.8-3.4-14.8-4-16.9s-1.9-2-2.5-2.1c-1.6-.2-6.9-.4-9.4-.5"/> </svg>`;]]]
+                        styles:
+                          custom_fields:
+                            icon_animate:
+                              [top: 11%, left: 5%, width: 2.85em, position: absolute]                  
+                        template: light    
                     #----------------------------------------------------------------
                     ## Yumi Lamp
                     #----------------------------------------------------------------                
                     - type: 'custom:button-card'
                       entity: light.yumi_lamp
                       name: Lamp
-                      template: test
+                      custom_fields:
+                          icon_animate: >
+                            [[[ const state = entity.state === 'on' ? 'animate' : null;
+                            return `<svg viewBox="0 0 50 50"><style>@keyframes animate{0%{transform: scale(0.85);}20%{transform: scale(1.1);}40%{transform: scale(0.95);}60%{transform: scale(1.03);}80%{transform: scale(0.97);}100%{transform: scale(1);}}.animate{animation: animate 0.8s; transform-origin: center;}</style>
+                            <path fill="#9da0a2" d="M26.4 25.6c.6-.3 1.1-.7 1.1-1.3L25 17.9l-2.5 6.4c0 .7.6 1.1 1.1 1.3v20.8h-5.5v2.7h13.7v-2.7h-5.5V25.6z"/>
+                            <path class="${state}" fill="var(--button-card-light-color-no-temperature)" d="M24.6.9l-9.4.5c-.6.1-1.9 0-2.5 2.1s-2.4 9.1-4 16.9c-.2.7-.5 2-.5 2.3s-.4 1.6.9 1.6c.8.1 7.4.3 15.9.3 8.6 0 15.1-.3 15.9-.3 1.3-.1.9-1.3.9-1.6s-.3-1.6-.5-2.3c-1.6-7.8-3.4-14.8-4-16.9s-1.9-2-2.5-2.1c-1.6-.2-6.9-.4-9.4-.5"/> </svg>`;]]]
+                        styles:
+                          custom_fields:
+                            icon_animate:
+                              [top: 11%, left: 5%, width: 2.85em, position: absolute]                  
+                        template: light    
                     #----------------------------------------------------------------
                     ## Left Track
                     #----------------------------------------------------------------                
                     - type: 'custom:button-card'
                       entity: light.left_track
                       name: Left
-                      template: test
+                      custom_fields:
+                          icon_animate: >
+                            [[[ const state = entity.state === 'on' ? 'animate' : null;
+                            return `<svg viewBox="0 0 50 50"><style>@keyframes animate{0%{transform: scale(0.85);}20%{transform: scale(1.1);}40%{transform: scale(0.95);}60%{transform: scale(1.03);}80%{transform: scale(0.97);}100%{transform: scale(1);}}.animate{animation: animate 0.8s; transform-origin: center;}</style>
+                            <path fill="#9da0a2" d="M26.4 25.6c.6-.3 1.1-.7 1.1-1.3L25 17.9l-2.5 6.4c0 .7.6 1.1 1.1 1.3v20.8h-5.5v2.7h13.7v-2.7h-5.5V25.6z"/>
+                            <path class="${state}" fill="var(--button-card-light-color-no-temperature)" d="M24.6.9l-9.4.5c-.6.1-1.9 0-2.5 2.1s-2.4 9.1-4 16.9c-.2.7-.5 2-.5 2.3s-.4 1.6.9 1.6c.8.1 7.4.3 15.9.3 8.6 0 15.1-.3 15.9-.3 1.3-.1.9-1.3.9-1.6s-.3-1.6-.5-2.3c-1.6-7.8-3.4-14.8-4-16.9s-1.9-2-2.5-2.1c-1.6-.2-6.9-.4-9.4-.5"/> </svg>`;]]]
+                        styles:
+                          custom_fields:
+                            icon_animate:
+                              [top: 11%, left: 5%, width: 2.85em, position: absolute]                  
+                        template: light    
                     #----------------------------------------------------------------
                     ## Center Track
                     #----------------------------------------------------------------                
                     - type: 'custom:button-card'
                       entity: light.center_track
                       name: Center
-                      template: test
+                      custom_fields:
+                          icon_animate: >
+                            [[[ const state = entity.state === 'on' ? 'animate' : null;
+                            return `<svg viewBox="0 0 50 50"><style>@keyframes animate{0%{transform: scale(0.85);}20%{transform: scale(1.1);}40%{transform: scale(0.95);}60%{transform: scale(1.03);}80%{transform: scale(0.97);}100%{transform: scale(1);}}.animate{animation: animate 0.8s; transform-origin: center;}</style>
+                            <path fill="#9da0a2" d="M26.4 25.6c.6-.3 1.1-.7 1.1-1.3L25 17.9l-2.5 6.4c0 .7.6 1.1 1.1 1.3v20.8h-5.5v2.7h13.7v-2.7h-5.5V25.6z"/>
+                            <path class="${state}" fill="var(--button-card-light-color-no-temperature)" d="M24.6.9l-9.4.5c-.6.1-1.9 0-2.5 2.1s-2.4 9.1-4 16.9c-.2.7-.5 2-.5 2.3s-.4 1.6.9 1.6c.8.1 7.4.3 15.9.3 8.6 0 15.1-.3 15.9-.3 1.3-.1.9-1.3.9-1.6s-.3-1.6-.5-2.3c-1.6-7.8-3.4-14.8-4-16.9s-1.9-2-2.5-2.1c-1.6-.2-6.9-.4-9.4-.5"/> </svg>`;]]]
+                        styles:
+                          custom_fields:
+                            icon_animate:
+                              [top: 11%, left: 5%, width: 2.85em, position: absolute]                  
+                        template: light    
                     #----------------------------------------------------------------
                     ## Right Track
                     #----------------------------------------------------------------    
                     - type: 'custom:button-card'
                       entity: light.right_track
                       name: Right
-                      template: test
+                      custom_fields:
+                          icon_animate: >
+                            [[[ const state = entity.state === 'on' ? 'animate' : null;
+                            return `<svg viewBox="0 0 50 50"><style>@keyframes animate{0%{transform: scale(0.85);}20%{transform: scale(1.1);}40%{transform: scale(0.95);}60%{transform: scale(1.03);}80%{transform: scale(0.97);}100%{transform: scale(1);}}.animate{animation: animate 0.8s; transform-origin: center;}</style>
+                            <path fill="#9da0a2" d="M26.4 25.6c.6-.3 1.1-.7 1.1-1.3L25 17.9l-2.5 6.4c0 .7.6 1.1 1.1 1.3v20.8h-5.5v2.7h13.7v-2.7h-5.5V25.6z"/>
+                            <path class="${state}" fill="var(--button-card-light-color-no-temperature)" d="M24.6.9l-9.4.5c-.6.1-1.9 0-2.5 2.1s-2.4 9.1-4 16.9c-.2.7-.5 2-.5 2.3s-.4 1.6.9 1.6c.8.1 7.4.3 15.9.3 8.6 0 15.1-.3 15.9-.3 1.3-.1.9-1.3.9-1.6s-.3-1.6-.5-2.3c-1.6-7.8-3.4-14.8-4-16.9s-1.9-2-2.5-2.1c-1.6-.2-6.9-.4-9.4-.5"/> </svg>`;]]]
+                        styles:
+                          custom_fields:
+                            icon_animate:
+                              [top: 11%, left: 5%, width: 2.85em, position: absolute]                  
+                        template: light    
                     #----------------------------------------------------------------
                     ## Heater
                     #----------------------------------------------------------------                    
@@ -387,7 +497,17 @@ views:
                     - type: 'custom:button-card'
                       entity: light.kitchen
                       name: Track
-                      template: test
+                      custom_fields:
+                          icon_animate: >
+                            [[[ const state = entity.state === 'on' ? 'animate' : null;
+                            return `<svg viewBox="0 0 50 50"><style>@keyframes animate{0%{transform: scale(0.85);}20%{transform: scale(1.1);}40%{transform: scale(0.95);}60%{transform: scale(1.03);}80%{transform: scale(0.97);}100%{transform: scale(1);}}.animate{animation: animate 0.8s; transform-origin: center;}</style>
+                            <path fill="#9da0a2" d="M26.4 25.6c.6-.3 1.1-.7 1.1-1.3L25 17.9l-2.5 6.4c0 .7.6 1.1 1.1 1.3v20.8h-5.5v2.7h13.7v-2.7h-5.5V25.6z"/>
+                            <path class="${state}" fill="var(--button-card-light-color-no-temperature)" d="M24.6.9l-9.4.5c-.6.1-1.9 0-2.5 2.1s-2.4 9.1-4 16.9c-.2.7-.5 2-.5 2.3s-.4 1.6.9 1.6c.8.1 7.4.3 15.9.3 8.6 0 15.1-.3 15.9-.3 1.3-.1.9-1.3.9-1.6s-.3-1.6-.5-2.3c-1.6-7.8-3.4-14.8-4-16.9s-1.9-2-2.5-2.1c-1.6-.2-6.9-.4-9.4-.5"/> </svg>`;]]]
+                        styles:
+                          custom_fields:
+                            icon_animate:
+                              [top: 11%, left: 5%, width: 2.85em, position: absolute]                  
+                        template: light
                     #----------------------------------------------------------------
                     ## Nanoleaf Dino Panesl
                     #----------------------------------------------------------------                    
