@@ -11,7 +11,7 @@
       name:
         - padding: 8px 1em
         - font-family: Roboto
-        - font-size: 20px
+        - font-size: 16px
       card:
         - border-radius: 30px
         - background: 'rgba(255,255,255,.1)'
