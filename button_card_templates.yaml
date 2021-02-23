@@ -11,7 +11,7 @@
       name:
         - padding: 8px 1em
         - font-family: Roboto
-        - font-size: 16px
+        - font-size: 14px
       card:
         - border-radius: 30px
         - background: 'rgba(255,255,255,.1)'
@@ -45,15 +45,15 @@
       haptic: light
     styles:
       name:
-        [top: 57.7%, left: 11%, line-height: 28.8px, position: absolute]
+        [top: 57.7%, left: 11%, line-height: 2em, position: absolute]
       state:
-        [top: 74%, left: 11%, line-height: 28.8px, position: absolute]
+        [top: 74%, left: 11%, line-height: 2em, position: absolute]
       card:
-        [font-family: Sf Display, letter-spacing: 0.72px, font-weight: 400, color: 'rgba(255, 255, 255, 0.3)', font-size: 1em, 
-        background-color: 'rgba(115, 115, 115, 0.2)', border-radius: 30px, box-shadow: none, transition: none]
+        [font-family: Sf Display, letter-spacing: 0.05em, font-weight: 400, color: 'rgba(255, 255, 255, 0.3)', font-size: 1em, 
+        background-color: 'rgba(115, 115, 115, 0.2)', border-radius: 2em, box-shadow: none, transition: none]
       custom_fields:
         circle:
-          [top: 8.5%, left: 56.2%, width: 45px, position: absolute, letter-spacing: 0.21px]
+          [top: 8.5%, left: 56.2%, width: 3.2em, position: absolute, letter-spacing: 0.015em]
 
   light:
     template: ['base']
