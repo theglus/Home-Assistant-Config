@@ -53,7 +53,7 @@
         background-color: 'rgba(115, 115, 115, 0.2)', border-radius: 30px, box-shadow: none, transition: none]
       custom_fields:
         circle:
-          [top: 8.5%, left: 56.2%, width: 24.99px, position: absolute, letter-spacing: 0.21px]
+          [top: 8.5%, left: 56.2%, width: 40px, position: absolute, letter-spacing: 0.21px]
 
   light:
     template: ['base']
