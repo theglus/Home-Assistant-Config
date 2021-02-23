@@ -178,7 +178,7 @@ views:
                       styles:
                         custom_fields:
                           icon_animate:
-                            [top: 11%, left: 5%, width: 40px, position: absolute]                  
+                            [top: 11%, left: 5%, width: 2.85em, position: absolute]                  
                       template: light                 
                     #----------------------------------------------------------------
                     ## Front Door Sensor  
