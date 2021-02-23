@@ -49,7 +49,7 @@
       state:
         [top: 74%, left: 11%, line-height: 28.8px, position: absolute]
       card:
-        [font-family: Sf Display, letter-spacing: 0.72px, font-weight: 400, color: 'rgba(255, 255, 255, 0.3)', font-size: 9.56px, 
+        [font-family: Sf Display, letter-spacing: 0.72px, font-weight: 400, color: 'rgba(255, 255, 255, 0.3)', font-size: 12px, 
         background-color: 'rgba(115, 115, 115, 0.2)', border-radius: 30px, box-shadow: none, transition: none]
       custom_fields:
         circle:
