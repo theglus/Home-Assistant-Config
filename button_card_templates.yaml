@@ -45,15 +45,15 @@
       haptic: light
     styles:
       name:
-        [top: 57.7%, left: 11%, line-height: 2vw, position: absolute]
+        [top: 57.7%, left: 11%, line-height: 28.8px, position: absolute]
       state:
-        [top: 74%, left: 11%, line-height: 2vw, position: absolute]
+        [top: 74%, left: 11%, line-height: 28.8px, position: absolute]
       card:
-        [font-family: Sf Display, letter-spacing: 0.05vw, font-weight: 400, color: 'rgba(255, 255, 255, 0.3)', font-size: 1.34vw, 
-        background-color: 'rgba(115, 115, 115, 0.2)', border-radius: 0.8vw, box-shadow: none, transition: none]
+        [font-family: Sf Display, letter-spacing: 0.72px, font-weight: 400, color: 'rgba(255, 255, 255, 0.3)', font-size: 9.56px, 
+        background-color: 'rgba(115, 115, 115, 0.2)', border-radius: 1.152px, box-shadow: none, transition: none]
       custom_fields:
         circle:
-          [top: 8.5%, left: 56.2%, width: 3.5vw, position: absolute, letter-spacing: 0.03vw]
+          [top: 8.5%, left: 56.2%, width: 24.99px, position: absolute, letter-spacing: 0.21px]
 
   light:
     template: ['base']
@@ -156,4 +156,4 @@
     styles:
       custom_fields:
         icon_animate:
-          [top: 11%, left: 4.6%, width: 3.05vw, position: absolute]  
+          [top: 11%, left: 4.6%, width: 21.77px, position: absolute]  
