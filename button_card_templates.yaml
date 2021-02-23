@@ -78,7 +78,7 @@
               icon: none
               fullscreen: false
               brightnessWidth: 130px
-              brightnessHeight: 360px
+              brightnessHeight: 300px
               borderRadius: 1.7em
               sliderColor: '#c7c7c7'
               sliderTrackColor: rgba(25, 25, 25, 0.9)
