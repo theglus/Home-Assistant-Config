@@ -108,6 +108,60 @@
                     entity_id: '[[[ return entity.entity_id ]]]'
                     color_temp: 500
                 template: color_action
+
+  light-color:
+    template: ['base']
+    custom_fields:
+      circle: >
+        [[[ if (entity.state === 'on' && entity.attributes.brightness) {
+        const brightness = Math.round(entity.attributes.brightness / 2.54);
+        const radius = 20.5; const circumference = radius * 2 * Math.PI; 
+        return `<svg viewBox="0 0 50 50"><circle cx="25" cy="25" r="${radius}" stroke="#b2b2b2" stroke-width="1.5" fill="none" style="
+        transform: rotate(-90deg); transform-origin: 50% 50%; stroke-dasharray: ${circumference}; stroke-dashoffset: ${circumference - brightness / 100 * circumference};" />
+        <text x="50%" y="54%" fill="#8d8e90" font-size="14" text-anchor="middle" alignment-baseline="middle">${brightness}<tspan font-size="10">%</tspan></text></svg>`; } ]]]
+    hold_action:
+      action: fire-dom-event
+      browser_mod:
+        command: popup
+        title: '[[[ return entity.attributes.friendly_name ]]]'
+        card:
+          type: entities
+          entities:
+            - type: custom:light-popup-card
+              entity: '[[[ return entity.entity_id ]]]'
+              icon: none
+              fullscreen: false
+              brightnessWidth: 130px
+              brightnessHeight: 300px
+              borderRadius: 1.7em
+              sliderColor: '#c7c7c7'
+              sliderTrackColor: rgba(25, 25, 25, 0.9)
+            - type: custom:hui-element
+              card_type: horizontal-stack
+              style: '#root { justify-content: center; margin-top: 2em; }'
+              cards:
+              - type: custom:button-card
+                styles:
+                  card:
+                    [background: '#ffe7c0']
+                tap_action:
+                  action: call-service
+                  service: light.turn_on
+                  service_data:
+                    entity_id: '[[[ return entity.entity_id ]]]'
+                    color_temp: 370
+                template: color_action
+              - type: custom:button-card
+                styles:
+                  card:
+                    [background: '#ffa200']
+                tap_action:
+                  action: call-service
+                  service: light.turn_on
+                  service_data:
+                    entity_id: '[[[ return entity.entity_id ]]]'
+                    color_temp: 500
+                template: color_action
             - type: custom:hui-element
               card_type: horizontal-stack
               style: '#root { justify-content: center; margin-bottom: 1em; }'

@@ -174,7 +174,7 @@ views:
                     - type: 'custom:button-card'
                       entity: light.hallway_runner
                       name: Runner           
-                      template: light     
+                      template: light-color     
                     #----------------------------------------------------------------
                     ## Potter Lamp  
                     #----------------------------------------------------------------
@@ -191,7 +191,7 @@ views:
                         custom_fields:
                           icont_lamp:
                             [top: 11%, left: 5%, width: 2.85em, position: absolute]                                                 
-                      template: light    
+                      template: light-color   
                     #----------------------------------------------------------------
                     ## Stair Light  
                     #----------------------------------------------------------------
@@ -247,7 +247,7 @@ views:
                         custom_fields:
                           icont_overhead:
                             [top: 11%, left: 5%, width: 1em, position: absolute]                    
-                      template: light     
+                      template: light   
                     #----------------------------------------------------------------
                     ## Office Desk Light  
                     #----------------------------------------------------------------
@@ -257,7 +257,7 @@ views:
                       custom_fields:
                         icon_overhead: *icon_overhead
                       styles: *icon_overhead_styles                  
-                      template: light     
+                      template: light
                     #----------------------------------------------------------------
                     ## Office Bed Light  
                     #----------------------------------------------------------------
@@ -267,7 +267,7 @@ views:
                       custom_fields:
                         icon_overhead: *icon_overhead
                       styles: *icon_overhead_styles                   
-                      template: light     
+                      template: light
                     #----------------------------------------------------------------
                     ## Printer
                     #----------------------------------------------------------------
@@ -301,7 +301,7 @@ views:
                       custom_fields:
                         icon_spot: *icon_spot
                       styles: *icon_spot_styles                                     
-                      template: light    
+                      template: light-color
                     #----------------------------------------------------------------
                     ## Garden Light
                     #----------------------------------------------------------------                
@@ -311,7 +311,7 @@ views:
                       custom_fields:
                         icon_lamp: *icon_lamp
                       styles: *icon_lamp_styles                  
-                      template: light    
+                      template: light
                       hold_action:
                         action: none                      
                     #----------------------------------------------------------------
@@ -323,7 +323,7 @@ views:
                       custom_fields:
                         icon_lamp: *icon_lamp
                       styles: *icon_lamp_styles                  
-                      template: light    
+                      template: light-color
                     #----------------------------------------------------------------
                     ## Left Track
                     #----------------------------------------------------------------                
@@ -333,7 +333,7 @@ views:
                       custom_fields:
                         icon_spot: *icon_spot
                       styles: *icon_spot_styles               
-                      template: light    
+                      template: light-color
                     #----------------------------------------------------------------
                     ## Center Track
                     #----------------------------------------------------------------                
@@ -343,7 +343,7 @@ views:
                       custom_fields:
                         icon_spot: *icon_spot
                       styles: *icon_spot_styles          
-                      template: light    
+                      template: light-color
                     #----------------------------------------------------------------
                     ## Right Track
                     #----------------------------------------------------------------    
@@ -353,7 +353,7 @@ views:
                       custom_fields:
                         icon_spot: *icon_spot
                       styles: *icon_spot_styles         
-                      template: light    
+                      template: light-color
                     #----------------------------------------------------------------
                     ## Heater
                     #----------------------------------------------------------------                    
@@ -454,7 +454,7 @@ views:
                       custom_fields:
                         icon_spot: *icon_spot
                       styles: *icon_spot_styles              
-                      template: light
+                      template: light-color
                     #----------------------------------------------------------------
                     ## Nanoleaf Dino Panesl
                     #----------------------------------------------------------------                    
