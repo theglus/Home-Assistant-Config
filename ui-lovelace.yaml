@@ -307,7 +307,7 @@ views:
                     #----------------------------------------------------------------                
                     - type: 'custom:button-card'
                       entity: light.garden
-                      name: Ceiling
+                      name: Garden
                       custom_fields:
                         icon_lamp: *icon_lamp
                       styles: *icon_lamp_styles                  
