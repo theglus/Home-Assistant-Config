@@ -293,7 +293,6 @@ views:
                       entity: light.track
                       name: Track
                       custom_fields:
-                      custom_fields:
                         icon_spot: *icon_spot
                       styles: *icon_spot_styles                                     
                       template: light    
