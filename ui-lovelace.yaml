@@ -311,7 +311,7 @@ views:
                       custom_fields:
                         icon_lamp: *icon_lamp
                       styles: *icon_lamp_styles                  
-                      template: light                    
+                      template: light-color                    
                     #----------------------------------------------------------------
                     ## Yumi Lamp
                     #----------------------------------------------------------------                
