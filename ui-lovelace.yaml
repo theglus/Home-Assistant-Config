@@ -312,8 +312,8 @@ views:
                         icon_lamp: *icon_lamp
                       styles: *icon_lamp_styles                  
                       template: light
-                      hold_action:
-                        action: none                      
+                 #     hold_action:
+                #        action: none                      
                     #----------------------------------------------------------------
                     ## Yumi Lamp
                     #----------------------------------------------------------------                
