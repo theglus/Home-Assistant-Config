@@ -175,12 +175,12 @@ views:
                       entity: light.hallway_runner
                       name: Runner
                       custom_fields:
-                          icont_lamp: >
+                          icont_lamp: &icon_spot_styles >
                             [[[ const state = entity.state === 'on' ? 'animate' : null;
                             return `<svg viewBox="0 0 50 50"><style>@keyframes animate{0%{transform: scale(0.85);}20%{transform: scale(1.1);}40%{transform: scale(0.95);}60%{transform: scale(1.03);}80%{transform: scale(0.97);}100%{transform: scale(1);}}.animate{animation: animate 0.8s; transform-origin: center;}</style>
                             <path fill="#9da0a2" d="M26.4 25.6c.6-.3 1.1-.7 1.1-1.3L25 17.9l-2.5 6.4c0 .7.6 1.1 1.1 1.3v20.8h-5.5v2.7h13.7v-2.7h-5.5V25.6z"/>
                             <path class="${state}" fill="var(--button-card-light-color-no-temperature)" d="M24.6.9l-9.4.5c-.6.1-1.9 0-2.5 2.1s-2.4 9.1-4 16.9c-.2.7-.5 2-.5 2.3s-.4 1.6.9 1.6c.8.1 7.4.3 15.9.3 8.6 0 15.1-.3 15.9-.3 1.3-.1.9-1.3.9-1.6s-.3-1.6-.5-2.3c-1.6-7.8-3.4-14.8-4-16.9s-1.9-2-2.5-2.1c-1.6-.2-6.9-.4-9.4-.5"/> </svg>`;]]]
-                      styles:
+                      styles: &icon_spot_styles
                         custom_fields:
                           icont_lamp:
                             [top: 11%, left: 5%, width: 2.85em, position: absolute]                  
@@ -192,15 +192,8 @@ views:
                       entity: light.potter_lamp
                       name: Lamp  
                       custom_fields:
-                        icont_lamp: >
-                          [[[ const state = entity.state === 'on' ? 'animate' : null;
-                          return `<svg viewBox="0 0 50 50"><style>@keyframes animate{0%{transform: scale(0.85);}20%{transform: scale(1.1);}40%{transform: scale(0.95);}60%{transform: scale(1.03);}80%{transform: scale(0.97);}100%{transform: scale(1);}}.animate{animation: animate 0.8s; transform-origin: center;}</style>
-                          <path fill="#9da0a2" d="M26.4 25.6c.6-.3 1.1-.7 1.1-1.3L25 17.9l-2.5 6.4c0 .7.6 1.1 1.1 1.3v20.8h-5.5v2.7h13.7v-2.7h-5.5V25.6z"/>
-                          <path class="${state}" fill="var(--button-card-light-color-no-temperature)" d="M24.6.9l-9.4.5c-.6.1-1.9 0-2.5 2.1s-2.4 9.1-4 16.9c-.2.7-.5 2-.5 2.3s-.4 1.6.9 1.6c.8.1 7.4.3 15.9.3 8.6 0 15.1-.3 15.9-.3 1.3-.1.9-1.3.9-1.6s-.3-1.6-.5-2.3c-1.6-7.8-3.4-14.8-4-16.9s-1.9-2-2.5-2.1c-1.6-.2-6.9-.4-9.4-.5"/> </svg>`;]]]
-                      styles:
-                        custom_fields:
-                          icont_lamp:
-                            [top: 11%, left: 5%, width: 2.85em, position: absolute]                  
+                        icon_spot: *icon_lamp
+                      styles: *icon_lamp_styles                      
                       template: light                 
                     #----------------------------------------------------------------
                     ## Front Door Sensor  
@@ -232,15 +225,8 @@ views:
                       entity: light.overhead
                       name: Ceiling
                       custom_fields:
-                          icont_lamp: >
-                            [[[ const state = entity.state === 'on' ? 'animate' : null;
-                            return `<svg viewBox="0 0 50 50"><style>@keyframes animate{0%{transform: scale(0.85);}20%{transform: scale(1.1);}40%{transform: scale(0.95);}60%{transform: scale(1.03);}80%{transform: scale(0.97);}100%{transform: scale(1);}}.animate{animation: animate 0.8s; transform-origin: center;}</style>
-                            <path fill="#9da0a2" d="M26.4 25.6c.6-.3 1.1-.7 1.1-1.3L25 17.9l-2.5 6.4c0 .7.6 1.1 1.1 1.3v20.8h-5.5v2.7h13.7v-2.7h-5.5V25.6z"/>
-                            <path class="${state}" fill="var(--button-card-light-color-no-temperature)" d="M24.6.9l-9.4.5c-.6.1-1.9 0-2.5 2.1s-2.4 9.1-4 16.9c-.2.7-.5 2-.5 2.3s-.4 1.6.9 1.6c.8.1 7.4.3 15.9.3 8.6 0 15.1-.3 15.9-.3 1.3-.1.9-1.3.9-1.6s-.3-1.6-.5-2.3c-1.6-7.8-3.4-14.8-4-16.9s-1.9-2-2.5-2.1c-1.6-.2-6.9-.4-9.4-.5"/> </svg>`;]]]
-                      styles:
-                        custom_fields:
-                          icont_lamp:
-                            [top: 11%, left: 5%, width: 2.85em, position: absolute]                  
+                        icon_spot: *icon_lamp
+                      styles: *icon_lamp_styles                  
                       template: light     
                     #----------------------------------------------------------------
                     ## Office Desk Light  
@@ -249,15 +235,8 @@ views:
                       entity: light.overhead_desk
                       name: Desk
                       custom_fields:
-                          icont_lamp: >
-                            [[[ const state = entity.state === 'on' ? 'animate' : null;
-                            return `<svg viewBox="0 0 50 50"><style>@keyframes animate{0%{transform: scale(0.85);}20%{transform: scale(1.1);}40%{transform: scale(0.95);}60%{transform: scale(1.03);}80%{transform: scale(0.97);}100%{transform: scale(1);}}.animate{animation: animate 0.8s; transform-origin: center;}</style>
-                            <path fill="#9da0a2" d="M26.4 25.6c.6-.3 1.1-.7 1.1-1.3L25 17.9l-2.5 6.4c0 .7.6 1.1 1.1 1.3v20.8h-5.5v2.7h13.7v-2.7h-5.5V25.6z"/>
-                            <path class="${state}" fill="var(--button-card-light-color-no-temperature)" d="M24.6.9l-9.4.5c-.6.1-1.9 0-2.5 2.1s-2.4 9.1-4 16.9c-.2.7-.5 2-.5 2.3s-.4 1.6.9 1.6c.8.1 7.4.3 15.9.3 8.6 0 15.1-.3 15.9-.3 1.3-.1.9-1.3.9-1.6s-.3-1.6-.5-2.3c-1.6-7.8-3.4-14.8-4-16.9s-1.9-2-2.5-2.1c-1.6-.2-6.9-.4-9.4-.5"/> </svg>`;]]]
-                      styles:
-                        custom_fields:
-                          icont_lamp:
-                            [top: 11%, left: 5%, width: 2.85em, position: absolute]                  
+                        icon_spot: *icon_lamp
+                      styles: *icon_lamp_styles                  
                       template: light     
                     #----------------------------------------------------------------
                     ## Office Bed Light  
@@ -266,15 +245,8 @@ views:
                       entity: light.overhead_bed
                       name: Bed
                       custom_fields:
-                          icont_lamp: >
-                            [[[ const state = entity.state === 'on' ? 'animate' : null;
-                            return `<svg viewBox="0 0 50 50"><style>@keyframes animate{0%{transform: scale(0.85);}20%{transform: scale(1.1);}40%{transform: scale(0.95);}60%{transform: scale(1.03);}80%{transform: scale(0.97);}100%{transform: scale(1);}}.animate{animation: animate 0.8s; transform-origin: center;}</style>
-                            <path fill="#9da0a2" d="M26.4 25.6c.6-.3 1.1-.7 1.1-1.3L25 17.9l-2.5 6.4c0 .7.6 1.1 1.1 1.3v20.8h-5.5v2.7h13.7v-2.7h-5.5V25.6z"/>
-                            <path class="${state}" fill="var(--button-card-light-color-no-temperature)" d="M24.6.9l-9.4.5c-.6.1-1.9 0-2.5 2.1s-2.4 9.1-4 16.9c-.2.7-.5 2-.5 2.3s-.4 1.6.9 1.6c.8.1 7.4.3 15.9.3 8.6 0 15.1-.3 15.9-.3 1.3-.1.9-1.3.9-1.6s-.3-1.6-.5-2.3c-1.6-7.8-3.4-14.8-4-16.9s-1.9-2-2.5-2.1c-1.6-.2-6.9-.4-9.4-.5"/> </svg>`;]]]
-                      styles:
-                        custom_fields:
-                          icont_lamp:
-                            [top: 11%, left: 5%, width: 2.85em, position: absolute]                  
+                        icon_spot: *icon_lamp
+                      styles: *icon_lamp_styles                  
                       template: light     
                     #----------------------------------------------------------------
                     ## Printer
@@ -323,15 +295,8 @@ views:
                       entity: light.garden
                       name: Ceiling
                       custom_fields:
-                          icont_lamp: >
-                            [[[ const state = entity.state === 'on' ? 'animate' : null;
-                            return `<svg viewBox="0 0 50 50"><style>@keyframes animate{0%{transform: scale(0.85);}20%{transform: scale(1.1);}40%{transform: scale(0.95);}60%{transform: scale(1.03);}80%{transform: scale(0.97);}100%{transform: scale(1);}}.animate{animation: animate 0.8s; transform-origin: center;}</style>
-                            <path fill="#9da0a2" d="M26.4 25.6c.6-.3 1.1-.7 1.1-1.3L25 17.9l-2.5 6.4c0 .7.6 1.1 1.1 1.3v20.8h-5.5v2.7h13.7v-2.7h-5.5V25.6z"/>
-                            <path class="${state}" fill="var(--button-card-light-color-no-temperature)" d="M24.6.9l-9.4.5c-.6.1-1.9 0-2.5 2.1s-2.4 9.1-4 16.9c-.2.7-.5 2-.5 2.3s-.4 1.6.9 1.6c.8.1 7.4.3 15.9.3 8.6 0 15.1-.3 15.9-.3 1.3-.1.9-1.3.9-1.6s-.3-1.6-.5-2.3c-1.6-7.8-3.4-14.8-4-16.9s-1.9-2-2.5-2.1c-1.6-.2-6.9-.4-9.4-.5"/> </svg>`;]]]
-                      styles:
-                        custom_fields:
-                          icont_lamp:
-                            [top: 11%, left: 5%, width: 2.85em, position: absolute]                  
+                        icon_spot: *icon_lamp
+                      styles: *icon_lamp_styles                  
                       template: light    
                       hold_action:
                         action: none                      
@@ -342,15 +307,8 @@ views:
                       entity: light.yumi_lamp
                       name: Lamp
                       custom_fields:
-                          icont_lamp: >
-                            [[[ const state = entity.state === 'on' ? 'animate' : null;
-                            return `<svg viewBox="0 0 50 50"><style>@keyframes animate{0%{transform: scale(0.85);}20%{transform: scale(1.1);}40%{transform: scale(0.95);}60%{transform: scale(1.03);}80%{transform: scale(0.97);}100%{transform: scale(1);}}.animate{animation: animate 0.8s; transform-origin: center;}</style>
-                            <path fill="#9da0a2" d="M26.4 25.6c.6-.3 1.1-.7 1.1-1.3L25 17.9l-2.5 6.4c0 .7.6 1.1 1.1 1.3v20.8h-5.5v2.7h13.7v-2.7h-5.5V25.6z"/>
-                            <path class="${state}" fill="var(--button-card-light-color-no-temperature)" d="M24.6.9l-9.4.5c-.6.1-1.9 0-2.5 2.1s-2.4 9.1-4 16.9c-.2.7-.5 2-.5 2.3s-.4 1.6.9 1.6c.8.1 7.4.3 15.9.3 8.6 0 15.1-.3 15.9-.3 1.3-.1.9-1.3.9-1.6s-.3-1.6-.5-2.3c-1.6-7.8-3.4-14.8-4-16.9s-1.9-2-2.5-2.1c-1.6-.2-6.9-.4-9.4-.5"/> </svg>`;]]]
-                      styles:
-                        custom_fields:
-                          icont_lamp:
-                            [top: 11%, left: 5%, width: 2.85em, position: absolute]                  
+                        icon_spot: *icon_lamp
+                      styles: *icon_lamp_styles                  
                       template: light    
                     #----------------------------------------------------------------
                     ## Left Track
@@ -1136,185 +1094,3 @@ views:
             graph: line
             detail: 2
             entity: sensor.temperature_media
-  - title: ''
-    path: lights
-    panel: false
-    icon: 'mdi:lightbulb'
-    badges: []
-    cards:
-      - type: 'custom:stack-in-card'
-        mode: vertical
-        cards:
-          - type: picture-glance
-            entities:
-              - sensor.temperature_living_room
-              - light.track
-              - light.garden
-            image: /local/img/living.jpg
-            entity: light.living_room
-            tap_action:
-              action: toggle
-            state_filter:
-              'on': brightness(110%) saturate(1.2)
-              'off': brightness(50%) hue-rotate(45deg)
-            title: Living Room
-          - type: horizontal-stack
-            cards:
-              - type: vertical-stack
-                cards:
-                  - type: light
-                    entity: light.yumi_lamp
-                    name: Yumi
-                  - type: 'custom:rgb-light-card'
-                    entity: light.yumi_lamp
-                    justify: center
-                    size: 18
-                    hide_when_off: true
-                    colors:
-                      - color_temp: 370
-                      - color_temp: 500
-                      - rgb_color:
-                          - 244
-                          - 38
-                          - 255
-                      - rgb_color:
-                          - 70
-                          - 255
-                          - 236
-              - type: vertical-stack
-                cards:
-                  - type: light
-                    entity: light.left_track
-                    name: Left
-                  - type: 'custom:rgb-light-card'
-                    entity: light.left_track
-                    justify: center
-                    size: 18
-                    hide_when_off: true
-                    colors:
-                      - color_temp: 370
-                      - color_temp: 500
-                      - rgb_color:
-                          - 244
-                          - 38
-                          - 255
-                      - rgb_color:
-                          - 70
-                          - 255
-                          - 236
-              - type: vertical-stack
-                cards:
-                  - type: light
-                    entity: light.center_track
-                    name: Center
-                  - type: 'custom:rgb-light-card'
-                    entity: light.center_track
-                    justify: center
-                    size: 18
-                    hide_when_off: true
-                    colors:
-                      - color_temp: 370
-                      - color_temp: 500
-                      - rgb_color:
-                          - 244
-                          - 38
-                          - 255
-                      - rgb_color:
-                          - 70
-                          - 255
-                          - 236
-              - type: vertical-stack
-                cards:
-                  - type: light
-                    entity: light.right_track
-                    name: Right
-                  - type: 'custom:rgb-light-card'
-                    entity: light.right_track
-                    justify: center
-                    size: 18
-                    hide_when_off: true
-                    colors:
-                      - color_temp: 370
-                      - color_temp: 500
-                      - rgb_color:
-                          - 244
-                          - 38
-                          - 255
-                      - rgb_color:
-                          - 70
-                          - 255
-                          - 236
-      - type: 'custom:stack-in-card'
-        mode: vertical
-        cards:
-          - type: picture-glance
-            entities:
-              - binary_sensor.front_door
-              - light.hallway_marquee
-              - light.hallway_runner
-              - light.potter_lamp
-            image: /local/img/doge.jpg
-            entity: light.hallway
-            tap_action:
-              action: toggle
-            state_filter:
-              'on': brightness(110%) saturate(1.2)
-              'off': brightness(50%) hue-rotate(45deg)
-            title: Entryway
-          - type: horizontal-stack
-            cards:
-              - type: vertical-stack
-                cards:
-                  - type: light
-                    entity: light.hallway_runner
-                    name: Runner
-                  - type: 'custom:rgb-light-card'
-                    entity: light.hallway_runner
-                    justify: center
-                    size: 18
-                    hide_when_off: true
-                    colors:
-                      - color_temp: 370
-                      - color_temp: 500
-                      - rgb_color:
-                          - 244
-                          - 38
-                          - 255
-                      - rgb_color:
-                          - 70
-                          - 255
-                          - 236
-              - type: vertical-stack
-                cards:
-                  - type: light
-                    entity: light.stair
-                    name: Center
-                  - type: 'custom:rgb-light-card'
-                    entity: light.stair
-                    justify: center
-                    size: 18
-                    hide_when_off: true
-                    colors:
-                      - color_temp: 370
-                      - color_temp: 500
-              - type: vertical-stack
-                cards:
-                  - type: light
-                    entity: light.potter_lamp
-                    name: Right
-                  - type: 'custom:rgb-light-card'
-                    entity: light.potter_lamp
-                    justify: center
-                    size: 18
-                    hide_when_off: true
-                    colors:
-                      - color_temp: 370
-                      - color_temp: 500
-                      - rgb_color:
-                          - 244
-                          - 38
-                          - 255
-                      - rgb_color:
-                          - 70
-                          - 255
-                          - 236
