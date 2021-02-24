@@ -36,7 +36,7 @@ views:
                     icon: 'hass:coat-rack'
                     state_styles:
                       Entrway:
-                        button:
+                        button: &button_state_styles
                           background: 'rgba(255,255,255,.5)'
                           box-shadow: '0 0 15px rgba(255,255,255,.6)'
                     style:
@@ -60,9 +60,7 @@ views:
                     icon: 'hass:desk'
                     state_styles:
                       Office:
-                        button:
-                          background: 'rgba(255,255,255,.5)'
-                          box-shadow: '0 0 15px rgba(255,255,255,.6)'
+                        button: *button_state_styles
                     style:
                       button:
                         - background: 'rgba(255,255,255,.1)'
@@ -84,9 +82,7 @@ views:
                     icon: 'hass:sofa'
                     state_styles:
                       Living Room:
-                        button:
-                          background: 'rgba(255,255,255,.5)'
-                          box-shadow: '0 0 15px rgba(255,255,255,.6)'
+                        button: *button_state_styles
                     style:
                       button:
                         - background: 'rgba(255,255,255,.1)'
@@ -108,9 +104,7 @@ views:
                     icon: 'hass:fridge'
                     state_styles:
                       Kitchen:
-                        button:
-                          background: 'rgba(255,255,255,.5)'
-                          box-shadow: '0 0 15px rgba(255,255,255,.6)'
+                        button: *button_state_styles
                     style:
                       button:
                         - background: 'rgba(255,255,255,.1)'
