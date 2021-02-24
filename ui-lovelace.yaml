@@ -246,7 +246,7 @@ views:
                       styles: &icon_overhead_styles
                         custom_fields:
                           icont_overhead:
-                            [top: 11%, left: 5%, width: 2.85em, position: absolute]                    
+                            [top: 11%, left: 5%, width: 2em, position: absolute]                    
                       template: light     
                     #----------------------------------------------------------------
                     ## Office Desk Light  
