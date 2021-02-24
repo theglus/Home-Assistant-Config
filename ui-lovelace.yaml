@@ -236,21 +236,37 @@ views:
                     #----------------------------------------------------------------
                     - type: 'custom:button-card'
                       entity: light.overhead
-                      name: Ceiling               
+                      name: Ceiling
+                      custom_fields:
+                          icon_overhead: &icon_overhead >
+                            [[[ const state = entity.state === 'on' ? 'animate' : null;
+                            return `<svg viewBox="0 0 50 50"><style>@keyframes animate{0%{transform: scale(0.85);}20%{transform: scale(1.1);}40%{transform: scale(0.95);}60%{transform: scale(1.03);}80%{transform: scale(0.97);}100%{transform: scale(1);}}.animate{animation: animate 0.8s; transform-origin: center;}</style>
+                            <path fill="#9da0a2" d="M21 10C21 14.97 16.97 19 12 19C7.03 19 3 14.97 3 10V9.03C3 8.76 3.11 8.5 3.3 8.3C3.5 8.11 3.76 8 4.03 8H20C20.25 8 20.5 8.11 20.7 8.3C20.89 8.5 21 8.75 21 9V10M5 10C5 13.86 8.14 17 12 17C15.86 17 19 13.86 19 10H5M20 6V7H4V6C4 5.73 4.1 5.5 4.29 5.29C4.5 5.1 4.73 5 5 5H10V3H14V5H19C19.25 5 19.5 5.11 19.7 5.3C19.89 5.5 20 5.75 20 6Z"/>
+                            <path class="${state}" fill="var(--button-card-light-color-no-temperature)" d="M21 10C21 14.97 16.97 19 12 19C7.03 19 3 14.97 3 10V9.03C3 8.76 3.11 8.5 3.3 8.3C3.5 8.11 3.76 8 4.03 8H20C20.25 8 20.5 8.11 20.7 8.3C20.89 8.5 21 8.75 21 9V10M5 10C5 13.86 8.14 17 12 17C15.86 17 19 13.86 19 10H5M20 6V7H4V6C4 5.73 4.1 5.5 4.29 5.29C4.5 5.1 4.73 5 5 5H10V3H14V5H19C19.25 5 19.5 5.11 19.7 5.3C19.89 5.5 20 5.75 20 6Z"/> </svg>`;]]]
+                      styles: &icon_overhead_styles
+                        custom_fields:
+                          icont_overhead:
+                            [top: 11%, left: 5%, width: 1em, position: absolute]                    
                       template: light   
                     #----------------------------------------------------------------
                     ## Office Desk Light  
                     #----------------------------------------------------------------
                     - type: 'custom:button-card'
                       entity: light.overhead_desk
-                      name: Desk                
+                      name: Desk
+                      custom_fields:
+                        icon_overhead: *icon_overhead
+                      styles: *icon_overhead_styles                  
                       template: light
                     #----------------------------------------------------------------
                     ## Office Bed Light  
                     #----------------------------------------------------------------
                     - type: 'custom:button-card'
                       entity: light.overhead_bed
-                      name: Bed             
+                      name: Bed
+                      custom_fields:
+                        icon_overhead: *icon_overhead
+                      styles: *icon_overhead_styles                   
                       template: light
                     #----------------------------------------------------------------
                     ## Printer
@@ -295,9 +311,7 @@ views:
                       custom_fields:
                         icon_lamp: *icon_lamp
                       styles: *icon_lamp_styles                  
-                      template: light
-                      hold_action:
-                        action: none                      
+                      template: light                    
                     #----------------------------------------------------------------
                     ## Yumi Lamp
                     #----------------------------------------------------------------                
