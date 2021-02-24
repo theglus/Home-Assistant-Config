@@ -183,7 +183,7 @@ views:
                       styles: &icon_led_styles
                         custom_fields:
                           icon_led:
-                            [top: 11%, left: 5%, width: 2.85em, position: absolute]                          
+                            [top: 11%, left: 5%, width: 5.25em, position: absolute]                          
                       template: light-color     
                     #----------------------------------------------------------------
                     ## Potter Lamp  
@@ -256,7 +256,7 @@ views:
                       styles: &icon_overhead_styles
                         custom_fields:
                           icon_overhead:
-                            [top: 11%, left: 5%, width: 2.85em, position: absolute]                    
+                            [top: 11%, left: 5%, width: 5.25em, position: absolute]                    
                       template: light   
                     #----------------------------------------------------------------
                     ## Office Desk Light  
@@ -327,7 +327,7 @@ views:
                       styles:
                         custom_fields:
                           icon_garden:
-                            [top: 11%, left: 5%, width: 2.85em, position: absolute] 
+                            [top: 11%, left: 5%, width: 5.25em, position: absolute] 
                       template: light  
                       hold_action:
                         action: none                         
