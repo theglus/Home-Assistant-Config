@@ -182,7 +182,7 @@ views:
                       entity: light.potter_lamp
                       name: Lamp  
                       custom_fields:
-                        icon_spot: *icon_lamp
+                        icon_lamp: *icon_lamp
                       styles: *icon_lamp_styles                      
                       template: light    
                     #----------------------------------------------------------------
