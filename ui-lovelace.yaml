@@ -189,7 +189,7 @@ views:
                             <path class="${state}" fill="var(--button-card-light-color-no-temperature)" d="M24.6.9l-9.4.5c-.6.1-1.9 0-2.5 2.1s-2.4 9.1-4 16.9c-.2.7-.5 2-.5 2.3s-.4 1.6.9 1.6c.8.1 7.4.3 15.9.3 8.6 0 15.1-.3 15.9-.3 1.3-.1.9-1.3.9-1.6s-.3-1.6-.5-2.3c-1.6-7.8-3.4-14.8-4-16.9s-1.9-2-2.5-2.1c-1.6-.2-6.9-.4-9.4-.5"/> </svg>`;]]]
                       styles: &icon_lamp_styles
                         custom_fields:
-                          icont_lamp:
+                          icon_lamp:
                             [top: 11%, left: 5%, width: 2.85em, position: absolute]                                                 
                       template: light-color   
                     #----------------------------------------------------------------
