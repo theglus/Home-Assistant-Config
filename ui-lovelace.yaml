@@ -164,7 +164,7 @@ views:
                       styles:
                         custom_fields:
                           icon_marquee:
-                            [top: 11%, left: 5%, width: 5.25em, position: absolute]                  
+                            [top: 11%, left: 6%, width: 5.25em, position: absolute]                  
                       template: light     
                       hold_action:
                         action: none
@@ -197,7 +197,7 @@ views:
                     ## Stair Light  
                     #----------------------------------------------------------------
                     - type: 'custom:button-card'
-                      entity: light.potter_lamp
+                      entity: light.stair
                       name: Lamp  
                       custom_fields:
                         icon_spot: &icon_spot >
