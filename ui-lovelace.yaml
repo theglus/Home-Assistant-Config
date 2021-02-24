@@ -255,8 +255,8 @@ views:
                       entity: light.overhead_desk
                       name: Desk
                       custom_fields:
-                        icon_spot: *icon_lamp
-                      styles: *icon_lamp_styles                  
+                        icon_overhead: *icon_overhead
+                      styles: *icon_overhead_styles                  
                       template: light     
                     #----------------------------------------------------------------
                     ## Office Bed Light  
@@ -265,8 +265,8 @@ views:
                       entity: light.overhead_bed
                       name: Bed
                       custom_fields:
-                        icon_spot: *icon_lamp
-                      styles: *icon_lamp_styles                  
+                        icon_overhead: *icon_overhead
+                      styles: *icon_overhead_styles                   
                       template: light     
                     #----------------------------------------------------------------
                     ## Printer
