@@ -246,7 +246,7 @@ views:
                       styles: &icon_overhead_styles
                         custom_fields:
                           icont_overhead:
-                            [top: 11%, left: 5%, width: 2em, position: absolute]                    
+                            [top: 11%, left: 5%, width: 1em, position: absolute]                    
                       template: light     
                     #----------------------------------------------------------------
                     ## Office Desk Light  
@@ -309,7 +309,7 @@ views:
                       entity: light.garden
                       name: Ceiling
                       custom_fields:
-                        icon_spot: *icon_lamp
+                        icon_lamp: *icon_lamp
                       styles: *icon_lamp_styles                  
                       template: light    
                       hold_action:
@@ -321,7 +321,7 @@ views:
                       entity: light.yumi_lamp
                       name: Lamp
                       custom_fields:
-                        icon_spot: *icon_lamp
+                        icon_lamp: *icon_lamp
                       styles: *icon_lamp_styles                  
                       template: light    
                     #----------------------------------------------------------------
