@@ -223,6 +223,20 @@
       card:
         [border-radius: 50%, height: 4em, width: 4em, margin: 4px]
 
+  #################################################################
+  ## Loader
+  #################################################################
+  loader:
+    custom_fields:
+      loader: >
+        [[[ if (states[entity.entity_id.replace(entity.entity_id.split('.')[0], 'input_boolean')].state === 'on') { 
+        return '<img src="/local/loader.svg" width="100%">'; } ]]]
+    styles:
+      custom_fields:
+        loader:
+          [filter: "[[[ return entity.state === 'off' ? 'invert(1)' : 'none'; ]]]", 
+           top: 3%, left: 60%, width: 3.7vw, position: absolute, opacity: 0.6]
+           
 #################################################################
 #----------------------------------------------------------------
 ## Deprecated
