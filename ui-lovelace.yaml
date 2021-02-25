@@ -658,7 +658,7 @@ views:
                       entity: light.stair
                       name: Lamp  
                       custom_fields:
-                        icon_spot: *icon_sppt
+                        icon_spot: *icon_spot
                       styles: *icon_spot_styles                         
                       template: light                
                     #----------------------------------------------------------------
