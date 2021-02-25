@@ -638,15 +638,8 @@ views:
                       entity: light.hallway_runner
                       name: Runner         
                       custom_fields:
-                          icon_led: &icon_led >
-                            [[[ const state = entity.state === 'on' ? 'animate' : null;
-                            return `<svg viewBox="0 0 50 50"><style>@keyframes animate{0%{transform: scale(0.85);}20%{transform: scale(1.1);}40%{transform: scale(0.95);}60%{transform: scale(1.03);}80%{transform: scale(0.97);}100%{transform: scale(1);}}.animate{animation: animate 0.8s; transform-origin: center;}</style>
-                            <path fill="#9da0a2" d="M2.95 3L2 6.91L19.34 11.25L20.29 7.34L2.95 3M6.09 6.89L4.16 6.41L4.64 4.46L6.57 4.94L6.09 6.89M9.94 7.86L8 7.38L8.5 5.42L10.42 5.91L9.94 7.86M13.8 8.82L11.87 8.34L12.35 6.39L14.27 6.87L13.8 8.82M17.65 9.79L15.72 9.31L16.2 7.35L18.13 7.84L17.65 9.79M4.66 12.75L3.71 16.66L21.05 21L22 17.1L4.66 12.75M7.8 16.65L5.88 16.16L6.35 14.21L8.28 14.69L7.8 16.65M11.65 17.61L9.73 17.13L10.2 15.18L12.13 15.66L11.65 17.61M15.5 18.58L13.58 18.09L14.06 16.14L16 16.62L15.5 18.58M19.36 19.54L17.43 19.06L17.91 17.11L19.84 17.59L19.36 19.54M6.25 12.11L11 10.2L17.75 11.89L13 13.8L6.25 12.11Z"/>
-                            <path class="${state}" fill="var(--button-card-light-color-no-temperature)" d="M2.95 3L2 6.91L19.34 11.25L20.29 7.34L2.95 3M6.09 6.89L4.16 6.41L4.64 4.46L6.57 4.94L6.09 6.89M9.94 7.86L8 7.38L8.5 5.42L10.42 5.91L9.94 7.86M13.8 8.82L11.87 8.34L12.35 6.39L14.27 6.87L13.8 8.82M17.65 9.79L15.72 9.31L16.2 7.35L18.13 7.84L17.65 9.79M4.66 12.75L3.71 16.66L21.05 21L22 17.1L4.66 12.75M7.8 16.65L5.88 16.16L6.35 14.21L8.28 14.69L7.8 16.65M11.65 17.61L9.73 17.13L10.2 15.18L12.13 15.66L11.65 17.61M15.5 18.58L13.58 18.09L14.06 16.14L16 16.62L15.5 18.58M19.36 19.54L17.43 19.06L17.91 17.11L19.84 17.59L19.36 19.54M6.25 12.11L11 10.2L17.75 11.89L13 13.8L6.25 12.11Z"/> </svg>`;]]]
-                      styles: &icon_led_styles
-                        custom_fields:
-                          icon_led:
-                            [top: 11%, left: 5%, width: 5.25em, position: absolute]                          
+                        icon_led: *icon_led
+                      styles: *icon_led_styles                        
                       template: light-color     
                     #----------------------------------------------------------------
                     ## Potter Lamp  
@@ -655,15 +648,8 @@ views:
                       entity: light.potter_lamp
                       name: Lamp   
                       custom_fields:
-                          icon_lamp: &icon_lamp >
-                            [[[ const state = entity.state === 'on' ? 'animate' : null;
-                            return `<svg viewBox="0 0 50 50"><style>@keyframes animate{0%{transform: scale(0.85);}20%{transform: scale(1.1);}40%{transform: scale(0.95);}60%{transform: scale(1.03);}80%{transform: scale(0.97);}100%{transform: scale(1);}}.animate{animation: animate 0.8s; transform-origin: center;}</style>
-                            <path fill="#9da0a2" d="M26.4 25.6c.6-.3 1.1-.7 1.1-1.3L25 17.9l-2.5 6.4c0 .7.6 1.1 1.1 1.3v20.8h-5.5v2.7h13.7v-2.7h-5.5V25.6z"/>
-                            <path class="${state}" fill="var(--button-card-light-color-no-temperature)" d="M24.6.9l-9.4.5c-.6.1-1.9 0-2.5 2.1s-2.4 9.1-4 16.9c-.2.7-.5 2-.5 2.3s-.4 1.6.9 1.6c.8.1 7.4.3 15.9.3 8.6 0 15.1-.3 15.9-.3 1.3-.1.9-1.3.9-1.6s-.3-1.6-.5-2.3c-1.6-7.8-3.4-14.8-4-16.9s-1.9-2-2.5-2.1c-1.6-.2-6.9-.4-9.4-.5"/> </svg>`;]]]
-                      styles: &icon_lamp_styles
-                        custom_fields:
-                          icon_lamp:
-                            [top: 11%, left: 5%, width: 2.85em, position: absolute]                                                 
+                        icon_lamp: *icon_lamp
+                      styles: *icon_lamp_styles                                                 
                       template: light-color   
                     #----------------------------------------------------------------
                     ## Stair Light  
@@ -672,14 +658,8 @@ views:
                       entity: light.stair
                       name: Lamp  
                       custom_fields:
-                          icon_spot: &icon_spot >
-                            [[[ const state = entity.state === 'on' ? 'animate_on' : 'animate_off';
-                            return `<svg viewBox="0 0 50 50"><style>@keyframes animate_on{0%{transform: rotateZ(0deg); animation-timing-function: cubic-bezier(0.7, 0, 0.84, 0);}70%{transform: rotateZ(-15deg); animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);}75%{transform: rotateZ(-15deg); animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);}88%{transform: rotateZ(-11deg);}100%{transform: rotateZ(-15deg);}}.animate_on{animation: animate_on 0.7s; transform-origin: 40% 20%; animation-fill-mode: forwards; animation-delay: -0.1s;}@keyframes animate_off{0%{transform: rotateZ(-15deg); animation-timing-function: cubic-bezier(0.7, 0, 0.84, 0);}70%{transform: rotateZ(0deg); animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);}75%{transform: rotateZ(0deg); animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);}88%{transform: rotateZ(-4deg);}100%{transform: rotateZ(0deg);}}.animate_off{animation: animate_off 0.7s; transform-origin: 40% 20%; animation-fill-mode: forwards;}</style>
-                            <path style="clip-path: url(#mask);" fill="#9da0a2" d="M40.5.8H17.1c-.1 0-.1 0-.1.1A3.12 3.12 0 0 0 20.1 4h6.1c.1 0 .1 0 .1.1v7.4L18 19.1l3.6 3.5 9.1-8.6c.4-.4.6-1 .7-1.6V4c0-.1 0-.1.1-.1h6c1.7.1 3.1-1.3 3-3.1z"/><defs><clipPath id="mask"><path class="${state}" d="M0 9.1h24l8.3 8.8H50V-9H0z"/></clipPath></defs><path class="${state}" fill="var(--button-card-light-color-no-temperature)" d="M25.5 46.4s1.4.5 10.4-8.2c.5-.4 6.3-6.3 5.8-7.1-.7-.8-18.6-19.5-18.6-19.5s-.6-.9-8.6 6.4c-.6.5-8.7 8-7.7 9.1l18.7 19.3z"/></svg>`; ]]]
-                      styles: &icon_spot_styles
-                        custom_fields:
-                          icon_spot:
-                            [top: 11%, left: 5%, width: 2.85em, position: absolute]                          
+                        icon_spot: *icon_sppt
+                      styles: *icon_spot_styles                         
                       template: light                
                     #----------------------------------------------------------------
                     ## Front Door Sensor  
@@ -710,15 +690,8 @@ views:
                       entity: light.overhead
                       name: Ceiling
                       custom_fields:
-                          icon_overhead: &icon_overhead >
-                            [[[ const state = entity.state === 'on' ? 'animate' : null;
-                            return `<svg viewBox="0 0 50 50"><style>@keyframes animate{0%{transform: scale(0.85);}20%{transform: scale(1.1);}40%{transform: scale(0.95);}60%{transform: scale(1.03);}80%{transform: scale(0.97);}100%{transform: scale(1);}}.animate{animation: animate 0.8s; transform-origin: center;}</style>
-                            <path fill="#9da0a2" d="M21 10C21 14.97 16.97 19 12 19C7.03 19 3 14.97 3 10V9.03C3 8.76 3.11 8.5 3.3 8.3C3.5 8.11 3.76 8 4.03 8H20C20.25 8 20.5 8.11 20.7 8.3C20.89 8.5 21 8.75 21 9V10M5 10C5 13.86 8.14 17 12 17C15.86 17 19 13.86 19 10H5M20 6V7H4V6C4 5.73 4.1 5.5 4.29 5.29C4.5 5.1 4.73 5 5 5H10V3H14V5H19C19.25 5 19.5 5.11 19.7 5.3C19.89 5.5 20 5.75 20 6Z"/>
-                            <path class="${state}" fill="var(--button-card-light-color-no-temperature)" d="M21 10C21 14.97 16.97 19 12 19C7.03 19 3 14.97 3 10V9.03C3 8.76 3.11 8.5 3.3 8.3C3.5 8.11 3.76 8 4.03 8H20C20.25 8 20.5 8.11 20.7 8.3C20.89 8.5 21 8.75 21 9V10M5 10C5 13.86 8.14 17 12 17C15.86 17 19 13.86 19 10H5M20 6V7H4V6C4 5.73 4.1 5.5 4.29 5.29C4.5 5.1 4.73 5 5 5H10V3H14V5H19C19.25 5 19.5 5.11 19.7 5.3C19.89 5.5 20 5.75 20 6Z"/> </svg>`;]]]
-                      styles: &icon_overhead_styles
-                        custom_fields:
-                          icon_overhead:
-                            [top: 11%, left: 5%, width: 5.25em, position: absolute]                    
+                        icon_overhead: *icon_overhead
+                      styles: *icon_overhead_styles                  
                       template: light   
                     #----------------------------------------------------------------
                     ## Office Desk Light  
