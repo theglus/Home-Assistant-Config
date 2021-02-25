@@ -37,18 +37,7 @@ views:
                     state_styles:
                       Entrway:
                       template: nav_button
-                    style:
-                      button:
-                        - background: 'rgba(255,255,255,.1)'
-                        - border-radius: 25px
-                        - padding: 20px
-                      icon:
-                        - '--mdc-icon-size': 40px
-                    tap_action:
-                      action: call-service
-                      service: input_select.select_option
-                      service_data:
-                        entity_id: input_select.lighttoggle
+                    template: navigation
                         option: Entryway
                   #################################################################
                   ## Office Button
@@ -59,18 +48,7 @@ views:
                     state_styles:
                       Office:
                       template: nav_button
-                    style:
-                      button:
-                        - background: 'rgba(255,255,255,.1)'
-                        - border-radius: 25px
-                        - padding: 20px
-                      icon:
-                        - '--mdc-icon-size': 40px
-                    tap_action:
-                      action: call-service
-                      service: input_select.select_option
-                      service_data:
-                        entity_id: input_select.lighttoggle
+                    template: navigation
                         option: Office
                   #################################################################
                   ## Living Room Button
@@ -81,18 +59,7 @@ views:
                     state_styles:
                       Living Room:
                       template: nav_button
-                    style:
-                      button:
-                        - background: 'rgba(255,255,255,.1)'
-                        - border-radius: 25px
-                        - padding: 20px
-                      icon:
-                        - '--mdc-icon-size': 40px
-                    tap_action:
-                      action: call-service
-                      service: input_select.select_option
-                      service_data:
-                        entity_id: input_select.lighttoggle
+                    template: navigation
                         option: Living Room
                   #################################################################
                   ## Kitchen Button
@@ -103,18 +70,7 @@ views:
                     state_styles:
                       Kitchen:
                       template: nav_button
-                    style:
-                      button:
-                        - background: 'rgba(255,255,255,.1)'
-                        - border-radius: 25px
-                        - padding: 20px
-                      icon:
-                        - '--mdc-icon-size': 40px
-                    tap_action:
-                      action: call-service
-                      service: input_select.select_option
-                      service_data:
-                        entity_id: input_select.lighttoggle
+                    template: navigation
                         option: Kitchen
           #################################################################
           #----------------------------------------------------------------
