@@ -43,6 +43,8 @@
         return `<svg viewBox="0 0 50 50"><circle cx="25" cy="25" r="${radius}" stroke="#b2b2b2" stroke-width="1.5" fill="none" style="
         transform: rotate(-90deg); transform-origin: 50% 50%; stroke-dasharray: ${circumference}; stroke-dashoffset: ${circumference - brightness / 100 * circumference};" />
         <text x="50%" y="54%" fill="#8d8e90" font-size="14" text-anchor="middle" alignment-baseline="middle">${brightness}<tspan font-size="10">%</tspan></text></svg>`; } ]]]
+    hold_action:
+      action: failure
     double_tap_action:
       action: fire-dom-event
       browser_mod:
@@ -69,6 +71,7 @@
                   card:
                     [background: '#ffe7c0']
                 tap_action:
+                  haptic: success                  
                   action: call-service
                   service: light.turn_on
                   service_data:
@@ -80,6 +83,7 @@
                   card:
                     [background: '#ffa200']
                 tap_action:
+                  haptic: success                  
                   action: call-service
                   service: light.turn_on
                   service_data:
@@ -100,6 +104,8 @@
         return `<svg viewBox="0 0 50 50"><circle cx="25" cy="25" r="${radius}" stroke="#b2b2b2" stroke-width="1.5" fill="none" style="
         transform: rotate(-90deg); transform-origin: 50% 50%; stroke-dasharray: ${circumference}; stroke-dashoffset: ${circumference - brightness / 100 * circumference};" />
         <text x="50%" y="54%" fill="#8d8e90" font-size="14" text-anchor="middle" alignment-baseline="middle">${brightness}<tspan font-size="10">%</tspan></text></svg>`; } ]]]   
+    hold_action:
+      action: failure
     double_tap_action:
       action: fire-dom-event
       browser_mod:
@@ -126,6 +132,7 @@
                   card:
                     [background: '#ffe7c0']
                 tap_action:
+                  haptic: success                  
                   action: call-service
                   service: light.turn_on
                   service_data:
@@ -137,6 +144,7 @@
                   card:
                     [background: '#ffa200']
                 tap_action:
+                  haptic: success                  
                   action: call-service
                   service: light.turn_on
                   service_data:
@@ -152,6 +160,7 @@
                   card: 
                     [background: '#f426ff']
                 tap_action:
+                  haptic: success
                   action: call-service
                   service: light.turn_on
                   service_data:
@@ -166,6 +175,7 @@
                   card: 
                     [background: '#46ffec']
                 tap_action:
+                  haptic: success                  
                   action: call-service
                   service: light.turn_on
                   service_data:
