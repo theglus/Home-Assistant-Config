@@ -123,8 +123,6 @@ views:
                     #----------------------------------------------------------------         
                     - type: 'custom:button-card'
                       entity: light.hallway_marquee
-                      custom_fields:
-                          icon_marquee: 
                       styles:
                         custom_fields:
                           icon_marquee:
