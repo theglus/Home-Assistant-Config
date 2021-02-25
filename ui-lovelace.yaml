@@ -373,7 +373,7 @@ views:
                             [top: 9%, left: 10%, width: 3vw, position: absolute]
                           circle:
                             [display: "[[[ return states[entity.entity_id.replace(entity.entity_id.split('.')[0], 'input_boolean')].state === 'on' ? 'none' : 'initial'; ]]]"]
-                      template: ['base', 'loader']
+                      template: loader
                     #----------------------------------------------------------------
                     ## Shield
                     #----------------------------------------------------------------                    
