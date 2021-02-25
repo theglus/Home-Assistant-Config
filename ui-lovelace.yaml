@@ -450,9 +450,7 @@ views:
                         custom_fields:
                           icon_dino:
                             [top: 11%, left: 6%, width: 5.25em, position: absolute]                  
-                      template: light     
-                      hold_action:
-                        action: none
+                      template: light-color    
                     #----------------------------------------------------------------
                     ## Kettle
                     #----------------------------------------------------------------                          
