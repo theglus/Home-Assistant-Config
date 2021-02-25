@@ -37,7 +37,12 @@ views:
                     state_styles:
                       Entrway:
                       template: nav_button
-                    template: navigation
+                    template: nav_styles
+                    tap_action:
+                      action: call-service
+                      service: input_select.select_option
+                      service_data:
+                        entity_id: input_select.lighttoggle
                         option: Entryway
                   #################################################################
                   ## Office Button
@@ -48,7 +53,12 @@ views:
                     state_styles:
                       Office:
                       template: nav_button
-                    template: navigation
+                    template: nav_styles
+                    tap_action:
+                      action: call-service
+                      service: input_select.select_option
+                      service_data:
+                        entity_id: input_select.lighttoggle
                         option: Office
                   #################################################################
                   ## Living Room Button
@@ -59,7 +69,12 @@ views:
                     state_styles:
                       Living Room:
                       template: nav_button
-                    template: navigation
+                    template: nav_styles
+                    tap_action:
+                      action: call-service
+                      service: input_select.select_option
+                      service_data:
+                        entity_id: input_select.lighttoggle
                         option: Living Room
                   #################################################################
                   ## Kitchen Button
@@ -70,7 +85,12 @@ views:
                     state_styles:
                       Kitchen:
                       template: nav_button
-                    template: navigation
+                    template: nav_styles
+                    tap_action:
+                      action: call-service
+                      service: input_select.select_option
+                      service_data:
+                        entity_id: input_select.lighttoggle
                         option: Kitchen
           #################################################################
           #----------------------------------------------------------------

@@ -12,7 +12,7 @@
   #################################################################
   ## Navigation Styles
   ################################################################# 
-  navigation:
+  nav_styles:
     style:
       button:
         - background: 'rgba(255,255,255,.1)'
@@ -20,11 +20,7 @@
         - padding: 20px
       icon:
         - '--mdc-icon-size': 40px
-    tap_action:
-      action: call-service
-      service: input_select.select_option
-      service_data:
-        entity_id: input_select.lighttoggle
+
 #----------------------------------------------------------------
 ## Animated Menu
 #---------------------------------------------------------------- 
