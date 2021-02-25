@@ -20,6 +20,11 @@ views:
                 background: rgba(0,0,0,.3);
                 box-shadow: none;
                 }
+#################################################################
+#----------------------------------------------------------------
+## System Controls
+#----------------------------------------------------------------
+#################################################################                
             #################################################################
             #----------------------------------------------------------------
             ## Toggle Nav
@@ -31,7 +36,7 @@ views:
                   #################################################################
                   ## Entryway Button
                   #################################################################          
-                  - entity: input_select.lighttoggle
+                  - entity: input_select.systemtoggle
                     name: false
                     icon: 'hass:coat-rack'
                     state_styles:
@@ -42,12 +47,12 @@ views:
                       action: call-service
                       service: input_select.select_option
                       service_data:
-                        entity_id: input_select.lighttoggle
-                        option: Entryway
+                        entity_id: input_select.systemtoggle
+                        option: HA
                   #################################################################
                   ## Office Button
                   #################################################################                     
-                  - entity: input_select.lighttoggle
+                  - entity: input_select.systemtoggle
                     name: false
                     icon: 'hass:desk'
                     state_styles:
@@ -58,8 +63,8 @@ views:
                       action: call-service
                       service: input_select.select_option
                       service_data:
-                        entity_id: input_select.lighttoggle
-                        option: Office
+                        entity_id: input_select.systemtoggle
+                        option: Performance
                   #################################################################
                   ## Living Room Button
                   #################################################################                     
