@@ -25,7 +25,6 @@
       service: input_select.select_option
       service_data:
         entity_id: input_select.lighttoggle
-
 #----------------------------------------------------------------
 ## Animated Menu
 #---------------------------------------------------------------- 
