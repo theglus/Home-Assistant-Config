@@ -16,6 +16,7 @@
       haptic: light
     hold_action:
       action: none
+    double_tap_action:
       haptic: selection
     styles:
       name:
