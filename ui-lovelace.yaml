@@ -467,7 +467,8 @@ views:
                               - background: 'rgba(255,255,255,.8)'
                               - border: 1px solid white
                               - box-shadow: '0 0 10px, inset 0 0 5px'
-                            icon-color: 'linear-gradient(15deg, #0250c5, #d43f8d)'
+                            icon:
+                              - color: 'rgba(244, 38, 255, 1)'
                             name:
                               - color: 'rgba(0,0,0,.6)'
                               - font-weight: bold
