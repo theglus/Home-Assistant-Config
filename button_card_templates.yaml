@@ -32,11 +32,11 @@
     show_state: true
     show_icon: false
     state:
-      - value: 'on'
+      - value: "on"
         styles:
-          card: [background-color: 'rgba(255, 255, 255, 0.8)']
-          name: [color: 'rgba(0, 0, 0, 0.6)']
-          state: [color: 'rgba(0, 0, 0, 0.6)']
+          card: [background-color: "rgba(255, 255, 255, 0.8)"]
+          name: [color: "rgba(0, 0, 0, 0.6)"]
+          state: [color: "rgba(0, 0, 0, 0.6)"]
     tap_action:
       action: toggle
       haptic: light
@@ -45,16 +45,29 @@
     double_tap_action:
       haptic: selection
     styles:
-      name:
-        [top: 57.7%, left: 11%, line-height: 2em, position: absolute]
-      state:
-        [top: 74%, left: 11%, line-height: 2em, position: absolute]
+      name: [top: 57.7%, left: 11%, line-height: 2em, position: absolute]
+      state: [top: 74%, left: 11%, line-height: 2em, position: absolute]
       card:
-        [font-family: Sf Display, letter-spacing: 0.05em, font-weight: 400, color: 'rgba(255, 255, 255, 0.3)', font-size: 1em, 
-        background-color: 'rgba(115, 115, 115, 0.2)', border-radius: 2em, box-shadow: none, transition: none]
+        [
+          font-family: Sf Display,
+          letter-spacing: 0.05em,
+          font-weight: 400,
+          color: "rgba(255, 255, 255, 0.3)",
+          font-size: 1em,
+          background-color: "rgba(115, 115, 115, 0.2)",
+          border-radius: 2em,
+          box-shadow: none,
+          transition: none,
+        ]
       custom_fields:
         circle:
-          [top: 8.5%, left: 56.2%, width: 3.2em, position: absolute, letter-spacing: 0.015em]
+          [
+            top: 8.5%,
+            left: 56.2%,
+            width: 3.2em,
+            position: absolute,
+            letter-spacing: 0.015em,
+          ]
 
 #----------------------------------------------------------------
 ## Light Popup Menu
