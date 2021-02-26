@@ -534,7 +534,7 @@ views:
                         custom_fields:
                           icon_fan:
                             [top: 9%, left: 10%, width: 2.85em, position: absolute]
-                      template: base
+                      template: base 
                     #----------------------------------------------------------------
                     ## Shield
                     #----------------------------------------------------------------                    
