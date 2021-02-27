@@ -680,7 +680,7 @@ views:
                       entity: light.bedside
                       name: Bedside
                       custom_fields:
-                        icon_lamp: *icon_lamo
+                        icon_lamp: *icon_lamp
                       styles: *icon_lamp_styles                                     
                       template: light
                     #----------------------------------------------------------------
