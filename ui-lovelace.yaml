@@ -92,6 +92,22 @@ views:
                       service_data:
                         entity_id: input_select.lighttoggle
                         option: Kitchen
+                  #################################################################
+                  ## Loft
+                  #################################################################
+                  - entity: input_select.lighttoggle
+                    name: false
+                    icon: 'hass:bed-king'
+                    state_styles:
+                      Loft:
+                      template: nav_button
+                    template: nav_styles
+                    tap_action:
+                      action: call-service
+                      service: input_select.select_option
+                      service_data:
+                        entity_id: input_select.lighttoggle
+                        option: Loft                        
           #################################################################
           #----------------------------------------------------------------
           ## Expanded
@@ -641,6 +657,72 @@ views:
                               - color: 'rgb(255, 122, 0)'
                       hold_action:
                         action: more-info
+              #################################################################
+              ## Loft Controls
+              #################################################################
+              Loft:
+                type: 'custom:mod-card'
+                style: |
+                  ha-card {
+                    background: rgba(0,0,0,.3);
+                    padding: 10px;
+                    border-radius: 35px;
+                    margin-top: none;
+                    }
+                card:
+                  type: grid
+                  columns: 3
+                  cards:
+                    #----------------------------------------------------------------
+                    ## Bedside Lights
+                    #----------------------------------------------------------------            
+                    - type: 'custom:button-card'
+                      entity: light.bedside
+                      name: Bedside
+                      custom_fields:
+                        icon_lamp: *icon_lamo
+                      styles: *icon_lamp_styles                                     
+                      template: light
+                    #----------------------------------------------------------------
+                    ## Jeffrey's Lights
+                    #----------------------------------------------------------------            
+                    - type: 'custom:button-card'
+                      entity: light.jeffreys_lamp
+                      name: Jeffrey's
+                      custom_fields:
+                        icon_lamp: *icon_lamp
+                      styles: *icon_lamp_styles                                     
+                      template: light                     
+                    #----------------------------------------------------------------
+                    ## Tiffany's Light
+                    #----------------------------------------------------------------            
+                    - type: 'custom:button-card'
+                      entity: light.tiffanys_lamp
+                      name: Tiffany's
+                      custom_fields:
+                        icon_lamp: *icon_lamp
+                      styles: *icon_lamp_styles                                     
+                      template: light
+                    #----------------------------------------------------------------
+                    ## Bed Track
+                    #----------------------------------------------------------------                
+                    - type: 'custom:button-card'
+                      entity: light.loft_bed_light
+                      name: Ceiling
+                      custom_fields:
+                        icon_spot: *icon_spot
+                      styles: *icon_spot_styles              
+                      template: light
+                    #----------------------------------------------------------------
+                    ## Desk Lights
+                    #----------------------------------------------------------------            
+                    - type: 'custom:button-card'
+                      entity: light.loft_desk_lamp
+                      name: Desk
+                      custom_fields:
+                        icon_lamp: *icon_lamp
+                      styles: *icon_lamp_styles                                     
+                      template: light                      
   - title: Winston
     path: winston
     icon: 'mdi:robot-vacuum-variant'
