@@ -252,7 +252,7 @@
   loader:
     custom_fields:
       loader: >
-        [[[ if (states[entity.entity_id.replace(entity.entity_id.split('.')[0], 'input_boolean')].state === 'on') { 
+        [[[ if (states[entity.entity_id.replace(entity.entity_id.split('.')[0]].state === 'on') { 
         return '<img src="/local/loader.svg" width="100%">'; } ]]]
     styles:
       custom_fields:
