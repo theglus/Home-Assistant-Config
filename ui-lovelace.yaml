@@ -545,6 +545,8 @@ views:
                     #----------------------------------------------------------------                    
                     - type: 'custom:button-card'
                       entity: media_player.shield_tv
+                      triggers_update:
+                        ['media_player.shield_tv', 'input_boolean.shield_tv']
                       name: TV
                       custom_fields:
                         icon_tv: &icon_tv >

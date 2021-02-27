@@ -54,6 +54,9 @@ recorder:
 tts:
   - platform: google_translate
   
+input_boolean:
+  shield_tv:
+    initial: off
 #################################################################
 ## Theme
 #################################################################
