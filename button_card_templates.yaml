@@ -261,7 +261,7 @@
             filter: "[[[ return entity.state === 'off' ? 'invert(1)' : 'none'; ]]]",
             top: 3%,
             left: 60%,
-            width: 3.7vw,
+            width: 3.78em,
             position: absolute,
             opacity: 0.6,
           ]
