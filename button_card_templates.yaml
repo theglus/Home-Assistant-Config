@@ -253,7 +253,7 @@
     custom_fields:
       loader: >
         [[[  if (entity.state === 'on') { 
-        return '<img src="/local/loader.svg" width="100%">'; } ]]]
+        return '<img src="/local/icon/loader.svg" width="100%">'; } ]]]
     styles:
       custom_fields:
         loader:
