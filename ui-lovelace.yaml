@@ -562,7 +562,7 @@ views:
                         custom_fields:
                           icon_tv:
                             [fill: "[[[ return entity.state === 'on' ? '#616161' : '#9da0a2'; ]]]", 
-                            top: 7%, left: 10.7%, width: 2.85vw, position: absolute]
+                            top: 7%, left: 10.7%, width: 2.85em, position: absolute]
                       template: base
               #################################################################
               ## Kitchen Controls
