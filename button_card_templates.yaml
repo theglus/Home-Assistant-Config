@@ -252,8 +252,8 @@
   loader:
     custom_fields:
       loader: >
-        [[[  if (entity.state === 'on') { 
-        return '<img src="/local/icons/loader.svg" width="100%">'; } ]]]
+        [[[ if (states[entity.entity_id.replace(entity.entity_id.split('.')[0], 'input_boolean')].state === 'on') { 
+        return '<img src="/local/loader.svg" width="100%">'; } ]]]
     styles:
       custom_fields:
         loader:

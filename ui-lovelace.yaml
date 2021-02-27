@@ -539,7 +539,7 @@ views:
                         custom_fields:
                           icon_fan:
                             [top: 9%, left: 10%, width: 2.85em, position: absolute]
-                      template: ['base', 'loader']
+                      template: base
                     #----------------------------------------------------------------
                     ## Shield
                     #----------------------------------------------------------------                    
@@ -563,7 +563,7 @@ views:
                           icon_tv:
                             [fill: "[[[ return entity.state === 'on' ? '#616161' : '#9da0a2'; ]]]", 
                             top: 7%, left: 10.7%, width: 2.85em, position: absolute]
-                      template: base
+                      template: ['base', 'loader']
               #################################################################
               ## Kitchen Controls
               #################################################################
