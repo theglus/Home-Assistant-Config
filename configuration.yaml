@@ -364,11 +364,11 @@ switch:
           service: script.av_menu_off
 
 ######## INCLUDES ########
-group: !include groups.yaml
-light: !include lights.yaml
-automation: !include automations.yaml
-script: !include scripts.yaml
-scene: !include scenes.yaml
-rest_command: !include rest_command.yaml
+group: !include includes/groups.yaml
+light: !include includes/lights.yaml
+automation: !include includes/automations.yaml
+script: !include includes/scripts.yaml
+scene: !include includes/scenes.yaml
+rest_command: !include includes/rest_command.yaml
 homeassistant:
-  customize: !include customize.yaml
+  customize: !include includes/customize.yaml
