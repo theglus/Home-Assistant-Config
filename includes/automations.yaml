@@ -1,0 +1,372 @@
+- id: '1601307642952'
+  alias: Shutoff Printer
+  description: Shutoff plug to printer 15-minutes after device has been switched on.
+  trigger:
+  - platform: state
+    entity_id: switch.major_laser_printer
+    for: 00:15:00
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - type: turn_off
+    device_id: cc99ed6aff6a11ea940fe1f9a75d2527
+    entity_id: switch.major_laser_printer
+    domain: switch
+  mode: single
+- id: '1601312737081'
+  alias: Shutoff Kettle
+  description: Shutoff plug to kettle 15-minutes after device has been switched on.
+  trigger:
+  - platform: state
+    for: 00:15:00
+    from: 'off'
+    to: 'on'
+    entity_id: switch.kettle
+  condition: []
+  action:
+  - type: turn_off
+    device_id: cc9c28d8ff6a11ea876cbbcc11d5e81d
+    entity_id: switch.kettle
+    domain: switch
+  mode: single
+- id: '1604002955198'
+  alias: Charge toothbrushes
+  description: 'Start charging toothbrushes at 12 am and stop at 4 am. '
+  trigger:
+  - platform: time
+    at: 00:00:00
+  condition: []
+  action:
+  - service: script.4_hour_toothbrush_trickle_charge
+    data: {}
+  mode: single
+- id: '1604018556590'
+  alias: Volume nighttime
+  description: Turn down volume of Google Home device at 10 pm.
+  trigger:
+  - platform: time
+    at: '22:00:00'
+  condition: []
+  action:
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.loft_clock
+      volume_level: '0.50'
+  - service: media_player.volume_set
+    data:
+      entity_id:
+      - media_player.office_speaker
+      - media_player.living_room_speaker
+      - media_player.loft_bathroom
+      volume_level: '0.30'
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.loft_nest_hub
+      volume_level: '0.50'
+  - service: notify.telegram
+    data:
+      message: Quiet time!
+      title: 🤫 Farnsworth
+  mode: single
+- id: '1604027659401'
+  alias: Volume daytime
+  description: Turn up volume of Google Home device at 9 am.
+  trigger:
+  - platform: time
+    at: 09:00:00
+  condition: []
+  action:
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.loft_clock
+      volume_level: '0.60'
+  - service: media_player.volume_set
+    data:
+      entity_id:
+      - media_player.office_speaker
+      - media_player.living_room_speaker
+      - media_player.loft_bathroom
+      volume_level: '0.40'
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.loft_nest_hub
+      volume_level: '0.60'
+  - service: notify.telegram
+    data:
+      message: I'm loud and proud, deal with it.
+      title: '📢 Farnsworth:'
+  mode: single
+- id: '1604110722335'
+  alias: Server Boot Up
+  description: Telegram notification when server has booted up.
+  trigger:
+  - platform: homeassistant
+    event: start
+  condition: []
+  action:
+  - service: notify.telegram
+    data:
+      message: Home Assistant is ready for business.
+      title: '🛎️ Server:'
+  mode: single
+- id: '1604122122599'
+  alias: Server Reboot
+  description: Telegram notification that alerts of server reboot, restart, or shutdown.
+  trigger:
+  - platform: homeassistant
+    event: shutdown
+  condition: []
+  action:
+  - service: notify.telegram
+    data:
+      message: I'll be back.
+      title: '🛎️ Server:'
+  mode: single
+- id: '1604123458236'
+  alias: Alert Front Door
+  description: Alert when front door is open 10+ seconds.
+  trigger:
+  - type: opened
+    platform: device
+    device_id: a13166182e71a12ccc046137e74cde66
+    entity_id: binary_sensor.front_door
+    domain: binary_sensor
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 10
+      milliseconds: 0
+  condition: []
+  action:
+  - service: notify.telegram
+    data:
+      message: Front door is still open!
+      title: '🚨 ALERT:'
+  mode: single
+- id: '1604123857292'
+  alias: Alert Leak
+  description: Alert when water is detected under AC.
+  trigger:
+  - type: moist
+    platform: device
+    device_id: 6bd7ff509b62f7b1c7fbd08263ceb018
+    entity_id: binary_sensor.water
+    domain: binary_sensor
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 0
+      milliseconds: 0
+  condition: []
+  action:
+  - service: notify.telegram
+    data:
+      message: Ice Bear peed!
+      title: '🚨 ALERT:'
+  mode: single
+- id: '1604159666251'
+  alias: Notification Printer
+  description: Notify Farnsworth when Major Laser Printer is ready.
+  trigger:
+  - platform: state
+    entity_id: sensor.hp_laserjet_m14_m17
+    from: unavailable
+    to: idle
+  condition: []
+  action:
+  - service: notify.telegram
+    data:
+      message: Ready to print.
+      title: '🖨️ Major Laser Printer:'
+  mode: single
+- id: '1604213608944'
+  alias: Confirmation Door Closed
+  description: Confirming door is closed.
+  trigger:
+  - type: not_opened
+    platform: device
+    device_id: a13166182e71a12ccc046137e74cde66
+    entity_id: binary_sensor.front_door
+    domain: binary_sensor
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 5
+      milliseconds: 0
+  condition: []
+  action:
+  - service: notify.telegram
+    data:
+      message: Front door is closed!
+      title: '🚪 CONFIRMED:'
+  mode: single
+- id: '1604222655903'
+  alias: Notification Tea
+  description: Notify Farnsworth when tea is ready.
+  trigger:
+  - platform: device
+    type: turned_on
+    device_id: cc9c28d8ff6a11ea876cbbcc11d5e81d
+    entity_id: switch.kettle
+    domain: switch
+    for:
+      hours: 0
+      minutes: 3
+      seconds: 0
+  condition: []
+  action:
+  - service: notify.telegram
+    data:
+      message: Time for tea!
+      title: '☕ Kettle:'
+  mode: single
+- id: '1604730376272'
+  alias: Vacuum Clean
+  description: Notify Farnsworth when Winston starts cleaning.
+  trigger:
+  - platform: state
+    entity_id: vacuum.winston
+    from: docked
+    to: cleaning
+  condition: []
+  action:
+  - service: notify.telegram
+    data:
+      message: Off to tidy up. Cheerio!
+      title: '🤹🏻‍ Winston:'
+  mode: single
+- id: '1604730577982'
+  alias: Vacuum Done
+  description: Notify Farnsworth when Winston has completed cleaning.
+  trigger:
+  - platform: state
+    entity_id: vacuum.winston
+    from: cleaning
+    to: returning
+  condition: []
+  action:
+  - service: notify.telegram
+    data:
+      message: I've completed cleaning the residence. I'm off to retire. Cheerio!
+      title: '🤹🏻‍ Winston:'
+  mode: single
+- id: '1604730811526'
+  alias: Vacuum Docked
+  description: Notify Farnsworth when Winston has returned to dock.
+  trigger:
+  - platform: state
+    entity_id: vacuum.winston
+    from: returning
+    to: docked
+  condition: []
+  action:
+  - service: notify.telegram
+    data:
+      message: Happy to have been of service.
+      title: '🤹🏻‍ Winston:'
+  mode: single
+- id: '1609214877779'
+  alias: Mi Magic Cube
+  description: ''
+  use_blueprint:
+    path: magic_cube.yaml
+    input:
+      remote: 55278effdc88ebe7ffa36b52540fa006
+      rotate_clockwise:
+      - type: brightness_increase
+        device_id: 7faeb9e5857511b167cb40d31e810446
+        entity_id: light.downstairs_living_room_yumi_lamp
+        domain: light
+      rotate_counter_clockwise:
+      - type: brightness_decrease
+        device_id: 7faeb9e5857511b167cb40d31e810446
+        entity_id: light.hue_color_lamp_1_2
+        domain: light
+      cube_shake:
+      - service: media_player.media_play_pause
+        data: {}
+        entity_id: media_player.shield
+      cube_double_tap_any: []
+      double_tap_any_side: false
+      six_to_six:
+      - service: script.remote_finder
+        data: {}
+      one_to_five:
+      - type: toggle
+        device_id: 4b703738171211eb953dc57494375806
+        entity_id: light.upstairs_hallway_marquee
+        domain: light
+      one_to_four:
+      - type: toggle
+        device_id: 6b3f010b852f90f27f83b82eb13178a3
+        entity_id: light.dino_panel
+        domain: light
+      two_to_two:
+      - service: switch.toggle
+        data: {}
+        entity_id: switch.switchbot
+- id: '1609272260246'
+  alias: 'Office: Busy'
+  description: ''
+  trigger:
+  - type: turned_on
+    platform: device
+    device_id: 0d90cb630ecad3945965440c0dabc6cf
+    entity_id: binary_sensor.jeffreys_macbook_pro_camera_in_use
+    domain: binary_sensor
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  condition: []
+  action:
+  - scene: scene.meeting
+  mode: single
+- id: '1609272463913'
+  alias: 'Office: Available'
+  description: ''
+  trigger:
+  - type: turned_off
+    platform: device
+    device_id: 0d90cb630ecad3945965440c0dabc6cf
+    entity_id: binary_sensor.jeffreys_macbook_pro_camera_in_use
+    domain: binary_sensor
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  condition: []
+  action:
+  - scene: scene.office_available
+  mode: single
+- id: '1613026584789'
+  alias: Rise and Shine
+  description: ''
+  use_blueprint:
+    path: wake-up.yaml
+    input:
+      light_entity: light.jeffreys_lamp
+      timestamp_sensor: sensor.pixel_3_next_alarm
+      end_brightness: '254'
+      start_brightness: '1'
+      check_entity: binary_sensor.pixel_3_is_charging
+      manual_time: '8:00:00'
+      sunrise_duration: '25'
+      min_mired: '450'
+- id: '1613169784553'
+  alias: Shutoff Shredder
+  description: Shutoff plug to paper shredder 2-minutes after device has been switched
+    on.
+  trigger:
+  - platform: state
+    entity_id: switch.paper_shredder
+    for: 00:02:00
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - service: switch.turn_off
+    data: {}
+    entity_id: switch.paper_shredder
+  mode: single
