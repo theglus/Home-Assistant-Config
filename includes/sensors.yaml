@@ -14,7 +14,7 @@ sensors:
 # Google WiFi
 #   platform: google_wifi
 # HA Component counts
-platform: template
+#platform: template
 sensors:
 # Count Automations 
   count_automations:
