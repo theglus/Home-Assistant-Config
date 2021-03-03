@@ -1,5 +1,5 @@
 #################################################################
 ## This handles the loading of my scenes.
 ################################################################# 
-scene: !include ../includes/scene.yaml
-#scene split: !include_dir_list ../includes/scene
+scene: !include ../includes/scenes.yaml
+#scene split: !include_dir_list ../includes/scenes
