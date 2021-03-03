@@ -1,7 +1,7 @@
 #################################################################
 ## Core Release sensor.
 ################################################################# 
-platform: scrape
-resource: "https://github.com/home-assistant/core/releases/latest"
-select: ".release-header a[href]"
-name: Core Release
+- platform: scrape
+  resource: "https://github.com/home-assistant/core/releases/latest"
+  select: ".release-header a[href]"
+  name: Core Release

@@ -1,5 +1,5 @@
 #################################################################
 ## Switchbot for heater.
 #################################################################
-  - platform: switchbot
-    mac: !secret switchbot_mac  
+- platform: switchbot
+  mac: !secret switchbot_mac  

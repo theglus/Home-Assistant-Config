@@ -6,37 +6,37 @@ platform: template
 sensors:
 # Count Automations 
   count_automations:
-    entity_id: sensor.date
+#   entity_id: sensor.date
     value_template: "{{ states.automation | list | length }}"
     friendly_name: Automations   
     icon_template: mdi:abacus         
 # Count Binary Sensors
   count_binary_sensors:
-    entity_id: sensor.date
+#   entity_id: sensor.date
     value_template: "{{ states.binary_sensor| list | length }}"
     friendly_name: Binary Sensors   
     icon_template: mdi:abacus    
 # Count Device Trackers
   count_device_trackers:
-    entity_id: sensor.date
+#   entity_id: sensor.date
     value_template: "{{ states.device_tracker | list | length }}"
     friendly_name: Device Trackers   
     icon_template: mdi:abacus    
 # Count Scripts
   count_scripts:
-    entity_id: sensor.date
+#   entity_id: sensor.date
     value_template: "{{ states.script| list | length }}"
     friendly_name: Scripts     
     icon_template: mdi:abacus    
 # Count Sensors
   count_sensors:
-    entity_id: sensor.date
+#   entity_id: sensor.date
     value_template: "{{ states.sensor | list | length }}"
     friendly_name: Sensors    
     icon_template: mdi:abacus    
 # Count Switches
   count_switches:
-    entity_id: sensor.date
+#   entity_id: sensor.date
     value_template: "{{ states.switch | list | length }}"
     friendly_name: Switches      
     icon_template: mdi:abacus   

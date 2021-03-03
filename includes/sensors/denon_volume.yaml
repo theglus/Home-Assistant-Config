@@ -1,12 +1,12 @@
 #################################################################
 ## Denon Volume Sensors
 #################################################################
-platform: template
-sensors:
-  denon_volume:
-    value_template: >
-      {% if is_state('media_player.dennis', 'on')  %}
-        {{ (state_attr('media_player.dennis', 'volume_level') * 100) | int }}
-      {% endif %}
-    friendly_name: Receiver Volume Level
-    icon_template: mdi:volume-medium
+- platform: template
+  sensors:
+    denon_volume:
+      value_template: >
+        {% if is_state('media_player.dennis', 'on')  %}
+          {{ (state_attr('media_player.dennis', 'volume_level') * 100) | int }}
+        {% endif %}
+      friendly_name: Receiver Volume Level
+      icon_template: mdi:volume-medium
