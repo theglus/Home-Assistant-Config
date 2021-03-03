@@ -1,0 +1,5 @@
+#################################################################
+## This handles the loading of my lights.
+################################################################# 
+light: !include ../includes/lights.yaml
+#scene split: !include_dir_list ../includes/scenes
