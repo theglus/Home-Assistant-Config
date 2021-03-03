@@ -365,7 +365,6 @@ switch:
 
 ######## INCLUDES ########
 light: !include includes/lights.yaml
-script: !include includes/scripts.yaml
 scene: !include includes/scenes.yaml
 rest_command: !include includes/rest_command.yaml
 homeassistant:
