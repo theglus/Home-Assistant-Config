@@ -1,0 +1,5 @@
+#################################################################
+## This handles the loading of my automations
+#################################################################   
+automation: !include ../includes/automations.yaml
+#automation split: !include_dir_list ../includes/automations
