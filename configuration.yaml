@@ -234,33 +234,6 @@ binary_sensor:
     workdays: [mon, tue, wed, thu, fri]
     excludes: [sat, sun]
 
-#################################################################
-## Switches
-#################################################################
-
-switch:
-# SwitchBot for Header
-  - platform: switchbot
-    mac: !secret switchbot_mac  
-# Denon ECO Switch
-  - platform: template
-    switches:
-      eco:
-        friendly_name: "ECO Mode"
-        turn_on:
-          service: script.eco_on
-        turn_off:
-          service: script.eco_off
-# Denon Menu Switch
-  - platform: template
-    switches:
-      denon_menu:
-        friendly_name: "Denon Menu"
-        turn_on:
-          service: script.av_menu_on
-        turn_off:
-          service: script.av_menu_off
-
 ######## INCLUDES ########
 rest_command: !include includes/rest_command.yaml
 homeassistant:

@@ -1,0 +1,4 @@
+#################################################################
+## This handles the loading of my sensors.
+################################################################# 
+switch: !include_dir_merge_list ../includes/switches

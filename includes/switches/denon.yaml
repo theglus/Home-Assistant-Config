@@ -1,6 +1,16 @@
 #################################################################
-## Toggle Denon Menu
+## Denon switches.
 #################################################################
+# Denon ECO Switch
+  - platform: template
+    switches:
+      eco:
+        friendly_name: "ECO Mode"
+        turn_on:
+          service: script.eco_on
+        turn_off:
+          service: script.eco_off
+# Denon Menu Switch
   - platform: template
     switches:
       denon_menu:
