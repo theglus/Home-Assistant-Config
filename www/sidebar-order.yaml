@@ -12,6 +12,10 @@ order:
     href: /hassio/system
     icon: mdi:bacteria-outline 
   - new_item: true
+    item: Config Check
+    href: config/server_control
+    icon: mdi:bug-check-outline
+  - new_item: true
     item: Logs
     href: /config/logs
     icon: mdi:campfire
