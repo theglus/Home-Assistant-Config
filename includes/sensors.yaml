@@ -1,0 +1,103 @@
+#################################################################
+## This handles the loading of my sensors.
+################################################################# 
+# Denon Receiver Volume Template Sensor
+platform: template
+sensors:
+  denon_volume:
+    value_template: >
+      {% if is_state('media_player.dennis', 'on')  %}
+        {{ (state_attr('media_player.dennis', 'volume_level') * 100) | int }}
+      {% endif %}
+    friendly_name: Receiver Volume Level
+    icon_template: mdi:volume-medium
+# Google WiFi
+#   platform: google_wifi
+# HA Component counts
+platform: template
+sensors:
+# Count Automations 
+  count_automations:
+#       entity_id: sensor.date
+    value_template: "{{ states.automation | list | length }}"
+    friendly_name: Automations   
+    icon_template: mdi:abacus         
+# Count Binary Sensors
+  count_binary_sensors:
+#       entity_id: sensor.date
+    value_template: "{{ states.binary_sensor| list | length }}"
+    friendly_name: Binary Sensors   
+    icon_template: mdi:abacus    
+# Count Device Trackers
+  count_device_trackers:
+#       entity_id: sensor.date
+    value_template: "{{ states.device_tracker | list | length }}"
+    friendly_name: Device Trackers   
+    icon_template: mdi:abacus    
+# Count Scripts
+  count_scripts:
+#       entity_id: sensor.date
+    value_template: "{{ states.script| list | length }}"
+    friendly_name: Scripts     
+    icon_template: mdi:abacus    
+# Count Sensors
+  count_sensors:
+#       entity_id: sensor.date
+    value_template: "{{ states.sensor | list | length }}"
+    friendly_name: Sensors    
+    icon_template: mdi:abacus    
+# Count Switches
+  count_switches:
+#       entity_id: sensor.date
+    value_template: "{{ states.switch | list | length }}"
+    friendly_name: Switches      
+    icon_template: mdi:abacus            
+# Do I Need a Jacket      
+#    platform: scrape   
+#    resource: https://doineedajacket.com/weather/94107
+#    name: Jacket
+#    select: ".dinaj_h1 h1"
+#    value_template: '{{ value.split(":")[1] }}'
+# Core Release
+platform: scrape
+resource: "https://github.com/home-assistant/core/releases/latest"
+select: ".release-header a[href]"
+name: Core Release
+# Mac Release
+platform: scrape
+resource: "https://github.com/home-assistant/iOS/releases/latest"
+select: ".release-header a[href]"
+name: Mac Release
+# OS Release
+platform: scrape
+resource: "https://github.com/home-assistant/operating-system/releases/latest"
+select: ".release-header a[href]"
+name: OS Release
+# Supervisor Release
+platform: scrape
+resource: "https://github.com/home-assistant/supervisor/releases/latest"
+select: ".release-header a[href]"
+name: Supervisor Release
+# HA System Monitor
+platform: systemmonitor 
+resources: 
+  - type: memory_use_percent
+  - type: processor_use
+  - type: processor_temperature
+# HA Uptime
+platform: uptime
+name: Time Online
+# HA Latest Version
+platform: version
+name: Latest Version
+# Time
+platform: time_date
+display_options:
+  - 'time'
+  - 'date'
+  - 'date_time'
+  - 'date_time_utc'
+  - 'date_time_iso'
+  - 'time_date'
+  - 'time_utc'
+  - 'beat'
