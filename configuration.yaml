@@ -364,7 +364,6 @@ switch:
           service: script.av_menu_off
 
 ######## INCLUDES ########
-group: !include includes/groups.yaml
 light: !include includes/lights.yaml
 script: !include includes/scripts.yaml
 scene: !include includes/scenes.yaml
