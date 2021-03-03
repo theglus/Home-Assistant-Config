@@ -1,5 +1,5 @@
 #################################################################
-## HA Version Sensor
+## HA Version sensor.
 #################################################################
-  - platform: version
-    name: Latest Version
+platform: version
+name: Latest Version

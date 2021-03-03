@@ -1,5 +1,5 @@
 #################################################################
-## HA Uptime Sensor
+## HA Uptime sensor.
 #################################################################
-  - platform: uptime
-    name: Time Online
+platform: uptime
+name: Time Online
