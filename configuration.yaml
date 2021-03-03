@@ -367,4 +367,3 @@ switch:
 rest_command: !include includes/rest_command.yaml
 homeassistant:
   packages: !include_dir_named integrations
-  customize: !include includes/customize.yaml
