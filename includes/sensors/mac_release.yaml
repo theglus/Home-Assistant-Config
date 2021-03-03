@@ -2,6 +2,6 @@
 ## Mac Release sensor.
 #################################################################
 - platform: scrape
-resource: "https://github.com/home-assistant/iOS/releases/latest"
-select: ".release-header a[href]"
-name: Mac Release
+  resource: "https://github.com/home-assistant/iOS/releases/latest"
+  select: ".release-header a[href]"
+  name: Mac Release
