@@ -366,7 +366,6 @@ switch:
 ######## INCLUDES ########
 group: !include includes/groups.yaml
 light: !include includes/lights.yaml
-automation: !include includes/automations.yaml
 script: !include includes/scripts.yaml
 scene: !include includes/scenes.yaml
 rest_command: !include includes/rest_command.yaml
