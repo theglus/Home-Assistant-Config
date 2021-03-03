@@ -13,7 +13,7 @@ order:
     icon: mdi:bacteria-outline 
   - new_item: true
     item: Config Check
-    href: config/server_control
+    href: /config/server_control
     icon: mdi:bug-check-outline
   - new_item: true
     item: Logs
