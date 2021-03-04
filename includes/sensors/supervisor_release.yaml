@@ -1,7 +1,0 @@
-#################################################################
-## Supervisor Release sensor.
-################################################################# 
-- platform: scrape
-  resource: "https://github.com/home-assistant/supervisor/releases/latest"
-  select: ".release-header a[href]"
-  name: Supervisor Release
