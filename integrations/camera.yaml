@@ -1,0 +1,54 @@
+#################################################################
+## Camera Integrations
+#################################################################
+camera:
+# Winston lidar
+  - platform: xiaomi_cloud_map_extractor
+    host: !secret winston_host
+    token: !secret winston_token
+    username: !secret winston_username
+    password: !secret winston_password
+    country: us
+    colors:
+      color_map_outside: [3, 169, 244]
+    room_colors: 
+      # Hallway
+      16: [253, 211, 82]
+      # Living Room
+      17: [106, 191, 209]
+      # Kitchen
+      18: [145, 200, 255]
+      # Office
+      19: [245, 142, 110]
+      # Bathroom
+      20: [7, 152, 183]
+    draw: ["all"]
+    map_transformation:
+      scale: 2
+      trim:
+        top: 22
+        bottom: 22
+        left: 22
+        right: 22
+    attributes:
+      - calibration_points
+      - charger
+      - goto
+      - goto_path
+      - goto_predicted_path
+      - image
+      - is_empty
+      - map_name
+      - no_go_areas
+      - no_mopping_areas
+      - obstacles
+      - path
+      - room_numbers
+      - rooms
+      - vacuum_position
+      - vacuum_room
+      - walls
+      - zones
+    scan_interval:
+      seconds: 10
+    auto_update: true
