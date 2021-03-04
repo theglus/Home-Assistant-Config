@@ -1,0 +1,5 @@
+#################################################################
+## Configures the official HA frontend including themes.
+#################################################################
+frontend:
+  themes: !include_dir_merge_named ../includes/themes
