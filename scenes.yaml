@@ -1,5 +1,4 @@
 #################################################################
-## This handles the loading of my scenes.
+## Allows me to create scenes in the UI.
 ################################################################# 
-scene: !include ../scenes.yaml
-scene split: !include_dir_list ../includes/scenes
+[]
