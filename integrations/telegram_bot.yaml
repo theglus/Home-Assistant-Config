@@ -1,6 +1,7 @@
 #################################################################
 ## Telegram Bot for Notifications
 #################################################################
-platform: polling
-api_key: !secret telegram_bot_key
-allowed_chat_ids: !secret telegram_bot_chat_ids
+telegram_bot:
+  - platform: polling
+    api_key: !secret telegram_bot_key
+    allowed_chat_ids: !secret telegram_bot_chat_ids
