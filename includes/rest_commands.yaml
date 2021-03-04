@@ -1,16 +1,16 @@
-eco_on:
-  url: 'http://192.168.86.187/goform/formiPhoneAppDirect.xml?ECOON'
-eco_off:
-  url: 'http://192.168.86.187/goform/formiPhoneAppDirect.xml?ECOOFF'
-av_menu_on:
-  url: 'http://192.168.86.187/goform/formiPhoneAppDirect.xml?MNMEN%20ON'
-av_menu_off:
-  url: 'http://192.168.86.187/goform/formiPhoneAppDirect.xml?MNMEN%20OFF'
-set_volume:
-  url: 'http://192.168.86.187/goform/formiPhoneAppDirect.xml?MV{{states("input_number.denon_volume").replace(".", "") }}'
-volume_up:
-  url: 'http://192.168.86.187/goform/formiPhoneAppDirect.xml?MVUP'
-volume_down:
-  url: 'http://192.168.86.187/goform/formiPhoneAppDirect.xml?MVDOWN'
-volume_correct:
-  url: 'http://192.168.86.187/goform/formiPhoneAppDirect.xml?MV35'
+  eco_on:
+    url: 'http://192.168.86.187/goform/formiPhoneAppDirect.xml?ECOON'
+  eco_off:
+    url: 'http://192.168.86.187/goform/formiPhoneAppDirect.xml?ECOOFF'
+  av_menu_on:
+    url: 'http://192.168.86.187/goform/formiPhoneAppDirect.xml?MNMEN%20ON'
+  av_menu_off:
+    url: 'http://192.168.86.187/goform/formiPhoneAppDirect.xml?MNMEN%20OFF'
+  set_volume:
+    url: 'http://192.168.86.187/goform/formiPhoneAppDirect.xml?MV{{states("input_number.denon_volume").replace(".", "") }}'
+  volume_up:
+    url: 'http://192.168.86.187/goform/formiPhoneAppDirect.xml?MVUP'
+  volume_down:
+    url: 'http://192.168.86.187/goform/formiPhoneAppDirect.xml?MVDOWN'
+  volume_correct:
+    url: 'http://192.168.86.187/goform/formiPhoneAppDirect.xml?MV35'
