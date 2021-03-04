@@ -93,16 +93,6 @@ browser_mod:
   prefix: 'browser_mod_'
 
 #################################################################
-## Notifications
-#################################################################
-# Notifications    
-notify:
-# Telegram
-  - name: telegram
-    platform: telegram
-    chat_id: !secret telegram_bot_main_chat_id
-
-#################################################################
 ## Software Integrations
 #################################################################
 

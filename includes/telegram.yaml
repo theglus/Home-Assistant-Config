@@ -1,0 +1,6 @@
+#################################################################
+## Telegram
+#################################################################
+name: telegram
+platform: telegram
+chat_id: !secret telegram_bot_main_chat_id

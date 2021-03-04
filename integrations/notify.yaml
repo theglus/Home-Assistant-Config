@@ -1,0 +1,4 @@
+#################################################################
+## This handles the loading of my notifiers
+#################################################################
+notify: !include_dir_list ../includes/notifiers
