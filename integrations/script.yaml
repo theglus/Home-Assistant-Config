@@ -1,5 +1,5 @@
 #################################################################
 ## This handles the loading of my scripts.
 ################################################################# 
-script: !include ../includes/scripts.yaml
+script: !include ../scripts.yaml
 #script split: !include_dir_named ../scripts
