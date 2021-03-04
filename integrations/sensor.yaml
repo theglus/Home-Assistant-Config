@@ -1,5 +1,4 @@
 #################################################################
 ## This handles the loading of my sensors.
 ################################################################# 
-sensor: !include  ../includes/sensors.yaml
-sensor split: !include_dir_merge_list ../includes/sensors
+sensor: !include_dir_merge_list ../includes/sensors
