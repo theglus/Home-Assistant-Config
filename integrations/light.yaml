@@ -2,4 +2,4 @@
 ## This handles the loading of my lights.
 ################################################################# 
 light: !include ../includes/lights.yaml
-#light split: !include_dir_list ../includes/lights
+light split: !include_dir_list ../includes/lights

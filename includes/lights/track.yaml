@@ -1,0 +1,9 @@
+#################################################################
+## Track Light Group
+#################################################################
+platform: group
+name: Track
+entities:
+  - light.left_track
+  - light.center_track
+  - light.right_track
