@@ -3,7 +3,7 @@
 #################################################################
 platform: group
 name: Downstairs
-entities: 
+entities:
 	- light.overhead
 	- light.track
 	- light.dino_panel
