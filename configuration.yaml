@@ -218,6 +218,5 @@ binary_sensor:
     excludes: [sat, sun]
 
 ######## INCLUDES ########
-rest_command: !include includes/rest_command.yaml
 homeassistant:
   packages: !include_dir_named integrations
