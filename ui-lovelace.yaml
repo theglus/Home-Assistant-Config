@@ -1,5 +1,5 @@
 background: var(--background-image)
-button_card_templates: !include /includes/lovelace/button_card_templates.yaml  
+button_card_templates: !include includes/lovelace/button_card_templates.yaml  
 title: Loft
 views:
   - path: default_view
