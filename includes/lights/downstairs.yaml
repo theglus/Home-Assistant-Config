@@ -4,10 +4,10 @@
 platform: group
 name: Downstairs
 entities:
-	- light.overhead
-	- light.track
-	- light.dino_panel
-	- light.hallway_runner
-	- light.potter_lamp
-	- light.kitchen
-	- light.yumi_lamp
+  - light.overhead
+  - light.track
+  - light.dino_panel
+  - light.hallway_runner
+  - light.potter_lamp
+  - light.kitchen
+  - light.yumi_lamp
