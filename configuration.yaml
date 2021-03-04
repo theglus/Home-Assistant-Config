@@ -95,13 +95,6 @@ browser_mod:
 #################################################################
 ## Notifications
 #################################################################
-
-# Telegram bot
-telegram_bot:
-  - platform: polling
-    api_key: !secret telegram_bot_key
-    allowed_chat_ids: !secret telegram_bot_chat_ids
-
 # Notifications    
 notify:
 # Telegram
