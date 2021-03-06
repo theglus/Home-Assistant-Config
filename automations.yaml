@@ -123,27 +123,6 @@
       message: I'll be back.
       title: '🛎️ Server:'
   mode: single
-- id: '1604123458236'
-  alias: Alert Front Door
-  description: Alert when front door is open 10+ seconds.
-  trigger:
-  - type: opened
-    platform: device
-    device_id: a13166182e71a12ccc046137e74cde66
-    entity_id: binary_sensor.front_door
-    domain: binary_sensor
-    for:
-      hours: 0
-      minutes: 0
-      seconds: 10
-      milliseconds: 0
-  condition: []
-  action:
-  - service: notify.telegram
-    data:
-      message: Front door is still open!
-      title: '🚨 ALERT:'
-  mode: single
 - id: '1604123857292'
   alias: Alert Leak
   description: Alert when water is detected under AC.
