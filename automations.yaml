@@ -1,35 +1,3 @@
-- id: '1601307642952'
-  alias: Shutoff Printer
-  description: Shutoff plug to printer 15-minutes after device has been switched on.
-  trigger:
-  - platform: state
-    entity_id: switch.major_laser_printer
-    for: 00:15:00
-    from: 'off'
-    to: 'on'
-  condition: []
-  action:
-  - type: turn_off
-    device_id: cc99ed6aff6a11ea940fe1f9a75d2527
-    entity_id: switch.major_laser_printer
-    domain: switch
-  mode: single
-- id: '1601312737081'
-  alias: Shutoff Kettle
-  description: Shutoff plug to kettle 15-minutes after device has been switched on.
-  trigger:
-  - platform: state
-    for: 00:15:00
-    from: 'off'
-    to: 'on'
-    entity_id: switch.kettle
-  condition: []
-  action:
-  - type: turn_off
-    device_id: cc9c28d8ff6a11ea876cbbcc11d5e81d
-    entity_id: switch.kettle
-    domain: switch
-  mode: single
 - id: '1604018556590'
   alias: Volume nighttime
   description: Turn down volume of Google Home device at 10 pm.
@@ -241,19 +209,3 @@
       manual_time: '8:00:00'
       sunrise_duration: '25'
       min_mired: '450'
-- id: '1613169784553'
-  alias: Shutoff Shredder
-  description: Shutoff plug to paper shredder 2-minutes after device has been switched
-    on.
-  trigger:
-  - platform: state
-    entity_id: switch.paper_shredder
-    for: 00:02:00
-    from: 'off'
-    to: 'on'
-  condition: []
-  action:
-  - service: switch.turn_off
-    data: {}
-    entity_id: switch.paper_shredder
-  mode: single

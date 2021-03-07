@@ -1,0 +1,19 @@
+#################################################################
+## Shutdown Shredder
+#
+## Shutoff plug to paper shredder 2-minutes after device has been switched on.
+#################################################################
+alias: Shutoff Shredder
+description: Shutoff plug to paper shredder 2-minutes after device has been switched
+  on.
+trigger:
+- platform: state
+  entity_id: switch.paper_shredder
+  for: 00:02:00
+  from: 'off'
+  to: 'on'
+action:
+- service: switch.turn_off
+  data: {}
+  entity_id: switch.paper_shredder
+mode: single
