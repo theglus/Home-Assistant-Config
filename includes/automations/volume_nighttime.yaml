@@ -1,0 +1,32 @@
+#################################################################
+## Volume Nighttime
+#
+## Turn down volume of Google Home device at 10 pm.
+#################################################################
+alias: Volume nighttime
+description: Turn down volume of Google Home device at 10 pm.
+trigger:
+- platform: time
+  at: '22:00:00'
+condition: []
+action:
+- service: media_player.volume_set
+  data:
+    entity_id: media_player.loft_clock
+    volume_level: '0.50'
+- service: media_player.volume_set
+  data:
+    entity_id:
+    - media_player.office_speaker
+    - media_player.living_room_speaker
+    - media_player.loft_bathroom
+    volume_level: '0.30'
+- service: media_player.volume_set
+  data:
+    entity_id: media_player.loft_nest_hub
+    volume_level: '0.50'
+- service: notify.telegram
+  data:
+    message: Quiet time!
+    title: 🤫 Farnsworth
+mode: single
