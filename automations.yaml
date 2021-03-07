@@ -86,32 +86,6 @@
       message: I'm loud and proud, deal with it.
       title: '📢 Farnsworth:'
   mode: single
-- id: '1604110722335'
-  alias: Server Boot Up
-  description: Telegram notification when server has booted up.
-  trigger:
-  - platform: homeassistant
-    event: start
-  condition: []
-  action:
-  - service: notify.telegram
-    data:
-      message: Home Assistant is ready for business.
-      title: '🛎️ Server:'
-  mode: single
-- id: '1604122122599'
-  alias: Server Reboot
-  description: Telegram notification that alerts of server reboot, restart, or shutdown.
-  trigger:
-  - platform: homeassistant
-    event: shutdown
-  condition: []
-  action:
-  - service: notify.telegram
-    data:
-      message: I'll be back.
-      title: '🛎️ Server:'
-  mode: single
 - id: '1604159666251'
   alias: Notification Printer
   description: Notify Farnsworth when Major Laser Printer is ready.

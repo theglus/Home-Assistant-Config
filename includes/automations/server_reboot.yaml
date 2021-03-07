@@ -1,0 +1,17 @@
+#################################################################
+## Server Reboot
+#
+## Telegram notification that alerts of server reboot, restart, or shutdown.
+#################################################################
+alias: Server Reboot
+description: Telegram notification that alerts of server reboot, restart, or shutdown.
+trigger:
+- platform: homeassistant
+  event: shutdown
+condition: []
+action:
+- service: notify.telegram
+  data:
+    message: I'll be back.
+    title: '🛎️ Server:'
+mode: single
