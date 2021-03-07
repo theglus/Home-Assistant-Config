@@ -123,27 +123,6 @@
       message: I'll be back.
       title: '🛎️ Server:'
   mode: single
-- id: '1604123857292'
-  alias: Alert Leak
-  description: Alert when water is detected under AC.
-  trigger:
-  - type: moist
-    platform: device
-    device_id: 6bd7ff509b62f7b1c7fbd08263ceb018
-    entity_id: binary_sensor.water
-    domain: binary_sensor
-    for:
-      hours: 0
-      minutes: 0
-      seconds: 0
-      milliseconds: 0
-  condition: []
-  action:
-  - service: notify.telegram
-    data:
-      message: Ice Bear peed!
-      title: '🚨 ALERT:'
-  mode: single
 - id: '1604159666251'
   alias: Notification Printer
   description: Notify Farnsworth when Major Laser Printer is ready.
