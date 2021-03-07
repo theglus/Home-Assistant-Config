@@ -30,17 +30,6 @@
     entity_id: switch.kettle
     domain: switch
   mode: single
-- id: '1604002955198'
-  alias: Charge toothbrushes
-  description: 'Start charging toothbrushes at 12 am and stop at 4 am. '
-  trigger:
-  - platform: time
-    at: 00:00:00
-  condition: []
-  action:
-  - service: script.4_hour_toothbrush_trickle_charge
-    data: {}
-  mode: single
 - id: '1604018556590'
   alias: Volume nighttime
   description: Turn down volume of Google Home device at 10 pm.
