@@ -3,22 +3,22 @@
 #
 ## Notify Farnsworth when kettle is ready.
 #################################################################
-- id: '1604222655903'
-  alias: Notification Tea
-  description: 'Notify Farnsworth when kettle is ready.'
-  trigger:
-  - platform: device
-    type: turned_on
-    device_id: cc9c28d8ff6a11ea876cbbcc11d5e81d
-    entity_id: switch.kettle
-    domain: switch
-    for:
-      hours: 0
-      minutes: 3
-      seconds: 0
-  action:
-  - service: notify.telegram
-    data:
-      message: Time for tea!
-      title: '☕ Kettle:'
-  mode: single
+alias: Notification Tea
+description: Notify Farnsworth when tea is ready.
+trigger:
+- platform: device
+  type: turned_on
+  device_id: cc9c28d8ff6a11ea876cbbcc11d5e81d
+  entity_id: switch.kettle
+  domain: switch
+  for:
+    hours: 0
+    minutes: 3
+    seconds: 0
+condition: []
+action:
+- service: notify.telegram
+  data:
+    message: Time for tea!
+    title: '☕ Kettle:'
+mode: single
