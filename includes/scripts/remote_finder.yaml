@@ -1,13 +1,12 @@
 #################################################################
 ## Shield remote finder
 #################################################################
-- remote_finder:
-    alias: Remote Finder
-    icon: mdi:target
-    mode: single
-    sequence:
-    - data:
-        command: 
-          am start -a android.intent.action.VIEW -d -n com.nvidia.remotelocator/.ShieldRemoteLocatorActivity
-        entity_id: media_player.shield_tv
-      service: androidtv.adb_command
+alias: Remote Finder
+icon: mdi:target
+mode: single
+sequence:
+- data:
+    command: 
+      am start -a android.intent.action.VIEW -d -n com.nvidia.remotelocator/.ShieldRemoteLocatorActivity
+    entity_id: media_player.shield_tv
+  service: androidtv.adb_command

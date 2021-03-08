@@ -1,12 +1,11 @@
 #################################################################
 ## Set Denon Sound Mode to Stereo
 #################################################################
-- sound_mode_stereo:
-    alias: Sound Mode Stereo
-    sequence:
-    - service: media_player.select_sound_mode
-      data:
-        sound_mode: STEREO
-      entity_id: media_player.dennis
-    mode: single
-    icon: mdi:surround-sound-2-0
+alias: Sound Mode Stereo
+sequence:
+- service: media_player.select_sound_mode
+  data:
+    sound_mode: STEREO
+  entity_id: media_player.dennis
+mode: single
+icon: mdi:surround-sound-2-0

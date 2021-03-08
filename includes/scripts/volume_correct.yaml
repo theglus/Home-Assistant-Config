@@ -1,12 +1,11 @@
 #################################################################
 ## Set Denon Correct.
 #################################################################
-- volume_correct:
-    alias: Correct Denon Volume
-    sequence:
-      - service: denonavr.get_command
-        data:
-          entity_id: media_player.dennis
-          command: /goform/formiPhoneAppDirect.xml??MV35
-    mode: queued
-    icon: mdi:volume-vibrate
+alias: Correct Denon Volume
+sequence:
+  - service: denonavr.get_command
+    data:
+      entity_id: media_player.dennis
+      command: /goform/formiPhoneAppDirect.xml??MV35
+mode: queued
+icon: mdi:volume-vibrate

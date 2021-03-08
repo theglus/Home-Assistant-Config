@@ -1,12 +1,11 @@
 #################################################################
 ## Set Denon Volume Down.
 #################################################################
-- volume_down:
-    alias: Decrease Denon Volume
-    sequence:
-      - service: denonavr.get_command
-        data:
-          entity_id: media_player.dennis
-          command: /goform/formiPhoneAppDirect.xml?MVDOWN
-    mode: queued
-    icon: mdi:volume-minus
+alias: Decrease Denon Volume
+sequence:
+  - service: denonavr.get_command
+    data:
+      entity_id: media_player.dennis
+      command: /goform/formiPhoneAppDirect.xml?MVDOWN
+mode: queued
+icon: mdi:volume-minus

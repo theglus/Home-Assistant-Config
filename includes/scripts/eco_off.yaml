@@ -1,10 +1,11 @@
 #################################################################
-## Set Denon Volume Up.
+## Disable Denon Eco mode
 #################################################################
-alias: Increase Denon Volume
+alias: ECO Mode Off
 sequence:
   - service: denonavr.get_command
     data:
       entity_id: media_player.dennis
-      command: /goform/formiPhoneAppDirect.xml?MVUP
-mode: queued
+      command: /goform/formiPhoneAppDirect.xml?ECOOFF
+mode: single
+icon: mdi:leaf

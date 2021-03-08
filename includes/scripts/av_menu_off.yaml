@@ -1,10 +1,11 @@
 #################################################################
-## Set Denon Volume Up.
+## Denon Menu Off
 #################################################################
-alias: Increase Denon Volume
+alias: Denon Menu Off
 sequence:
   - service: denonavr.get_command
     data:
       entity_id: media_player.dennis
-      command: /goform/formiPhoneAppDirect.xml?MVUP
-mode: queued
+      command: /goform/formiPhoneAppDirect.xml?MNMEN%20OFF
+mode: single
+icon: mdi:tune-vertical

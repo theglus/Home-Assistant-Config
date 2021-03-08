@@ -1,12 +1,11 @@
 #################################################################
 ## Launch Hulu
 #################################################################
-- launch_netflix:
-    alias: Launch Netflix
-    sequence:
-      - service: androidtv.adb_command
-        data:
-          entity_id: media_player.shield_tv
-          command: "am start -a android.intent.action.VIEW -d -n com.netflix.ninja/.MainActivity"
-    mode: queued
-    icon: mdi:netflix
+alias: Launch Netflix
+sequence:
+  - service: androidtv.adb_command
+    data:
+      entity_id: media_player.shield_tv
+      command: "am start -a android.intent.action.VIEW -d -n com.netflix.ninja/.MainActivity"
+mode: queued
+icon: mdi:netflix
