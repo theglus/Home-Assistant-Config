@@ -1,12 +1,12 @@
 #################################################################
 ## Launch Hulu
 #################################################################
-launch_hulu:
-  alias: Launch Hulu
-  sequence:
-    - service: androidtv.adb_command
-      data:
-        entity_id: media_player.shield_tv
-        command: "am start -a android.intent.action.VIEW -d -n com.hulu.livingroomplus/.MainActivity"
-  mode: queued
-  icon: mdi:hulu
+- launch_hulu:
+    alias: Launch Hulu
+    sequence:
+      - service: androidtv.adb_command
+        data:
+          entity_id: media_player.shield_tv
+          command: "am start -a android.intent.action.VIEW -d -n com.hulu.livingroomplus/.MainActivity"
+    mode: queued
+    icon: mdi:hulu

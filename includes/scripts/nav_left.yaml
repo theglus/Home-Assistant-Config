@@ -1,12 +1,12 @@
 #################################################################
 ## Android TV Left command
 #################################################################
-nav_left:
-  alias: Navigate Left
-  sequence:
-    - service: androidtv.adb_command
-      data:
-        entity_id: media_player.shield_tv
-        command: "LEFT"
-  mode: queued
-  icon: mdi:chevron-left-circle-outline
+- nav_left:
+    alias: Navigate Left
+    sequence:
+      - service: androidtv.adb_command
+        data:
+          entity_id: media_player.shield_tv
+          command: "LEFT"
+    mode: queued
+    icon: mdi:chevron-left-circle-outline

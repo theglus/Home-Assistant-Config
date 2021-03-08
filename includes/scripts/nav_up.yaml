@@ -1,12 +1,12 @@
 #################################################################
 ## Android TV Down command
 #################################################################
-nav_up:
-  alias: Navigate Up
-  sequence:
-    - service: androidtv.adb_command
-      data:
-        entity_id: media_player.shield_tv
-        command: "UP"
-  mode: queued
-  icon: mdi:chevron-up-circle-outline
+- nav_up:
+    alias: Navigate Up
+    sequence:
+      - service: androidtv.adb_command
+        data:
+          entity_id: media_player.shield_tv
+          command: "UP"
+    mode: queued
+    icon: mdi:chevron-up-circle-outline
