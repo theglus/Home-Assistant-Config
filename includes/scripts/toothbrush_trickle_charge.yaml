@@ -1,3 +1,7 @@
+#################################################################
+## Turn-on toothbrush at 12 am and off at 4 am.
+#################################################################
+sound_mode_auto:
 4_hour_toothbrush_trickle_charge:
   alias: 4-hour toothbrush trickle charge
   sequence:

@@ -7,6 +7,7 @@ remote_finder:
   mode: single
   sequence:
   - data:
-      command: am start -a android.intent.action.VIEW -d -n com.nvidia.remotelocator/.ShieldRemoteLocatorActivity
+      command: 
+        am start -a android.intent.action.VIEW -d -n com.nvidia.remotelocator/.ShieldRemoteLocatorActivity
       entity_id: media_player.shield_tv
     service: androidtv.adb_command
