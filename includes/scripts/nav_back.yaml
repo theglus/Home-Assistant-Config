@@ -1,12 +1,12 @@
 #################################################################
-## Android TV Down command
+## Android TV Back command
 #################################################################
-nav_down:
-  alias: Navigate Down
+nav_back:
+  alias: Navigate Back
   sequence:
     - service: androidtv.adb_command
       data:
         entity_id: media_player.shield_tv
-        command: "DOWN"
-  mode: parallel
-  icon: mdi:chevron-down-circle-outline
+        command: "BACK"
+  mode: queued
+  icon: mdi:step-backward

@@ -1,12 +1,12 @@
 #################################################################
-## Android TV Home command
+## Android TV Enter command
 #################################################################
-nav_home:
-  alias: Navigate Home
+nav_enter:
+  alias: Navigate Enter
   sequence:
     - service: androidtv.adb_command
       data:
         entity_id: media_player.shield_tv
-        command: "HOME"
-  mode: parallel
-  icon: mdi:home-circle-outline
+        command: "ENTER"
+  mode: queued
+  icon: mdi:cursor-default-click-outline

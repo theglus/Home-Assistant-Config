@@ -1,12 +1,12 @@
 #################################################################
-## Android TV Left command
+## Android TV Home command
 #################################################################
-nav_left:
-  alias: Navigate Left
+nav_home:
+  alias: Navigate Home
   sequence:
     - service: androidtv.adb_command
       data:
         entity_id: media_player.shield_tv
-        command: "LEFT"
-  mode: parallel
-  icon: mdi:chevron-left-circle-outline
+        command: "HOME"
+  mode: queued
+  icon: mdi:home-circle-outline

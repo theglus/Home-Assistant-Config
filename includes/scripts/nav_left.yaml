@@ -1,12 +1,12 @@
 #################################################################
-## Android TV Right command
+## Android TV Left command
 #################################################################
-nav_right:
-  alias: Navigate Right
+nav_left:
+  alias: Navigate Left
   sequence:
     - service: androidtv.adb_command
       data:
         entity_id: media_player.shield_tv
-        command: "RIGHT"
-  mode: parallel
-  icon: mdi:chevron-right-circle-outline
+        command: "LEFT"
+  mode: queued
+  icon: mdi:chevron-left-circle-outline
