@@ -1,12 +1,12 @@
 #################################################################
 ## Set Denon Volume.
 #################################################################
-set_volume:
-  alias: Set Denon Volume 
-  sequence:
-    - service: denonavr.get_command
-      data:
-        entity_id: media_player.dennis
-        command: goform/formiPhoneAppDirect.xml?MV{{states("input_number.denon_volume").replace(".", "") }}
-  mode: queued
-  icon: mdi:volume-source
+- set_volume:
+    alias: Set Denon Volume 
+    sequence:
+      - service: denonavr.get_command
+        data:
+          entity_id: media_player.dennis
+          command: goform/formiPhoneAppDirect.xml?MV{{states("input_number.denon_volume").replace(".", "") }}
+    mode: queued
+    icon: mdi:volume-source

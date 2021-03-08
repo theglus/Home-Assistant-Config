@@ -2,4 +2,4 @@
 ## This handles the loading of my scripts.
 ################################################################# 
 script: !include ../scripts.yaml
-script split: !include_dir_list ../includes/scripts
+script split: !include_dir_merge_list ../includes/scripts
