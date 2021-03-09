@@ -3,22 +3,22 @@
 #################################################################
 alias: 4-hour toothbrush trickle charge
 sequence:
-- type: turn_on
-  device_id: cd296dedff6a11eab286c53d3c00567d
-  entity_id: switch.tiffany_s_toothbrush
-  domain: switch
-- type: turn_on
-  device_id: cd296dedff6a11eab286c53d3c00567d
-  entity_id: switch.jeffrey_s_toothbrush
-  domain: switch
-- delay: 04:00:00
-- type: turn_off
-  device_id: cd296dedff6a11eab286c53d3c00567d
-  entity_id: switch.tiffany_s_toothbrush
-  domain: switch
-- type: turn_off
-  device_id: cd296dedff6a11eab286c53d3c00567d
-  entity_id: switch.jeffrey_s_toothbrush
-  domain: switch
+  - type: turn_on
+    device_id: cd296dedff6a11eab286c53d3c00567d
+    entity_id: switch.tiffany_s_toothbrush
+    domain: switch
+  - type: turn_on
+    device_id: cd296dedff6a11eab286c53d3c00567d
+    entity_id: switch.jeffrey_s_toothbrush
+    domain: switch
+  - delay: 04:00:00
+  - type: turn_off
+    device_id: cd296dedff6a11eab286c53d3c00567d
+    entity_id: switch.tiffany_s_toothbrush
+    domain: switch
+  - type: turn_off
+    device_id: cd296dedff6a11eab286c53d3c00567d
+    entity_id: switch.jeffrey_s_toothbrush
+    domain: switch
 mode: single
 icon: mdi:toothbrush

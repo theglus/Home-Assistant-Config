@@ -1,57 +1,57 @@
 #################################################################
 ## Allows me to create & modify automations in the UI.
 #################################################################
-- id: '1609214877779'
+- id: "1609214877779"
   alias: Mi Magic Cube
-  description: ''
+  description: ""
   use_blueprint:
     path: magic_cube.yaml
     input:
       remote: 55278effdc88ebe7ffa36b52540fa006
       rotate_clockwise:
-      - type: brightness_increase
-        device_id: 7faeb9e5857511b167cb40d31e810446
-        entity_id: light.downstairs_living_room_yumi_lamp
-        domain: light
+        - type: brightness_increase
+          device_id: 7faeb9e5857511b167cb40d31e810446
+          entity_id: light.downstairs_living_room_yumi_lamp
+          domain: light
       rotate_counter_clockwise:
-      - type: brightness_decrease
-        device_id: 7faeb9e5857511b167cb40d31e810446
-        entity_id: light.hue_color_lamp_1_2
-        domain: light
+        - type: brightness_decrease
+          device_id: 7faeb9e5857511b167cb40d31e810446
+          entity_id: light.hue_color_lamp_1_2
+          domain: light
       cube_shake:
-      - service: media_player.media_play_pause
-        data: {}
-        entity_id: media_player.shield
+        - service: media_player.media_play_pause
+          data: {}
+          entity_id: media_player.shield
       cube_double_tap_any: []
       double_tap_any_side: false
       six_to_six:
-      - service: script.remote_finder
-        data: {}
+        - service: script.remote_finder
+          data: {}
       one_to_five:
-      - type: toggle
-        device_id: 4b703738171211eb953dc57494375806
-        entity_id: light.upstairs_hallway_marquee
-        domain: light
+        - type: toggle
+          device_id: 4b703738171211eb953dc57494375806
+          entity_id: light.upstairs_hallway_marquee
+          domain: light
       one_to_four:
-      - type: toggle
-        device_id: 6b3f010b852f90f27f83b82eb13178a3
-        entity_id: light.dino_panel
-        domain: light
+        - type: toggle
+          device_id: 6b3f010b852f90f27f83b82eb13178a3
+          entity_id: light.dino_panel
+          domain: light
       two_to_two:
-      - service: switch.toggle
-        data: {}
-        entity_id: switch.switchbot
-- id: '1613026584789'
+        - service: switch.toggle
+          data: {}
+          entity_id: switch.switchbot
+- id: "1613026584789"
   alias: Rise and Shine
-  description: ''
+  description: ""
   use_blueprint:
     path: wake-up.yaml
     input:
       light_entity: light.jeffreys_lamp
       timestamp_sensor: sensor.pixel_3_next_alarm
-      end_brightness: '254'
-      start_brightness: '1'
+      end_brightness: "254"
+      start_brightness: "1"
       check_entity: binary_sensor.pixel_3_is_charging
-      manual_time: '8:00:00'
-      sunrise_duration: '25'
-      min_mired: '450'
+      manual_time: "8:00:00"
+      sunrise_duration: "25"
+      min_mired: "450"

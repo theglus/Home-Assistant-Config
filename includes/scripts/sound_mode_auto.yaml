@@ -3,9 +3,9 @@
 #################################################################
 alias: Sound Mode Auto
 sequence:
-- service: media_player.select_sound_mode
-  data:
-    sound_mode: AUTO
-  entity_id: media_player.dennis
+  - service: media_player.select_sound_mode
+    data:
+      sound_mode: AUTO
+    entity_id: media_player.dennis
 mode: single
 icon: mdi:surround-sound

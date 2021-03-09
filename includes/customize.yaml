@@ -18,19 +18,19 @@ light.office:
 #################################################################
 # Downstairs Lights
 light.downstairs:
-  icon: 'mdi:home-floor-g'
+  icon: "mdi:home-floor-g"
 # Upstairs Lights
 light.upstairs:
-  icon: 'mdi:home-roof'
+  icon: "mdi:home-roof"
 # Loft Bedside Lights
 light.bedside:
-  icon: 'mdi:desk-lamp'
+  icon: "mdi:desk-lamp"
 # Overhead Office Lights
 light.overhead:
-  icon: 'mdi:dome-light'
+  icon: "mdi:dome-light"
 # Track Lights
 light.track:
-  icon: 'mdi:track-light'
+  icon: "mdi:track-light"
 #################################################################
 ## Hue Zones
 #################################################################

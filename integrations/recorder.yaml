@@ -10,18 +10,18 @@ recorder:
       - device_tracker.keys
       - device_tracker.pixel_3
       - sensor.humidity_living_room
-      - sensor.humidity_media      
+      - sensor.humidity_media
       - sensor.memory_use_percent
-      - sensor.pressure_living_room        
+      - sensor.pressure_living_room
       - sensor.pressure_media
       - sensor.speedtest_download
-      - sensor.speedtest_upload  
-      - sensor.temperature_living_room   
+      - sensor.speedtest_upload
+      - sensor.temperature_living_room
       - sensor.temperature_media
-      - sensor.time_online    
+      - sensor.time_online
     entity_globs:
       - person.jeffrey_*
-      - person.tiffany_*      
+      - person.tiffany_*
       - sensor.kirby_*
       - sensor.mail_*
-      - sensor.processor_*    
+      - sensor.processor_*

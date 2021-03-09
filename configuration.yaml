@@ -12,7 +12,7 @@ default_config:
 # Text to speech
 tts:
   - platform: google_translate
-  
+
 input_boolean:
   shield_tv:
     initial: off
@@ -39,13 +39,13 @@ lovelace:
       {url: /hacsfiles/rgb-light-card/card.js,                                      type: module},
       {url: /hacsfiles/stack-in-card/stack-in-card.js,                              type: module},  
       {url: /hacsfiles/vacuum-card/vacuum-card.js,                                  type: module},
-      {url: /hacsfiles/vertical-stack-in-card/vertical-stack-in-card.js,            type: module}, ]                          
+      {url: /hacsfiles/vertical-stack-in-card/vertical-stack-in-card.js,            type: module}, ]       
 #################################################################
 ## Add-ons
-################################################################# 
+#################################################################
 
 browser_mod:
-  prefix: 'browser_mod_'
+  prefix: "browser_mod_"
 
 #################################################################
 ## Software Integrations
@@ -96,11 +96,11 @@ climate:
 #################################################################
 
 media_player:
-# Shield
+  # Shield
   - platform: androidtv
     name: SHIELD TV
     host: !secret shield_ip
-# Sonny
+  # Sonny
   - platform: androidtv
     name: Sonny TV
     host: !secret sonny_ip
@@ -110,7 +110,7 @@ media_player:
 #################################################################
 
 binary_sensor:
-# Workday
+  # Workday
   - platform: workday
     country: US
     workdays: [mon, tue, wed, thu, fri]

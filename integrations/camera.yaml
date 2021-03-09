@@ -2,7 +2,7 @@
 ## Camera Integrations
 #################################################################
 camera:
-# Winston lidar
+  # Winston lidar
   - platform: xiaomi_cloud_map_extractor
     host: !secret winston_host
     token: !secret winston_token
@@ -11,7 +11,7 @@ camera:
     country: us
     colors:
       color_map_outside: [3, 169, 244]
-    room_colors: 
+    room_colors:
       # Hallway
       16: [253, 211, 82]
       # Living Room
