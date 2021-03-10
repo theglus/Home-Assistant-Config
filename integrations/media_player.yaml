@@ -1,0 +1,4 @@
+#################################################################
+## This loads up my media player configurations.
+#################################################################
+media_player: !include_dir_list ../includes/media_players

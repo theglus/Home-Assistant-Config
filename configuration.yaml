@@ -92,20 +92,6 @@ climate:
     target_sensor: sensor.temperature_living_room
 
 #################################################################
-## Media Players
-#################################################################
-
-media_player:
-  # Shield
-  - platform: androidtv
-    name: SHIELD TV
-    host: !secret shield_ip
-  # Sonny
-  - platform: androidtv
-    name: Sonny TV
-    host: !secret sonny_ip
-
-#################################################################
 ## Sensors
 #################################################################
 
