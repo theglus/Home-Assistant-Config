@@ -82,16 +82,6 @@ vacuum:
     name: Winston
 
 #################################################################
-## Climate
-#################################################################
-
-climate:
-  - platform: generic_thermostat
-    name: Living Room
-    heater: switch.switchbot
-    target_sensor: sensor.temperature_living_room
-
-#################################################################
 ## Sensors
 #################################################################
 
