@@ -6,6 +6,6 @@ sequence:
   - service: media_player.select_sound_mode
     data:
       sound_mode: STEREO
-    entity_id: media_player.dennis
+      entity_id: media_player.dennis
 mode: single
 icon: mdi:surround-sound-2-0
