@@ -10,6 +10,7 @@ trigger:
 - type: turned_on
   platform: device
   device_id: 0d90cb630ecad3945965440c0dabc6cf
+  # TODO #238 Resolve issue with office availability.
   entity_id: binary_sensor.jeffreys_macbook_pro_camera_in_use
   domain: binary_sensor
   for:
