@@ -1,4 +1,4 @@
 #################################################################
 ## This handles the loading of my scripts.
 ################################################################# 
-script: !include_dir_named ../includes/scripts
+script: !include_dir_merge_named ../includes/scripts
