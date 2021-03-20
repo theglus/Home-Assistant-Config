@@ -10,10 +10,12 @@ default_config:
 #################################################################
 
 # Text to speech
+## TODO: #244 Split TTS out from configuration.yaml
 tts:
   - platform: google_translate
 
 input_boolean:
+## TODO: #245 Split Input Booleans out from configuration.yaml
   shield_tv:
     initial: off
 #################################################################
@@ -52,6 +54,7 @@ browser_mod:
 #################################################################
 
 # Google Cal
+## TODO: #242 Split Google Cal out from configuration.yaml
 # google:
 #   client_id: !secret google_client_id
 #   client_secret: !secret google_client_secret
@@ -87,6 +90,7 @@ vacuum:
 ## Sensors
 #################################################################
 
+## TODO: #243 Split binary sensors from configuration.yaml
 binary_sensor:
   # Workday
   - platform: workday
