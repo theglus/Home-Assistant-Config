@@ -57,7 +57,7 @@ browser_mod:
 #   client_secret: !secret google_client_secret
 
 # Speedtest
-## TODO: #240 Split Speedtest out from configuration
+## TODO: #240 Split Speedtest out from configuration.yaml
 speedtestdotnet:
   scan_interval:
     hours: 2
@@ -67,6 +67,7 @@ speedtestdotnet:
 #################################################################
 
 # Dyson
+## TODO: #241 Split Dyson out from configuration.yaml
 dyson:
   username: !secret dyson_username
   password: !secret dyson_password
