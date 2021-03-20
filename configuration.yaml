@@ -9,11 +9,6 @@ default_config:
 ## Components
 #################################################################
 
-# Text to speech
-## TODO: #244 Split TTS out from configuration.yaml
-tts:
-  - platform: google_translate
-
 input_boolean:
 ## TODO: #245 Split Input Booleans out from configuration.yaml
   shield_tv:
