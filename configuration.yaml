@@ -45,22 +45,6 @@ browser_mod:
   prefix: "browser_mod_"
 
 #################################################################
-## Software Integrations
-#################################################################
-
-# Google Cal
-## TODO: #242 Split Google Cal out from configuration.yaml
-# google:
-#   client_id: !secret google_client_id
-#   client_secret: !secret google_client_secret
-
-# Speedtest
-## TODO: #240 Split Speedtest out from configuration.yaml
-speedtestdotnet:
-  scan_interval:
-    hours: 2
-
-#################################################################
 ## Device Integrations
 #################################################################
 
