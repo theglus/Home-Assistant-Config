@@ -57,6 +57,7 @@ browser_mod:
 #   client_secret: !secret google_client_secret
 
 # Speedtest
+## TODO: #240 Split Speedtest out from configuration
 speedtestdotnet:
   scan_interval:
     hours: 2
