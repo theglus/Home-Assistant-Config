@@ -1,0 +1,6 @@
+#################################################################
+## Text-to-Speech (TTS) enables Home Assistant to speak to you.
+## This loads up my TTS service configurations
+#################################################################
+tts:
+  - platform: google_translate
