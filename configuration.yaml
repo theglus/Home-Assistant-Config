@@ -45,16 +45,6 @@ browser_mod:
   prefix: "browser_mod_"
 
 #################################################################
-## Software Integrations
-#################################################################
-
-# Speedtest
-## TODO: #240 Split Speedtest out from configuration.yaml
-speedtestdotnet:
-  scan_interval:
-    hours: 2
-
-#################################################################
 ## Device Integrations
 #################################################################
 
