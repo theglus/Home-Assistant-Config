@@ -40,6 +40,9 @@ cards:
                   service_data:
                     entity_id: input_select.lighttoggle
                     option: Entryway
+              #################################################################
+              ## Guest Bathroom Button
+              #################################################################             
               # TODO: #249 Create nav toggle for guest bathroom
               #################################################################
               ## Office Button
@@ -325,6 +328,9 @@ cards:
                 - type: "custom:button-card"
                   entity: binary_sensor.front_door
                   template: test
+          #################################################################
+          ## Guest Bathroom Controls
+          #################################################################          
           #249 Create view for downstairs bathroom
           #################################################################
           ## Office Controls
