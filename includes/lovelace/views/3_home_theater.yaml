@@ -4,7 +4,7 @@ icon: 'mdi:theater'
 panel: false
 badges: []
 cards:
-  # TODO: TV control modal 
+  # TODO: #263 TV control modal 
   - type: 'custom:vertical-stack-in-card'
     cards:
       - type: picture-elements
@@ -174,7 +174,7 @@ cards:
               height: 2px
               filter: invert(0.20)
               border-radius: 4px
-  # TODO: Denon control modal 
+  # TODO: #262 Denon control modal 
   - type: 'custom:vertical-stack-in-card'
     cards:
       - type: picture-elements

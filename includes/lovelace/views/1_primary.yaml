@@ -111,7 +111,7 @@ cards:
               #################################################################
               ## Office Button
               #################################################################
-              # TODO: Create nav toggle for loft bathroom                    
+              # TODO: #252 Create nav toggle for loft bathroom                    
       #################################################################
       #----------------------------------------------------------------
       ## Expanded
@@ -425,7 +425,7 @@ cards:
                 #----------------------------------------------------------------
                 ## Printer
                 #----------------------------------------------------------------
-                # TODO: Additional printer controls
+                # TODO: #253 Additional printer controls
                 - type: "custom:button-card"
                   entity: switch.major_laser_printer
                   name: Major Laser
@@ -433,11 +433,11 @@ cards:
                 #----------------------------------------------------------------
                 ## Office Google Home Mini
                 #----------------------------------------------------------------  
-                # TODO: Office Google Home Mini button          
+                # TODO: #254 Office Google Home Mini button          
                 #----------------------------------------------------------------
                 ## Office Smart Clock
                 #----------------------------------------------------------------  
-                # TODO: Smart Clock button                               
+                # TODO: #255 Smart Clock button                               
           #################################################################
           ## Living Room Controls
           #################################################################
@@ -551,7 +551,7 @@ cards:
                 #----------------------------------------------------------------
                 ## Heater
                 #----------------------------------------------------------------
-                # TODO: Sensor cirle with Living Room Temp
+                # TODO: #259 Sensor cirle with Living Room Temp
                 - type: "custom:button-card"
                   entity: switch.switchbot
                   icon: "hass:fan"
@@ -569,7 +569,7 @@ cards:
                 #----------------------------------------------------------------
                 ## Shield
                 #----------------------------------------------------------------
-                # BUG: Issue loading TV animation
+                # BUG: #260 Issue loading TV animation
                 - type: "custom:button-card"
                   entity: media_player.shield_tv
                   triggers_update:
@@ -596,11 +596,12 @@ cards:
                           position: absolute,
                         ]
                   template: ["base", "loader"]
+                  # #263: TV control modal
                 #----------------------------------------------------------------
                 ## Dennis
                 #----------------------------------------------------------------
-                # TODO: Denon stats button
-                # TODO: Denon control modal 
+                # TODO: #261 Denon stats button
+                # #262 Denon control modal 
           #################################################################
           ## Kitchen Controls
           #################################################################
@@ -653,13 +654,13 @@ cards:
                     action: toggle
                   entity: switch.kettle
                   name: Kettle
-                  # TODO: State based icons for kettle button
+                  # TODO: #264 State based icons for kettle button
                   style: |
                     ha-card:hover {
                       transform: scale(1.05);
                       box-shadow: 0 0 10px;
                       }
-                  # TODO: Countdown timer for kettle button
+                  # TODO: #265 Countdown timer for kettle button
                   styles:
                     name:
                       - padding: 8px 1em
@@ -685,7 +686,7 @@ cards:
                 #----------------------------------------------------------------
                 ## Kitchen Google Home Mini
                 #----------------------------------------------------------------
-                # TODO: Kitchen Google Home Mini button
+                # TODO: #256 Kitchen Google Home Mini button
                 #----------------------------------------------------------------
                 ## iPad Charger
                 #----------------------------------------------------------------     
@@ -697,7 +698,7 @@ cards:
                 #----------------------------------------------------------------
                 ## Paper Shredder
                 #----------------------------------------------------------------  
-                # TODO: Paper shredder button                                           
+                # TODO: #266 Paper shredder button                                           
           #################################################################
           ## Loft Controls
           #################################################################
@@ -774,12 +775,12 @@ cards:
                 #----------------------------------------------------------------
                 ## Nest Hub Mini
                 #----------------------------------------------------------------
-                # TODO: Nest Hub Mini button
+                # TODO: #258 Nest Hub Mini button
           #################################################################
           ## Loft Bathroom Controls
           #################################################################
-          # Create view for loft bathroom
+          # #252: Create view for loft bathroom
           #----------------------------------------------------------------
           ## Nest Mini
           #----------------------------------------------------------------
-          # TODO: Bathroom Nest Mini button
+          # TODO: #257 Bathroom Nest Mini button
