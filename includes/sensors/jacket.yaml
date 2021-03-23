@@ -1,0 +1,7 @@
+#################################################################
+## Do I need a jacket sensor?
+#################################################################
+- platform: scrape
+  name: Jacket
+  resource: https://doineedajacket.com/weather/potrero_hill
+  select: ".tom_wx h4"
