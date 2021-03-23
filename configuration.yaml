@@ -48,16 +48,6 @@ browser_mod:
 ## Device Integrations
 #################################################################
 
-# Dyson
-## TODO: #241 Split Dyson out from configuration.yaml
-dyson:
-  username: !secret dyson_username
-  password: !secret dyson_password
-  language: US
-  devices:
-    - device_id: !secret kirby_device_id
-      device_ip: !secret kirby_device_ip
-
 # Winston
 vacuum:
   - platform: xiaomi_miio
