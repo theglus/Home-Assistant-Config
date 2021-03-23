@@ -108,6 +108,10 @@ cards:
                   service_data:
                     entity_id: input_select.lighttoggle
                     option: Loft
+              #################################################################
+              ## Office Button
+              #################################################################
+              # TODO: Create nav toggle for loft bathroom                    
       #################################################################
       #----------------------------------------------------------------
       ## Expanded
@@ -421,10 +425,19 @@ cards:
                 #----------------------------------------------------------------
                 ## Printer
                 #----------------------------------------------------------------
+                # TODO: Additional printer controls
                 - type: "custom:button-card"
                   entity: switch.major_laser_printer
                   name: Major Laser
                   template: test
+                #----------------------------------------------------------------
+                ## Office Google Home Mini
+                #----------------------------------------------------------------  
+                # TODO: Office Google Home Mini button          
+                #----------------------------------------------------------------
+                ## Office Smart Clock
+                #----------------------------------------------------------------  
+                # TODO: Smart Clock button                               
           #################################################################
           ## Living Room Controls
           #################################################################
@@ -538,6 +551,7 @@ cards:
                 #----------------------------------------------------------------
                 ## Heater
                 #----------------------------------------------------------------
+                # TODO: Sensor cirle with Living Room Temp
                 - type: "custom:button-card"
                   entity: switch.switchbot
                   icon: "hass:fan"
@@ -555,6 +569,7 @@ cards:
                 #----------------------------------------------------------------
                 ## Shield
                 #----------------------------------------------------------------
+                # BUG: Issue loading TV animation
                 - type: "custom:button-card"
                   entity: media_player.shield_tv
                   triggers_update:
@@ -581,6 +596,11 @@ cards:
                           position: absolute,
                         ]
                   template: ["base", "loader"]
+                #----------------------------------------------------------------
+                ## Dennis
+                #----------------------------------------------------------------
+                # TODO: Denon stats button
+                # TODO: Denon control modal 
           #################################################################
           ## Kitchen Controls
           #################################################################
@@ -618,6 +638,7 @@ cards:
                         <path fill="#fcd40a" d="M13 2V3H12V9H11V10H9V11H8V12H7V13H5V12H4V11H3V9H2V15H3V16H4V17H5V18H6V22H8V21H7V20H8V19H9V18H10V19H11V22H13V21H12V17H13V16H14V15H15V12H16V13H17V11H15V9H20V8H17V7H22V3H21V2M14 3H15V4H14Z"/>
                         <path class="${state}" fill="F426FF" d="M13 2V3H12V9H11V10H9V11H8V12H7V13H5V12H4V11H3V9H2V15H3V16H4V17H5V18H6V22H8V21H7V20H8V19H9V18H10V19H11V22H13V21H12V17H13V16H14V15H15V12H16V13H17V11H15V9H20V8H17V7H22V3H21V2M14 3H15V4H14Z"/>
                       </svg>`
+                      # TODO: Apply gradient to dino icon
                   styles:
                     custom_fields:
                       icon_dino:
@@ -632,11 +653,13 @@ cards:
                     action: toggle
                   entity: switch.kettle
                   name: Kettle
+                  # TODO: State based icons for kettle button
                   style: |
                     ha-card:hover {
                       transform: scale(1.05);
                       box-shadow: 0 0 10px;
                       }
+                  # TODO: Countdown timer for kettle button
                   styles:
                     name:
                       - padding: 8px 1em
@@ -659,6 +682,22 @@ cards:
                           - color: "rgb(255, 122, 0)"
                   hold_action:
                     action: more-info
+                #----------------------------------------------------------------
+                ## Kitchen Google Home Mini
+                #----------------------------------------------------------------
+                # TODO: Kitchen Google Home Mini button
+                #----------------------------------------------------------------
+                ## iPad Charger
+                #----------------------------------------------------------------     
+                # TODO: iPad charger button
+                #----------------------------------------------------------------
+                ## Mac Charger
+                #----------------------------------------------------------------   
+                # TODO: Mac charger button
+                #----------------------------------------------------------------
+                ## Paper Shredder
+                #----------------------------------------------------------------  
+                # TODO: Paper shredder button                                           
           #################################################################
           ## Loft Controls
           #################################################################
@@ -732,3 +771,15 @@ cards:
                     icon_lamp: *icon_lamp
                   styles: *icon_lamp_styles
                   template: light
+                #----------------------------------------------------------------
+                ## Nest Hub Mini
+                #----------------------------------------------------------------
+                # TODO: Nest Hub Mini button
+          #################################################################
+          ## Loft Bathroom Controls
+          #################################################################
+          # Create view for loft bathroom
+          #----------------------------------------------------------------
+          ## Nest Mini
+          #----------------------------------------------------------------
+          # TODO: Bathroom Nest Mini button
