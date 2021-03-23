@@ -73,7 +73,7 @@ sensor:
   - platform: scrape
     name: Jacket
     resource: https://doineedajacket.com/weather/potrero_hill
-    select: "h1.dinaja.h1"
+    select: ".dinaja.h1 h1"
 
 ## TODO: #243 Split binary sensors from configuration.yaml
 binary_sensor:
