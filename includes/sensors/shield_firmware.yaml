@@ -5,3 +5,4 @@
   name: Shield Firmware
   resource: https://www.nvidia.com/en-us/shield/software-update/
   select: ".main-content h2"
+  value_template: '{{ value.split(" ")[3] }}'
