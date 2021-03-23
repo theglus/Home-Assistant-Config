@@ -69,12 +69,6 @@ vacuum:
 ## Sensors
 #################################################################
 
-sensor:
-  - platform: scrape
-    name: Jacket
-    resource: https://doineedajacket.com/weather/potrero_hill
-    select: ".tom_wx h4"
-
 ## TODO: #243 Split binary sensors from configuration.yaml
 binary_sensor:
   # Workday
