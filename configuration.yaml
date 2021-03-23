@@ -43,6 +43,11 @@ lovelace:
 
 browser_mod:
   prefix: "browser_mod_"
+  devices:
+    a314828b-6ae30387:
+      name: "Lilt MacBook Pro"
+    8fee92b6-03b9b09b:
+      name: "Pixel 3"
   disable:
     - all
 
