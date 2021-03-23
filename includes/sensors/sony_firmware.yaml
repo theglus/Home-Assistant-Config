@@ -1,0 +1,8 @@
+#################################################################
+## Sony Firmware
+#################################################################
+- platform: scrape
+  name: Sony Firmware
+  resource: https://www.sony.com/electronics/support/televisions-projectors-lcd-tvs-android-/xbr-55x900h/downloads
+  select: ".item-headline.t6-light.downloads"
+  value_template: '{{ value.split("v")[1] }}'
