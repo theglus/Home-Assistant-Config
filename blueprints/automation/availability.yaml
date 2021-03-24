@@ -1,41 +1,41 @@
 # TODO: #269 Resolve issue with availability Blueprint.
-blueprint:
-  name: Availability
-  description: Changes scene depending on laptop camera state.
-  domain: automation
+# blueprint:
+#   name: Availability
+#   description: Changes scene depending on laptop camera state.
+#   domain: automation
 
-  input:
-    trigger_sensor:
-      name: Sensor
-      description: Sensor to monitor in order to trigger the scene.
-      selector:
-        entity:
-        state:
-    duration:
-      name: Duration
-      description: What period to wait before triggering the scene? (HH:MM:SS)   
-    busy_scene:
-      name: Busy Scene
-      description: Scene to indicate busy state.
-      selector:
-        entity:
-    free_scene:
-      name: Free Scene
-      description: Scene to indicate free state.
-      selector:
-        entity:
+#   input:
+#     trigger_sensor:
+#       name: Sensor
+#       description: Sensor to monitor in order to trigger the scene.
+#       selector:
+#         entity:
+#         state:
+#     duration:
+#       name: Duration
+#       description: What period to wait before triggering the scene? (HH:MM:SS)   
+#     busy_scene:
+#       name: Busy Scene
+#       description: Scene to indicate busy state.
+#       selector:
+#         entity:
+#     free_scene:
+#       name: Free Scene
+#       description: Scene to indicate free state.
+#       selector:
+#         entity:
 
-trigger:
-  platform: device
-  entity_id: !input trigger_sensor
-  domain: sensor
-  for: !input duration
+# trigger:
+#   platform: device
+#   entity_id: !input trigger_sensor
+#   domain: sensor
+#   for: !input duration
 
-  platform: device
-  entity_id: !input trigger_sensor
-  domain: sensor
-  for: !input duration
+#   platform: device
+#   entity_id: !input trigger_sensor
+#   domain: sensor
+#   for: !input duration
 
-action:
-  scene: !input busy_scene
-  scene: !input free_scene
+# action:
+#   scene: !input busy_scene
+#   scene: !input free_scene
