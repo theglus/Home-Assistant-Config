@@ -1,4 +1,4 @@
-# TODO: Add HACs resources as extra JS modules
+# TODO: #268 Add HACs resources as extra JS modules
   # [ {url: /hacsfiles/button-card/button-card.js,                                  type: module},
   #   {url: /hacsfiles/custom-sidebar/custom-sidebar.js,                            type: module},
   #   {url: /hacsfiles/light-popup-card/light-popup-card.js,                        type: module},
