@@ -1,21 +1,21 @@
 #################################################################
 ## Loads extra JS modules.
 #################################################################
-- /local/community/button-card/button-card.js                               
-- /local/community/custom-sidebar/custom-sidebar.js                          
-- /local/community/light-popup-card/light-popup-card.js                      
-- /local/community/lovelace-card-mod/card-mod.js                             
-- /local/community/lovelace-hui-element/hui-element.js                       
-- /local/community/lovelace-paper-buttons-row/paper-buttons-row.js           
-- /local/community/lovelace-slider-entity-row/slider-entity-row.js           
-- /local/community/lovelace-state-switch/state-switch.js                     
-- /local/community/lovelace-swipe-navigation/swipe-navigation.js                    
-- /local/community/lovelace-tempometer-gauge-card/tempometer-gauge-card.js   
-- /local/community/lovelace-xiaomi-vacuum-map-card/xiaomi-vacuum-map-card.js 
-- /local/community/mini-graph-card/mini-graph-card-bundle.js                 
-- /local/community/purifier-card/purifier-card.js                            
-- /local/community/rgb-light-card/card.js                                    
-- /local/community/stack-in-card/stack-in-card.js                              
-- /local/community/vacuum-card/vacuum-card.js                                
-- /local/community/vertical-stack-in-card/vertical-stack-in-card.js            
+- /hacsfiles/button-card/button-card.js                               
+- /hacsfiles/custom-sidebar/custom-sidebar.js                          
+- /hacsfiles/light-popup-card/light-popup-card.js                      
+- /hacsfiles/lovelace-card-mod/card-mod.js                             
+- /hacsfiles/lovelace-hui-element/hui-element.js                       
+- /hacsfiles/lovelace-paper-buttons-row/paper-buttons-row.js           
+- /hacsfiles/lovelace-slider-entity-row/slider-entity-row.js           
+- /hacsfiles/lovelace-state-switch/state-switch.js                     
+- /hacsfiles/lovelace-swipe-navigation/swipe-navigation.js                    
+- /hacsfiles/lovelace-tempometer-gauge-card/tempometer-gauge-card.js   
+- /hacsfiles/lovelace-xiaomi-vacuum-map-card/xiaomi-vacuum-map-card.js 
+- /hacsfiles/mini-graph-card/mini-graph-card-bundle.js                 
+- /hacsfiles/purifier-card/purifier-card.js                            
+- /hacsfiles/rgb-light-card/card.js                                    
+- /hacsfiles/stack-in-card/stack-in-card.js                              
+- /hacsfiles/vacuum-card/vacuum-card.js                                
+- /hacsfiles/vertical-stack-in-card/vertical-stack-in-card.js            
 # TODO: #268 Add HACs resources as extra JS modules   
