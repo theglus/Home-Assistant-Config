@@ -24,9 +24,13 @@ lovelace:
       type: module
     - url: /hacsfiles/custom-sidebar/custom-sidebar.js                            
       type: module
+    - url: /hacsfiles/light-entity-card/light-entity-card.js                            
+      type: module      
     - url: /hacsfiles/light-popup-card/light-popup-card.js                        
       type: module
     - url: /hacsfiles/lovelace-card-mod/card-mod.js                               
+      type: module
+    - url: /hacsfiles/lovelace-card-tools/card-tools.js                            
       type: module
     - url: /hacsfiles/lovelace-hui-element/hui-element.js                         
       type: module
