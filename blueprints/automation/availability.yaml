@@ -1,3 +1,4 @@
+# TODO: Resolve issue with availability Blueprint.
 blueprint:
   name: Availability
   description: Changes scene depending on laptop camera state.
