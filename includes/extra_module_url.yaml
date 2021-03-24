@@ -1,0 +1,18 @@
+# TODO: Add HACs resources as extra JS modules
+  # [ {url: /hacsfiles/button-card/button-card.js,                                  type: module},
+  #   {url: /hacsfiles/custom-sidebar/custom-sidebar.js,                            type: module},
+  #   {url: /hacsfiles/light-popup-card/light-popup-card.js,                        type: module},
+  #   {url: /hacsfiles/lovelace-card-mod/card-mod.js,                               type: module},
+  #   {url: /hacsfiles/lovelace-hui-element/hui-element.js,                         type: module},
+  #   {url: /hacsfiles/lovelace-paper-buttons-row/paper-buttons-row.js,             type: module},
+  #   {url: /hacsfiles/lovelace-slider-entity-row/slider-entity-row.js,             type: module},
+  #   {url: /hacsfiles/lovelace-state-switch/state-switch.js,                       type: module},
+  #   {url: /hacsfiles/lovelace-swipe-navigation/swipe-navigation.js,               type: module},       
+  #   {url: /hacsfiles/lovelace-tempometer-gauge-card/tempometer-gauge-card.js,     type: module},
+  #   {url: /hacsfiles/lovelace-xiaomi-vacuum-map-card/xiaomi-vacuum-map-card.js,   type: module},
+  #   {url: /hacsfiles/mini-graph-card/mini-graph-card-bundle.js,                   type: module},
+  #   {url: /hacsfiles/purifier-card/purifier-card.js,                              type: module},
+  #   {url: /hacsfiles/rgb-light-card/card.js,                                      type: module},
+  #   {url: /hacsfiles/stack-in-card/stack-in-card.js,                              type: module},  
+  #   {url: /hacsfiles/vacuum-card/vacuum-card.js,                                  type: module},
+  #   {url: /hacsfiles/vertical-stack-in-card/vertical-stack-in-card.js,            type: module}, ]     
