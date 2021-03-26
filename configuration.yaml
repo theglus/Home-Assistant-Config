@@ -36,7 +36,7 @@ lovelace:
       {url: /hacsfiles/rgb-light-card/card.js,                                      type: module},
       {url: /local/stack-in-card/stack-in-card.js,                                  type: module},  
       {url: /hacsfiles/vacuum-card/vacuum-card.js,                                  type: module},
-      {url: /hacsfiles/vertical-stack-in-card/vertical-stack-in-card.js,            type: module}, ] 
+      {url: /hacsfiles/vertical-stack-in-card/vertical-stack-in-card.js,            type: module} ] 
 #################################################################
 ## Add-ons
 #################################################################
