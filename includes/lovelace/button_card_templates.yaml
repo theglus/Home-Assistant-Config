@@ -1,222 +1,218 @@
+---
 #----------------------------------------------------------------
 ## Animated Navigation
-#---------------------------------------------------------------- 
-  #################################################################
-  ## Navigation Button
-  ################################################################# 
-  nav_button:
-      button:
-        background: 'rgba(255,255,255,.5)'
-        box-shadow: '0 0 15px rgba(255,255,255,.6)'
-        
-  #################################################################
-  ## Navigation Styles
-  ################################################################# 
-  nav_styles:
-    style:
-      button:
-        - background: 'rgba(255,255,255,.1)'
-        - border-radius: 25px
-        - padding: 20px
-      icon:
-        - '--mdc-icon-size': 40px
+#----------------------------------------------------------------
+#################################################################
+## Navigation Button
+#################################################################
+nav_button:
+  button:
+    background: "rgba(255,255,255,.5)"
+    box-shadow: "0 0 15px rgba(255,255,255,.6)"
+
+#################################################################
+## Navigation Styles
+#################################################################
+nav_styles:
+  style:
+    button:
+      - background: "rgba(255,255,255,.1)"
+      - border-radius: 25px
+      - padding: 20px
+    icon:
+      - "--mdc-icon-size": 40px
 
 #----------------------------------------------------------------
 ## Animated Menu
-#---------------------------------------------------------------- 
-  #################################################################
-  ## Base Button Properties
-  #################################################################    
-  base:
-    aspect_ratio: 1/1
-    show_state: true
-    show_icon: false
-    state:
-      - value: "on"
-        styles:
-          card: [background-color: "rgba(255, 255, 255, 0.8)"]
-          name: [color: "rgba(0, 0, 0, 0.6)"]
-          state: [color: "rgba(0, 0, 0, 0.6)"]
-    tap_action:
-      action: toggle
-      haptic: light
-    hold_action:
-      action: none
-    double_tap_action:
-      haptic: selection
-    styles:
-      name: [top: 57.7%, left: 11%, line-height: 2em, position: absolute]
-      state: [top: 74%, left: 11%, line-height: 2em, position: absolute]
-      card:
+#----------------------------------------------------------------
+#################################################################
+## Base Button Properties
+#################################################################
+base:
+  aspect_ratio: 1/1
+  show_state: true
+  show_icon: false
+  state:
+    - value: "on"
+      styles:
+        card: [background-color: "rgba(255, 255, 255, 0.8)"]
+        name: [color: "rgba(0, 0, 0, 0.6)"]
+        state: [color: "rgba(0, 0, 0, 0.6)"]
+  tap_action:
+    action: toggle
+    haptic: light
+  hold_action:
+    action: none
+  double_tap_action:
+    haptic: selection
+  styles:
+    name: [top: 57.7%, left: 11%, line-height: 2em, position: absolute]
+    state: [top: 74%, left: 11%, line-height: 2em, position: absolute]
+    card:
+      [
+        font-family: Sf Display,
+        letter-spacing: 0.05em,
+        font-weight: 400,
+        color: "rgba(255, 255, 255, 0.3)",
+        font-size: 1em,
+        background-color: "rgba(115, 115, 115, 0.2)",
+        border-radius: 2em,
+        box-shadow: none,
+        transition: none,
+      ]
+    custom_fields:
+      circle:
         [
-          font-family: Sf Display,
-          letter-spacing: 0.05em,
-          font-weight: 400,
-          color: "rgba(255, 255, 255, 0.3)",
-          font-size: 1em,
-          background-color: "rgba(115, 115, 115, 0.2)",
-          border-radius: 2em,
-          box-shadow: none,
-          transition: none,
+          top: 8.5%,
+          left: 56.2%,
+          width: 3.2em,
+          position: absolute,
+          letter-spacing: 0.015em,
         ]
-      custom_fields:
-        circle:
-          [
-            top: 8.5%,
-            left: 56.2%,
-            width: 3.2em,
-            position: absolute,
-            letter-spacing: 0.015em,
-          ]
 
 #----------------------------------------------------------------
 ## Light Popup Menu
-#---------------------------------------------------------------- 
-  #################################################################
-  ## Ambient Light
-  #################################################################   
-  light:
-    template: ['base']
-    custom_fields:
-      circle: >
-        [[[ if (entity.state === 'on' && entity.attributes.brightness) {
-        const brightness = Math.round(entity.attributes.brightness / 2.54);
-        const radius = 20.5; const circumference = radius * 2 * Math.PI; 
-        return `
-        <svg viewBox="0 0 50 50">
-          <circle cx="25" cy="25" r="${radius}" stroke="#b2b2b2" stroke-width="1.5" fill="none" style="
-        transform: rotate(-90deg); transform-origin: 50% 50%; stroke-dasharray: ${circumference}; stroke-dashoffset: ${circumference - brightness / 100 * circumference};" />
-          <text x="50%" y="54%" fill="#8d8e90" font-size="14" text-anchor="middle" alignment-baseline="middle">${brightness}<tspan font-size="10">%</tspan></text>
-        </svg>`; 
-        } 
-        ]]]
-    hold_action:
-      action: failure
-    double_tap_action:
-      action: fire-dom-event
-      browser_mod:
-        command: popup
-        title: '[[[ return entity.attributes.friendly_name ]]]'
-        card:
-          type: entities
-          entities:
-            - type: custom:light-popup-card
-              entity: '[[[ return entity.entity_id ]]]'
-              icon: none
-              fullscreen: false
-              brightnessWidth: 130px
-              brightnessHeight: 300px
-              borderRadius: 1.7em
-              sliderColor: '#c7c7c7'
-              sliderTrackColor: rgba(25, 25, 25, 0.9)
-            - type: custom:hui-element
-              card_type: horizontal-stack
-              style: '#root { justify-content: center; margin-top: 2em; }'
-              cards:
+#----------------------------------------------------------------
+#################################################################
+## Ambient Light
+#################################################################
+light:
+  template: ["base"]
+  custom_fields:
+    circle: >
+      [[[ if (entity.state === 'on' && entity.attributes.brightness) {
+      const brightness = Math.round(entity.attributes.brightness / 2.54);
+      const radius = 20.5; const circumference = radius * 2 * Math.PI; 
+      return `
+      <svg viewBox="0 0 50 50">
+        <circle cx="25" cy="25" r="${radius}" stroke="#b2b2b2" stroke-width="1.5" fill="none" style="
+      transform: rotate(-90deg); transform-origin: 50% 50%; stroke-dasharray: ${circumference}; stroke-dashoffset: ${circumference - brightness / 100 * circumference};" />
+        <text x="50%" y="54%" fill="#8d8e90" font-size="14" text-anchor="middle" alignment-baseline="middle">${brightness}<tspan font-size="10">%</tspan></text>
+      </svg>`; 
+      } 
+      ]]]
+  hold_action:
+    action: failure
+  double_tap_action:
+    action: fire-dom-event
+    browser_mod:
+      command: popup
+      title: "[[[ return entity.attributes.friendly_name ]]]"
+      card:
+        type: entities
+        entities:
+          - type: custom:light-popup-card
+            entity: "[[[ return entity.entity_id ]]]"
+            icon: none
+            fullscreen: false
+            brightnessWidth: 130px
+            brightnessHeight: 300px
+            borderRadius: 1.7em
+            sliderColor: "#c7c7c7"
+            sliderTrackColor: rgba(25, 25, 25, 0.9)
+          - type: custom:hui-element
+            card_type: horizontal-stack
+            style: "#root { justify-content: center; margin-top: 2em; }"
+            cards:
               - type: custom:button-card
                 styles:
-                  card:
-                    [background: '#ffe7c0']
-                tap_action:
-                  haptic: success                  
-                  action: call-service
-                  service: light.turn_on
-                  service_data:
-                    entity_id: '[[[ return entity.entity_id ]]]'
-                    color_temp: 370
-                template: color_action
-              - type: custom:button-card
-                styles:
-                  card:
-                    [background: '#ffa200']
-                tap_action:
-                  haptic: success                  
-                  action: call-service
-                  service: light.turn_on
-                  service_data:
-                    entity_id: '[[[ return entity.entity_id ]]]'
-                    color_temp: 500
-                template: color_action
-
-  #################################################################
-  ## Color Light
-  #################################################################    
-  light-color:
-    template: ['base']
-    custom_fields:
-      circle: >
-        [[[ if (entity.state === 'on' && entity.attributes.brightness) {
-        const brightness = Math.round(entity.attributes.brightness / 2.54);
-        const radius = 20.5; const circumference = radius * 2 * Math.PI; 
-        return `
-        <svg viewBox="0 0 50 50">
-          <circle cx="25" cy="25" r="${radius}" stroke="#b2b2b2" stroke-width="1.5" fill="none" style="
-        transform: rotate(-90deg); transform-origin: 50% 50%; stroke-dasharray: ${circumference}; stroke-dashoffset: ${circumference - brightness / 100 * circumference};" />
-          <text x="50%" y="54%" fill="#8d8e90" font-size="14" text-anchor="middle" alignment-baseline="middle">${brightness}<tspan font-size="10">%</tspan></text>
-          </svg>`; 
-          } 
-          ]]]   
-    hold_action:
-      action: failure
-    double_tap_action:
-      action: fire-dom-event
-      browser_mod:
-        command: popup
-        title: '[[[ return entity.attributes.friendly_name ]]]'
-        card:
-          type: entities
-          entities:
-            - type: custom:light-popup-card
-              entity: '[[[ return entity.entity_id ]]]'
-              icon: none
-              fullscreen: false
-              brightnessWidth: 130px
-              brightnessHeight: 300px
-              borderRadius: 1.7em
-              sliderColor: '#c7c7c7'
-              sliderTrackColor: rgba(25, 25, 25, 0.9)
-            - type: custom:hui-element
-              card_type: horizontal-stack
-              style: '#root { justify-content: center; margin-top: 2em; }'
-              cards:
-              - type: custom:button-card
-                styles:
-                  card:
-                    [background: '#ffe7c0']
-                tap_action:
-                  haptic: success                  
-                  action: call-service
-                  service: light.turn_on
-                  service_data:
-                    entity_id: '[[[ return entity.entity_id ]]]'
-                    color_temp: 370
-                template: color_action
-              - type: custom:button-card
-                styles:
-                  card:
-                    [background: '#ffa200']
-                tap_action:
-                  haptic: success                  
-                  action: call-service
-                  service: light.turn_on
-                  service_data:
-                    entity_id: '[[[ return entity.entity_id ]]]'
-                    color_temp: 500
-                template: color_action
-            - type: custom:hui-element
-              card_type: horizontal-stack
-              style: '#root { justify-content: center; margin-bottom: 1em; }'
-              cards:
-              - type: custom:button-card
-                styles:
-                  card: 
-                    [background: '#f426ff']
+                  card: [background: "#ffe7c0"]
                 tap_action:
                   haptic: success
                   action: call-service
                   service: light.turn_on
                   service_data:
-                    entity_id: '[[[ return entity.entity_id ]]]'
+                    entity_id: "[[[ return entity.entity_id ]]]"
+                    color_temp: 370
+                template: color_action
+              - type: custom:button-card
+                styles:
+                  card: [background: "#ffa200"]
+                tap_action:
+                  haptic: success
+                  action: call-service
+                  service: light.turn_on
+                  service_data:
+                    entity_id: "[[[ return entity.entity_id ]]]"
+                    color_temp: 500
+                template: color_action
+
+#################################################################
+## Color Light
+#################################################################
+light-color:
+  template: ["base"]
+  custom_fields:
+    circle: >
+      [[[ if (entity.state === 'on' && entity.attributes.brightness) {
+      const brightness = Math.round(entity.attributes.brightness / 2.54);
+      const radius = 20.5; const circumference = radius * 2 * Math.PI; 
+      return `
+      <svg viewBox="0 0 50 50">
+        <circle cx="25" cy="25" r="${radius}" stroke="#b2b2b2" stroke-width="1.5" fill="none" style="
+      transform: rotate(-90deg); transform-origin: 50% 50%; stroke-dasharray: ${circumference}; stroke-dashoffset: ${circumference - brightness / 100 * circumference};" />
+        <text x="50%" y="54%" fill="#8d8e90" font-size="14" text-anchor="middle" alignment-baseline="middle">${brightness}<tspan font-size="10">%</tspan></text>
+        </svg>`; 
+        } 
+        ]]]
+  hold_action:
+    action: failure
+  double_tap_action:
+    action: fire-dom-event
+    browser_mod:
+      command: popup
+      title: "[[[ return entity.attributes.friendly_name ]]]"
+      card:
+        type: entities
+        entities:
+          - type: custom:light-popup-card
+            entity: "[[[ return entity.entity_id ]]]"
+            icon: none
+            fullscreen: false
+            brightnessWidth: 130px
+            brightnessHeight: 300px
+            borderRadius: 1.7em
+            sliderColor: "#c7c7c7"
+            sliderTrackColor: rgba(25, 25, 25, 0.9)
+          - type: custom:hui-element
+            card_type: horizontal-stack
+            style: "#root { justify-content: center; margin-top: 2em; }"
+            cards:
+              - type: custom:button-card
+                styles:
+                  card: [background: "#ffe7c0"]
+                tap_action:
+                  haptic: success
+                  action: call-service
+                  service: light.turn_on
+                  service_data:
+                    entity_id: "[[[ return entity.entity_id ]]]"
+                    color_temp: 370
+                template: color_action
+              - type: custom:button-card
+                styles:
+                  card: [background: "#ffa200"]
+                tap_action:
+                  haptic: success
+                  action: call-service
+                  service: light.turn_on
+                  service_data:
+                    entity_id: "[[[ return entity.entity_id ]]]"
+                    color_temp: 500
+                template: color_action
+          - type: custom:hui-element
+            card_type: horizontal-stack
+            style: "#root { justify-content: center; margin-bottom: 1em; }"
+            cards:
+              - type: custom:button-card
+                styles:
+                  card: [background: "#f426ff"]
+                tap_action:
+                  haptic: success
+                  action: call-service
+                  service: light.turn_on
+                  service_data:
+                    entity_id: "[[[ return entity.entity_id ]]]"
                     rgb_color:
                       - 244
                       - 38
@@ -224,81 +220,79 @@
                 template: color_action
               - type: custom:button-card
                 styles:
-                  card: 
-                    [background: '#46ffec']
+                  card: [background: "#46ffec"]
                 tap_action:
-                  haptic: success                  
+                  haptic: success
                   action: call-service
                   service: light.turn_on
                   service_data:
-                    entity_id: '[[[ return entity.entity_id ]]]'
+                    entity_id: "[[[ return entity.entity_id ]]]"
                     rgb_color:
                       - 70
                       - 255
                       - 236
                 template: color_action
 
-  #################################################################
-  ## Selector Action for Light Popup
-  #################################################################    
-  color_action:
-    styles:
-      card:
-        [border-radius: 50%, height: 4em, width: 4em, margin: 4px]
+#################################################################
+## Selector Action for Light Popup
+#################################################################
+color_action:
+  styles:
+    card: [border-radius: 50%, height: 4em, width: 4em, margin: 4px]
 
-  #################################################################
-  ## Loader
-  #################################################################
-  loader:
+#################################################################
+## Loader
+#################################################################
+loader:
+  custom_fields:
+    loader: >
+      [[[ if (states[entity.entity_id.replace(entity.entity_id.split('.')[0], 'input_boolean')].state === 'on') { 
+      return '<img src="/local/loader.svg" width="100%">'; } ]]]
+  styles:
     custom_fields:
-      loader: >
-        [[[ if (states[entity.entity_id.replace(entity.entity_id.split('.')[0], 'input_boolean')].state === 'on') { 
-        return '<img src="/local/loader.svg" width="100%">'; } ]]]
-    styles:
-      custom_fields:
-        loader:
-          [
-            filter: "[[[ return entity.state === 'off' ? 'invert(1)' : 'none'; ]]]",
-            top: 3%,
-            left: 60%,
-            width: 3.78em,
-            position: absolute,
-            opacity: 0.6,
-          ]
-           
+      loader:
+        [
+          filter: "[[[ return entity.state === 'off' ? 'invert(1)' : 'none'; ]]]",
+          top: 3%,
+          left: 60%,
+          width: 3.78em,
+          position: absolute,
+          opacity: 0.6,
+        ]
+
 #################################################################
 #----------------------------------------------------------------
 ## Deprecated
 #----------------------------------------------------------------
 #################################################################
-  test:
-    aspect_ratio: 1/1
-    tap_action:
-      action: toggle
-    style: |
-      ha-card:hover {
-        transform: scale(1.05);
-        box-shadow: 0 0 10px;
-        }
-    styles:
-      name:
-        - padding: 8px 1em
-        - font-family: Roboto
-        - font-size: 14px
-      card:
-        - border-radius: 30px
-        - background: 'rgba(255,255,255,.1)'
-    state:
-      - value: 'on'
-        styles:
-          card:
-            - background: 'rgba(255,255,255,.8)'
-            - border: 1px solid white
-            - box-shadow: '0 0 10px, inset 0 0 5px'
-          name:
-            - font-weight: bold
-            - color: 'rgba(0,0,0,.6)'
-          icon:
-            - color: var(--button-card-light-color)
-    hold_action:
-      action: more-info
+test:
+  aspect_ratio: 1/1
+  tap_action:
+    action: toggle
+  style: |
+    ha-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 10px;
+      }
+  styles:
+    name:
+      - padding: 8px 1em
+      - font-family: Roboto
+      - font-size: 14px
+    card:
+      - border-radius: 30px
+      - background: "rgba(255,255,255,.1)"
+  state:
+    - value: "on"
+      styles:
+        card:
+          - background: "rgba(255,255,255,.8)"
+          - border: 1px solid white
+          - box-shadow: "0 0 10px, inset 0 0 5px"
+        name:
+          - font-weight: bold
+          - color: "rgba(0,0,0,.6)"
+        icon:
+          - color: var(--button-card-light-color)
+  hold_action:
+    action: more-info
