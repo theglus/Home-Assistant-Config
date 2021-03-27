@@ -1,5 +1,5 @@
 #################################################################
-## Loads extra JS modules.
+## Loads extra es5 JS modules.
 #################################################################
 - /hacsfiles/button-card/button-card.js
 - /hacsfiles/custom-sidebar/custom-sidebar.js
@@ -18,4 +18,4 @@
 - /hacsfiles/stack-in-card/stack-in-card.js
 - /hacsfiles/vacuum-card/vacuum-card.js
 - /hacsfiles/vertical-stack-in-card/vertical-stack-in-card.js
-# TODO: #268 Add HACs resources as extra JS modules
+# TODO: #268 Add HACs resources as extra es5 JS modules
