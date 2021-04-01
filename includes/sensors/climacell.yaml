@@ -1,0 +1,61 @@
+#################################################################
+## ClimaCell weather sensors
+#################################################################
+- platform: climacell
+  api_key: !secret climacell_api_key
+  latitude: !secret gps_geo_home_lt
+  longitude: !secret gps_geo_home_ln
+  units: imperial
+  timelines:
+    - name: "" #Realtime
+      timestep: "1m"
+      forecast_observations: 1
+      fields:
+        - temperature
+        - feels_like
+        - humidity
+        - wind_speed
+        - wind_direction
+        - wind_gust
+        - precipitation_type
+        - weather_condition
+        - pm25
+        - pm10
+        - epaIndex
+        - epa_health_concern
+        - pollen_tree
+        - pollen_weed
+        - pollen_grass
+        - fire_index
+      update: auto
+      scan_interval:
+        # At least one of these must be specified:
+        days: 0
+        hours: 0
+        minutes: 3
+        seconds: 0
+        milliseconds: 0
+      exclude_interval:
+        1:
+          - "00:00"
+          - "06:00"
+    - name: "" #Daily
+      timestep: "1d"
+      forecast_observations: 2
+      fields:
+        - temperature
+        - temperatureMin
+        - temperatureMax
+        - precipitation_probability
+        - weather_condition
+      scan_interval:
+        # At least one of these must be specified:
+        days: 0
+        hours: 4
+        minutes: 0
+        seconds: 0
+        milliseconds: 0
+      exclude_interval:
+        1:
+          - "23:00"
+          - "06:30"          
