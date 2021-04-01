@@ -48,7 +48,7 @@ lovelace:
       type: module
     - url: /hacsfiles/rgb-light-card/card.js                                      
       type: module
-    - url: /havsfiles/stack-in-card/stack-in-card.js                              
+    - url: /hacsfiles/stack-in-card/stack-in-card.js                              
       type: module  
     - url: /hacsfiles/vacuum-card/vacuum-card.js                                  
       type: module
