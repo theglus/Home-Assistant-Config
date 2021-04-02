@@ -1,0 +1,19 @@
+#################################################################
+## Loader
+#################################################################
+loader:
+  custom_fields:
+    loader: >
+      [[[ if (states[entity.entity_id.replace(entity.entity_id.split('.')[0], 'input_boolean')].state === 'on') { 
+      return '<img src="/local/loader.svg" width="100%">'; } ]]]
+  styles:
+    custom_fields:
+      loader:
+        [
+          filter: "[[[ return entity.state === 'off' ? 'invert(1)' : 'none'; ]]]",
+          top: 3%,
+          left: 60%,
+          width: 3.78em,
+          position: absolute,
+          opacity: 0.6,
+        ]

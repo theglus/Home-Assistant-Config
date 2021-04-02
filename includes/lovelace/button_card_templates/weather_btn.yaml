@@ -1,0 +1,10 @@
+#################################################################
+## Weather Button
+#################################################################
+weather_btn:
+  color_type: card
+  show_label: true
+  show_name: true
+  show_state: true
+  tap_action:
+    action: more-info
