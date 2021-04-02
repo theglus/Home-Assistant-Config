@@ -279,12 +279,17 @@ weather_btn_layout:
   size: 70%
   styles:
     card:
-      - background-color: |
-          [[[
-            if (states['sun.sun'].state == "below_horizon")
-              return "#40445a";
-            return "#45aaf2";
-          ]]]
+      [
+        font-family: Sf Display,
+        letter-spacing: 0.05em,
+        font-weight: 400,
+        color: "rgba(255, 255, 255, 0.3)",
+        font-size: 1em,
+        background-color: "rgba(115, 115, 115, 0.2)",
+        border-radius: 2em,
+        box-shadow: none,
+        transition: none,
+      ]
     custom_fields:
       s2:
         - justify-self: start
