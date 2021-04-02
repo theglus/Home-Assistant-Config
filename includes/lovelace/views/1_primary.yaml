@@ -25,22 +25,6 @@ cards:
           - type: "custom:paper-buttons-row"
             buttons:
               #################################################################
-              ## General Button
-              #################################################################
-              - entity: input_select.lighttoggle
-                name: false
-                icon: "hass:view-dashboard"
-                state_styles:
-                  General:
-                  template: nav_button
-                template: nav_styles
-                tap_action:
-                  action: call-service
-                  service: input_select.select_option
-                  service_data:
-                    entity_id: input_select.lighttoggle
-                    option: General
-              #################################################################
               ## Entryway Button
               #################################################################
               - entity: input_select.lighttoggle
@@ -125,9 +109,25 @@ cards:
                     entity_id: input_select.lighttoggle
                     option: Loft
               #################################################################
-              ## Office Button
+              ## Loft Bathroom Button
               #################################################################
-              # TODO: #252 Create nav toggle for loft bathroom                    
+              # TODO: #252 Create nav toggle for loft bathroom  
+              #################################################################
+              ## General Button
+              #################################################################
+              - entity: input_select.lighttoggle
+                name: false
+                icon: "hass:view-dashboard"
+                state_styles:
+                  General:
+                  template: nav_button
+                template: nav_styles
+                tap_action:
+                  action: call-service
+                  service: input_select.select_option
+                  service_data:
+                    entity_id: input_select.lighttoggle
+                    option: General              
       #################################################################
       #----------------------------------------------------------------
       ## Expanded
