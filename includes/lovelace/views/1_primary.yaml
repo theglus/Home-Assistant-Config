@@ -27,7 +27,19 @@ cards:
               #################################################################
               ## General Button
               #################################################################
-              # TODO: #271 Create nav toggle for general button
+              - entity: input_select.lighttoggle
+                name: false
+                icon: "hass:view-dashboard"
+                state_styles:
+                  General:
+                  template: nav_button
+                template: nav_styles
+                tap_action:
+                  action: call-service
+                  service: input_select.select_option
+                  service_data:
+                    entity_id: input_select.lighttoggle
+                    option: General
               #################################################################
               ## Entryway Button
               #################################################################
@@ -129,7 +141,19 @@ cards:
           #################################################################
           ## General Controls
           #################################################################
-          # TODO: #271 Create view for General controls.
+          General:
+            type: "custom:mod-card"
+            style: |
+              ha-card {
+                background: rgba(0,0,0,.3);
+                padding: 10px;
+                border-radius: 35px;
+                margin-top: none;
+                }
+            card:
+              type: grid
+              columns: 3
+              cards:          
                 #----------------------------------------------------------------
                 ## Weather button
                 #----------------------------------------------------------------
