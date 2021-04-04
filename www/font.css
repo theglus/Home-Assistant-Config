@@ -1,74 +1,74 @@
 @font-face {
-	font-family: sf display;
-	font-weight: 900;
-	src: url(/local/font/SF-UI-Display-Black.otf)
+  font-family: sf display;
+  font-weight: 900;
+  src: url(/local/font/SF-UI-Display-Black.otf)
 }
 
 @font-face {
-	font-family: sf display;
-	font-weight: 700;
-	src: url(/local/font/SF-UI-Display-Bold.otf)
+  font-family: sf display;
+  font-weight: 700;
+  src: url(/local/font/SF-UI-Display-Bold.otf)
 }
 
 @font-face {
-	font-family: sf display;
-	font-weight: 800;
-	src: url(/local/font/SF-UI-Display-Heavy.otf)
+  font-family: sf display;
+  font-weight: 800;
+  src: url(/local/font/SF-UI-Display-Heavy.otf)
 }
 
 @font-face {
-	font-family: sf display;
-	font-weight: 200;
-	src: url(/local/font/SF-UI-Display-Light.otf)
+  font-family: sf display;
+  font-weight: 200;
+  src: url(/local/font/SF-UI-Display-Light.otf)
 }
 
 @font-face {
-	font-family: sf display;
-	font-weight: 500;
-	src: url(/local/font/SF-UI-Display-Medium.otf)
+  font-family: sf display;
+  font-weight: 500;
+  src: url(/local/font/SF-UI-Display-Medium.otf)
 }
 
 @font-face {
-	font-family: sf display;
-	font-weight: 400;
-	src: url(/local/font/SF-UI-Display-Regular.otf)
+  font-family: sf display;
+  font-weight: 400;
+  src: url(/local/font/SF-UI-Display-Regular.otf)
 }
 
 @font-face {
-	font-family: sf display;
-	font-weight: 600;
-	src: url(/local/font/SF-UI-Display-Semibold.otf)
+  font-family: sf display;
+  font-weight: 600;
+  src: url(/local/font/SF-UI-Display-Semibold.otf)
 }
 
 @font-face {
-	font-family: sf display;
-	font-weight: 300;
-	src: url(/local/font/SF-UI-Display-Thin.otf)
+  font-family: sf display;
+  font-weight: 300;
+  src: url(/local/font/SF-UI-Display-Thin.otf)
 }
 
 @font-face {
-	font-family: sf display;
-	font-weight: 100;
-	src: url(/local/font/SF-UI-Display-Ultralight.otf)
+  font-family: sf display;
+  font-weight: 100;
+  src: url(/local/font/SF-UI-Display-Ultralight.otf)
 }
 
 @font-face {
-	font-family: sf text;
-	font-weight: 700;
-	src: url(/local/font/SF-UI-Text-Bold.otf)
+  font-family: sf text;
+  font-weight: 700;
+  src: url(/local/font/SF-UI-Text-Bold.otf)
 }
 
 @font-face {
-	font-family: sf text;
-	font-weight: 700;
-	font-style: italic;
-	src: url(/local/font/SF-UI-Text-BoldItalic.otf)
+  font-family: sf text;
+  font-weight: 700;
+  font-style: italic;
+  src: url(/local/font/SF-UI-Text-BoldItalic.otf)
 }
 
 @font-face {
-	font-family: sf text;
-	font-weight: 800;
-	src: url(/local/font/SF-UI-Text-Heavy.otf)
+  font-family: sf text;
+  font-weight: 800;
+  src: url(/local/font/SF-UI-Text-Heavy.otf)
 }
 
 @font-face {
