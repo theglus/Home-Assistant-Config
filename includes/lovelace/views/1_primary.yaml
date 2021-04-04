@@ -220,6 +220,27 @@ cards:
                 ## Entryway button
                 #----------------------------------------------------------------                
                   # TODO: #274 Create entryway button
+                - type: "custom:button-card"
+                  entity: light.hallway
+                # hold_action:
+                #   action: navigate
+                #   navigation_path: ../lovelace-views/lounge
+                  icon: |
+                    [[[ 
+                      var sensor_state = (states['binary_sensor.front_door'].state);
+                      if (sensor_state == "on") 
+                        return "mdi:door-open"; 
+                      else 
+                        return "mdi:coat-rack" 
+                    ]]]
+                  name: Lounge
+                  template:
+                    - room_btn_layout
+                    - room_btn_states
+                    - room_btn_states_on
+                    - room_btn
+                  triggers_update:
+                    - binary_sensor.front_door
                 #----------------------------------------------------------------
                 ## Office button
                 #---------------------------------------------------------------- 
