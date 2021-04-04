@@ -233,7 +233,7 @@ cards:
                       else 
                         return "mdi:coat-rack" 
                     ]]]
-                  name: Lounge
+                  name: Entryway
                   template:
                     - room_btn_layout
                     - room_btn_states

@@ -286,7 +286,18 @@ room_btn_layout:
   aspect_ratio: 1/1
   size: 70%
   styles:
-    card: null
+    card:
+      [
+        font-family: Sf Display,
+        letter-spacing: 0.05em,
+        font-weight: 400,
+        color: "rgba(255, 255, 255, 0.3)",
+        font-size: 1em,
+        background-color: "rgba(115, 115, 115, 0.2)",
+        border-radius: 2em,
+        box-shadow: none,
+        transition: none,
+      ]
     custom_fields:
       s2:
         - justify-self: start
