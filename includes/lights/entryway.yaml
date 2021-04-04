@@ -1,0 +1,8 @@
+###############################################################
+## Downstairs Light Group
+#################################################################
+platform: group
+name: Entryway
+entities:
+  - light.hallway
+  - light.hallway_runner

@@ -22,6 +22,9 @@ light.downstairs:
 # Upstairs Lights
 light.upstairs:
   icon: "mdi:home-roof"
+# Entryway Lights
+light.entryway:
+  icon: "mdi:coat-rack"
 # Loft Bedside Lights
 light.bedside:
   icon: "mdi:desk-lamp"
