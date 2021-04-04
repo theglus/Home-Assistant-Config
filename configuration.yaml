@@ -55,7 +55,7 @@ lovelace:
     - url: /hacsfiles/vertical-stack-in-card/vertical-stack-in-card.js            
       type: module
     - url: /local/font.css
-      type: module
+      type: css
 #################################################################
 ## Add-ons
 #################################################################
