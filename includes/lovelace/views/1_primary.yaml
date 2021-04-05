@@ -42,7 +42,7 @@ cards:
                     option: Entryway
               #################################################################
               ## Guest Bathroom Button
-              #################################################################             
+              #################################################################
               # TODO: #249 Create nav toggle for guest bathroom
               #################################################################
               ## Office Button
@@ -111,7 +111,7 @@ cards:
               #################################################################
               ## Loft Bathroom Button
               #################################################################
-              # TODO: #252 Create nav toggle for loft bathroom  
+              # TODO: #252 Create nav toggle for loft bathroom
               #################################################################
               ## General Button
               #################################################################
@@ -127,7 +127,7 @@ cards:
                   service: input_select.select_option
                   service_data:
                     entity_id: input_select.lighttoggle
-                    option: General              
+                    option: General
       #################################################################
       #----------------------------------------------------------------
       ## Expanded
@@ -153,11 +153,11 @@ cards:
             card:
               type: grid
               columns: 3
-              cards:          
+              cards:
                 #----------------------------------------------------------------
                 ## Weather button
                 #----------------------------------------------------------------
-                  # TODO: #272 Create weather button
+                # TODO: #272 Create weather button
                 - type: "custom:button-card"
                   custom_fields:
                     s2: |
@@ -181,44 +181,44 @@ cards:
                             return "mdi:weather-partly-cloudy";
                         ]]]
                       value: partlycloudy
-                    - icon: 'mdi:weather-night'
+                    - icon: "mdi:weather-night"
                       value: clear-night
-                    - icon: 'mdi:weather-cloudy'
+                    - icon: "mdi:weather-cloudy"
                       value: cloudy
-                    - icon: 'mdi:weather-cloudy-arrow-right'
+                    - icon: "mdi:weather-cloudy-arrow-right"
                       value: overcast
-                    - icon: 'mdi:weather-fog'
+                    - icon: "mdi:weather-fog"
                       value: fog
-                    - icon: 'mdi:weather-hail'
+                    - icon: "mdi:weather-hail"
                       value: hail
-                    - icon: 'mdi:weather-lightning'
+                    - icon: "mdi:weather-lightning"
                       value: lightning
-                    - icon: 'mdi:weather-lightning-rainy'
+                    - icon: "mdi:weather-lightning-rainy"
                       value: lightning-rainy
-                    - icon: 'mdi:weather-partlycloudy'
+                    - icon: "mdi:weather-partlycloudy"
                       value: partlycloudy
-                    - icon: 'mdi:weather-pouring'
+                    - icon: "mdi:weather-pouring"
                       value: pouring
-                    - icon: 'mdi:weather-rainy'
+                    - icon: "mdi:weather-rainy"
                       value: rainy
-                    - icon: 'mdi:weather-snowy'
+                    - icon: "mdi:weather-snowy"
                       value: snowy
-                    - icon: 'mdi:weather-snowy-rainy'
+                    - icon: "mdi:weather-snowy-rainy"
                       value: snowy-rainy
-                    - icon: 'mdi:weather-sunny'
+                    - icon: "mdi:weather-sunny"
                       value: sunny
-                    - icon: 'mdi:weather-windy'
+                    - icon: "mdi:weather-windy"
                       value: windy
-                    - icon: 'mdi:weather-windy-variant'
+                    - icon: "mdi:weather-windy-variant"
                       value: windy-variant
                   template:
-                    - weather_btn_layout
-                    - weather_btn
+                    - weather_layout
+                    - weather
                   triggers_update:
-                    - sun.sun                    
+                    - sun.sun
                 #----------------------------------------------------------------
                 ## Entryway button
-                #----------------------------------------------------------------                
+                #----------------------------------------------------------------
                 - type: "custom:button-card"
                   entity: light.entryway
                   custom_fields:
@@ -238,28 +238,28 @@ cards:
                     ]]]
                   name: Entryway
                   template:
-                    - room_btn_layout
-                    - room_btn_states
-                    - room_btn_states_on
-                    - room_btn
+                    - room_layout
+                    - room_states
+                    - room_states_on
+                    - room
                   triggers_update:
                     - binary_sensor.front_door
                 #----------------------------------------------------------------
                 ## Office button
-                #---------------------------------------------------------------- 
-                  # TODO: #275 Create office button
+                #----------------------------------------------------------------
+                # TODO: #275 Create office button
                 #----------------------------------------------------------------
                 ## Living Room button
-                #---------------------------------------------------------------- 
-                  # TODO: #276 Create living room button
+                #----------------------------------------------------------------
+                # TODO: #276 Create living room button
                 #----------------------------------------------------------------
                 ## Kitchen button
-                #---------------------------------------------------------------- 
-                  # TODO: #277 Create kitchen button
+                #----------------------------------------------------------------
+                # TODO: #277 Create kitchen button
                 #----------------------------------------------------------------
                 ## Loft button
-                #---------------------------------------------------------------- 
-                  # TODO: #278 Create loft button          
+                #----------------------------------------------------------------
+                # TODO: #278 Create loft button
           #################################################################
           ## Entrway Controls
           #################################################################
@@ -472,16 +472,16 @@ cards:
                   template: test
           #################################################################
           ## Guest Bathroom Controls
-          #################################################################          
+          #################################################################
           #249 Create view for downstairs bathroom
-                #----------------------------------------------------------------
-                ## Washer
-                #----------------------------------------------------------------
-                # TODO: #250 Create washer dashboard button
-                #----------------------------------------------------------------
-                ## Dryer
-                #----------------------------------------------------------------   
-                # TODO: #251 Create dryer dashboard button             
+          #----------------------------------------------------------------
+          ## Washer
+          #----------------------------------------------------------------
+          # TODO: #250 Create washer dashboard button
+          #----------------------------------------------------------------
+          ## Dryer
+          #----------------------------------------------------------------
+          # TODO: #251 Create dryer dashboard button
           #################################################################
           ## Office Controls
           #################################################################
@@ -570,12 +570,12 @@ cards:
                   template: test
                 #----------------------------------------------------------------
                 ## Office Google Home Mini
-                #----------------------------------------------------------------  
-                # TODO: #254 Office Google Home Mini button          
+                #----------------------------------------------------------------
+                # TODO: #254 Office Google Home Mini button
                 #----------------------------------------------------------------
                 ## Office Smart Clock
-                #----------------------------------------------------------------  
-                # TODO: #255 Smart Clock button                               
+                #----------------------------------------------------------------
+                # TODO: #255 Smart Clock button
           #################################################################
           ## Living Room Controls
           #################################################################
@@ -739,7 +739,7 @@ cards:
                 ## Dennis
                 #----------------------------------------------------------------
                 # TODO: #261 Denon stats button
-                # #262 Denon control modal 
+                # #262 Denon control modal
           #################################################################
           ## Kitchen Controls
           #################################################################
@@ -827,16 +827,16 @@ cards:
                 # TODO: #256 Kitchen Google Home Mini button
                 #----------------------------------------------------------------
                 ## iPad Charger
-                #----------------------------------------------------------------     
+                #----------------------------------------------------------------
                 # TODO: iPad charger button
                 #----------------------------------------------------------------
                 ## Mac Charger
-                #----------------------------------------------------------------   
+                #----------------------------------------------------------------
                 # TODO: Mac charger button
                 #----------------------------------------------------------------
                 ## Paper Shredder
-                #----------------------------------------------------------------  
-                # TODO: #266 Paper shredder button                                           
+                #----------------------------------------------------------------
+                # TODO: #266 Paper shredder button
           #################################################################
           ## Loft Controls
           #################################################################

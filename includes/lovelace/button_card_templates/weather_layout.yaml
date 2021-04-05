@@ -1,0 +1,45 @@
+#################################################################
+## Weather Button Layout
+#################################################################
+weather_layout:
+  aspect_ratio: 1/1
+  size: 70%
+  styles:
+    card:
+      [
+        font-family: Sf Display,
+        letter-spacing: 0.05em,
+        font-weight: 400,
+        color: "rgba(255, 255, 255, 0.3)",
+        font-size: 1em,
+        background-color: "rgba(115, 115, 115, 0.2)",
+        border-radius: 2em,
+        box-shadow: none,
+        transition: none,
+      ]
+    custom_fields:
+      s2:
+        - justify-self: start
+        - margin-left: 10%
+        - padding-bottom: 5%
+        - font-size: 10pt
+        - color: white
+    grid:
+      - grid-template-areas: '"i l" "s s" "n n" "s2 s2"'
+      - grid-template-columns: 1fr 1fr
+      - grid-template-rows: 1fr auto auto auto
+    icon:
+      - color: white
+    label:
+      - justify-self: start
+      - color: white
+    name:
+      - justify-self: start
+      - margin-left: 10%
+      - font-size: 10pt
+      - color: white
+    state:
+      - justify-self: start
+      - margin-left: 10%
+      - font-weight: bold
+      - color: white

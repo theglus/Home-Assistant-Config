@@ -1,0 +1,17 @@
+#################################################################
+## Room Button
+#################################################################
+room:
+  double_tap_action:
+    action: more-info
+  show_label: false
+  show_state: true
+  state_display: |
+    [[[ 
+      var bri = Math.round(entity.attributes.brightness / 2.55);
+      if (entity.state == "on") return "Lights @ " + bri + "%";
+      if (entity.state == "Unavailable") return "Lights are Unavailable";
+      else return "Lights are off" 
+    ]]]
+  tap_action:
+    action: toggle

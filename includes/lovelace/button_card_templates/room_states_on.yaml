@@ -1,0 +1,19 @@
+#################################################################
+## Room Button States On
+#################################################################
+room_states_on:
+  state:
+    - styles:
+        card:
+          - background-color: "rgba(255, 255, 255, 0.8)"
+        custom_fields:
+          s2:
+            - color: Grey
+        label:
+          - color: Grey
+          - font-size: 10pt
+        name:
+          - color: "#171717"
+        state:
+          - color: Grey
+      value: "on"

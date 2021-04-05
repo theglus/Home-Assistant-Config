@@ -1,0 +1,29 @@
+#################################################################
+## Room Button States
+#################################################################
+room_states:
+  state:
+    - styles:
+        card:
+          - background-color: red
+        custom_fields:
+          s2:
+            - color: white
+        icon:
+          - color: white
+        label:
+          - color: white
+        name:
+          - color: white
+        state:
+          - color: white
+      value: unavailable
+    - styles:
+        card: null
+        custom_fields:
+          s2: null
+        icon: null
+        label: null
+        name: null
+        state: null
+      value: "off"

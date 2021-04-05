@@ -1,7 +1,7 @@
 #################################################################
 ## Weather Button
 #################################################################
-weather_btn:
+weather:
   color_type: card
   show_label: true
   show_name: true

@@ -265,7 +265,7 @@ loader:
 #################################################################
 ## Room Button
 #################################################################
-room_btn:
+room:
   double_tap_action:
     action: more-info
   show_label: false
@@ -282,7 +282,7 @@ room_btn:
 #################################################################
 ## Room Button Layout
 #################################################################
-room_btn_layout:
+room_layout:
   aspect_ratio: 1/1
   size: 70%
   styles:
@@ -322,7 +322,7 @@ room_btn_layout:
 #################################################################
 ## Room Button States
 #################################################################
-room_btn_states:
+room_states:
   state:
     - styles:
         card:
@@ -351,7 +351,7 @@ room_btn_states:
 #################################################################
 ## Room Button States On
 #################################################################
-room_btn_states_on:
+room_states_on:
   state:
     - styles:
         card:
@@ -373,7 +373,7 @@ room_btn_states_on:
 #################################################################
 ## Weather Button
 #################################################################
-weather_btn:
+weather:
   color_type: card
   show_label: true
   show_name: true
@@ -383,7 +383,7 @@ weather_btn:
 #################################################################
 ## Weather Button Layout
 #################################################################
-weather_btn_layout:
+weather_layout:
   aspect_ratio: 1/1
   size: 70%
   styles:
