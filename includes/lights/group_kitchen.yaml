@@ -2,7 +2,7 @@
 ## Kitchen Light Group
 #################################################################
 platform: group
-name: Group Living Room
+name: Group Kitchen
 entities:
   - light.dino_panel
   - light.kitchen

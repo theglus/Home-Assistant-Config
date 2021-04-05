@@ -270,7 +270,7 @@ cards:
                     ]]]
                   label: |
                     [[[
-                      return states['sensor.temperature_living_room'].state + '°F '
+                      return states['sensor.temperature_living_room'].state + '°F'
                     ]]]
                   name: Living Room                    
                   template:
@@ -303,7 +303,7 @@ cards:
                     ]]]
                   label: |
                     [[[
-                      return states['sensor.kitchen_temperature'].state + '°F '
+                      return states['sensor.kitchen_temperature'].state + '°F'
                     ]]]
                   name: Kitchen                  
                   template:
