@@ -253,7 +253,7 @@ cards:
                 #----------------------------------------------------------------
                 # TODO: #276 Create living room button
                 - type: "custom:button-card"
-                  entity: light.living_room
+                  entity: light.group_living_room
                   name: Living Room
                   custom_fields:
                     s2: |
