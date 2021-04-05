@@ -225,6 +225,13 @@ cards:
                 # hold_action:
                 #   action: navigate
                 #   navigation_path: ../lovelace-views/lounge
+                  custom_fields:
+                    s2: |
+                      [[[
+                        var sensor_state = (states['binary_sensor.front_door'].state);
+                        if (sensor_state == "on") return "Door is open";
+                        else return "Door is closed" 
+                      ]]]
                   icon: |
                     [[[ 
                       var sensor_state = (states['binary_sensor.front_door'].state);

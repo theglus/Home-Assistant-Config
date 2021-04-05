@@ -273,7 +273,7 @@ room_btn:
   state_display: |
     [[[ 
       var bri = Math.round(entity.attributes.brightness / 2.55);
-      if (entity.state == "on") return "Lights on at " + bri + "%";
+      if (entity.state == "on") return "Lights @ " + bri + "%";
       if (entity.state == "Unavailable") return "Lights are Unavailable";
       else return "Lights are off" 
     ]]]
@@ -355,13 +355,13 @@ room_btn_states_on:
   state:
     - styles:
         card:
-          - background-color: "#DFDFDF"
+          - background-color: "rgba(255, 255, 255, 0.8)"
         custom_fields:
           s2:
             - color: Grey
         label:
           - color: Grey
-          - font-size: 11pt
+          - font-size: 10pt
         name:
           - color: "#171717"
         state:
