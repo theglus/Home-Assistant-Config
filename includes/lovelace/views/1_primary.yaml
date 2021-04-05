@@ -252,6 +252,31 @@ cards:
                 ## Living Room button
                 #----------------------------------------------------------------
                 # TODO: #276 Create living room button
+                - type: "custom:button-card"
+                  entity: light.living_room
+                  custom_fields:
+                    s2: |
+                      [[[
+                        var sensor_state = (states['switch.switchbot'].state);
+                        if (sensor_state == "on") return "Heat is on";
+                        else return "Heat is off" 
+                      ]]]
+                  icon: |
+                    [[[ 
+                      var sensor_state = (states['switch.switchbot'].state);
+                      if (sensor_state == "on") 
+                        return "mdi:radiator"; 
+                      else 
+                        return "mdi:sofa" 
+                    ]]]
+                  name: Living Room
+                  template:
+                    - room_layout
+                    - room_states
+                    - room_states_on
+                    - room
+                  triggers_update:
+                    - switch.switchbot
                 #----------------------------------------------------------------
                 ## Kitchen button
                 #----------------------------------------------------------------
