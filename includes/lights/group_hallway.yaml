@@ -1,8 +1,8 @@
 ###############################################################
-## Downstairs Light Group
+## Hallway Light Group
 #################################################################
 platform: group
-name: Entryway
+name: Group Hallway
 entities:
   - light.hallway_marquee
   - light.hallway_runner

@@ -220,7 +220,7 @@ cards:
                 ## Entryway button
                 #----------------------------------------------------------------
                 - type: "custom:button-card"
-                  entity: light.entryway
+                  entity: light.group_hallway
                   custom_fields:
                     s2: |
                       [[[
