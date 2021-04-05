@@ -283,7 +283,6 @@ cards:
                 #----------------------------------------------------------------
                 ## Kitchen button
                 #----------------------------------------------------------------
-                # TODO: #277 Create kitchen button
                 - type: "custom:button-card"
                   entity: light.group_kitchen
                   custom_fields:
