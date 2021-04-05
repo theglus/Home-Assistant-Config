@@ -171,7 +171,7 @@ cards:
                     ]]]
                   name: |
                     [[[
-                      return "Next hour " + states['weather.loft'].attributes.forecast[0].temperature + '°C'
+                      return "Next hour " + states['weather.loft'].attributes.forecast[0].temperature + '°F'
                     ]]]
                   state:
                     - icon: |
@@ -301,6 +301,7 @@ cards:
                         return "mdi:fridge"; 
                       else 
                         return "mdi:fridge" 
+                    ]]]
                   label: |
                     [[[
                       return states['sensor.kitchen_temperature'].state + '°F '
