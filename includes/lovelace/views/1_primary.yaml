@@ -254,6 +254,7 @@ cards:
                 # TODO: #276 Create living room button
                 - type: "custom:button-card"
                   entity: light.living_room
+                  name: Living Room
                   custom_fields:
                     s2: |
                       [[[
@@ -269,7 +270,10 @@ cards:
                       else 
                         return "mdi:sofa" 
                     ]]]
-                  name: Living Room
+                  label: |
+                    [[[
+                      return states['sensor.living_room_temperature'].state + '°F '
+                    ]]]
                   template:
                     - room_layout
                     - room_states
