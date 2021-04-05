@@ -219,12 +219,8 @@ cards:
                 #----------------------------------------------------------------
                 ## Entryway button
                 #----------------------------------------------------------------                
-                  # TODO: #274 Create entryway button
                 - type: "custom:button-card"
                   entity: light.entryway
-                # hold_action:
-                #   action: navigate
-                #   navigation_path: ../lovelace-views/lounge
                   custom_fields:
                     s2: |
                       [[[
