@@ -293,14 +293,7 @@ cards:
                         if (sensor_state == "on") return "Dyson is on";
                         else return "Dyson is off" 
                       ]]]
-                  icon: |
-                    [[[ 
-                      var sensor_state = (states['fan.kitchen'].state);
-                      if (sensor_state == "on") 
-                        return "mdi:fridge"; 
-                      else 
-                        return "mdi:fridge" 
-                    ]]]
+                  icon: "mdi:fridge"
                   label: |
                     [[[
                       return states['sensor.kitchen_temperature'].state + '°F'
