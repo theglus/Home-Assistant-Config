@@ -4,5 +4,7 @@
 platform: group
 name: Entryway
 entities:
-  - light.hallway
+  - light.hallway_marquee
   - light.hallway_runner
+  - light.potter_lamp
+  - light.stair
