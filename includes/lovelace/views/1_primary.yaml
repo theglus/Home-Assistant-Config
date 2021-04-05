@@ -253,7 +253,6 @@ cards:
                 #----------------------------------------------------------------
                 - type: "custom:button-card"
                   entity: light.group_living_room
-                  name: Living Room
                   custom_fields:
                     s2: |
                       [[[
@@ -273,6 +272,7 @@ cards:
                     [[[
                       return states['sensor.temperature_living_room'].state + '°F '
                     ]]]
+                  name: Living Room                    
                   template:
                     - room_layout
                     - room_states
@@ -286,7 +286,6 @@ cards:
                 # TODO: #277 Create kitchen button
                 - type: "custom:button-card"
                   entity: light.group_kitchen
-                  name: Kitchen
                   custom_fields:
                     s2: |
                       [[[
@@ -306,6 +305,7 @@ cards:
                     [[[
                       return states['sensor.kitchen_temperature'].state + '°F '
                     ]]]
+                  name: Kitchen                  
                   template:
                     - room_layout
                     - room_states
