@@ -1,0 +1,8 @@
+###############################################################
+## Living Room Light Group
+#################################################################
+platform: group
+name: Group Living Room
+entities:
+  - light.dino_panel
+  - light.kitchen
