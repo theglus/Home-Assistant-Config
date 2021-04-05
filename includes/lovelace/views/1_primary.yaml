@@ -25,11 +25,27 @@ cards:
           - type: "custom:paper-buttons-row"
             buttons:
               #################################################################
+              ## General Button
+              #################################################################
+              - entity: input_select.lighttoggle
+                name: false
+                icon: "mdi:home-assistant"
+                state_styles:
+                  General:
+                  template: nav_button
+                template: nav_styles
+                tap_action:
+                  action: call-service
+                  service: input_select.select_option
+                  service_data:
+                    entity_id: input_select.lighttoggle
+                    option: General            
+              #################################################################
               ## Entryway Button
               #################################################################
               - entity: input_select.lighttoggle
                 name: false
-                icon: "hass:coat-rack"
+                icon: "mdi:coat-rack"
                 state_styles:
                   Entrway:
                   template: nav_button
@@ -49,7 +65,7 @@ cards:
               #################################################################
               - entity: input_select.lighttoggle
                 name: false
-                icon: "hass:desk"
+                icon: "mdi:desk"
                 state_styles:
                   Office:
                   template: nav_button
@@ -65,7 +81,7 @@ cards:
               #################################################################
               - entity: input_select.lighttoggle
                 name: false
-                icon: "hass:sofa"
+                icon: "mdi:sofa"
                 state_styles:
                   Living Room:
                   template: nav_button
@@ -81,7 +97,7 @@ cards:
               #################################################################
               - entity: input_select.lighttoggle
                 name: false
-                icon: "hass:fridge"
+                icon: "mdi:fridge"
                 state_styles:
                   Kitchen:
                   template: nav_button
@@ -97,7 +113,7 @@ cards:
               #################################################################
               - entity: input_select.lighttoggle
                 name: false
-                icon: "hass:bed-king"
+                icon: "mdi:bed-king"
                 state_styles:
                   Loft:
                   template: nav_button
@@ -112,22 +128,6 @@ cards:
               ## Loft Bathroom Button
               #################################################################
               # TODO: #252 Create nav toggle for loft bathroom
-              #################################################################
-              ## General Button
-              #################################################################
-              - entity: input_select.lighttoggle
-                name: false
-                icon: "hass:view-dashboard"
-                state_styles:
-                  General:
-                  template: nav_button
-                template: nav_styles
-                tap_action:
-                  action: call-service
-                  service: input_select.select_option
-                  service_data:
-                    entity_id: input_select.lighttoggle
-                    option: General
       #################################################################
       #----------------------------------------------------------------
       ## Expanded
@@ -720,7 +720,7 @@ cards:
                 # TODO: #259 Sensor cirle with Living Room Temp
                 - type: "custom:button-card"
                   entity: switch.switchbot
-                  icon: "hass:fan"
+                  icon: "mdi:fan"
                   custom_fields:
                     icon_fan: >
                       [[[ const path = '<circle cx="25" cy="25" r="6.6"/> <path d="M31.9 30.4c-.5.6-1.1 1.1-1.7 1.5-1.4 1.1-3.2 1.7-5.2 1.7-2.3 0-4.5-.9-6-2.4-.9 1.1-1.6 2.3-2.3 3.2l-4.9 5.4c-1.8 2.7.3 5.6 2.5 7 3.9 2.4 9.8 3.1 14.1 1.9 4.6-1.3 7.9-4.7 7.4-9.7-.2-3.4-1.9-6-3.9-8.6zM17 28.3c-.4-1-.6-2.1-.6-3.3a8.7 8.7 0 0 1 6.4-8.4l-1.6-3.5L19 6.2c-1.5-2.8-5-2.5-7.3-1.2-4 2.2-7.5 6.9-8.7 11.3-1.2 4.6.2 9.2 4.7 11.3 3.1 1.3 6.1 1.2 9.3.7zm26.9-17.6c-3.3-3.4-8-4.6-12.1-1.8-2.8 1.8-4.2 4.6-5.5 7.5 4.2.6 7.4 4.2 7.4 8.6 0 .9-.1 1.7-.4 2.5 1.3.2 2.8.3 3.8.4 2.3.4 4.7 1.3 7.1 1.7 3.2.3 4.7-3 4.8-5.6.3-4.6-1.9-10.1-5.1-13.3z"/>';
