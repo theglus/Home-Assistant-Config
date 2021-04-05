@@ -286,7 +286,7 @@ cards:
                 # TODO: #277 Create kitchen button
                 - type: "custom:button-card"
                   entity: light.group_kitchen
-                  name: Living Room
+                  name: Kitchen
                   custom_fields:
                     s2: |
                       [[[
@@ -294,7 +294,13 @@ cards:
                         if (sensor_state == "on") return "Dyson is on";
                         else return "Dyson is off" 
                       ]]]
-                  icon: "mdi:fridge"
+                  icon: |
+                    [[[ 
+                      var sensor_state = (states['fan.kitchen'].state);
+                      if (sensor_state == "on") 
+                        return "mdi:fridge"; 
+                      else 
+                        return "mdi:fridge" 
                   label: |
                     [[[
                       return states['sensor.kitchen_temperature'].state + '°F '
