@@ -5,7 +5,6 @@ icon: "mdi:home"
 badges:
   - entity: person.jeffrey_glusman
   - entity: person.tiffany_conaway
-  - entity: sensor.temperature_living_room
 cards:
   - type: vertical-stack
     cards:
