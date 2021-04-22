@@ -248,6 +248,31 @@ cards:
                 ## Office button
                 #----------------------------------------------------------------
                 # TODO: #275 Create office button
+                - type: "custom:button-card"
+                  entity: light.overhead
+                  custom_fields:
+                    s2: |
+                      [[[
+                        var sensor_state = (states['sensor.major_laser_printer'].state);
+                        if (sensor_state == "on") return "Printer on";
+                        else return "Printer off" 
+                      ]]]
+                  icon: |
+                    [[[ 
+                      var sensor_state = (states['sensor.major_laser_printer'].state);
+                      if (sensor_state == "on") 
+                        return "mdi:printer"; 
+                      else 
+                        return "mdi:desk" 
+                    ]]]
+                  name: Office
+                  template:
+                    - room_layout
+                    - room_states
+                    - room_states_on
+                    - room
+                  triggers_update:
+                    - sensor.majaor_laser_printer              
                 #----------------------------------------------------------------
                 ## Living Room button
                 #----------------------------------------------------------------
@@ -309,6 +334,28 @@ cards:
                 ## Loft button
                 #----------------------------------------------------------------
                 # TODO: #278 Create loft button
+                - type: "custom:button-card"
+                  entity: light.loft
+                  custom_fields:
+                    s2: |
+                      [[[
+                        var sensor_state = (states['fan.kirby'].state);
+                        if (sensor_state == "on") return "Dyson is on";
+                        else return "Dyson is off" 
+                      ]]]
+                  icon: "mdi:bed-king"
+                  label: |
+                    [[[
+                      return states['sensor.kirby_temperature'].state + '°F'
+                    ]]]
+                  name: Loft                  
+                  template:
+                    - room_layout
+                    - room_states
+                    - room_states_on
+                    - room
+                  triggers_update:
+                    - fan.kirby                     
           #################################################################
           ## Entrway Controls
           #################################################################
