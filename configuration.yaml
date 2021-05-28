@@ -75,11 +75,11 @@ browser_mod:
 #################################################################
 
 # Winston
-vacuum:
-  - platform: xiaomi_miio
-    host: !secret winston_host
-    token: !secret winston_token
-    name: Winston
+# vacuum:
+#   - platform: xiaomi_miio
+#     host: !secret winston_host
+#     token: !secret winston_token
+#     name: Winston
 
 #################################################################
 ## Sensors
