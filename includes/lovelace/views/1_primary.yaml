@@ -2,9 +2,9 @@ path: default_view
 title: Home
 panel: false
 icon: "mdi:home"
-# badges:
-#   - entity: person.jeffrey_glusman
-#   - entity: person.tiffany_conaway
+badges:
+  - entity: person.jeffrey_glusman
+  - entity: person.tiffany_conaway
 cards:
   - type: vertical-stack
     cards:
