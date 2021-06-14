@@ -135,7 +135,7 @@ cards:
       - type: "custom:state-switch"
         entity: input_select.lighttoggle
         default: Entryway
-        transition: flip
+        transition: none
         states:
           #################################################################
           ## General Controls
