@@ -665,8 +665,7 @@ cards:
                     styles:
                       custom_fields:
                         icon_closet:
-                          - width: 80%
-                          - margin-left: -15%
+                         [top: 11%, left: 6%, width: 5.25em, position: absolute]                          
                   template: base
           #################################################################
           ## Guest Bathroom Controls
