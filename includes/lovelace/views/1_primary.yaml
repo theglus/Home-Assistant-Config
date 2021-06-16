@@ -565,10 +565,8 @@ cards:
                 - type: "custom:button-card"
                   entity: binary_sensor.front_door                        
                   template: 
-                    - base
+                    - light
                     - icon_closet
-                  triggers_update:
-                    - fan.kitchen  
           #################################################################
           ## Guest Bathroom Controls
           #################################################################
