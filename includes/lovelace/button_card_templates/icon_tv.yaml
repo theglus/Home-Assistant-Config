@@ -5,8 +5,8 @@
     custom_fields:
       icon:
         - width: 2.85em
-        - margin-top: -7%
-        - margin-left: 1%
+        - margin-top: 11%
+        - margin-left: 5%
         - fill: >
             [[[
               return variables.state === 'playing' ? '#616161' : '#9da0a2';
