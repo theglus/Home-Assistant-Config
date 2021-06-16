@@ -74,10 +74,18 @@
   trigger:
   - platform: state
     entity_id: sensor.denon_volume
-  condition: []
+  - platform: homeassistant
+    event: start
+  condition:
+    condition: state
+    entity_id: media_player.dennis
+    state: 'on'
   action:
-  - data_template:
+  - delay:
+      seconds: 3
+  - service: input_number.set_value
+    data_template:
       entity_id: input_number.denon_volume
-      value: '{{ states.sensor.denon_volume.state | float }}'
-    service: input_number.set_value
+      value: '{{ trigger.to_state.state }}'
   mode: single
+  initial_state: 'on'
