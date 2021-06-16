@@ -66,7 +66,7 @@
       volume_level: '{{states(''input_number.denon_volume'') | int / 100}}
 
         '
-  mode: single
+  mode: restart
   initial_state: 'on'
 - id: '1623863038913'
   alias: Denon Get Volume
@@ -77,7 +77,7 @@
   - platform: homeassistant
     event: start
   condition:
-    condition: state
+  - condition: state
     entity_id: media_player.dennis
     state: 'on'
   action:
@@ -87,5 +87,5 @@
     data_template:
       entity_id: input_number.denon_volume
       value: '{{ trigger.to_state.state }}'
-  mode: single
+  mode: restart
   initial_state: 'on'
