@@ -572,7 +572,7 @@ cards:
                   styles:
                     custom_fields:
                       icon_door:
-                        [top: 11%, left: 6%, width: 5.75em, position: absolute]
+                        [top: 11%, left: 6%, width: 6.25em, position: absolute]
                   template: base
           #################################################################
           ## Guest Bathroom Controls
