@@ -564,7 +564,7 @@ cards:
                 #----------------------------------------------------------------
                 - type: "custom:button-card"
                   entity: binary_sensor.front_door
-                  template: test
+                  template: base
           #################################################################
           ## Guest Bathroom Controls
           #################################################################
@@ -662,7 +662,7 @@ cards:
                 - type: "custom:button-card"
                   entity: switch.major_laser_printer
                   name: Major Laser
-                  template: test
+                  template: base
                 #----------------------------------------------------------------
                 ## Office Google Home Mini
                 #----------------------------------------------------------------
