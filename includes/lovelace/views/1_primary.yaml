@@ -663,10 +663,8 @@ cards:
                   entity: switch.major_laser_printer
                   name: Major Laser
                   custom_fields:
-                    icon_printer: |
-                        [[[ 
-                           return "mdi:printer";
-                        ]]]
+                    icon_printer: >
+                      "mdi:printer"
                   styles:
                     custom_fields:
                       icon_printer:
