@@ -662,6 +662,7 @@ cards:
                 - type: "custom:button-card"
                   entity: switch.major_laser_printer
                   name: Major Laser
+                  show_icon: true
                   template: base
                 #----------------------------------------------------------------
                 ## Office Google Home Mini
