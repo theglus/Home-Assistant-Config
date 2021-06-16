@@ -567,6 +567,8 @@ cards:
                   template: 
                     - base
                     - icon_closet
+                  triggers_update:
+                    - fan.kitchen  
           #################################################################
           ## Guest Bathroom Controls
           #################################################################
