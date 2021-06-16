@@ -1,0 +1,85 @@
+#################################################################
+## TV Icon
+#################################################################
+  styles:
+    custom_fields:
+      icon:
+        - width: 89%
+        - margin-top: -7%
+        - margin-left: 1%
+        - fill: >
+            [[[
+              return variables.state === 'on' ? '#616161' : '#9da0a2';
+            ]]]
+  custom_fields:
+    icon: >
+      [[[
+        const style = `
+          <style>
+            @keyframes on {
+              from {
+                transform: scaleY(0);
+              }
+              to {
+                transform: scaleY(1);
+              }
+            }
+            .on {
+              animation: on 1s;
+              transform-origin: -100% 46%;
+              animation-fill-mode: forwards;
+            }
+            @keyframes off {
+              from {
+                transform: scaleY(1);
+              }
+              to {
+                transform: scaleY(0);
+              }
+            }
+            .off {
+              animation: off 1s;
+              transform-origin: -100% 46%;
+              animation-fill-mode: forwards;
+            }
+          </style>
+        `;
+        const path = `
+          <path d="M46 9.2v27.5H4.1V9.2H46m2.4-2.4H1.6v32.3h46.7c.1 0 .1-32.3.1-32.3zM11.9 43.2h26.3c.6 0 1.1-.4 1.1-1v-.3c0-.6-.4-1.1-1-1.1H11.9c-.6 0-1.1.4-1.1 1v.3a1.11 1.11 0 0 0 1.1 1.1z"/>
+        `;
+        const gradient = `
+          <linearGradient id="A" gradientUnits="userSpaceOnUse" x1="5.401" y1="34.714" x2="43.817" y2="11.74">
+            <stop offset="0" stop-color="#64acb7"/>
+            <stop offset="1" stop-color="#7fdbe9"/>
+          </linearGradient>
+        `;
+        if (variables.state === 'on' && variables.timeout < 2000) {
+          return `
+            <svg viewBox="0 0 50 50"> ${style} ${gradient} 
+              <path d="M2.9,8h44.3v29.9H2.9V8z" fill="#20262890"/>
+              <path class="on" d="M2.9,8h44.3v29.9H2.9V8z" fill="url(#A)"/> ${path} 
+            </svg>
+          `;
+        }
+        if (variables.state === 'on' && variables.timeout > 2000) {
+          return `
+            <svg viewBox="0 0 50 50"> ${gradient} 
+              <path d="M2.9,8h44.3v29.9H2.9V8z" fill="#20262890"/>
+              <path class="on" d="M2.9,8h44.3v29.9H2.9V8z" fill="url(#A)"/> ${path} 
+            </svg>
+          `;
+        }
+        if (variables.state === 'off' && variables.timeout < 2000) {
+          return `
+            <svg viewBox="0 0 50 50"> ${style} ${gradient} 
+              <path class="off" d="M2.9,8h44.3v29.9H2.9V8z" fill="url(#A)"/> ${path} 
+            </svg>
+          `;
+        } else {
+          return `
+            <svg viewBox="0 0 50 50"> ${style} 
+              ${path}
+            </svg>
+          `;
+        }
+      ]]]
