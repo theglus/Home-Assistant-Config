@@ -569,7 +569,7 @@ cards:
                       [[[
                         const room = 'd="M11.4,1.4h27.2v43.1H11.4V1.4z" fill="#bcbcbc"';
                         const door = 'd="M11.4 1.4v43.1h27.2V1.4H11.4zm23 23.4c0 1.1-.9 1.9-1.9 1.9h0c-1.1 0-1.9-.9-1.9-1.9V21c0-1.1.9-1.9 1.9-1.9h0c1.1 0 1.9.9 1.9 1.9v3.8z"';
-                        if (variables.state === 'on' && variables.timeout < 2000) {
+                        if (variables.state === 'true' && variables.timeout < 2000) {
                           return `
                             <style>
                               .state {
@@ -603,7 +603,7 @@ cards:
                             </svg>
                           `;
                         }
-                        if (variables.state === 'on' && variables.timeout > 2000) {
+                        if (variables.state === 'true' && variables.timeout > 2000) {
                           return `
                             <svg viewBox="0 0 50 50">
                               <style>
@@ -617,7 +617,7 @@ cards:
                             </svg>
                           `;
                         }
-                        return variables.state === 'off' && variables.timeout < 2000 ? `
+                        return variables.state === 'false' && variables.timeout < 2000 ? `
                           <style>
                             .state {
                               animation: state 0.4s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
