@@ -663,6 +663,8 @@ cards:
                   entity: switch.major_laser_printer
                   name: Major Laser
                   show_icon: true
+                  style:
+                    [top: 11%, left: 5%, width: 5.25em, position: absolute]
                   template: base
                 #----------------------------------------------------------------
                 ## Office Google Home Mini
