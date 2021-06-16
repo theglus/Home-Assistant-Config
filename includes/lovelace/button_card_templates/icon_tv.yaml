@@ -5,7 +5,7 @@
     custom_fields:
       icon:
         - width: 2.85em
-        - top: 1%
+        - top: 3%
         - left: 5%
         - position: absolute
         - fill: >
