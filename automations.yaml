@@ -58,12 +58,16 @@
   trigger:
   - platform: state
     entity_id: input_number.denon_volume
-  condition:
-  - condition: template
-    value_template: '{{ states(''sensor.denon_volume'') != states(''input_number.denon_volume'')}}'
+  condition: []
   action:
-  - service: rest_command.set_volume
+  - service: media_player.volume_set
+    data_template:
+      entity_id: media_player.dennis
+      volume_level: '{{states(''input_number.denon_volume'') | int / 100}}
+
+        '
   mode: single
+  initial_state: 'on'
 - id: '1623863038913'
   alias: Denon Get Volume
   description: ''
