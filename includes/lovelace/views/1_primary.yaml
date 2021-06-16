@@ -246,7 +246,6 @@ cards:
                 #----------------------------------------------------------------
                 ## Office button
                 #----------------------------------------------------------------
-                # TODO: #275 Create office button
                 - type: "custom:button-card"
                   entity: light.overhead
                   custom_fields:
