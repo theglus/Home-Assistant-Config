@@ -3,7 +3,7 @@
 #################################################################
   double_tap_action:
     action: more-info
-  show_label: false
+  show_label: true
   show_state: true
   state_display: |
     [[[ 
