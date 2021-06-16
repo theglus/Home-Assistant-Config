@@ -823,6 +823,7 @@ cards:
                 # BUG: #260 Issue loading TV animation
                 - type: "custom:button-card"
                   entity: media_player.shield_tv
+                  tap_action: toggle
                   template:
                     - base
                     - icon_tv
