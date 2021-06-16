@@ -64,3 +64,16 @@
   action:
   - service: rest_command.set_volume
   mode: single
+- id: '1623863038913'
+  alias: Denon Get Volume
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.denon_volume
+  condition: []
+  action:
+  - data_template:
+      entity_id: input_number.denon_volume
+      value: '{{ states.sensor.denon_volume.state | float }}'
+    service: input_number.set_value
+  mode: single
