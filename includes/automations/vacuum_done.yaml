@@ -6,14 +6,14 @@
 alias: Vacuum Done
 description: Notify Farnsworth when Winston has completed cleaning.
 trigger:
-- platform: state
-  entity_id: vacuum.winston
-  from: cleaning
-  to: returning
+  - platform: state
+    entity_id: vacuum.winston
+    from: cleaning
+    to: returning
 condition: []
 action:
-- service: notify.telegram
-  data:
-    message: I've completed cleaning the residence. I'm off to retire. Cheerio!
-    title: '🤹🏻‍ Winston:'
+  - service: notify.telegram
+    data:
+      message: I've completed cleaning the residence. I'm off to retire. Cheerio!
+      title: "🤹🏻‍ Winston:"
 mode: single

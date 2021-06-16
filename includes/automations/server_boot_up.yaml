@@ -6,11 +6,11 @@
 alias: Server Boot Up
 description: Telegram notification when server has booted up.
 trigger:
-- platform: homeassistant
-  event: start
+  - platform: homeassistant
+    event: start
 action:
-- service: notify.telegram
-  data:
-    message: Home Assistant is ready for business.
-    title: '🛎️ Server:'
+  - service: notify.telegram
+    data:
+      message: Home Assistant is ready for business.
+      title: "🛎️ Server:"
 mode: single

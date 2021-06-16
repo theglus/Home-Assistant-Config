@@ -6,14 +6,14 @@
 alias: Denon Set Volume
 description: Set volume of Denon AVR.
 trigger:
-- platform: state
-  entity_id: input_number.denon_volume
+  - platform: state
+    entity_id: input_number.denon_volume
 condition: []
 action:
-- service: media_player.volume_set
-  data_template:
-    entity_id: media_player.dennis
-    volume_level: '{{states(''input_number.denon_volume'') | int / 100}}
-      '
+  - service: media_player.volume_set
+    data_template:
+      entity_id: media_player.dennis
+      volume_level: "{{states('input_number.denon_volume') | int / 100}}
+        "
 mode: restart
-initial_state: 'on'
+initial_state: "on"

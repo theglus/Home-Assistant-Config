@@ -6,13 +6,13 @@
 alias: Vacuum Clean
 description: Notify Farnsworth when Winston starts cleaning.
 trigger:
-- platform: state
-  entity_id: vacuum.winston
-  from: docked
-  to: cleaning
+  - platform: state
+    entity_id: vacuum.winston
+    from: docked
+    to: cleaning
 action:
-- service: notify.telegram
-  data:
-    message: Off to tidy up. Cheerio!
-    title: '🤹🏻‍ Winston:'
+  - service: notify.telegram
+    data:
+      message: Off to tidy up. Cheerio!
+      title: "🤹🏻‍ Winston:"
 mode: single

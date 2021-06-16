@@ -6,14 +6,14 @@
 alias: Shutoff Printer
 description: Shutoff plug to printer 15-minutes after device has been switched on.
 trigger:
-- platform: state
-  entity_id: switch.major_laser_printer
-  for: 00:15:00
-  from: 'off'
-  to: 'on'
+  - platform: state
+    entity_id: switch.major_laser_printer
+    for: 00:15:00
+    from: "off"
+    to: "on"
 action:
-- type: turn_off
-  device_id: cc99ed6aff6a11ea940fe1f9a75d2527
-  entity_id: switch.major_laser_printer
-  domain: switch
+  - type: turn_off
+    device_id: cc99ed6aff6a11ea940fe1f9a75d2527
+    entity_id: switch.major_laser_printer
+    domain: switch
 mode: single
