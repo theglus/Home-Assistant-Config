@@ -1,7 +1,6 @@
 #################################################################
 ## Loader
 #################################################################
-loader:
   custom_fields:
     loader: >
       [[[ if (states[entity.entity_id.replace(entity.entity_id.split('.')[0], 'input_boolean')].state === 'on') { 
