@@ -567,6 +567,8 @@ cards:
                   template: 
                     - light
                     - icon_closet
+                  triggers_update:
+                    - binary_sensor.front_door  
           #################################################################
           ## Guest Bathroom Controls
           #################################################################
