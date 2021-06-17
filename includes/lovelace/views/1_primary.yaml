@@ -315,9 +315,9 @@ cards:
                           - type: custom:mini-graph-card
                             entities:
                               - color_thresholds:
-                                  - value: 60
-                                    color: '#6aa84f'
                                   - value: 68
+                                    color: '#6aa84f'
+                                  - value: 71
                                     color: '#f1c232'
                                   - value: 73
                                     color: '#e69138'
