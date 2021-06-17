@@ -309,7 +309,7 @@ cards:
                           }
                       card:
                         type: custom:hui-element
-                        card_type: horizontal-stack        
+                        card_type: veritcal-stack        
                         cards:     
                           - type: entities
                             state_color: true
