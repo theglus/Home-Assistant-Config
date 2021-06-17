@@ -308,13 +308,13 @@ cards:
                             grid-gap: 0 !important;
                           }
                       card:
-                        type: grid
-                        columns: 1
-                        square: false
-                        cards:
-                          - type: custom:hui-element
-                            card_type: horizontal-stack        
-                            cards:                
+                        type: custom:hui-element
+                        card_type: horizontal-stack        
+                        cards:  
+                          - type: grid
+                            columns: 1
+                            square: false
+                            cards:             
                             - type: entities
                               state_color: true
                               entities:
