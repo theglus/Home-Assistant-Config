@@ -314,9 +314,15 @@ cards:
                         cards:
                           - type: custom:mini-graph-card
                             entities:
-                              - color_thresholds:
+                                color_thresholds:
                                   - value: 68
-                                    color: '#6aa84f'                              
+                                    color: '#6aa84f'
+                                  - value: 71
+                                    color: '#f1c232'
+                                  - value: 73
+                                    color: '#e69138'
+                                  - value: 100
+                                    color: '#cc0000'                              
                                 entity: sensor.temperature_living_room
                             name: Temperature 
                             secondary_info: last-changed                           
