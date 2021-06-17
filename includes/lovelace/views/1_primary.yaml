@@ -343,13 +343,7 @@ cards:
                               {fill: fade, icon: false, name: false, state: false, 
                               name_adaptive_color: false, labels: hover, legend: false}
                             tap_action:
-                              action: none
-                            template: base                  
-                  template:
-                    - room_layout
-                    - room_states
-                    - room_states_on
-                    - room
+                              action: none            
                   triggers_update:
                     - switch.switchbot
                 #----------------------------------------------------------------
