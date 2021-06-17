@@ -315,10 +315,10 @@ cards:
                           - type: entities
                             state_color: true
                             entities:                                        
-                            - entity: sensor.temperature_living_room
-                              name: Temperature
-                              attribute: last-changed
-                              secondary_info: last-changed                          
+                              - entity: sensor.temperature_living_room
+                                name: Temperature
+                                attribute: last-changed
+                                secondary_info: last-changed                          
                           - type: custom:mini-graph-card
                             entities:
                             - sensor.temperature_living_room
