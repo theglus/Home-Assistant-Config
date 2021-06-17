@@ -341,7 +341,8 @@ cards:
                             state_color: true
                             entities:                                        
                             - entity: sensor.temperature_living_room
-                              primary_info: last-changed                 
+                              primary_info: none
+                              secondary_info: last-changed                
                   template:
                     - room_layout
                     - room_states
