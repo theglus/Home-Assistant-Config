@@ -316,13 +316,19 @@ cards:
                             state_color: true
                             entities:
                               - entity: sensor.temperature_living_room
+                                name: Temperature
                                 secondary_info: last-changed
-                              - type: custom:slider-entity-row
-                                entity: sensor.temperature_living_room
-                                hide_state: false                       
                           - type: custom:mini-graph-card
                             entities:
-                              - color: '#385581'
+                              - color_thresholds:
+                                  - value: 68
+                                    color: '#6aa84f'
+                                  - value: 73
+                                    color: '#f1c232'
+                                  - value: 75
+                                    color: '#e69138'
+                                  - value: 100
+                                    color: '#cc0000'                              
                                 entity: sensor.temperature_living_room
                             line_width: 8
                             hour24: true
