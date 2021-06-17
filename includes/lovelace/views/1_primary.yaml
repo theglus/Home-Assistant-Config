@@ -310,7 +310,7 @@ cards:
                       card:
                         type: grid
                         columns: 1
-                        square: false
+                        square: false                 
                         cards:
                           - type: entities
                             state_color: true
@@ -321,7 +321,7 @@ cards:
                                 secondary_info: last-changed                          
                           - type: custom:mini-graph-card
                             entities:
-                              - entity: sensor.temperature_living_room
+                              entity: sensor.temperature_living_room
                             color_thresholds:
                             - value: 68
                               color: '#6aa84f'
