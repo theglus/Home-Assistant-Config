@@ -6,3 +6,4 @@ name: SHIELD TV
 host: !secret shield_ip
 apps: 
   com.hulu.livingroomplus: "Hulu"
+  com.hbo.hbonow: "HBO Max"
