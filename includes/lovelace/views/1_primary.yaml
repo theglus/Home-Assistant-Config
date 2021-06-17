@@ -308,30 +308,34 @@ cards:
                             grid-gap: 0 !important;
                           }
                       card:
-                        type: custom:hui-element
-                        card_type: veritcal-stack        
-                        cards:     
-                          - type: entities
-                            state_color: true
-                            entities:
-                              - entity: sensor.temperature_living_room
-                                secondary_info: last-changed
-                          - type: custom:mini-graph-card
-                            entities:
-                              - color: '#385581'
-                                entity: sensor.temperature_living_room
-                            line_width: 8
-                            hour24: true
-                            group: true
-                            align_icon: left
-                            align_state: right
-                            align_header: left
-                            hours_to_show: 24
-                            show:
-                              {fill: fade, icon: false, name: false, state: false, 
-                              name_adaptive_color: false, labels: hover, legend: false}
-                            tap_action:
-                              action: none           
+                        type: grid
+                        columns: 1
+                        square: false
+                        cards:
+                          - type: custom:hui-element
+                            card_type: vertical-stack        
+                            cards:            
+                            - type: entities
+                              state_color: true
+                              entities:
+                                - entity: sensor.temperature_living_room
+                                  secondary_info: last-changed
+                            - type: custom:mini-graph-card
+                              entities:
+                                - color: '#385581'
+                                  entity: sensor.temperature_living_room
+                              line_width: 8
+                              hour24: true
+                              group: true
+                              align_icon: left
+                              align_state: right
+                              align_header: left
+                              hours_to_show: 24
+                              show:
+                                {fill: fade, icon: false, name: false, state: false, 
+                                name_adaptive_color: false, labels: hover, legend: false}
+                              tap_action:
+                                action: none           
                   template:
                     - room_layout
                     - room_states
