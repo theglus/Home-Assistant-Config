@@ -821,7 +821,8 @@ cards:
                 #----------------------------------------------------------------
                 - type: "custom:button-card"
                   entity: media_player.shield_tv
-                  tap_action: toggle
+                  tap_action:
+                    action: toggle
                   template:
                     - base
                     - icon_tv
