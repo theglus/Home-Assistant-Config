@@ -324,6 +324,7 @@ cards:
                               color: '#e69138'
                             - value: 100
                               color: '#cc0000'                              
+                            color_thresholds_transition: hard                            
                             name: Temperature 
                             secondary_info: last-changed                           
                             line_width: 8
