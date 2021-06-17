@@ -323,9 +323,9 @@ cards:
                               - color_thresholds:
                                   - value: 68
                                     color: '#6aa84f'
-                                  - value: 73
+                                  - value: 71
                                     color: '#f1c232'
-                                  - value: 75
+                                  - value: 73
                                     color: '#e69138'
                                   - value: 100
                                     color: '#cc0000'                              
