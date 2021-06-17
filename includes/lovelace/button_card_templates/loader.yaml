@@ -3,16 +3,32 @@
 #################################################################
   custom_fields:
     loader: >
-      [[[ if (states[entity.entity_id.replace(entity.entity_id.split('.')[0], 'input_boolean')].state === 'on') { 
-      return '<img src="/local/loader.svg" width="100%">'; } ]]]
+      <img src="/local/loader.svg" width="100%">
+  tap_action:
+    loader: >
+      [[[
+        if (entity !== undefined) {
+          let elt = this.shadowRoot;
+          const loader = (id, style, timeout) => {
+            if (elt.getElementById(id)) {
+              elt.getElementById(id).style.display = style;
+              window.setTimeout(() => {
+                elt.getElementById(id).style.display = timeout;
+              }, 20000)
+            }
+          };
+          loader('circle', 'none', 'initial');
+          loader('loader', 'initial', 'none');
+        }
+      ]]]
   styles:
     custom_fields:
       loader:
-        [
-          filter: "[[[ return entity.state === 'off' ? 'invert(1)' : 'none'; ]]]",
-          top: 3%,
-          left: 60%,
-          width: 3.78em,
-          position: absolute,
-          opacity: 0.6,
-        ]
+        - display: none
+        - top: 3%
+        - left: 60%
+        - width: 37%
+        - position: absolute
+        - opacity: 0.5
+        - filter: >
+            [[[ return variables.state === 'off' ? 'invert(1)' : 'none'; ]]]
