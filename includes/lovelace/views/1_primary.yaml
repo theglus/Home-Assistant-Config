@@ -330,13 +330,15 @@ cards:
                                   - value: 100
                                     color: '#cc0000'                              
                                 entity: sensor.temperature_living_room
+                            name: Temperature                            
                             line_width: 8
                             hour24: true
-                            group: true
                             align_icon: left
                             align_state: right
                             align_header: left
                             hours_to_show: 24
+                            show:
+                              icon: true
                             tap_action:
                               action: none              
                   template:
