@@ -7,6 +7,6 @@ host: !secret shield_ip
 device_class: androidtv
 exclude_unnamed_apps: true
 apps: 
-  com.hulu.livingroomplus: "Hulu"
+  com.hulu.plus: "Hulu"
   com.hbo.hbonow: "HBO Max"
   com.amazon.avod: "Prime Video"
