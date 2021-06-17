@@ -7,21 +7,24 @@ recorder:
   commit_interval: 1
   include:
     entities:
+      # Devices
       - device_tracker.keys
-      - device_tracker.pixel_3
-      - sensor.humidity_living_room
-      - sensor.humidity_media
-      - sensor.memory_use_percent
-      - sensor.pressure_living_room
-      - sensor.pressure_media
-      - sensor.speedtest_download
-      - sensor.speedtest_upload
+      # Temperature
       - sensor.temperature_living_room
       - sensor.temperature_media
+      # Humidity
+      - sensor.humidity_living_room
+      - sensor.humidity_media
+      # Home Assistant Sensors
+      - sensor.memory_use_percent
       - sensor.time_online
+      # Speedtests
+      - sensor.speedtest_download
+      - sensor.speedtest_upload
     entity_globs:
       - person.jeffrey_*
       - person.tiffany_*
       - sensor.kirby_*
+      - sensor.kitchen_*
       - sensor.mail_*
       - sensor.processor_*
