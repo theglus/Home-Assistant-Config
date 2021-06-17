@@ -301,7 +301,7 @@ cards:
                     action: fire-dom-event
                     browser_mod:
                       command: popup
-                      title: "Fläkt\u00B2"
+                      title: "Living Room"
                       style:
                         hui-grid-card$: |
                           #root {
@@ -312,30 +312,39 @@ cards:
                         columns: 1
                         square: false
                         cards:
-                          - type: custom:hui-element
-                            card_type: vertical-stack        
-                            cards:            
+                          - type: "custom:button-card"
+                            cards:
                             - type: entities
                               state_color: true
-                              entities:
+                              entities:                                        
                                 - entity: sensor.temperature_living_room
-                                  secondary_info: last-changed
+                                  name: Temperature
+                                  attribute: last-changed
+                                  secondary_info: last-changed                          
                             - type: custom:mini-graph-card
                               entities:
-                                - color: '#385581'
-                                  entity: sensor.temperature_living_room
+                              - entity: sensor.temperature_living_room
+                              color_thresholds:
+                              - value: 68
+                                color: '#6aa84f'
+                              - value: 71
+                                color: '#f1c232'
+                              - value: 73
+                                color: '#e69138'
+                              - value: 100
+                                color: '#cc0000'                              
+                              name: Temperature 
+                              secondary_info: last-changed                           
                               line_width: 8
                               hour24: true
-                              group: true
                               align_icon: left
                               align_state: right
                               align_header: left
                               hours_to_show: 24
                               show:
-                                {fill: fade, icon: false, name: false, state: false, 
-                                name_adaptive_color: false, labels: hover, legend: false}
+                                icon: true
                               tap_action:
-                                action: none           
+                                action: none                  
                   template:
                     - room_layout
                     - room_states
