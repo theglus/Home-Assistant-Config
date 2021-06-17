@@ -360,7 +360,46 @@ cards:
                     [[[
                       return states['sensor.kitchen_temperature'].state + '°F'
                     ]]]
-                  name: Kitchen                  
+                  name: Kitchen       
+                  double_tap_action:
+                    action: fire-dom-event
+                    browser_mod:
+                      command: popup
+                      title: "Kitchen"
+                      style:
+                        hui-grid-card$: |
+                          #root {
+                            grid-gap: 0 !important;
+                          }
+                      card:
+                        type: grid
+                        columns: 1
+                        square: false
+                        cards:
+                          - type: custom:mini-graph-card
+                            entities:
+                            - sensor.kirby_temperature
+                            color_thresholds:
+                            - value: 68
+                              color: '#6aa84f'
+                            - value: 71
+                              color: '#f1c232'
+                            - value: 73
+                              color: '#e69138'
+                            - value: 100
+                              color: '#cc0000'                                                       
+                            name: Temperature 
+                            secondary_info: last-changed                           
+                            line_width: 8
+                            hour24: true
+                            align_icon: left
+                            align_state: right
+                            align_header: left
+                            hours_to_show: 24
+                            show:
+                              icon: true
+                            tap_action:
+                              action: none                                 
                   template:
                     - room_layout
                     - room_states
@@ -386,7 +425,46 @@ cards:
                     [[[
                       return states['sensor.kirby_temperature'].state + '°F'
                     ]]]
-                  name: Loft                  
+                  name: Loft     
+                  double_tap_action:
+                    action: fire-dom-event
+                    browser_mod:
+                      command: popup
+                      title: "Loft"
+                      style:
+                        hui-grid-card$: |
+                          #root {
+                            grid-gap: 0 !important;
+                          }
+                      card:
+                        type: grid
+                        columns: 1
+                        square: false
+                        cards:
+                          - type: custom:mini-graph-card
+                            entities:
+                            - sensor.kirby_temperature
+                            color_thresholds:
+                            - value: 68
+                              color: '#6aa84f'
+                            - value: 71
+                              color: '#f1c232'
+                            - value: 73
+                              color: '#e69138'
+                            - value: 100
+                              color: '#cc0000'                                                       
+                            name: Temperature 
+                            secondary_info: last-changed                           
+                            line_width: 8
+                            hour24: true
+                            align_icon: left
+                            align_state: right
+                            align_header: left
+                            hours_to_show: 24
+                            show:
+                              icon: true
+                            tap_action:
+                              action: none                                  
                   template:
                     - room_layout
                     - room_states
