@@ -337,9 +337,6 @@ cards:
                             align_state: right
                             align_header: left
                             hours_to_show: 24
-                            show:
-                              {icon: false, name: false, state: false, 
-                              labels: false, legend: true}
                             tap_action:
                               action: none              
                   template:
