@@ -315,9 +315,6 @@ cards:
                           - type: entities
                             state_color: true
                             entities:
-                              - entity: sensor.temperature_living_room
-                                name: Temperature
-                                secondary_info: last-changed
                           - type: custom:mini-graph-card
                             entities:
                               - color_thresholds:
@@ -330,13 +327,16 @@ cards:
                                   - value: 100
                                     color: '#cc0000'                              
                                 entity: sensor.temperature_living_room
-                            name: Temperature                            
+                            name: Temperature 
+                            secondary_info: last-changed                           
                             line_width: 8
                             hour24: true
                             align_icon: left
                             align_state: right
                             align_header: left
                             hours_to_show: 24
+                            lower_bound: 50
+                            upper_bound: 100
                             show:
                               icon: true
                             tap_action:
