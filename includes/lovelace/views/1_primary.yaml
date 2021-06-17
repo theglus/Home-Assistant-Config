@@ -140,6 +140,7 @@ cards:
           #################################################################
           ## General Controls
           #################################################################
+          # TODO: Add temp sensor long press functionality to General Controls
           General:
             type: "custom:mod-card"
             style: |
