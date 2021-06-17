@@ -73,18 +73,6 @@ browser_mod:
 #     token: !secret winston_token
 #     name: Winston
 
-#################################################################
-## Sensors
-#################################################################
-
-## TODO: #243 Split binary sensors from configuration.yaml
-binary_sensor:
-  # Workday
-  - platform: workday
-    country: US
-    workdays: [mon, tue, wed, thu, fri]
-    excludes: [sat, sun]
-
 ######## INCLUDES ########
 homeassistant:
   packages: !include_dir_named integrations
