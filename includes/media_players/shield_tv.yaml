@@ -4,3 +4,5 @@
 platform: androidtv
 name: SHIELD TV
 host: !secret shield_ip
+app: 
+  com.hulu.livingroomplus: "Hulu"
