@@ -4,6 +4,7 @@
 platform: androidtv
 name: SHIELD TV
 host: !secret shield_ip
+exclude_unnamed_apps: true
 apps: 
   com.hulu.livingroomplus: "Hulu"
   com.hbo.hbonow: "HBO Max"
