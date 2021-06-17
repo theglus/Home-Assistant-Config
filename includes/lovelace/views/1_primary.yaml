@@ -336,7 +336,12 @@ cards:
                             show:
                               icon: true
                             tap_action:
-                              action: none              
+                              action: none    
+                          - type: entities
+                            state_color: true
+                            entities:                                        
+                            - entity: sensor.temperature_living_room
+                              primary_info: last-changed                 
                   template:
                     - room_layout
                     - room_states
