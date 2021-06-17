@@ -3,7 +3,7 @@
 #################################################################
   custom_fields:
     loader: >
-      <img src="/local/loader.svg" width="100%">
+      <img src="/local/icons/loader.svg" width="100%">
   tap_action:
     loader: >
       [[[
