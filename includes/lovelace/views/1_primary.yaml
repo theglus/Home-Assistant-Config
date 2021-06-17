@@ -312,13 +312,10 @@ cards:
                         columns: 1
                         square: false
                         cards:
-                          - type: entities
-                            state_color: true
-                            entities:
                           - type: custom:mini-graph-card
                             entities:
                               - color_thresholds:
-                                  - value: 68
+                                  - value: 60
                                     color: '#6aa84f'
                                   - value: 71
                                     color: '#f1c232'
@@ -335,8 +332,6 @@ cards:
                             align_state: right
                             align_header: left
                             hours_to_show: 24
-                            lower_bound: 50
-                            upper_bound: 100
                             show:
                               icon: true
                             tap_action:
