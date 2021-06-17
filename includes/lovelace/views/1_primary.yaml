@@ -315,10 +315,10 @@ cards:
                           - type: entities
                             state_color: true
                             entities:
-                              - entity: fan.studio_wemo
+                              - entity: sensor.temperature_living_room
                                 secondary_info: last-changed
                               - type: custom:slider-entity-row
-                                entity: input_number.wemo_fan_timer
+                                entity: sensor.temperature_living_room
                                 hide_state: false                       
                           - type: custom:mini-graph-card
                             entities:
