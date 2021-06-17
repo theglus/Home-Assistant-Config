@@ -317,7 +317,7 @@ cards:
                               - color_thresholds:
                                   - value: 60
                                     color: '#6aa84f'
-                                  - value: 71
+                                  - value: 68
                                     color: '#f1c232'
                                   - value: 73
                                     color: '#e69138'
