@@ -333,7 +333,7 @@ cards:
                             hours_to_show: 24
                             show:
                               icon: true
-                              points: false
+                              points: hover
                             tap_action:
                               action: more-info                
                   template:
@@ -398,7 +398,7 @@ cards:
                             hours_to_show: 24
                             show:
                               icon: true
-                              points: false
+                              points: hover
                             tap_action:
                               action: more-info                                 
                   template:
@@ -462,7 +462,7 @@ cards:
                             hours_to_show: 24
                             show:
                               icon: true
-                              points: false
+                              points: hover
                             tap_action:
                               action: more-info                                  
                   template:
