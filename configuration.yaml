@@ -66,6 +66,11 @@ browser_mod:
 ## Device Integrations
 #################################################################
 
+# AC
+frigidaire:
+  username: !secret frigidaire_username
+  password: !secret frigidaire_password
+
 # Winston
 # vacuum:
 #   - platform: xiaomi_miio
