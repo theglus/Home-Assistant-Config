@@ -325,15 +325,14 @@ cards:
                             - value: 75
                               color: '#cc0000'                                                       
                             name: Temperature                           
-                            show_points: false
                             line_width: 6
+                            points_per_hour: 2
                             align_icon: left
                             align_state: right
                             align_header: left
                             hours_to_show: 24
                             show:
                               icon: true
-                              points: hover
                             tap_action:
                               action: more-info                
                   template:
@@ -379,28 +378,27 @@ cards:
                         cards:
                           - type: custom:mini-graph-card
                             entities:
-                            - sensor.kirby_temperature
+                            - sensor.kitchen_temperature
                             color_thresholds:
                             - value: 0
                               color: '#6aa84f'
                             - value: 68
                               color: '#f1c232'
-                            - value: 73
+                            - value: 72
                               color: '#e69138'
                             - value: 75
-                              color: '#cc0000'                                                         
+                              color: '#cc0000'                                                       
                             name: Temperature                           
-                            show_points: false
                             line_width: 6
+                            points_per_hour: 2
                             align_icon: left
                             align_state: right
                             align_header: left
                             hours_to_show: 24
                             show:
                               icon: true
-                              points: hover
                             tap_action:
-                              action: more-info                                 
+                              action: more-info                                  
                   template:
                     - room_layout
                     - room_states
@@ -450,21 +448,21 @@ cards:
                               color: '#6aa84f'
                             - value: 68
                               color: '#f1c232'
-                            - value: 73
+                            - value: 72
                               color: '#e69138'
                             - value: 75
-                              color: '#cc0000'                                                         
+                              color: '#cc0000'                                                       
                             name: Temperature                           
                             line_width: 6
+                            points_per_hour: 2
                             align_icon: left
                             align_state: right
                             align_header: left
                             hours_to_show: 24
                             show:
                               icon: true
-                              points: hover
                             tap_action:
-                              action: more-info                                  
+                              action: more-info                                
                   template:
                     - room_layout
                     - room_states
