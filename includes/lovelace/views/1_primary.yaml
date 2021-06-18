@@ -325,12 +325,12 @@ cards:
                             - value: 75
                               color: '#cc0000'                                                       
                             name: Temperature                           
-                            line_width: 6
+                            line_width: 5
                             points_per_hour: 2
                             align_icon: left
                             align_state: right
                             align_header: left
-                            hours_to_show: 12
+                            hours_to_show: 24
                             show:
                               icon: true
                             tap_action:
@@ -389,12 +389,12 @@ cards:
                             - value: 75
                               color: '#cc0000'                                                       
                             name: Temperature                           
-                            line_width: 6
+                            line_width: 5
                             points_per_hour: 2
                             align_icon: left
                             align_state: right
                             align_header: left
-                            hours_to_show: 12
+                            hours_to_show: 24
                             show:
                               icon: true
                             tap_action:
@@ -453,12 +453,12 @@ cards:
                             - value: 75
                               color: '#cc0000'                                                       
                             name: Temperature                           
-                            line_width: 6
+                            line_width: 5
                             points_per_hour: 2
                             align_icon: left
                             align_state: right
                             align_header: left
-                            hours_to_show: 12
+                            hours_to_show: 24
                             show:
                               icon: true
                             tap_action:
