@@ -325,7 +325,7 @@ cards:
                             - value: 75
                               color: '#cc0000'                                                       
                             name: Temperature                           
-                            line_width: 4
+                            line_width: 5
                             points_per_hour: 2
                             align_icon: left
                             align_state: right
@@ -389,7 +389,7 @@ cards:
                             - value: 75
                               color: '#cc0000'                                                       
                             name: Temperature                           
-                            line_width: 4
+                            line_width: 5
                             points_per_hour: 2
                             align_icon: left
                             align_state: right
@@ -453,7 +453,7 @@ cards:
                             - value: 75
                               color: '#cc0000'                                                       
                             name: Temperature                           
-                            line_width: 4
+                            line_width: 5
                             points_per_hour: 2
                             align_icon: left
                             align_state: right
