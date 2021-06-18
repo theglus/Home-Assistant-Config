@@ -316,18 +316,17 @@ cards:
                             entities:
                             - sensor.temperature_living_room
                             color_thresholds:
-                            - value: 68
+                            - value: 0
                               color: '#6aa84f'
-                            - value: 71
+                            - value: 68
                               color: '#f1c232'
-                            - value: 73
+                            - value: 72
                               color: '#e69138'
-                            - value: 100
+                            - value: 75
                               color: '#cc0000'                                                       
-                            name: Temperature 
-                            secondary_info: last-changed                           
-                            line_width: 8
-                            hour24: true
+                            name: Temperature                           
+                            line_width: 6
+                            points_per_hour: 0.25
                             align_icon: left
                             align_state: right
                             align_header: left
@@ -335,7 +334,7 @@ cards:
                             show:
                               icon: true
                             tap_action:
-                              action: none                
+                              action: more-info                
                   template:
                     - room_layout
                     - room_states
@@ -380,18 +379,17 @@ cards:
                             entities:
                             - sensor.kirby_temperature
                             color_thresholds:
-                            - value: 68
+                            - value: 0
                               color: '#6aa84f'
-                            - value: 71
+                            - value: 68
                               color: '#f1c232'
                             - value: 73
                               color: '#e69138'
-                            - value: 100
-                              color: '#cc0000'                                                       
-                            name: Temperature 
-                            secondary_info: last-changed                           
-                            line_width: 8
-                            hour24: true
+                            - value: 75
+                              color: '#cc0000'                                                         
+                            name: Temperature                           
+                            line_width: 6
+                            points_per_hour: 0.25
                             align_icon: left
                             align_state: right
                             align_header: left
@@ -399,7 +397,7 @@ cards:
                             show:
                               icon: true
                             tap_action:
-                              action: none                                 
+                              action: more-info                                 
                   template:
                     - room_layout
                     - room_states
@@ -445,18 +443,17 @@ cards:
                             entities:
                             - sensor.kirby_temperature
                             color_thresholds:
-                            - value: 68
+                            - value: 0
                               color: '#6aa84f'
-                            - value: 71
+                            - value: 68
                               color: '#f1c232'
                             - value: 73
                               color: '#e69138'
-                            - value: 100
-                              color: '#cc0000'                                                       
-                            name: Temperature 
-                            secondary_info: last-changed                           
-                            line_width: 8
-                            hour24: true
+                            - value: 75
+                              color: '#cc0000'                                                         
+                            name: Temperature                           
+                            line_width: 6
+                            points_per_hour: 0.25
                             align_icon: left
                             align_state: right
                             align_header: left
@@ -464,7 +461,7 @@ cards:
                             show:
                               icon: true
                             tap_action:
-                              action: none                                  
+                              action: more-info                                  
                   template:
                     - room_layout
                     - room_states
