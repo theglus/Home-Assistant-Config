@@ -67,10 +67,10 @@ browser_mod:
 #################################################################
 
 # AC
-frigidaire:
-  - platform: climate
-    username: !secret frigidaire_username
-    password: !secret frigidaire_password
+# frigidaire:
+#   - platform: climate
+#     username: !secret frigidaire_username
+#     password: !secret frigidaire_password
 
 # Winston
 # vacuum:
