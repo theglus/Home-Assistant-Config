@@ -325,6 +325,7 @@ cards:
                             - value: 75
                               color: '#cc0000'                                                       
                             name: Temperature                           
+                            show_points: false
                             line_width: 6
                             points_per_hour: 2
                             align_icon: left
@@ -360,6 +361,7 @@ cards:
                       return states['sensor.kitchen_temperature'].state + '°F'
                     ]]]
                   name: Kitchen       
+                  show_points: false
                   double_tap_action:
                     action: fire-dom-event
                     browser_mod:
@@ -388,6 +390,7 @@ cards:
                             - value: 75
                               color: '#cc0000'                                                         
                             name: Temperature                           
+                            show_points: false
                             line_width: 6
                             points_per_hour: 2
                             align_icon: left
