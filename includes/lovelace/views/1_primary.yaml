@@ -330,7 +330,7 @@ cards:
                             align_icon: left
                             align_state: right
                             align_header: left
-                            hours_to_show: 24
+                            hours_to_show: 12
                             show:
                               icon: true
                             tap_action:
@@ -394,7 +394,7 @@ cards:
                             align_icon: left
                             align_state: right
                             align_header: left
-                            hours_to_show: 24
+                            hours_to_show: 12
                             show:
                               icon: true
                             tap_action:
@@ -458,7 +458,7 @@ cards:
                             align_icon: left
                             align_state: right
                             align_header: left
-                            hours_to_show: 24
+                            hours_to_show: 12
                             show:
                               icon: true
                             tap_action:
