@@ -327,13 +327,13 @@ cards:
                             name: Temperature                           
                             show_points: false
                             line_width: 6
-                            points_per_hour: 2
                             align_icon: left
                             align_state: right
                             align_header: left
                             hours_to_show: 24
                             show:
                               icon: true
+                              points: false
                             tap_action:
                               action: more-info                
                   template:
@@ -392,13 +392,13 @@ cards:
                             name: Temperature                           
                             show_points: false
                             line_width: 6
-                            points_per_hour: 2
                             align_icon: left
                             align_state: right
                             align_header: left
                             hours_to_show: 24
                             show:
                               icon: true
+                              points: false
                             tap_action:
                               action: more-info                                 
                   template:
@@ -456,13 +456,13 @@ cards:
                               color: '#cc0000'                                                         
                             name: Temperature                           
                             line_width: 6
-                            points_per_hour: 2
                             align_icon: left
                             align_state: right
                             align_header: left
                             hours_to_show: 24
                             show:
                               icon: true
+                              points: false
                             tap_action:
                               action: more-info                                  
                   template:
