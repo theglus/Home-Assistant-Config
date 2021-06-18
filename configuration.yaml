@@ -67,8 +67,8 @@ browser_mod:
 #################################################################
 
 # AC
-climate:
-  - platform: frigidaire
+frigidaire:
+  - platform: climate
     username: !secret frigidaire_username
     password: !secret frigidaire_password
 
