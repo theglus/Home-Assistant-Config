@@ -326,7 +326,7 @@ cards:
                               color: '#cc0000'                                                       
                             name: Temperature                           
                             line_width: 6
-                            points_per_hour: 4
+                            points_per_hour: 2
                             align_icon: left
                             align_state: right
                             align_header: left
@@ -389,7 +389,7 @@ cards:
                               color: '#cc0000'                                                         
                             name: Temperature                           
                             line_width: 6
-                            points_per_hour: 4
+                            points_per_hour: 2
                             align_icon: left
                             align_state: right
                             align_header: left
@@ -453,7 +453,7 @@ cards:
                               color: '#cc0000'                                                         
                             name: Temperature                           
                             line_width: 6
-                            points_per_hour: 4
+                            points_per_hour: 2
                             align_icon: left
                             align_state: right
                             align_header: left
