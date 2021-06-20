@@ -18,7 +18,7 @@ known_devices.yaml
 *.db
 *.json
 *.log
-*.py
+# *.py
 *.pyc
 
 _pycache_
