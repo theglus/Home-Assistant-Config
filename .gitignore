@@ -23,6 +23,7 @@ known_devices.yaml
 
 _pycache_
 .HA_VERSION
+aircast.xml
 deps/
 home-assistant_v2.db-shm 
 home-assistant_v2.db-wal
