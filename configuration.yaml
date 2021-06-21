@@ -16,33 +16,21 @@ lovelace:
     # https://github.com/custom-cards/button-card
     - url: /hacsfiles/button-card/button-card.js                                  
       type: module
-    # Custom Sidebar 
-    # https://github.com/Villhellm/custom-sidebar
-    - url: /hacsfiles/custom-sidebar/custom-sidebar.js                            
-      type: module
-    # Light Popup Card
-    # https://github.com/DBuit/light-popup-card
-    - url: /hacsfiles/light-popup-card/light-popup-card.js                        
-      type: module
     # Card Mod
     # https://github.com/thomasloven/lovelace-card-mod
     - url: /hacsfiles/lovelace-card-mod/card-mod.js                               
+      type: module
+    # Custom Sidebar 
+    # https://github.com/Villhellm/custom-sidebar
+    - url: /hacsfiles/custom-sidebar/custom-sidebar.js                            
       type: module
     # Hui Element
     # https://github.com/thomasloven/lovelace-hui-element
     - url: /hacsfiles/lovelace-hui-element/hui-element.js                         
       type: module
-    # Paper Button Rows
-    # https://github.com/jcwillox/lovelace-paper-buttons-row
-    - url: /hacsfiles/lovelace-paper-buttons-row/paper-buttons-row.js             
-      type: module
-    # Slider Entity Row
-    # https://github.com/thomasloven/lovelace-slider-entity-row
-    - url: /hacsfiles/lovelace-slider-entity-row/slider-entity-row.js             
-      type: module
-    # State Switch
-    # https://github.com/thomasloven/lovelace-state-switch
-    - url: /hacsfiles/lovelace-state-switch/state-switch.js                       
+    # Light Popup Card
+    # https://github.com/DBuit/light-popup-card
+    - url: /hacsfiles/light-popup-card/light-popup-card.js                        
       type: module
     # Lovelace Swipe Navigation
     # https://github.com/maykar/lovelace-swipe-navigation
@@ -59,11 +47,23 @@ lovelace:
     # RGB Light Card
     # https://github.com/bokub/rgb-light-card
     - url: /hacsfiles/rgb-light-card/card.js                                      
+      type: module      
+    # Paper Button Rows
+    # https://github.com/jcwillox/lovelace-paper-buttons-row
+    - url: /hacsfiles/lovelace-paper-buttons-row/paper-buttons-row.js             
+      type: module
+    # Slider Entity Row
+    # https://github.com/thomasloven/lovelace-slider-entity-row
+    - url: /hacsfiles/lovelace-slider-entity-row/slider-entity-row.js             
       type: module
     # Stack in Card
     # https://github.com/custom-cards/stack-in-card
     - url: /hacsfiles/stack-in-card/stack-in-card.js                              
       type: module  
+    # State Switch
+    # https://github.com/thomasloven/lovelace-state-switch
+    - url: /hacsfiles/lovelace-state-switch/state-switch.js                       
+      type: module
     # Vacuum Card
     # https://github.com/denysdovhan/vacuum-card
     - url: /hacsfiles/vacuum-card/vacuum-card.js                                  
