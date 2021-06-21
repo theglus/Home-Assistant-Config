@@ -42,7 +42,7 @@ lovelace:
       type: module
     # Media Player Popup Card
     # https://github.com/DBuit/media_player-popup-card
-    - url: /community_plugin/media_player-popup-card/media_player-popup-card.js
+    - url: /hacsfiles/media_player-popup-card/media_player-popup-card.js
       type: module
     # Mini Graph Card
     # https://github.com/kalkih/mini-graph-card
