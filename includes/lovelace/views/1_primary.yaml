@@ -156,21 +156,20 @@ cards:
                 #----------------------------------------------------------------
                 ## Weather button
                 #----------------------------------------------------------------
-                # TODO: #272 Create weather button
                 - type: "custom:button-card"
                   custom_fields:
                     s2: |
                       [[[
-                        return (states['weather.loft'].attributes.forecast[0].precipitation || 0) + ' mm precip';
+                        return (states['weather.climacell_nowcast'].attributes.forecast[0].precipitation || 0) + ' mm precip';
                       ]]]
                   entity: weather.loft
                   label: |
                     [[[
-                      return states['weather.loft'].attributes.temperature + '°F '
+                      return states['weather.climacell_nowcast'].attributes.temperature + '°F '
                     ]]]
                   name: |
                     [[[
-                      return "Next hour " + states['weather.loft'].attributes.forecast[0].temperature + '°F'
+                      return "Next hour " + states['weather.climacell_hourly].attributes.forecast[1].temperature + '°F'
                     ]]]
                   state:
                     - icon: |
