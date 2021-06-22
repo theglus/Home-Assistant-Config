@@ -489,6 +489,7 @@ cards:
                 #----------------------------------------------------------------
                 - type: "custom:button-card"
                   entity: light.hallway_marquee
+                  # TODO: Create icon_marquee button template
                   custom_fields:
                     icon_marquee: >
                       <svg viewBox="0 0 50 50">
@@ -508,6 +509,7 @@ cards:
                 - type: "custom:button-card"
                   entity: light.hallway_runner
                   name: Runner
+                  # TODO: Create icon_led button template
                   custom_fields:
                     icon_led: &icon_led >
                       [[[ const state = entity.state === 'on' ? 'animate' : null;
@@ -556,6 +558,7 @@ cards:
                 - type: "custom:button-card"
                   entity: light.potter_lamp
                   name: Lamp
+                  # TODO: Create icon_lamp button template
                   custom_fields:
                     icon_lamp: &icon_lamp >
                       [[[ const state = entity.state === 'on' ? 'animate' : null;
@@ -604,6 +607,7 @@ cards:
                 - type: "custom:button-card"
                   entity: light.stair
                   name: Lamp
+                  # Create icon_spot button template
                   custom_fields:
                     icon_spot: &icon_spot >
                       [[[ const state = entity.state === 'on' ? 'animate_on' : 'animate_off';
@@ -677,6 +681,7 @@ cards:
                 #----------------------------------------------------------------
                 - type: "custom:button-card"
                   entity: binary_sensor.front_door   
+                  # TODO: #38 Create icon_door button template
                   custom_fields:                      
                     icon_door: >
                       <svg viewBox="0 0 50 50">
@@ -722,6 +727,7 @@ cards:
                 - type: "custom:button-card"
                   entity: light.overhead
                   name: Ceiling
+                  # TODO: Create icon_overhead button template
                   custom_fields:
                     icon_overhead: &icon_overhead >
                       [[[ const state = entity.state === 'on' ? 'animate' : null;
@@ -1076,6 +1082,7 @@ cards:
                 - type: "custom:button-card"
                   entity: light.bedside
                   name: Bedside
+                  # TODO: Create icon_bedside button template
                   custom_fields:
                     icon_bedside: >
                       <svg viewBox="0 0 50 50" shape-rendering="geometricPrecision" text-rendering="geometricPrecision">
@@ -1095,6 +1102,7 @@ cards:
                 - type: "custom:button-card"
                   entity: light.jeffreys_lamp
                   name: Jeffrey's
+                  # TODO: Create icon_bed button template
                   custom_fields:
                     icon_bed: &icon_bed >
                       <svg viewBox="0 0 50 50">
