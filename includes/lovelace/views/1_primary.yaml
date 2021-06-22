@@ -169,7 +169,7 @@ cards:
                     ]]]
                   name: |
                     [[[
-                      return "Next hour " + states['weather.climacell_hourly].attributes.forecast[1].temperature + '°F'
+                      return "Next hour " + states['weather.climacell_hourly'].attributes.forecast[1].temperature + '°F'
                     ]]]
                   state:
                     - icon: |
