@@ -509,7 +509,7 @@ cards:
                 - type: "custom:button-card"
                   entity: light.hallway_runner
                   name: Runner
-                  # TODO: Create icon_led button template
+                  # TODO: #289 Create icon_led button template
                   custom_fields:
                     icon_led: &icon_led >
                       [[[ const state = entity.state === 'on' ? 'animate' : null;
@@ -558,7 +558,7 @@ cards:
                 - type: "custom:button-card"
                   entity: light.potter_lamp
                   name: Lamp
-                  # TODO: Create icon_lamp button template
+                  # TODO: #290 Create icon_lamp button template
                   custom_fields:
                     icon_lamp: &icon_lamp >
                       [[[ const state = entity.state === 'on' ? 'animate' : null;
