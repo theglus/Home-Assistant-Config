@@ -607,7 +607,7 @@ cards:
                 - type: "custom:button-card"
                   entity: light.stair
                   name: Lamp
-                  # Create icon_spot button template
+                  # TODO: Create icon_spot button template
                   custom_fields:
                     icon_spot: &icon_spot >
                       [[[ const state = entity.state === 'on' ? 'animate_on' : 'animate_off';
@@ -727,7 +727,7 @@ cards:
                 - type: "custom:button-card"
                   entity: light.overhead
                   name: Ceiling
-                  # TODO: Create icon_overhead button template
+                  # TODO: #291 Create icon_overhead button template
                   custom_fields:
                     icon_overhead: &icon_overhead >
                       [[[ const state = entity.state === 'on' ? 'animate' : null;
