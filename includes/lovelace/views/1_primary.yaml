@@ -489,7 +489,7 @@ cards:
                 #----------------------------------------------------------------
                 - type: "custom:button-card"
                   entity: light.hallway_marquee
-                  # TODO: Create icon_marquee button template
+                  # TODO: #288 Create icon_marquee button template
                   custom_fields:
                     icon_marquee: >
                       <svg viewBox="0 0 50 50">
