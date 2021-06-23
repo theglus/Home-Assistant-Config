@@ -607,7 +607,7 @@ cards:
                 - type: "custom:button-card"
                   entity: light.stair
                   name: Lamp
-                  # TODO: Create icon_spot button template
+                  # TODO: #292 Create icon_spot button template
                   custom_fields:
                     icon_spot: &icon_spot >
                       [[[ const state = entity.state === 'on' ? 'animate_on' : 'animate_off';
