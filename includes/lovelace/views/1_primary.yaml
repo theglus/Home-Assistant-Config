@@ -273,9 +273,9 @@ cards:
                         columns: 1
                         square: false
                         cards:
-                          template: graph_climate                            
+                          template: graph_climate
                             entities:
-                            - sensor.temperature_living_room
+                            - sensor.temperature_living_room             
                   template:
                     - room_layout
                     - room_states
@@ -361,9 +361,9 @@ cards:
                         columns: 1
                         square: false
                         cards:
-                          template: graph_climate   
+                          template: graph_climate
                             entities:
-                            - sensor.kirby_temperature                                                       
+                            - sensor.kirby_temperature                              
                   template:
                     - room_layout
                     - room_states
