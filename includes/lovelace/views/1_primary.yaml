@@ -337,7 +337,7 @@ cards:
                         columns: 1
                         square: false
                         cards:
-                          template: graph_climate.yaml
+                          template: graph_climate
                             entities:
                             - sensor.kitchen_temperature                                 
                   template:
