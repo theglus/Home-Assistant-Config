@@ -171,47 +171,10 @@ cards:
                     [[[
                       return "Next hour " + states['weather.climacell_hourly'].attributes.forecast[1].temperature + '°F'
                     ]]]
-                  state:
-                    - icon: |
-                        [[[ 
-                          if (states['sun.sun'].state == "below_horizon")
-                            return "mdi:weather-night-partly-cloudy";
-                            return "mdi:weather-partly-cloudy";
-                        ]]]
-                      value: partlycloudy
-                    - icon: "mdi:weather-night"
-                      value: clear-night
-                    - icon: "mdi:weather-cloudy"
-                      value: cloudy
-                    - icon: "mdi:weather-cloudy-arrow-right"
-                      value: overcast
-                    - icon: "mdi:weather-fog"
-                      value: fog
-                    - icon: "mdi:weather-hail"
-                      value: hail
-                    - icon: "mdi:weather-lightning"
-                      value: lightning
-                    - icon: "mdi:weather-lightning-rainy"
-                      value: lightning-rainy
-                    - icon: "mdi:weather-partly-cloudy"
-                      value: partlycloudy
-                    - icon: "mdi:weather-pouring"
-                      value: pouring
-                    - icon: "mdi:weather-rainy"
-                      value: rainy
-                    - icon: "mdi:weather-snowy"
-                      value: snowy
-                    - icon: "mdi:weather-snowy-rainy"
-                      value: snowy-rainy
-                    - icon: "mdi:weather-sunny"
-                      value: sunny
-                    - icon: "mdi:weather-windy"
-                      value: windy
-                    - icon: "mdi:weather-windy-variant"
-                      value: windy-variant
                   template:
                     - weather_layout
                     - weather
+                    - icon_weather
                   triggers_update:
                     - sun.sun
                 #----------------------------------------------------------------
