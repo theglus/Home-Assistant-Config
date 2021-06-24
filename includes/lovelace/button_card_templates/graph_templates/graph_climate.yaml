@@ -21,4 +21,4 @@
   show:
     icon: true
   tap_action:
-    action: more-info  
+    action: more-info   
