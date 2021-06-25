@@ -38,7 +38,7 @@ cards:
                   service: input_select.select_option
                   service_data:
                     entity_id: input_select.lighttoggle
-                    option: General            
+                    option: General
               #################################################################
               ## Entryway Button
               #################################################################
@@ -232,7 +232,7 @@ cards:
                     - room_states_on
                     - room
                   triggers_update:
-                    - sensor.majaor_laser_printer              
+                    - sensor.majaor_laser_printer
                 #----------------------------------------------------------------
                 ## Living Room button
                 #----------------------------------------------------------------
@@ -257,7 +257,7 @@ cards:
                     [[[
                       return states['sensor.temperature_living_room'].state + '°F'
                     ]]]
-                  name: Living Room  
+                  name: Living Room
                   double_tap_action:
                     action: fire-dom-event
                     browser_mod:
@@ -274,9 +274,9 @@ cards:
                         square: false
                         cards:
                           - type: custom:mini-graph-card
-                            entities:     
-                            - sensor.temperature_living_room                   
-                            template: graph_climate         
+                            entities:
+                              - sensor.temperature_living_room
+                            template: graph_climate
                   template:
                     - room_layout
                     - room_states
@@ -301,7 +301,7 @@ cards:
                     [[[
                       return states['sensor.kitchen_temperature'].state + '°F'
                     ]]]
-                  name: Kitchen       
+                  name: Kitchen
                   show_points: false
                   double_tap_action:
                     action: fire-dom-event
@@ -320,15 +320,15 @@ cards:
                         cards:
                           - type: custom:mini-graph-card
                             entities:
-                            - sensor.kitchen_temperature
-                            template: graph_climate                         
+                              - sensor.kitchen_temperature
+                            template: graph_climate
                   template:
                     - room_layout
                     - room_states
                     - room_states_on
                     - room
                   triggers_update:
-                    - fan.kitchen                
+                    - fan.kitchen
                 #----------------------------------------------------------------
                 ## Loft button
                 #----------------------------------------------------------------
@@ -347,7 +347,7 @@ cards:
                     [[[
                       return states['sensor.kirby_temperature'].state + '°F'
                     ]]]
-                  name: Loft     
+                  name: Loft
                   double_tap_action:
                     action: fire-dom-event
                     browser_mod:
@@ -363,17 +363,17 @@ cards:
                         columns: 1
                         square: false
                         cards:
-                          - type: custom:mini-graph-card                   
+                          - type: custom:mini-graph-card
                             entities:
-                            - sensor.kirby_temperature  
-                            template: graph_climate                                                      
+                              - sensor.kirby_temperature
+                            template: graph_climate
                   template:
                     - room_layout
                     - room_states
                     - room_states_on
                     - room
                   triggers_update:
-                    - fan.kirby                     
+                    - fan.kirby
           #################################################################
           ## Entrway Controls
           #################################################################
@@ -396,7 +396,7 @@ cards:
                 - type: "custom:button-card"
                   entity: light.hallway_marquee
                   # TODO: #288 Create icon_marquee button template
-                  template: 
+                  template:
                     - light
                     - icon_marquee
                 #----------------------------------------------------------------
@@ -455,7 +455,7 @@ cards:
                   entity: light.potter_lamp
                   name: Lamp
                   # TODO: #290 Create icon_lamp button template
-                  template: 
+                  template:
                     - light-color
                     - icon_lamp
                 #----------------------------------------------------------------
@@ -465,16 +465,16 @@ cards:
                   entity: light.stair
                   name: Lamp
                   # TODO: #292 Create icon_spot button template
-                  template: 
+                  template:
                     - light
                     - icon_spot
                 #----------------------------------------------------------------
                 ## Front Door Sensor
                 #----------------------------------------------------------------
                 - type: "custom:button-card"
-                  entity: binary_sensor.front_door   
+                  entity: binary_sensor.front_door
                   # TODO: #38 Create icon_door button template
-                  custom_fields:                      
+                  custom_fields:
                     icon_door: >
                       <svg viewBox="0 0 50 50">
                           <path fill="currentColor" d="M16 11H18V13H16V11M12 3H19A2 2 0 0 1 21 5V19H22V21H2V19H10V5A2 2 0 0 1 12 3M12 5V19H19V5M6.2 5H2.8V4.5A1.7 1.7 0 0 1 6.2 4.5M7 5V4.5A2.5 2.5 0 0 0 2 4.5V5A1 1 0 0 0 1 6V10A1 1 0 0 0 2 11H7A1 1 0 0 0 8 10V6A1 1 0 0 0 7 5" />
@@ -520,7 +520,7 @@ cards:
                   entity: light.overhead
                   name: Ceiling
                   # TODO: #291 Create icon_overhead button template
-                  template: 
+                  template:
                     - light
                     - icon_overhead
                 #----------------------------------------------------------------
@@ -529,7 +529,7 @@ cards:
                 - type: "custom:button-card"
                   entity: light.overhead_desk
                   name: Desk
-                  template: 
+                  template:
                     - light
                     - icon_overhead
                 #----------------------------------------------------------------
@@ -538,7 +538,7 @@ cards:
                 - type: "custom:button-card"
                   entity: light.overhead_bed
                   name: Bed
-                  template: 
+                  template:
                     - light
                     - icon_overhead
                 #----------------------------------------------------------------
@@ -589,7 +589,7 @@ cards:
                 - type: "custom:button-card"
                   entity: light.track
                   name: Track
-                  template: 
+                  template:
                     - light-color
                     - icon_spot
                 #----------------------------------------------------------------
@@ -643,7 +643,7 @@ cards:
                 - type: "custom:button-card"
                   entity: light.yumi_lamp
                   name: Lamp
-                  template: 
+                  template:
                     - light-color
                     - icon_lamp
                 #----------------------------------------------------------------
@@ -652,7 +652,7 @@ cards:
                 - type: "custom:button-card"
                   entity: light.left_track
                   name: Left
-                  template: 
+                  template:
                     - light-color
                     - icon_spot
                 #----------------------------------------------------------------
@@ -661,7 +661,7 @@ cards:
                 - type: "custom:button-card"
                   entity: light.center_track
                   name: Center
-                  template: 
+                  template:
                     - light-color
                     - icon_spot
                 #----------------------------------------------------------------
@@ -670,7 +670,7 @@ cards:
                 - type: "custom:button-card"
                   entity: light.right_track
                   name: Right
-                  template: 
+                  template:
                     - light-color
                     - icon_spot
                 #----------------------------------------------------------------
@@ -735,7 +735,7 @@ cards:
                 - type: "custom:button-card"
                   entity: light.kitchen
                   name: Track
-                  template: 
+                  template:
                     - light-color
                     - icon_spot
                 #----------------------------------------------------------------
@@ -886,7 +886,7 @@ cards:
                   entity: light.loft_bed_light
                   name: Ceiling
                   custom_fields:
-                  template: 
+                  template:
                     - light
                     - icon_spot
                 #----------------------------------------------------------------
@@ -895,7 +895,7 @@ cards:
                 - type: "custom:button-card"
                   entity: light.loft_desk_lamp
                   name: Desk
-                  template: 
+                  template:
                     - light
                     - icon_lamp
                 #----------------------------------------------------------------
