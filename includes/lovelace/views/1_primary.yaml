@@ -340,7 +340,8 @@ cards:
                           - type: custom:mini-graph-card
                             entities:
                               - sensor.kitchen_temperature
-                            template: graph_climate
+                        template: 
+                          - graph_climate
                   template:
                     - room_layout
                     - room_states
