@@ -273,10 +273,10 @@ cards:
                         columns: 1
                         square: false
                         cards:
-                        - type: custom:mini-graph-card
-                          entities:     
-                          - sensor.temperature_living_room                   
-                          template: graph_climate         
+                          - type: custom:mini-graph-card
+                            entities:     
+                            - sensor.temperature_living_room                   
+                            template: graph_climate         
                   template:
                     - room_layout
                     - room_states
@@ -318,10 +318,10 @@ cards:
                         columns: 1
                         square: false
                         cards:
-                        - type: custom:mini-graph-card
-                          entities:
-                          - sensor.kitchen_temperature
-                          template: graph_climate                         
+                          - type: custom:mini-graph-card
+                            entities:
+                            - sensor.kitchen_temperature
+                            template: graph_climate                         
                   template:
                     - room_layout
                     - room_states
@@ -363,10 +363,10 @@ cards:
                         columns: 1
                         square: false
                         cards:
-                        - type: custom:mini-graph-card                   
-                          entities:
-                          - sensor.kirby_temperature  
-                          template: graph_climate                                                      
+                          - type: custom:mini-graph-card                   
+                            entities:
+                            - sensor.kirby_temperature  
+                            template: graph_climate                                                      
                   template:
                     - room_layout
                     - room_states
