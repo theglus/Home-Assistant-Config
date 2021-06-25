@@ -276,8 +276,26 @@ cards:
                           - type: custom:mini-graph-card
                             entities:
                             - sensor.temperature_living_room
-                            template: 
-                              - graph_climate
+                            color_thresholds:
+                            - value: 0
+                              color: '#6aa84f'
+                            - value: 68
+                              color: '#f1c232'
+                            - value: 72
+                              color: '#e69138'
+                            - value: 75
+                              color: '#cc0000'                                                       
+                            name: Temperature                           
+                            line_width: 5
+                            points_per_hour: 2
+                            align_icon: left
+                            align_state: right
+                            align_header: left
+                            hours_to_show: 24
+                            show:
+                              icon: true
+                            tap_action:
+                              action: more-info 
                   template:
                     - room_layout
                     - room_states
