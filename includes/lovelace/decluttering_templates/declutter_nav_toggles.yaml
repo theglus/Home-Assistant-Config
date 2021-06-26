@@ -4,7 +4,7 @@
 card:
   entity: input_select.lighttoggle
   name: false
-  icon: 'mdi:[[nav_icon]]'
+  icon: "mdi:home-assistant"
   state_styles:
     General:
     template: nav_button  
@@ -14,4 +14,4 @@ card:
     service: input_select.select_option
     service_data:
     entity_id: input_select.lighttoggle
-    option: General
+    option: '[[room_1]]'
