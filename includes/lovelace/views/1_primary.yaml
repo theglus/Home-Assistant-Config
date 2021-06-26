@@ -26,7 +26,7 @@ cards:
               #################################################################
               ## General Button
               #################################################################
-              # TODO: Create Toggle Nav declutter card
+              # TODO: #294 Create Toggle Nav declutter card
               - entity: input_select.lighttoggle
                 name: false
                 icon: "mdi:home-assistant"
@@ -43,7 +43,7 @@ cards:
               #################################################################
               ## Entryway Button
               #################################################################
-              # TODO: Create Toggle Nav declutter card
+              # TODO: #294 Create Toggle Nav declutter card
               - entity: input_select.lighttoggle
                 name: false
                 icon: "mdi:coat-rack"
@@ -64,7 +64,7 @@ cards:
               #################################################################
               ## Office Button
               #################################################################
-              # TODO: Create Toggle Nav declutter card
+              # TODO: #294 Create Toggle Nav declutter card
               - entity: input_select.lighttoggle
                 name: false
                 icon: "mdi:desk"
@@ -81,7 +81,7 @@ cards:
               #################################################################
               ## Living Room Button
               #################################################################
-              # TODO: Create Toggle Nav declutter card
+              # TODO: #294 Create Toggle Nav declutter card
               - entity: input_select.lighttoggle
                 name: false
                 icon: "mdi:sofa"
@@ -98,7 +98,7 @@ cards:
               #################################################################
               ## Kitchen Button
               #################################################################
-              # TODO: Create Toggle Nav declutter card
+              # TODO: #294 Create Toggle Nav declutter card
               - entity: input_select.lighttoggle
                 name: false
                 icon: "mdi:fridge"
@@ -115,7 +115,7 @@ cards:
               #################################################################
               ## Loft
               #################################################################
-              # TODO: Create Toggle Nav declutter card
+              # TODO: #294 Create Toggle Nav declutter card
               - entity: input_select.lighttoggle
                 name: false
                 icon: "mdi:bed-king"
