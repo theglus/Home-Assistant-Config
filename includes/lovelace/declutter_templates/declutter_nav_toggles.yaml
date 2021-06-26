@@ -5,7 +5,7 @@
   name: false
   icon: "[[nav_icon]]"
   state_styles:
-    [[room]]:
+    '[[room]]':
     template: nav_button
   template: nav_styles
   tap_action:
@@ -13,4 +13,4 @@
     service: input_select.select_option
     service_data:
     entity_id: input_select.lighttoggle
-    option: [[room]] 
+    option: '[[room]]' 
