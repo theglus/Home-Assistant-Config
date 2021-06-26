@@ -188,31 +188,15 @@ cards:
                 ## Entryway button
                 #----------------------------------------------------------------
                 # TODO: #296 Create Room Button declutter cards
-                - type: "custom:button-card"
-                  entity: light.group_hallway
-                  custom_fields:
-                    s2: |
-                      [[[
-                        var sensor_state = (states['binary_sensor.front_door'].state);
-                        if (sensor_state == "on") return "Door is open";
-                        else return "Door is closed" 
-                      ]]]
-                  icon: |
-                    [[[ 
-                      var sensor_state = (states['binary_sensor.front_door'].state);
-                      if (sensor_state == "on") 
-                        return "mdi:door-open"; 
-                      else 
-                        return "mdi:coat-rack" 
-                    ]]]
-                  name: Entryway
-                  template:
-                    - room_layout
-                    - room_states
-                    - room_states_on
-                    - room
-                  triggers_update:
-                    - binary_sensor.front_door
+                - type: "custom:decluttering-card"
+                  template: declutter_room_controls
+                  variables:
+                    - light: light.group_hallway
+                    - sensor: binary_sensor.front_door
+                    - message_on: Door is open
+                    - message_off: Door is closed
+                    - icon_state: mdi:door-open
+                    - icon_default: mdi:coat-rack
                 #----------------------------------------------------------------
                 ## Office button
                 #----------------------------------------------------------------
