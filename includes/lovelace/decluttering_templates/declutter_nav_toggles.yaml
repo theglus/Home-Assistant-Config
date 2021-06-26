@@ -13,5 +13,5 @@ card:
     action: call-service
     service: input_select.select_option
     service_data:
-    entity_id: input_select.lighttoggle
-    option: '[[room_1]]'
+      entity_id: input_select.lighttoggle
+      option: '[[room_1]]'
