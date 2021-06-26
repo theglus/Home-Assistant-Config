@@ -4,6 +4,9 @@
 entity: input_select.lighttoggle
 name: false
 icon: "mdi:[[nav_icon]]"
+state_styles:
+  General:
+  template: nav_button  
 template: nav_styles
 tap_action:
   action: call-service
