@@ -1,0 +1,16 @@
+#################################################################
+## Toggle Nav
+#################################################################
+- entity: input_select.lighttoggle
+  name: false
+  icon: "[[nav_icon]]"
+  state_styles:
+    [[room]]:
+    template: nav_button
+  template: nav_styles
+  tap_action:
+    action: call-service
+    service: input_select.select_option
+    service_data:
+    entity_id: input_select.lighttoggle
+    option: [[room]] 
