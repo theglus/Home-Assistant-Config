@@ -27,11 +27,11 @@ cards:
               ## General Button
               #################################################################
               # TODO: #294 Create Toggle Nav declutter card
-              - type: "custom:declutter-card"
-                template: declutter_nav_toggle
-                variables:
-                  - nav_icon: mdi:home-assistant
-                  - room: General              
+              type: "custom:declutter-card"
+              template: declutter_nav_toggle
+              variables:
+                - nav_icon: mdi:home-assistant
+                - room: General              
               #################################################################
               ## Entryway Button
               #################################################################
