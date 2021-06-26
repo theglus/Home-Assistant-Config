@@ -3,7 +3,7 @@
 #################################################################
 entity: input_select.lighttoggle
 name: false
-icon: 'mdi:[[nav_icon]]''
+icon: 'mdi:[[nav_icon]]'
 state_styles:
   '[[room]]':
   template: nav_button
