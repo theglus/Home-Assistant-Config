@@ -30,7 +30,7 @@ cards:
               - type: "custom:decluttering-card"
                 template: declutter_nav_toggles
                 variables:
-                  - nav_icon: home-assistant
+                  - room_1: General
               #################################################################
               ## Entryway Button
               #################################################################
