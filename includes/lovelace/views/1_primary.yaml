@@ -146,7 +146,7 @@ cards:
           #################################################################
           ## General Controls
           #################################################################
-          # TODO: Create Room Controls declutter card  
+          # TODO: #295 Create Room Controls declutter card  
           General:
             type: "custom:mod-card"
             style: |
@@ -187,7 +187,7 @@ cards:
                 #----------------------------------------------------------------
                 ## Entryway button
                 #----------------------------------------------------------------
-                # TODO: Create Room Button declutter cards
+                # TODO: #296 Create Room Button declutter cards
                 - type: "custom:button-card"
                   entity: light.group_hallway
                   custom_fields:
@@ -216,7 +216,7 @@ cards:
                 #----------------------------------------------------------------
                 ## Office button
                 #----------------------------------------------------------------
-                # TODO: Create Room Button declutter cards
+                # TODO: #296 Create Room Button declutter cards
                 - type: "custom:button-card"
                   entity: light.overhead
                   custom_fields:
@@ -245,7 +245,7 @@ cards:
                 #----------------------------------------------------------------
                 ## Living Room button
                 #----------------------------------------------------------------
-                # TODO: Create Temp Button declutter card
+                # TODO: #297 Create Temp Button declutter card
                 - type: "custom:button-card"
                   entity: light.group_living_room
                   custom_fields:
@@ -316,7 +316,7 @@ cards:
                 #----------------------------------------------------------------
                 ## Kitchen button
                 #----------------------------------------------------------------
-                # TODO: Create Temp Button declutter card
+                # TODO: #297 Create Temp Button declutter card
                 - type: "custom:button-card"
                   entity: light.group_kitchen
                   custom_fields:
@@ -382,7 +382,7 @@ cards:
                 ## Loft button
                 #----------------------------------------------------------------
                 # TODO: #278 Create loft button
-                # TODO: Create Temp Button declutter card
+                # TODO: #297 Create Temp Button declutter card
                 - type: "custom:button-card"
                   entity: light.loft
                   custom_fields:
@@ -446,7 +446,7 @@ cards:
           #################################################################
           ## Entrway Controls
           #################################################################
-          # TODO: Create Room Controls declutter card  
+          # TODO: #295 Create Room Controls declutter card  
           Entryway:
             type: "custom:mod-card"
             style: |
@@ -569,7 +569,7 @@ cards:
           #################################################################
           ## Office Controls
           #################################################################
-          # TODO: Create Room Controls declutter card  
+          # TODO: #295 Create Room Controls declutter card  
           Office:
             type: "custom:mod-card"
             style: |
@@ -641,7 +641,7 @@ cards:
           #################################################################
           ## Living Room Controls
           #################################################################
-          # TODO: Create Room Controls declutter card  
+          # TODO: #295 Create Room Controls declutter card  
           Living Room:
             type: "custom:mod-card"
             style: |
@@ -788,7 +788,7 @@ cards:
           #################################################################
           ## Kitchen Controls
           #################################################################
-          # TODO: Create Room Controls declutter card  
+          # TODO: #295 Create Room Controls declutter card  
           Kitchen:
             type: "custom:mod-card"
             style: |
@@ -890,7 +890,7 @@ cards:
           #################################################################
           ## Loft Controls
           #################################################################
-          # TODO: Create Room Controls declutter card  
+          # TODO: #295 Create Room Controls declutter card  
           Loft:
             type: "custom:mod-card"
             style: |
