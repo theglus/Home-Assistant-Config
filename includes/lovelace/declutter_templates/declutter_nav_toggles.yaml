@@ -3,9 +3,9 @@
 #################################################################
 - entity: input_select.lighttoggle
   name: false
-  icon: "[[nav_icon]]"
+  icon: 'mdi:[[nav_icon]]'
   state_styles:
-    "[[room]]":
+    '[[room]]':
     template: nav_button
   template: nav_styles
   tap_action:
