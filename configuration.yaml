@@ -24,6 +24,10 @@ lovelace:
     # https://github.com/Villhellm/custom-sidebar
     - url: /hacsfiles/custom-sidebar/custom-sidebar.js                            
       type: module
+    # Declutter Card
+    # https://github.com/custom-cards/decluttering-card
+    - url: /hacsfiles/decluttering-card.js
+      type: module
     # Hui Element
     # https://github.com/thomasloven/lovelace-hui-element
     - url: /hacsfiles/lovelace-hui-element/hui-element.js                         
