@@ -959,7 +959,6 @@ cards:
                 - type: "custom:button-card"
                   entity: light.loft_bed_light
                   name: Ceiling
-                  custom_fields:
                   template:
                     - light
                     - icon_spot
