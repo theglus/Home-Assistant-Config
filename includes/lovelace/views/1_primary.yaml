@@ -148,18 +148,9 @@ cards:
           #################################################################
           # TODO: #295 Create Room Controls declutter card  
           General:
-            type: "custom:mod-card"
-            style: |
-              ha-card {
-                background: rgba(0,0,0,.3);
-                padding: 10px;
-                border-radius: 35px;
-                margin-top: none;
-                }
-            card:
-              type: grid
-              columns: 3
-              cards:
+          - type: "custom:decluttering-card"
+            template: declutter_room_controls
+            variables:
                 #----------------------------------------------------------------
                 ## Weather button
                 #----------------------------------------------------------------
@@ -258,18 +249,9 @@ cards:
           #################################################################
           # TODO: #295 Create Room Controls declutter card  
           Entryway:
-            type: "custom:mod-card"
-            style: |
-              ha-card {
-                background: rgba(0,0,0,.3);
-                padding: 10px;
-                border-radius: 35px;
-                margin-top: none;
-                }
-            card:
-              type: grid
-              columns: 3
-              cards:
+          - type: "custom:decluttering-card"
+            template: declutter_room_controls
+            variables:
                 #----------------------------------------------------------------
                 ## Hallway Marquee
                 #----------------------------------------------------------------
@@ -381,18 +363,9 @@ cards:
           #################################################################
           # TODO: #295 Create Room Controls declutter card  
           Office:
-            type: "custom:mod-card"
-            style: |
-              ha-card {
-                background: rgba(0,0,0,.3);
-                padding: 10px;
-                border-radius: 35px;
-                margin-top: none;
-                }
-            card:
-              type: grid
-              columns: 3
-              cards:
+          - type: "custom:decluttering-card"
+            template: declutter_room_controls
+            variables:
                 #----------------------------------------------------------------
                 ## Office Overhead Lights
                 #----------------------------------------------------------------
@@ -453,18 +426,9 @@ cards:
           #################################################################
           # TODO: #295 Create Room Controls declutter card  
           Living Room:
-            type: "custom:mod-card"
-            style: |
-              ha-card {
-                background: rgba(0,0,0,.3);
-                padding: 10px;
-                border-radius: 35px;
-                margin-top: none;
-                }
-            card:
-              type: grid
-              columns: 3
-              cards:
+          - type: "custom:decluttering-card"
+            template: declutter_room_controls
+            variables:
                 #----------------------------------------------------------------
                 ## Track Light
                 #----------------------------------------------------------------
@@ -600,18 +564,9 @@ cards:
           #################################################################
           # TODO: #295 Create Room Controls declutter card  
           Kitchen:
-            type: "custom:mod-card"
-            style: |
-              ha-card {
-                background: rgba(0,0,0,.3);
-                padding: 10px;
-                border-radius: 35px;
-                margin-top: none;
-                }
-            card:
-              type: grid
-              columns: 3
-              cards:
+          - type: "custom:decluttering-card"
+            template: declutter_room_controls
+            variables:
                 #----------------------------------------------------------------
                 ## Kitchen Track
                 #----------------------------------------------------------------
@@ -702,18 +657,9 @@ cards:
           #################################################################
           # TODO: #295 Create Room Controls declutter card  
           Loft:
-            type: "custom:mod-card"
-            style: |
-              ha-card {
-                background: rgba(0,0,0,.3);
-                padding: 10px;
-                border-radius: 35px;
-                margin-top: none;
-                }
-            card:
-              type: grid
-              columns: 3
-              cards:
+          - type: "custom:decluttering-card"
+            template: declutter_room_controls
+            variables:
                 #----------------------------------------------------------------
                 ## Bedside Lights
                 #----------------------------------------------------------------
