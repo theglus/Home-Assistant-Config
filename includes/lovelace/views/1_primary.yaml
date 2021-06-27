@@ -191,6 +191,7 @@ cards:
                 - type: "custom:decluttering-card"
                   template: declutter_room_button
                   variables:
+                    - room: Entryway
                     - light: light.group_hallway
                     - sensor: binary_sensor.front_door
                     - message_on: Door is open
