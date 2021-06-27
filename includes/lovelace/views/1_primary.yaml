@@ -28,7 +28,7 @@ cards:
               #################################################################
               # TODO: #294 Create Toggle Nav declutter card
               - type: "custom:decluttering-card"
-                template: declutter_nav_toggle
+                template: declutter_nav_toggles
                 variables:
                   - nav_icon: mdi:home-assistant
                   - room: General   
@@ -37,7 +37,7 @@ cards:
               #################################################################
               # TODO: #294 Create Toggle Nav declutter card
               - type: "custom:decluttering-card"
-                template: declutter_nav_toggle
+                template: declutter_nav_toggles
                 variables:
                   - nav_icon: mdi:coat-rack
                   - room: Entryway
@@ -50,7 +50,7 @@ cards:
               #################################################################
               # TODO: #294 Create Toggle Nav declutter card
               - type: "custom:decluttering-card"
-                template: declutter_nav_toggle
+                template: declutter_nav_toggles
                 variables:
                   - nav_icon: mdi:desk
                   - room: Office   
@@ -59,7 +59,7 @@ cards:
               #################################################################
               # TODO: #294 Create Toggle Nav declutter card
               - type: "custom:decluttering-card"
-                template: declutter_nav_toggle
+                template: declutter_nav_toggles
                 variables:
                   - nav_icon: mdi:sofa
                   - room: Living Room   
@@ -68,7 +68,7 @@ cards:
               #################################################################
               # TODO: #294 Create Toggle Nav declutter card
               - type: "custom:decluttering-card"
-                template: declutter_nav_toggle
+                template: declutter_nav_toggles
                 variables:
                   - nav_icon: mdi:fridge
                   - room: Kitchen   
@@ -77,7 +77,7 @@ cards:
               #################################################################
               # TODO: #294 Create Toggle Nav declutter card
               - type: "custom:decluttering-card"
-                template: declutter_nav_toggle
+                template: declutter_nav_toggles
                 variables:
                   - nav_icon: mdi:bed-king
                   - room: Loft   
