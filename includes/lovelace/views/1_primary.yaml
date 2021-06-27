@@ -229,67 +229,17 @@ cards:
                 ## Kitchen button
                 #----------------------------------------------------------------
                 # TODO: #297 Create Temp Button declutter card
-                - type: "custom:button-card"
-                  entity: light.group_kitchen
-                  custom_fields:
-                    s2: |
-                      [[[
-                        var sensor_state = (states['fan.kitchen'].state);
-                        if (sensor_state == "on") return "Dyson is on";
-                        else return "Dyson is off" 
-                      ]]]
-                  icon: "mdi:fridge"
-                  label: |
-                    [[[
-                      return states['sensor.kitchen_temperature'].state + '°F'
-                    ]]]
-                  name: Kitchen
-                  show_points: false
-                  double_tap_action:
-                    action: fire-dom-event
-                    browser_mod:
-                      command: popup
-                      title: "Kitchen"
-                      style:
-                        hui-grid-card$: |
-                          #root {
-                            grid-gap: 0 !important;
-                          }
-                      card:
-                        type: grid
-                        columns: 1
-                        square: false
-                        cards:
-                          - type: custom:mini-graph-card
-                            entities:
-                            - sensor.kitchen_temperature
-                            color_thresholds:
-                            - value: 0
-                              color: '#6aa84f'
-                            - value: 68
-                              color: '#f1c232'
-                            - value: 72
-                              color: '#e69138'
-                            - value: 75
-                              color: '#cc0000'                                                       
-                            name: Temperature                           
-                            line_width: 5
-                            points_per_hour: 2
-                            align_icon: left
-                            align_state: right
-                            align_header: left
-                            hours_to_show: 24
-                            show:
-                              icon: true
-                            tap_action:
-                              action: more-info 
-                  template:
-                    - room_layout
-                    - room_states
-                    - room_states_on
-                    - room
-                  triggers_update:
-                    - fan.kitchen
+                - type: "custom:decluttering-card"
+                  template: declutter_temp_button
+                  variables:
+                    - light: light.group_kitchen
+                    - hvac: fan.kitchen
+                    - sensor_temp: sensor.kitchen_temperature
+                    - message_on: Dyson is on
+                    - message_off: Dyson is off
+                    - icon_state: mdi:fridge
+                    - icon_default: mdi:fridge
+                    - room: Kitchen
                 #----------------------------------------------------------------
                 ## Loft button
                 #----------------------------------------------------------------
