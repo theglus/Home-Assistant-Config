@@ -15,7 +15,7 @@ card:
       [[[ 
         var sensor_state = (states['[[hvac]]'].state);
         if (sensor_state == "on") 
-          return "[[icon_state]]r"; 
+          return "[[icon_state]]"; 
         else 
           return "[[icon_default]]" 
       ]]]
