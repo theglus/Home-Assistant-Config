@@ -36,19 +36,11 @@ cards:
               ## Entryway Button
               #################################################################
               # TODO: #294 Create Toggle Nav declutter card
-              - entity: input_select.lighttoggle
-                name: false
-                icon: "mdi:coat-rack"
-                state_styles:
-                  Entrway:
-                  template: nav_button
-                template: nav_styles
-                tap_action:
-                  action: call-service
-                  service: input_select.select_option
-                  service_data:
-                    entity_id: input_select.lighttoggle
-                    option: Entryway
+              - type: "custom:decluttering-card"
+                template: declutter_nav_toggle
+                variables:
+                  - nav_icon: mdi:coat-rack
+                  - room: Entryway
               #################################################################
               ## Guest Bathroom Button
               #################################################################
@@ -57,70 +49,38 @@ cards:
               ## Office Button
               #################################################################
               # TODO: #294 Create Toggle Nav declutter card
-              - entity: input_select.lighttoggle
-                name: false
-                icon: "mdi:desk"
-                state_styles:
-                  Office:
-                  template: nav_button
-                template: nav_styles
-                tap_action:
-                  action: call-service
-                  service: input_select.select_option
-                  service_data:
-                    entity_id: input_select.lighttoggle
-                    option: Office
+              - type: "custom:decluttering-card"
+                template: declutter_nav_toggle
+                variables:
+                  - nav_icon: mdi:desk
+                  - room: Office   
               #################################################################
               ## Living Room Button
               #################################################################
               # TODO: #294 Create Toggle Nav declutter card
-              - entity: input_select.lighttoggle
-                name: false
-                icon: "mdi:sofa"
-                state_styles:
-                  Living Room:
-                  template: nav_button
-                template: nav_styles
-                tap_action:
-                  action: call-service
-                  service: input_select.select_option
-                  service_data:
-                    entity_id: input_select.lighttoggle
-                    option: Living Room
+              - type: "custom:decluttering-card"
+                template: declutter_nav_toggle
+                variables:
+                  - nav_icon: mdi:sofa
+                  - room: Living Room   
               #################################################################
               ## Kitchen Button
               #################################################################
               # TODO: #294 Create Toggle Nav declutter card
-              - entity: input_select.lighttoggle
-                name: false
-                icon: "mdi:fridge"
-                state_styles:
-                  Kitchen:
-                  template: nav_button
-                template: nav_styles
-                tap_action:
-                  action: call-service
-                  service: input_select.select_option
-                  service_data:
-                    entity_id: input_select.lighttoggle
-                    option: Kitchen
+              - type: "custom:decluttering-card"
+                template: declutter_nav_toggle
+                variables:
+                  - nav_icon: mdi:fridge
+                  - room: Kitchen   
               #################################################################
               ## Loft
               #################################################################
               # TODO: #294 Create Toggle Nav declutter card
-              - entity: input_select.lighttoggle
-                name: false
-                icon: "mdi:bed-king"
-                state_styles:
-                  Loft:
-                  template: nav_button
-                template: nav_styles
-                tap_action:
-                  action: call-service
-                  service: input_select.select_option
-                  service_data:
-                    entity_id: input_select.lighttoggle
-                    option: Loft
+              - type: "custom:decluttering-card"
+                template: declutter_nav_toggle
+                variables:
+                  - nav_icon: mdi:bed-king
+                  - room: Loft   
               #################################################################
               ## Loft Bathroom Button
               #################################################################
