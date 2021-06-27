@@ -192,7 +192,6 @@ cards:
                 #----------------------------------------------------------------
                 ## Office button
                 #----------------------------------------------------------------
-                # TODO: #296 Create Room Button declutter cards
                 - type: "custom:decluttering-card"
                   template: declutter_room_button
                   variables:
