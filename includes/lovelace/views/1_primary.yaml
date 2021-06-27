@@ -27,19 +27,11 @@ cards:
               ## General Button
               #################################################################
               # TODO: #294 Create Toggle Nav declutter card
-              - entity: input_select.lighttoggle
-                name: false
-                icon: "mdi:home-assistant"
-                state_styles:
-                  General:
-                  template: nav_button
-                template: nav_styles
-                tap_action:
-                  action: call-service
-                  service: input_select.select_option
-                  service_data:
-                    entity_id: input_select.lighttoggle
-                    option: General
+              - type: "custom:decluttering-card"
+                template: declutter_nav_toggle
+                variables:
+                  - nav_icon: mdi:home-assistant
+                  - room: General   
               #################################################################
               ## Entryway Button
               #################################################################

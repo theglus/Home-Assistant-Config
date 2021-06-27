@@ -3,9 +3,9 @@
 #################################################################
 entity: input_select.lighttoggle
 name: false
-icon: "mdi:home-assistant"
+icon: "[nav_icon]"
 state_styles:
-  General:
+  '[room]':
   template: nav_button  
 template: nav_styles
 tap_action:
@@ -13,4 +13,4 @@ tap_action:
   service: input_select.select_option
   service_data:
     entity_id: input_select.lighttoggle
-    option: '[[room_1]]'
+    option: '[[room]]'
