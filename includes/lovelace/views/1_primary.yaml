@@ -213,7 +213,6 @@ cards:
                 #----------------------------------------------------------------
                 ## Living Room button
                 #----------------------------------------------------------------
-                # TODO: #297 Create Temp Button declutter card
                 - type: "custom:decluttering-card"
                   template: declutter_temp_button
                   variables:
@@ -228,7 +227,6 @@ cards:
                 #----------------------------------------------------------------
                 ## Kitchen button
                 #----------------------------------------------------------------
-                # TODO: #297 Create Temp Button declutter card
                 - type: "custom:decluttering-card"
                   template: declutter_temp_button
                   variables:
@@ -244,7 +242,6 @@ cards:
                 ## Loft button
                 #----------------------------------------------------------------
                 # TODO: #278 Create loft button
-                # TODO: #297 Create Temp Button declutter card
                 - type: "custom:decluttering-card"
                   template: declutter_temp_button
                   variables:
