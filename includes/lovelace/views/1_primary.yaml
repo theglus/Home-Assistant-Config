@@ -201,31 +201,16 @@ cards:
                 ## Office button
                 #----------------------------------------------------------------
                 # TODO: #296 Create Room Button declutter cards
-                - type: "custom:button-card"
-                  entity: light.overhead
-                  custom_fields:
-                    s2: |
-                      [[[
-                        var sensor_state = (states['sensor.major_laser_printer'].state);
-                        if (sensor_state == "on") return "Printer on";
-                        else return "Printer off" 
-                      ]]]
-                  icon: |
-                    [[[ 
-                      var sensor_state = (states['sensor.major_laser_printer'].state);
-                      if (sensor_state == "on") 
-                        return "mdi:printer"; 
-                      else 
-                        return "mdi:desk" 
-                    ]]]
-                  name: Office
-                  template:
-                    - room_layout
-                    - room_states
-                    - room_states_on
-                    - room
-                  triggers_update:
-                    - sensor.majaor_laser_printer
+                - type: "custom:decluttering-card"
+                  template: declutter_room_button
+                  variables:
+                    - room: Office
+                    - light: light.overhead
+                    - sensor: sensor.major_laser_printer
+                    - message_on: Printer on
+                    - message_off: Printer off
+                    - icon_state: mdi:printer
+                    - icon_default: mdi:desk
                 #----------------------------------------------------------------
                 ## Living Room button
                 #----------------------------------------------------------------
