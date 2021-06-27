@@ -214,73 +214,17 @@ cards:
                 ## Living Room button
                 #----------------------------------------------------------------
                 # TODO: #297 Create Temp Button declutter card
-                - type: "custom:button-card"
-                  entity: light.group_living_room
-                  custom_fields:
-                    s2: |
-                      [[[
-                        var sensor_state = (states['switch.switchbot'].state);
-                        if (sensor_state == "on") return "Heat is on";
-                        else return "Heat is off" 
-                      ]]]
-                  icon: |
-                    [[[ 
-                      var sensor_state = (states['switch.switchbot'].state);
-                      if (sensor_state == "on") 
-                        return "mdi:radiator"; 
-                      else 
-                        return "mdi:sofa" 
-                    ]]]
-                  label: |
-                    [[[
-                      return states['sensor.temperature_living_room'].state + '°F'
-                    ]]]
-                  name: Living Room
-                  double_tap_action:
-                    action: fire-dom-event
-                    browser_mod:
-                      command: popup
-                      title: "Living Room"
-                      style:
-                        hui-grid-card$: |
-                          #root {
-                            grid-gap: 0 !important;
-                          }
-                      card:
-                        type: grid
-                        columns: 1
-                        square: false
-                        cards:
-                          - type: custom:mini-graph-card
-                            entities:
-                            - sensor.temperature_living_room
-                            color_thresholds:
-                            - value: 0
-                              color: '#6aa84f'
-                            - value: 68
-                              color: '#f1c232'
-                            - value: 72
-                              color: '#e69138'
-                            - value: 75
-                              color: '#cc0000'                                                       
-                            name: Temperature                           
-                            line_width: 5
-                            points_per_hour: 2
-                            align_icon: left
-                            align_state: right
-                            align_header: left
-                            hours_to_show: 24
-                            show:
-                              icon: true
-                            tap_action:
-                              action: more-info 
-                  template:
-                    - room_layout
-                    - room_states
-                    - room_states_on
-                    - room
-                  triggers_update:
-                    - switch.switchbot
+                - type: "custom:decluttering-card"
+                  template: declutter_temp_button
+                  variables:
+                    - light: light.group_living_room
+                    - hvac: switch.switchbot
+                    - sensor_temp: sensor.temperature_living_room
+                    - message_on: Heat is on
+                    - message_off: Heat is off
+                    - icon_state: mdi:radiator
+                    - icon_default: mdi:sofa
+                    - room: Living Room
                 #----------------------------------------------------------------
                 ## Kitchen button
                 #----------------------------------------------------------------
