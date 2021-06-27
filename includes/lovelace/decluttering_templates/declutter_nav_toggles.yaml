@@ -1,7 +1,7 @@
 #################################################################
 ## Toggle Nav
 #################################################################
-buttons:
+button:
   entity: input_select.lighttoggle
   name: false
   icon: "[nav_icon]"
