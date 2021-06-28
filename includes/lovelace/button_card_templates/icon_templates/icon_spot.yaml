@@ -5,9 +5,9 @@
 styles:
   custom_fields:
     icon:
-      - width: 70%
-      - margin-left: -8%
-      - margin-top: 3%
+      - width: 2.85em
+      - margin-left: 5%
+      - margin-top: 11%
 custom_fields:
   icon: >
     [[[
