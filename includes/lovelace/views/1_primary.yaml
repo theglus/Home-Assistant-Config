@@ -147,17 +147,18 @@ cards:
           ## General Controls
           #################################################################
           General:
-            style: |
-              ha-card {
-                background: rgba(0,0,0,.3);
-                padding: 10px;
-                border-radius: 35px;
-                margin-top: none;
-              }
-            card:
-              type: grid
-              columns: 3
-              cards:
+             type: "custom:mod-card" 
+             style: | 
+               ha-card { 
+                 background: rgba(0,0,0,.3); 
+                 padding: 10px; 
+                 border-radius: 35px; 
+                 margin-top: none; 
+                 } 
+             card: 
+               type: grid 
+               columns: 3 
+               cards:
                 #----------------------------------------------------------------
                 ## Weather button
                 #----------------------------------------------------------------
@@ -255,17 +256,18 @@ cards:
           ## Entrway Controls
           #################################################################
           Entryway:
-            style: |
-              ha-card {
-                background: rgba(0,0,0,.3);
-                padding: 10px;
-                border-radius: 35px;
-                margin-top: none;
-              }
-            card:
-              type: grid
-              columns: 3
-              cards:
+             type: "custom:mod-card" 
+             style: | 
+               ha-card { 
+                 background: rgba(0,0,0,.3); 
+                 padding: 10px; 
+                 border-radius: 35px; 
+                 margin-top: none; 
+                 } 
+             card: 
+               type: grid 
+               columns: 3 
+               cards:
                 #----------------------------------------------------------------
                 ## Hallway Marquee
                 #----------------------------------------------------------------
@@ -376,17 +378,18 @@ cards:
           ## Office Controls
           #################################################################
           Office:
-            style: |
-              ha-card {
-                background: rgba(0,0,0,.3);
-                padding: 10px;
-                border-radius: 35px;
-                margin-top: none;
-              }
-            card:
-              type: grid
-              columns: 3
-              cards:
+             type: "custom:mod-card" 
+             style: | 
+               ha-card { 
+                 background: rgba(0,0,0,.3); 
+                 padding: 10px; 
+                 border-radius: 35px; 
+                 margin-top: none; 
+                 } 
+             card: 
+               type: grid 
+               columns: 3 
+               cards:
                 #----------------------------------------------------------------
                 ## Office Overhead Lights
                 #----------------------------------------------------------------
@@ -446,17 +449,18 @@ cards:
           ## Living Room Controls
           #################################################################
           Living Room:
-            style: |
-              ha-card {
-                background: rgba(0,0,0,.3);
-                padding: 10px;
-                border-radius: 35px;
-                margin-top: none;
-              }
-            card:
-              type: grid
-              columns: 3
-              cards:
+             type: "custom:mod-card" 
+             style: | 
+               ha-card { 
+                 background: rgba(0,0,0,.3); 
+                 padding: 10px; 
+                 border-radius: 35px; 
+                 margin-top: none; 
+                 } 
+             card: 
+               type: grid 
+               columns: 3 
+               cards:
                 #----------------------------------------------------------------
                 ## Track Light
                 #----------------------------------------------------------------
@@ -591,17 +595,18 @@ cards:
           ## Kitchen Controls
           #################################################################
           Kitchen:
-            style: |
-              ha-card {
-                background: rgba(0,0,0,.3);
-                padding: 10px;
-                border-radius: 35px;
-                margin-top: none;
-              }
-            card:
-              type: grid
-              columns: 3
-              cards:
+             type: "custom:mod-card" 
+             style: | 
+               ha-card { 
+                 background: rgba(0,0,0,.3); 
+                 padding: 10px; 
+                 border-radius: 35px; 
+                 margin-top: none; 
+                 } 
+             card: 
+               type: grid 
+               columns: 3 
+               cards:
                 #----------------------------------------------------------------
                 ## Kitchen Track
                 #----------------------------------------------------------------
@@ -691,17 +696,18 @@ cards:
           ## Loft Controls
           #################################################################
           Loft:
-            style: |
-              ha-card {
-                background: rgba(0,0,0,.3);
-                padding: 10px;
-                border-radius: 35px;
-                margin-top: none;
-              }
-            card:
-              type: grid
-              columns: 3
-              cards:
+             type: "custom:mod-card" 
+             style: | 
+               ha-card { 
+                 background: rgba(0,0,0,.3); 
+                 padding: 10px; 
+                 border-radius: 35px; 
+                 margin-top: none; 
+                 } 
+             card: 
+               type: grid 
+               columns: 3 
+               cards:
                 #----------------------------------------------------------------
                 ## Bedside Lights
                 #----------------------------------------------------------------
