@@ -1,4 +1,5 @@
 background: var(--background-image)
 button_card_templates: !include_dir_named includes/lovelace/button_card_templates
+decluttering_templates: !include_dir_named includes/lovelace/decluttering_templates
 title: Loft
 views: !include_dir_list includes/lovelace/views

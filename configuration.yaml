@@ -26,7 +26,7 @@ lovelace:
       type: module
     # Declutter Card
     # https://github.com/custom-cards/decluttering-card
-    - url: /hacsfiles/decluttering-card.js
+    - url: /hacsfiles/decluttering-card/decluttering-card.js
       type: module
     # Hui Element
     # https://github.com/thomasloven/lovelace-hui-element

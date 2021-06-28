@@ -26,7 +26,6 @@ cards:
               #################################################################
               ## General Button
               #################################################################
-              # TODO: #294 Create Toggle Nav declutter card
               - entity: input_select.lighttoggle
                 name: false
                 icon: "mdi:home-assistant"
@@ -43,7 +42,6 @@ cards:
               #################################################################
               ## Entryway Button
               #################################################################
-              # TODO: #294 Create Toggle Nav declutter card
               - entity: input_select.lighttoggle
                 name: false
                 icon: "mdi:coat-rack"
@@ -64,7 +62,6 @@ cards:
               #################################################################
               ## Office Button
               #################################################################
-              # TODO: #294 Create Toggle Nav declutter card
               - entity: input_select.lighttoggle
                 name: false
                 icon: "mdi:desk"
@@ -81,7 +78,6 @@ cards:
               #################################################################
               ## Living Room Button
               #################################################################
-              # TODO: #294 Create Toggle Nav declutter card
               - entity: input_select.lighttoggle
                 name: false
                 icon: "mdi:sofa"
@@ -98,7 +94,6 @@ cards:
               #################################################################
               ## Kitchen Button
               #################################################################
-              # TODO: #294 Create Toggle Nav declutter card
               - entity: input_select.lighttoggle
                 name: false
                 icon: "mdi:fridge"
@@ -115,7 +110,6 @@ cards:
               #################################################################
               ## Loft
               #################################################################
-              # TODO: #294 Create Toggle Nav declutter card
               - entity: input_select.lighttoggle
                 name: false
                 icon: "mdi:bed-king"
@@ -146,15 +140,14 @@ cards:
           #################################################################
           ## General Controls
           #################################################################
-          # TODO: #295 Create Room Controls declutter card  
           General:
             type: "custom:mod-card"
             style: |
-              ha-card {
-                background: rgba(0,0,0,.3);
-                padding: 10px;
-                border-radius: 35px;
-                margin-top: none;
+              ha-card { 
+                background: rgba(0,0,0,.3); 
+                padding: 10px; 
+                border-radius: 35px; 
+                margin-top: none; 
                 }
             card:
               type: grid
@@ -187,274 +180,83 @@ cards:
                 #----------------------------------------------------------------
                 ## Entryway button
                 #----------------------------------------------------------------
-                # TODO: #296 Create Room Button declutter cards
-                - type: "custom:button-card"
-                  entity: light.group_hallway
-                  custom_fields:
-                    s2: |
-                      [[[
-                        var sensor_state = (states['binary_sensor.front_door'].state);
-                        if (sensor_state == "on") return "Door is open";
-                        else return "Door is closed" 
-                      ]]]
-                  icon: |
-                    [[[ 
-                      var sensor_state = (states['binary_sensor.front_door'].state);
-                      if (sensor_state == "on") 
-                        return "mdi:door-open"; 
-                      else 
-                        return "mdi:coat-rack" 
-                    ]]]
-                  name: Entryway
-                  template:
-                    - room_layout
-                    - room_states
-                    - room_states_on
-                    - room
-                  triggers_update:
-                    - binary_sensor.front_door
+                - type: "custom:decluttering-card"
+                  template: declutter_room_button
+                  variables:
+                    - room: Entryway
+                    - light: light.group_hallway
+                    - sensor: binary_sensor.front_door
+                    - message_on: Door is open
+                    - message_off: Door is closed
+                    - icon_state: mdi:door-open
+                    - icon_default: mdi:coat-rack
                 #----------------------------------------------------------------
                 ## Office button
                 #----------------------------------------------------------------
-                # TODO: #296 Create Room Button declutter cards
-                - type: "custom:button-card"
-                  entity: light.overhead
-                  custom_fields:
-                    s2: |
-                      [[[
-                        var sensor_state = (states['sensor.major_laser_printer'].state);
-                        if (sensor_state == "on") return "Printer on";
-                        else return "Printer off" 
-                      ]]]
-                  icon: |
-                    [[[ 
-                      var sensor_state = (states['sensor.major_laser_printer'].state);
-                      if (sensor_state == "on") 
-                        return "mdi:printer"; 
-                      else 
-                        return "mdi:desk" 
-                    ]]]
-                  name: Office
-                  template:
-                    - room_layout
-                    - room_states
-                    - room_states_on
-                    - room
-                  triggers_update:
-                    - sensor.majaor_laser_printer
+                - type: "custom:decluttering-card"
+                  template: declutter_room_button
+                  variables:
+                    - room: Office
+                    - light: light.overhead
+                    - sensor: sensor.major_laser_printer
+                    - message_on: Printer on
+                    - message_off: Printer off
+                    - icon_state: mdi:printer
+                    - icon_default: mdi:desk
                 #----------------------------------------------------------------
                 ## Living Room button
                 #----------------------------------------------------------------
-                # TODO: #297 Create Temp Button declutter card
-                - type: "custom:button-card"
-                  entity: light.group_living_room
-                  custom_fields:
-                    s2: |
-                      [[[
-                        var sensor_state = (states['switch.switchbot'].state);
-                        if (sensor_state == "on") return "Heat is on";
-                        else return "Heat is off" 
-                      ]]]
-                  icon: |
-                    [[[ 
-                      var sensor_state = (states['switch.switchbot'].state);
-                      if (sensor_state == "on") 
-                        return "mdi:radiator"; 
-                      else 
-                        return "mdi:sofa" 
-                    ]]]
-                  label: |
-                    [[[
-                      return states['sensor.temperature_living_room'].state + '°F'
-                    ]]]
-                  name: Living Room
-                  double_tap_action:
-                    action: fire-dom-event
-                    browser_mod:
-                      command: popup
-                      title: "Living Room"
-                      style:
-                        hui-grid-card$: |
-                          #root {
-                            grid-gap: 0 !important;
-                          }
-                      card:
-                        type: grid
-                        columns: 1
-                        square: false
-                        cards:
-                          - type: custom:mini-graph-card
-                            entities:
-                            - sensor.temperature_living_room
-                            color_thresholds:
-                            - value: 0
-                              color: '#6aa84f'
-                            - value: 68
-                              color: '#f1c232'
-                            - value: 72
-                              color: '#e69138'
-                            - value: 75
-                              color: '#cc0000'                                                       
-                            name: Temperature                           
-                            line_width: 5
-                            points_per_hour: 2
-                            align_icon: left
-                            align_state: right
-                            align_header: left
-                            hours_to_show: 24
-                            show:
-                              icon: true
-                            tap_action:
-                              action: more-info 
-                  template:
-                    - room_layout
-                    - room_states
-                    - room_states_on
-                    - room
-                  triggers_update:
-                    - switch.switchbot
+                - type: "custom:decluttering-card"
+                  template: declutter_temp_button
+                  variables:
+                    - light: light.group_living_room
+                    - hvac: switch.switchbot
+                    - sensor_temp: sensor.temperature_living_room
+                    - message_on: Heat is on
+                    - message_off: Heat is off
+                    - icon_state: mdi:radiator
+                    - icon_default: mdi:sofa
+                    - room: Living Room
                 #----------------------------------------------------------------
                 ## Kitchen button
                 #----------------------------------------------------------------
-                # TODO: #297 Create Temp Button declutter card
-                - type: "custom:button-card"
-                  entity: light.group_kitchen
-                  custom_fields:
-                    s2: |
-                      [[[
-                        var sensor_state = (states['fan.kitchen'].state);
-                        if (sensor_state == "on") return "Dyson is on";
-                        else return "Dyson is off" 
-                      ]]]
-                  icon: "mdi:fridge"
-                  label: |
-                    [[[
-                      return states['sensor.kitchen_temperature'].state + '°F'
-                    ]]]
-                  name: Kitchen
-                  show_points: false
-                  double_tap_action:
-                    action: fire-dom-event
-                    browser_mod:
-                      command: popup
-                      title: "Kitchen"
-                      style:
-                        hui-grid-card$: |
-                          #root {
-                            grid-gap: 0 !important;
-                          }
-                      card:
-                        type: grid
-                        columns: 1
-                        square: false
-                        cards:
-                          - type: custom:mini-graph-card
-                            entities:
-                            - sensor.kitchen_temperature
-                            color_thresholds:
-                            - value: 0
-                              color: '#6aa84f'
-                            - value: 68
-                              color: '#f1c232'
-                            - value: 72
-                              color: '#e69138'
-                            - value: 75
-                              color: '#cc0000'                                                       
-                            name: Temperature                           
-                            line_width: 5
-                            points_per_hour: 2
-                            align_icon: left
-                            align_state: right
-                            align_header: left
-                            hours_to_show: 24
-                            show:
-                              icon: true
-                            tap_action:
-                              action: more-info 
-                  template:
-                    - room_layout
-                    - room_states
-                    - room_states_on
-                    - room
-                  triggers_update:
-                    - fan.kitchen
+                - type: "custom:decluttering-card"
+                  template: declutter_temp_button
+                  variables:
+                    - light: light.group_kitchen
+                    - hvac: fan.kitchen
+                    - sensor_temp: sensor.kitchen_temperature
+                    - message_on: Dyson is on
+                    - message_off: Dyson is off
+                    - icon_state: mdi:fridge
+                    - icon_default: mdi:fridge
+                    - room: Kitchen
                 #----------------------------------------------------------------
                 ## Loft button
                 #----------------------------------------------------------------
                 # TODO: #278 Create loft button
-                # TODO: #297 Create Temp Button declutter card
-                - type: "custom:button-card"
-                  entity: light.loft
-                  custom_fields:
-                    s2: |
-                      [[[
-                        var sensor_state = (states['fan.kirby'].state);
-                        if (sensor_state == "on") return "Dyson is on";
-                        else return "Dyson is off" 
-                      ]]]
-                  icon: "mdi:bed-king"
-                  label: |
-                    [[[
-                      return states['sensor.kirby_temperature'].state + '°F'
-                    ]]]
-                  name: Loft
-                  double_tap_action:
-                    action: fire-dom-event
-                    browser_mod:
-                      command: popup
-                      title: "Loft"
-                      style:
-                        hui-grid-card$: |
-                          #root {
-                            grid-gap: 0 !important;
-                          }
-                      card:
-                        type: grid
-                        columns: 1
-                        square: false
-                        cards:
-                          - type: custom:mini-graph-card
-                            entities:
-                            - sensor.kirby_temperature
-                            color_thresholds:
-                            - value: 0
-                              color: '#6aa84f'
-                            - value: 68
-                              color: '#f1c232'
-                            - value: 72
-                              color: '#e69138'
-                            - value: 75
-                              color: '#cc0000'                                                       
-                            name: Temperature                           
-                            line_width: 5
-                            points_per_hour: 2
-                            align_icon: left
-                            align_state: right
-                            align_header: left
-                            hours_to_show: 24
-                            show:
-                              icon: true
-                            tap_action:
-                              action: more-info 
-                  template:
-                    - room_layout
-                    - room_states
-                    - room_states_on
-                    - room
-                  triggers_update:
-                    - fan.kirby
+                - type: "custom:decluttering-card"
+                  template: declutter_temp_button
+                  variables:
+                    - light: light.loft
+                    - hvac: fan.kirby
+                    - sensor_temp: sensor.kirby_temperature
+                    - message_on: Dyson is on
+                    - message_off: Dyson is off
+                    - icon_state: mdi:bed-king
+                    - icon_default: mdi:bed-king
+                    - room: Loft
           #################################################################
           ## Entrway Controls
           #################################################################
-          # TODO: #295 Create Room Controls declutter card  
           Entryway:
             type: "custom:mod-card"
             style: |
-              ha-card {
-                background: rgba(0,0,0,.3);
-                padding: 10px;
-                border-radius: 35px;
-                margin-top: none;
+              ha-card { 
+                background: rgba(0,0,0,.3); 
+                padding: 10px; 
+                border-radius: 35px; 
+                margin-top: none; 
                 }
             card:
               type: grid
@@ -569,15 +371,14 @@ cards:
           #################################################################
           ## Office Controls
           #################################################################
-          # TODO: #295 Create Room Controls declutter card  
           Office:
             type: "custom:mod-card"
             style: |
-              ha-card {
-                background: rgba(0,0,0,.3);
-                padding: 10px;
-                border-radius: 35px;
-                margin-top: none;
+              ha-card { 
+                background: rgba(0,0,0,.3); 
+                padding: 10px; 
+                border-radius: 35px; 
+                margin-top: none; 
                 }
             card:
               type: grid
@@ -641,15 +442,14 @@ cards:
           #################################################################
           ## Living Room Controls
           #################################################################
-          # TODO: #295 Create Room Controls declutter card  
           Living Room:
             type: "custom:mod-card"
             style: |
-              ha-card {
-                background: rgba(0,0,0,.3);
-                padding: 10px;
-                border-radius: 35px;
-                margin-top: none;
+              ha-card { 
+                background: rgba(0,0,0,.3); 
+                padding: 10px; 
+                border-radius: 35px; 
+                margin-top: none; 
                 }
             card:
               type: grid
@@ -788,15 +588,14 @@ cards:
           #################################################################
           ## Kitchen Controls
           #################################################################
-          # TODO: #295 Create Room Controls declutter card  
           Kitchen:
             type: "custom:mod-card"
             style: |
-              ha-card {
-                background: rgba(0,0,0,.3);
-                padding: 10px;
-                border-radius: 35px;
-                margin-top: none;
+              ha-card { 
+                background: rgba(0,0,0,.3); 
+                padding: 10px; 
+                border-radius: 35px; 
+                margin-top: none; 
                 }
             card:
               type: grid
@@ -890,15 +689,14 @@ cards:
           #################################################################
           ## Loft Controls
           #################################################################
-          # TODO: #295 Create Room Controls declutter card  
           Loft:
             type: "custom:mod-card"
             style: |
-              ha-card {
-                background: rgba(0,0,0,.3);
-                padding: 10px;
-                border-radius: 35px;
-                margin-top: none;
+              ha-card { 
+                background: rgba(0,0,0,.3); 
+                padding: 10px; 
+                border-radius: 35px; 
+                margin-top: none; 
                 }
             card:
               type: grid

@@ -1,0 +1,29 @@
+#################################################################
+## Room Button
+#################################################################
+card:
+  type: "custom:button-card"
+  entity: '[[light]]'
+  custom_fields:
+    s2: |
+      [[[
+        var sensor_state = (states['[[sensor]]'].state);
+        if (sensor_state == "on") return "[[message_on]]";
+        else return "[[message_off]]" 
+      ]]]
+  icon: |
+    [[[ 
+      var sensor_state = (states['[[sensor]]'].state);
+      if (sensor_state == "on") 
+        return "[[icon_state]]"; 
+      else 
+        return "[[icon_default]]" 
+    ]]]
+  name: '[[room]]'
+  template:
+    - room_layout
+    - room_states
+    - room_states_on
+    - room
+  triggers_update:
+    - '[[sensor]]'
