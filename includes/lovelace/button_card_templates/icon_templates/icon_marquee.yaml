@@ -3,7 +3,7 @@
 #################################################################
 styles:
   custom_fields:
-    icon:
+    icon_marquee:
       - width: 5.25em
       - left: 6%
       - top: 11%
