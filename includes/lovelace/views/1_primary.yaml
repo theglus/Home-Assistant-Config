@@ -267,7 +267,6 @@ cards:
                 #----------------------------------------------------------------
                 - type: "custom:button-card"
                   entity: light.hallway_marquee
-                  # TODO: #288 Create icon_marquee button template
                   template:
                     - light
                     - icon_marquee
@@ -326,7 +325,6 @@ cards:
                 - type: "custom:button-card"
                   entity: light.potter_lamp
                   name: Lamp
-                  # TODO: #290 Create icon_lamp button template
                   template:
                     - light-color
                     - icon_lamp
@@ -336,7 +334,6 @@ cards:
                 - type: "custom:button-card"
                   entity: light.stair
                   name: Lamp
-                  # TODO: #292 Create icon_spot button template
                   template:
                     - light
                     - icon_spot
