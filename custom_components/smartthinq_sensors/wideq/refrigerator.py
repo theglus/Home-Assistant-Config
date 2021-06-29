@@ -44,11 +44,27 @@ REFRTEMPUNIT = {
 #     "\u02daC": UNITTEMPMODES.Celsius,
 # }
 
+DEFAULT_FRIDGE_RANGE_C = [1, 10]
+DEFAULT_FRIDGE_RANGE_F = [30, 45]
+DEFAULT_FREEZER_RANGE_C = [-24, -14]
+DEFAULT_FREEZER_RANGE_F = [-8, 6]
+
 REFR_ROOT_DATA = "refState"
 REFR_CTRL_BASIC = ["Control", "basicCtrl"]
 
 REFR_STATE_ECO_FRIENDLY = ["EcoFriendly", "ecoFriendly"]
+REFR_STATE_ICE_PLUS = ["IcePlus", ""]
+REFR_STATE_EXPRESS_FRIDGE = ["", "expressFridge"]
+REFR_STATE_EXPRESS_MODE = ["", "expressMode"]
+REFR_STATE_FRIDGE_TEMP = ["TempRefrigerator", "fridgeTemp"]
+REFR_STATE_FREEZER_TEMP = ["TempFreezer", "freezerTemp"]
+
 CMD_STATE_ECO_FRIENDLY = [REFR_CTRL_BASIC, ["SetControl", "basicCtrl"], REFR_STATE_ECO_FRIENDLY]
+CMD_STATE_ICE_PLUS = [REFR_CTRL_BASIC, ["SetControl", "basicCtrl"], REFR_STATE_ICE_PLUS]
+CMD_STATE_EXPRESS_FRIDGE = [REFR_CTRL_BASIC, ["SetControl", "basicCtrl"], REFR_STATE_EXPRESS_FRIDGE]
+CMD_STATE_EXPRESS_MODE = [REFR_CTRL_BASIC, ["SetControl", "basicCtrl"], REFR_STATE_EXPRESS_MODE]
+CMD_STATE_FRIDGE_TEMP = [REFR_CTRL_BASIC, ["SetControl", "basicCtrl"], REFR_STATE_FRIDGE_TEMP]
+CMD_STATE_FREEZER_TEMP = [REFR_CTRL_BASIC, ["SetControl", "basicCtrl"], REFR_STATE_FREEZER_TEMP]
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -57,6 +73,11 @@ class RefrigeratorDevice(Device):
     """A higher-level interface for a dryer."""
     def __init__(self, client, device):
         super().__init__(client, device, RefrigeratorStatus(self, None))
+        self._temp_unit = None
+        self._fridge_temps = None
+        self._fridge_ranges = None
+        self._freezer_temps = None
+        self._freezer_ranges = None
 
     def _get_feature_info(self, item_key):
         config = self.model_info.config_value("visibleItems")
@@ -72,7 +93,7 @@ class RefrigeratorDevice(Device):
                 return item
         return None
 
-    def _get_feature_title(self, item_key, def_value):
+    def _get_feature_title(self, feature_name, item_key):
         item_info = self._get_feature_info(item_key)
         if not item_info:
             return None
@@ -82,8 +103,8 @@ class RefrigeratorDevice(Device):
             title_key = "Title"
         title_value = item_info.get(title_key)
         if not title_value:
-            return def_value
-        return FEATURE_DESCR.get(title_value, def_value)
+            return feature_name
+        return FEATURE_DESCR.get(title_value, feature_name)
 
     def _prepare_command_v1(self, cmd, key, value):
         """Prepare command for specific ThinQ1 device."""
@@ -98,12 +119,14 @@ class RefrigeratorDevice(Device):
                 if dt_key == key:
                     dt_value = value
                 str_data = str_data.replace(f"{{{{{dt_key}}}}}", dt_value)
-            _LOGGER.debug("Command data content: %s", str_data)
+
+            json_data = json.loads(str_data)
+            _LOGGER.debug("Command data content: %s", str(json_data))
             if self.model_info.binary_control_data:
                 cmd["format"] = "B64"
-                str_list = json.loads(str_data)
-                str_data = base64.b64encode(bytes(str_list)).decode("ascii")
-            cmd[data_key] = str_data
+                json_data = base64.b64encode(bytes(json_data)).decode("ascii")
+            cmd[data_key] = json_data
+
         return cmd
 
     def _prepare_command_v2(self, cmd, key, value):
@@ -132,17 +155,216 @@ class RefrigeratorDevice(Device):
             return self._prepare_command_v2(cmd, key, value)
         return self._prepare_command_v1(cmd, key, value)
 
-    def set_eco_friendly(self, turn_on=False):
-        """Switch the echo friendly status."""
+    def _set_temp_unit(self, unit=None):
+        """Set the configured temperature unit."""
+        if unit and unit != STATE_OPTIONITEM_NONE:
+            if not self._temp_unit or unit != self._temp_unit:
+                self._temp_unit = unit
+                self._fridge_temps = None
+                self._freezer_temps = None
+        return
 
-        status_key = self._get_state_key(REFR_STATE_ECO_FRIENDLY)
+    def _get_temp_unit(self, unit=None):
+        """Get the configured temperature unit."""
+        if unit:
+            self._set_temp_unit(unit)
+        return self._temp_unit
+
+    def _get_temps_v1(self, key):
+        """Get valid values for temps for V2 models"""
+        unit = self._get_temp_unit()
+        if unit:
+            unit_key = "_F" if unit == UNIT_TEMP_FAHRENHEIT else "_C"
+            if self.model_info.value_exist(key + unit_key):
+                key = key + unit_key
+        value_type = self.model_info.value_type(key)
+        if not value_type or value_type not in ("enum", "Enum"):
+            return {}
+        return self.model_info.value(key).options
+
+    def _get_temps_v2(self, key, unit_key=None):
+        """Get valid values for temps for V1 models"""
+        if unit_key:
+            ref_key = self.model_info.target_key(
+                key, unit_key, "tempUnit"
+            )
+            key = ref_key or key
+        value_type = self.model_info.value_type(key)
+        if not value_type or value_type not in ("enum", "Enum"):
+            return {}
+        ret_val = {}
+        data = self.model_info.data_root(key)
+        temp_values = self.model_info.value(data)
+        for key, value in temp_values.items():
+            ref_val = value.get("label")
+            if not ref_val or ref_val == "IGNORE":
+                continue
+            ret_val[key] = ref_val
+        return ret_val
+
+    @staticmethod
+    def _get_temp_ranges(temps):
+        """Get min and max values inside a dict."""
+        min_val = 100
+        max_val = -100
+        for value in temps.values():
+            try:
+                int_val = int(value)
+            except ValueError:
+                continue
+            if int_val < min_val:
+                min_val = int_val
+            if int_val > max_val:
+                max_val = int_val
+        if min_val > max_val:
+            return None
+        return [min_val, max_val]
+
+    @staticmethod
+    def _get_temp_key(temps, value):
+        """Get temp_key based on his value."""
+        if not temps:
+            return None
+
+        str_val = str(int(value))
+        for key, temp_val in temps.items():
+            if str_val == temp_val:
+                try:
+                    return int(key)
+                except ValueError:
+                    return None
+        return None
+
+    def get_fridge_temps(self, unit=None, unit_key=None):
+        """Get valid values for fridge temp"""
+        self._set_temp_unit(unit)
+        if self._fridge_temps is None:
+            key = self._get_state_key(REFR_STATE_FRIDGE_TEMP)
+            if self.model_info.is_info_v2:
+                self._fridge_temps = self._get_temps_v2(key, unit_key)
+            else:
+                self._fridge_temps = self._get_temps_v1(key)
+            self._fridge_ranges = self._get_temp_ranges(self._fridge_temps)
+        return self._fridge_temps
+
+    def get_freezer_temps(self, unit=None, unit_key=None):
+        """Get valid values for freezer temp"""
+        self._set_temp_unit(unit)
+        if self._freezer_temps is None:
+            key = self._get_state_key(REFR_STATE_FREEZER_TEMP)
+            if self.model_info.is_info_v2:
+                self._freezer_temps = self._get_temps_v2(key, unit_key)
+            else:
+                self._freezer_temps = self._get_temps_v1(key)
+            self._freezer_ranges = self._get_temp_ranges(self._freezer_temps)
+        return self._freezer_temps
+
+    @property
+    def target_temperature_step(self):
+        """Return target temperature step used."""
+        return 1
+
+    @property
+    def fridge_target_temp_range(self):
+        """Return range value for fridge target temperature."""
+        if self._fridge_ranges is None:
+            unit = self._get_temp_unit() or STATE_OPTIONITEM_NONE
+            if unit == UNIT_TEMP_FAHRENHEIT:
+                return DEFAULT_FRIDGE_RANGE_F
+            return DEFAULT_FRIDGE_RANGE_C
+        return self._fridge_ranges
+
+    @property
+    def freezer_target_temp_range(self):
+        """Return range value for freezer target temperature."""
+        if self._freezer_ranges is None:
+            unit = self._get_temp_unit() or STATE_OPTIONITEM_NONE
+            if unit == UNIT_TEMP_FAHRENHEIT:
+                return DEFAULT_FREEZER_RANGE_F
+            return DEFAULT_FREEZER_RANGE_C
+        return self._freezer_ranges
+
+    @property
+    def set_values_allowed(self):
+        if not self._status or not self._status.is_on:
+            return False
+        if self._status.eco_friendly_enabled:
+            return False
+        return True
+
+    def _set_feature(self, turn_on: bool, state_key, cmd_key):
+        """Switch a feature."""
+
+        status_key = self._get_state_key(state_key)
+        if not status_key:
+            return
         status_name = LABEL_BIT_ON if turn_on else LABEL_BIT_OFF
         status_value = self.model_info.enum_value(status_key, status_name)
         if not status_value:
             return
-        keys = self._get_cmd_keys(CMD_STATE_ECO_FRIENDLY)
+        keys = self._get_cmd_keys(cmd_key)
         self.set(keys[0], keys[1], key=keys[2], value=status_value)
         self._status.update_status(status_key, status_value, True)
+
+    def set_eco_friendly(self, turn_on=False):
+        """Switch the echo friendly status."""
+        self._set_feature(turn_on, REFR_STATE_ECO_FRIENDLY, CMD_STATE_ECO_FRIENDLY)
+
+    def set_ice_plus(self, turn_on=False):
+        """Switch the ice plus status."""
+        if self.model_info.is_info_v2:
+            return
+        if not self.set_values_allowed:
+            return
+        self._set_feature(turn_on, REFR_STATE_ICE_PLUS, CMD_STATE_ICE_PLUS)
+
+    def set_express_fridge(self, turn_on=False):
+        """Switch the express fridge status."""
+        if not self.model_info.is_info_v2:
+            return
+        if not self.set_values_allowed:
+            return
+        self._set_feature(turn_on, REFR_STATE_EXPRESS_FRIDGE, CMD_STATE_EXPRESS_FRIDGE)
+
+    def set_express_mode(self, turn_on=False):
+        """Switch the express mode status."""
+        if not self.model_info.is_info_v2:
+            return
+        if not self.set_values_allowed:
+            return
+        self._set_feature(turn_on, REFR_STATE_EXPRESS_MODE, CMD_STATE_EXPRESS_MODE)
+
+    def set_fridge_target_temp(self, temp):
+        """Set the fridge target temperature."""
+        if not self.set_values_allowed:
+            return
+
+        temp_key = self._get_temp_key(self._fridge_temps, temp)
+        if not temp_key:
+            raise ValueError(f"Target fridge temperature not valid: {temp}")
+        if not self.model_info.is_info_v2:
+            temp_key = str(temp_key)
+
+        status_key = self._get_state_key(REFR_STATE_FRIDGE_TEMP)
+        keys = self._get_cmd_keys(CMD_STATE_FRIDGE_TEMP)
+        self.set(keys[0], keys[1], key=keys[2], value=temp_key)
+        self._status.update_status(status_key, temp_key, False)
+
+    def set_freezer_target_temp(self, temp):
+        """Set the freezer target temperature."""
+        if not self.set_values_allowed:
+            return
+
+        temp_key = self._get_temp_key(self._freezer_temps, temp)
+        if not temp_key:
+            raise ValueError(f"Target freezer temperature not valid: {temp}")
+        if not self.model_info.is_info_v2:
+            temp_key = str(temp_key)
+
+        status_key = self._get_state_key(REFR_STATE_FREEZER_TEMP)
+        keys = self._get_cmd_keys(CMD_STATE_FREEZER_TEMP)
+        self.set(keys[0], keys[1], key=keys[2], value=temp_key)
+        self._status.update_status(status_key, temp_key, False)
 
     def reset_status(self):
         self._status = RefrigeratorStatus(self, None)
@@ -173,7 +395,7 @@ class RefrigeratorStatus(DeviceStatus):
 
     def _get_eco_friendly_state(self):
         if self._eco_friendly_state is None:
-            state = self.lookup_enum(["EcoFriendly", "ecoFriendly"])
+            state = self.lookup_enum(REFR_STATE_ECO_FRIENDLY)
             if not state:
                 self._eco_friendly_state = ""
             else:
@@ -205,7 +427,7 @@ class RefrigeratorStatus(DeviceStatus):
         config = self._get_default_index(key_mode, key_index)
         if not config or not isinstance(config, dict):
             return None
-        unit = self._get_temp_unit()
+        unit = self._get_temp_unit() or STATE_OPTIONITEM_NONE
         unit_key = "tempUnit_F" if unit == UNIT_TEMP_FAHRENHEIT else "tempUnit_C"
         return config.get(unit_key)
 
@@ -213,59 +435,24 @@ class RefrigeratorStatus(DeviceStatus):
         if not self._temp_unit:
             temp_unit = self.lookup_enum(["TempUnit", "tempUnit"])
             if not temp_unit:
-                self._temp_unit = STATE_OPTIONITEM_NONE
-            else:
-                self._temp_unit = (
-                    REFRTEMPUNIT.get(temp_unit, UNITTEMPMODES.Celsius)
-                ).value
+                return None
+            self._temp_unit = (
+                REFRTEMPUNIT.get(temp_unit, UNITTEMPMODES.Celsius)
+            ).value
         return self._temp_unit
 
-    def _get_temp_val_v1(self, key):
+    def _get_temp_key(self, key):
         temp_key = None
         if self.eco_friendly_enabled:
             temp_key = self._get_default_temp_index("ecoFriendlyDefaultIndex", key)
         if temp_key is None:
-            temp_key = self._data.get(key)
+            if self.is_info_v2:
+                temp_key = self.int_or_none(self._data.get(key))
+            else:
+                temp_key = self._data.get(key)
             if temp_key is None:
-                return STATE_OPTIONITEM_NONE
-        temp_key = str(temp_key)
-        value_type = self._device.model_info.value_type(key)
-        if value_type and value_type == "Enum":
-            temp = self.lookup_enum(key)
-            if not temp:
-                return temp_key
-            if temp != temp_key:
-                return temp
-        unit = self._get_temp_unit()
-        unit_key = "_F" if unit == UNIT_TEMP_FAHRENHEIT else "_C"
-        result = self._device.model_info.enum_name(
-            key + unit_key, temp_key
-        )
-        if not result:
-            return temp_key
-        return result
-
-    def _get_temp_val_v2(self, key):
-        temp = None
-        if self.eco_friendly_enabled:
-            temp = self._get_default_temp_index("ecoFriendlyDefaultIndex", key)
-        if temp is None:
-            temp = self.int_or_none(self._data.get(key))
-            if not temp:
-                return STATE_OPTIONITEM_NONE
-        temp = str(temp)
-
-        unit = self._data.get("tempUnit")
-        if not unit:
-            return temp
-        ref_key = self._device.model_info.target_key(
-            key, unit, "tempUnit"
-        )
-        if not ref_key:
-            return temp
-        return self._device.model_info.enum_name(
-            ref_key, temp
-        )
+                return None
+        return str(temp_key)
 
     def update_status(self, key, value, upd_features=False):
         if not super().update_status(key, value):
@@ -280,20 +467,34 @@ class RefrigeratorStatus(DeviceStatus):
         return self.has_data
 
     @property
-    def temp_refrigerator(self):
+    def temp_fridge(self):
+        index = 0
+        unit_key = None
         if self.is_info_v2:
-            return self._get_temp_val_v2("fridgeTemp")
-        return self._get_temp_val_v1("TempRefrigerator")
+            unit_key = self._data.get("tempUnit")
+            index = 1
+        temp_key = self._get_temp_key(REFR_STATE_FRIDGE_TEMP[index])
+        if temp_key is None:
+            return STATE_OPTIONITEM_NONE
+        temp_lists = self._device.get_fridge_temps(self._get_temp_unit(), unit_key)
+        return temp_lists.get(temp_key, temp_key)
 
     @property
     def temp_freezer(self):
+        index = 0
+        unit_key = None
         if self.is_info_v2:
-            return self._get_temp_val_v2("freezerTemp")
-        return self._get_temp_val_v1("TempFreezer")
+            unit_key = self._data.get("tempUnit")
+            index = 1
+        temp_key = self._get_temp_key(REFR_STATE_FREEZER_TEMP[index])
+        if temp_key is None:
+            return STATE_OPTIONITEM_NONE
+        temp_lists = self._device.get_freezer_temps(self._get_temp_unit(), unit_key)
+        return temp_lists.get(temp_key, temp_key)
 
     @property
     def temp_unit(self):
-        return self._get_temp_unit()
+        return self._get_temp_unit() or STATE_OPTIONITEM_NONE
 
     @property
     def door_opened_state(self):
@@ -314,43 +515,40 @@ class RefrigeratorStatus(DeviceStatus):
 
     @property
     def eco_friendly_state(self):
-        if self.is_info_v2:
-            key = "ecoFriendly"
-        else:
-            key = "EcoFriendly"
+        key = REFR_STATE_ECO_FRIENDLY[1 if self.is_info_v2 else 0]
         status = self._get_eco_friendly_state()
         return self._update_feature(
-            key, status, True, FEAT_ECOFRIENDLY
+            FEAT_ECOFRIENDLY, status, True, key
         )
 
     @property
     def ice_plus_status(self):
         if self.is_info_v2:
             return None
-        key = "IcePlus"
+        key = REFR_STATE_ICE_PLUS[0]
         status = self.lookup_enum(key)
         return self._update_feature(
-            key, status, True, FEAT_ICEPLUS
+            FEAT_ICEPLUS, status, True, key
         )
 
     @property
     def express_fridge_status(self):
         if not self.is_info_v2:
             return None
-        key = "expressFridge"
+        key = REFR_STATE_EXPRESS_FRIDGE[1]
         status = self.lookup_enum(key)
         return self._update_feature(
-            key, status, True, FEAT_EXPRESSFRIDGE
+            FEAT_EXPRESSFRIDGE, status, True, key
         )
 
     @property
     def express_mode_status(self):
         if not self.is_info_v2:
             return None
-        key = "expressMode"
+        key = REFR_STATE_EXPRESS_MODE[1]
         status = self.lookup_enum(key)
         return self._update_feature(
-            key, status, True, FEAT_EXPRESSMODE
+            FEAT_EXPRESSMODE, status, True, key
         )
 
     @property
@@ -368,7 +566,7 @@ class RefrigeratorStatus(DeviceStatus):
             key = "SmartSavingMode"
         status = self.lookup_enum(key)
         return self._update_feature(
-            key, status, True, FEAT_SMARTSAVINGMODE
+            FEAT_SMARTSAVINGMODE, status, True, key
         )
 
     @property
@@ -379,7 +577,7 @@ class RefrigeratorStatus(DeviceStatus):
             key = "FreshAirFilter"
         status = self.lookup_enum(key)
         return self._update_feature(
-            key, status, True, FEAT_FRESHAIRFILTER
+            FEAT_FRESHAIRFILTER, status, True, key
         )
 
     @property
@@ -400,7 +598,7 @@ class RefrigeratorStatus(DeviceStatus):
             counter = self._data.get(key)
         value = "N/A" if not counter else counter
         return self._update_feature(
-            key, value, False, FEAT_WATERFILTERUSED_MONTH
+            FEAT_WATERFILTERUSED_MONTH, value, False, key
         )
 
     @property
