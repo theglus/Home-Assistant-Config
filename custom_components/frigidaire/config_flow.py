@@ -19,15 +19,15 @@ _LOGGER = logging.getLogger(__name__)
 STEP_USER_DATA_SCHEMA = vol.Schema({"username": str, "password": str})
 
 
-async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> dict[str, Any]:
+async def validate_input(hass: HomeAssistant, data: dict[str, Any]):
     """Validate the user input allows us to connect.
 
     Data has the keys from STEP_USER_DATA_SCHEMA with values provided by the user.
     """
 
     def setup(username: str, password: str) -> list[frigidaire.Appliance]:
-        client = frigidaire.Frigidaire(username, password)
         try:
+            client = frigidaire.Frigidaire(username, password)
             return client.get_appliances()
         except frigidaire.FrigidaireException as err:
             raise InvalidAuth from err
@@ -39,6 +39,8 @@ async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> dict[str,
     if len(appliances) == 0:
         raise CannotConnect
 
+    # Validation Succeeded
+    return True
 
 
 class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
