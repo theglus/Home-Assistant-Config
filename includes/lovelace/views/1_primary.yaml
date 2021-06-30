@@ -405,8 +405,8 @@ cards:
             #----------------------------------------------------------------
             # TODO: #251 Create dryer dashboard button
             - type: "custom:button-card"
-              entity: sensor.washer
-              name: Washer
+              entity: sensor.dryer
+              name: Dryer
               custom_fields:
                 icon_dryer: >
                   <svg viewBox="0 0 50 50">
