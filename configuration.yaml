@@ -92,8 +92,8 @@ browser_mod:
   devices:
     a314828b-6ae30387:
       name: "Lilt MacBook Pro"
-    8fee92b6-03b9b09b:
-      name: "Pixel 3"
+    3c128bb5-c3057093:
+      name: "Lenovo M8"
   disable:
     - all
 
