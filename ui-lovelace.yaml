@@ -1,4 +1,4 @@
-background: center / 150% no-repeat url("/local/img/valley.svg") fixed
+background: center / cover 150% no-repeat url("/local/img/valley.svg") fixed
 button_card_templates: !include_dir_named includes/lovelace/button_card_templates
 decluttering_templates: !include_dir_named includes/lovelace/decluttering_templates
 title: Loft
