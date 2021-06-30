@@ -2,8 +2,7 @@ order:
   - item: Overview
   - item: File Editor
   - item: HACS
-  - item: Portainer
-  - item: Terminal & SSH
+  - item: Terminal
   - new_item: true
     item: Entities
     href: /config/entities
