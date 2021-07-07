@@ -7,6 +7,7 @@ sidebar:
   digitalClock: true
   twelveHourVersion: true
   period: true
+  date: true
   width:
     mobile: 0
     tablet: 25
@@ -28,53 +29,9 @@ sidebar:
       navigation_path: "/lovelace/ha"
       name: "System"
       active: true
-  bottomCard:
-    cardOptions:
-      type: glance
-      entities:
-        - entity: zone.home
-          icon: 'mdi:home-assistant'
-          tap_action:
-            action: call-service
-            service: homeassistant.restart
-        - entity: zone.home
-          icon: 'mdi:cogs'
-          tap_action:
-            action: call-service
-            service: automation.reload
-        - entity: zone.home
-          icon: 'mdi:script-text'
-          tap_action:
-            action: call-service
-            service: script.reload
-        - entity: zone.home
-          icon: 'mdi:food-apple'
-          tap_action:
-            action: call-service
-            service: homeassistant.reload_core_config
-        - entity: zone.home
-          icon: 'mdi:reload'
-          tap_action:
-            action: call-service
-            service: lovelace.reload_resources
-      show_state: false
-      show_name: false
   style: |
     :host {
         --sidebar-background: rgba(0,0,0,.3);
-    }
-  cardStyle: |
-    :host {
-      width: 100%;
-      position: absolute;
-      bottom: 0;
-      left: 0;
-    }
-    ha-card { 
-      background: transparent;
-      color: rgba(12,123,5,.3);
-      overflow: hidden !important;
-      box-shadow: none !important;
     }
 button_card_templates: !include_dir_named includes/lovelace/button_card_templates
 decluttering_templates: !include_dir_named includes/lovelace/decluttering_templates
