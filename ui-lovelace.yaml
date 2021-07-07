@@ -64,6 +64,12 @@ sidebar:
         --sidebar-background: rgba(0,0,0,.3);
     }
   cardStyle: |
+    :host {
+      width: 100%;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+    }
     ha-card { 
       background: transparent;
       color: rgba(0,0,0,.3);
