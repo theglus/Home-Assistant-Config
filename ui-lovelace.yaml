@@ -8,6 +8,7 @@ sidebar:
   twelveHourVersion: true
   period: true
   date: true
+  dateFormat: DDDD MMMM
   width:
     mobile: 0
     tablet: 25
