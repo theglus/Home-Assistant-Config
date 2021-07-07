@@ -29,19 +29,19 @@ sidebar:
       name: "System"
       active: true
   bottomCard:
-    type: vertical-stack
+    type: grid
+    columns: 5
+    cards:
     cardOptions:
       cards:
-        - type: horizontal-stack
-          cards:
-          - type: "custom:button-card"
-            entity: zone.home
-            icon: 'mdi:home-assistant'
-            show_state: false
-            show_name: false
-            tap_action:
-              action: call-service
-              service: homeassistant.restart
+        - type: "custom:button-card"
+          entity: zone.home
+          icon: 'mdi:home-assistant'
+          show_state: false
+          show_name: false
+          tap_action:
+            action: call-service
+            service: homeassistant.restart
         - type: "custom:button-card"   
           entity: zone.home
           icon: 'mdi:cogs'
