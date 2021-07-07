@@ -77,10 +77,10 @@ sidebar:
     :host {
         --sidebar-background: rgba(0,0,0,.3);
     }
-  cardStyle: |
-    ha-card { 
-      background: rgba(0,0,0,.3);
-    }
+  # cardStyle: |
+  #   ha-card { 
+  #     background: rgba(0,0,0,.3);
+  #   }
 button_card_templates: !include_dir_named includes/lovelace/button_card_templates
 decluttering_templates: !include_dir_named includes/lovelace/decluttering_templates
 title: Loft
