@@ -65,10 +65,10 @@ sidebar:
     }
   cardStyle: |
     ha-card { 
-    background: transparent;
-    color: rgba(0,0,0,.3);
-    overflow: hidden !important;
-    box-shadow: none !important;
+      background: transparent;
+      color: rgba(0,0,0,.3);
+      overflow: hidden !important;
+      box-shadow: none !important;
     }
 button_card_templates: !include_dir_named includes/lovelace/button_card_templates
 decluttering_templates: !include_dir_named includes/lovelace/decluttering_templates
