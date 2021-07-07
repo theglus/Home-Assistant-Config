@@ -32,6 +32,9 @@ sidebar:
     type: grid
     columns: 5
     cards:
+    style: |
+      ha-card { 
+        background: rgba(0,0,0,.3); 
     cardOptions:
       cards:
         - type: "custom:button-card"
