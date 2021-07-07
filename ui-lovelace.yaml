@@ -72,7 +72,7 @@ sidebar:
     }
   cardStyle: |
     :host {
-      background-color: rgba(213,4,23,.3)!important;
+      border: none;
     }
 button_card_templates: !include_dir_named includes/lovelace/button_card_templates
 decluttering_templates: !include_dir_named includes/lovelace/decluttering_templates
