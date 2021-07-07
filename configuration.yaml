@@ -79,6 +79,10 @@ lovelace:
     # https://github.com/thomasloven/lovelace-state-switch
     - url: /hacsfiles/lovelace-state-switch/state-switch.js                       
       type: module
+    # Thermostat Popup Card
+    # https://github.com/DBuit/thermostat-popup-card
+    - url: /hacsfiles/thermostat-popup-card/thermostat-popup-card.js
+      type: module
     # Vacuum Card
     # https://github.com/denysdovhan/vacuum-card
     - url: /hacsfiles/vacuum-card/vacuum-card.js                                  
