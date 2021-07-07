@@ -17,18 +17,22 @@ sidebar:
     - action: navigate
       navigation_path: "/lovelace/default_view"
       name: "Home"
+      icon: "mdi:home"
       active: true
     - action: navigate
       navigation_path: "/lovelace/winston"
       name: "Winston"
+      icon: "mdi:robot-vacuum-variant"
       active: true
     - action: navigate
       navigation_path: "/lovelace/home-theater"
       name: "Theater"
+      icon: "mdi:theater"
       active: true
     - action: navigate
       navigation_path: "/lovelace/ha"
       name: "System"
+      icon: "mdi:home-assistant"
       active: true
   style: |
     :host {
