@@ -2,6 +2,78 @@ background: var(--background-image)
 # background: center / cover no-repeat url("/local/img/valley.svg") fixed
 kiosk_mode: 
   hide_header: true
+sidebar:
+  hideTopMenu: true
+  digitalClock: true
+  twelveHourVersion: true
+  period: true
+  width:
+    mobile: 0
+    tablet: 25
+    desktop: 25
+  sidebarMenu:
+    - action: navigate
+      navigation_path: "/lovelace/default_view"
+      name: "Home"
+      active: true
+    - action: navigate
+      navigation_path: "/lovelace/winston"
+      name: "Winston"
+      active: true
+    - action: navigate
+      navigation_path: "/lovelace/home-theater"
+      name: "Theater"
+      active: true
+    - action: navigate
+      navigation_path: "/lovelace/ha"
+      name: "System"
+      active: true
+  bottomCard:
+    cardOptions:
+      type: glance
+      entities:
+        - entity: zone.home
+          icon: 'mdi:home-assistant'
+          show_state: false
+          show_name: false
+          tap_action:
+            action: call-service
+            service: homeassistant.restart
+        - entity: zone.home
+          icon: 'mdi:cogs'
+          name: Automation
+          tap_action:
+            action: call-service
+            service: automation.reload
+        - entity: zone.home
+          icon: 'mdi:script-text'
+          name: Script
+          tap_action:
+            action: call-service
+            service: script.reload
+        - entity: zone.home
+          icon: 'mdi:food-apple'
+          name: Core
+          tap_action:
+            action: call-service
+            service: homeassistant.reload_core_config
+        - entity: zone.home
+          icon: 'mdi:reload'
+          show_state: false
+          show_name: false
+          tap_action:
+            action: call-service
+            service: lovelace.reload_resources
+      show_state: false
+      show_name: false
+  style: |
+    :host {
+        --sidebar-background: rgba(0,0,0,.3);
+    }
+  cardStyle: |
+    :host {
+      background-color: rgba(213,4,23,.3)!important;
+    }
 button_card_templates: !include_dir_named includes/lovelace/button_card_templates
 decluttering_templates: !include_dir_named includes/lovelace/decluttering_templates
 title: Loft

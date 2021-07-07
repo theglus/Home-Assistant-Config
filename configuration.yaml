@@ -63,6 +63,10 @@ lovelace:
     # https://github.com/jcwillox/lovelace-paper-buttons-row
     - url: /hacsfiles/lovelace-paper-buttons-row/paper-buttons-row.js             
       type: module
+    # Sidebar Card
+    # https://github.com/DBuit/sidebar-card
+    - url: /hacsfiles/sidebar-card/sidebar-card.js
+      type: module
     # Slider Entity Row
     # https://github.com/thomasloven/lovelace-slider-entity-row
     - url: /hacsfiles/lovelace-slider-entity-row/slider-entity-row.js             
