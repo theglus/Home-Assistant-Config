@@ -29,35 +29,42 @@ sidebar:
       name: "System"
       active: true
   bottomCard:
+    type: vertical-stack
     cardOptions:
-      type: glance
-      entities:
-        - entity: zone.home
-          icon: 'mdi:home-assistant'
-          show_state: false
-          show_name: false
-          tap_action:
-            action: call-service
-            service: homeassistant.restart
-        - entity: zone.home
+      cards:
+        - type: horizontal-stack
+          cards:
+          - type: "custom:button-card"
+            entity: zone.home
+            icon: 'mdi:home-assistant'
+            show_state: false
+            show_name: false
+            tap_action:
+              action: call-service
+              service: homeassistant.restart
+        - type: "custom:button-card"   
+          entity: zone.home
           icon: 'mdi:cogs'
           name: Automation
           tap_action:
             action: call-service
             service: automation.reload
-        - entity: zone.home
+        - type: "custom:button-card"   
+          entity: zone.home
           icon: 'mdi:script-text'
           name: Script
           tap_action:
             action: call-service
             service: script.reload
-        - entity: zone.home
+        - type: "custom:button-card"   
+          entity: zone.home
           icon: 'mdi:food-apple'
           name: Core
           tap_action:
             action: call-service
             service: homeassistant.reload_core_config
-        - entity: zone.home
+        - type: "custom:button-card"   
+          entity: zone.home
           icon: 'mdi:reload'
           show_state: false
           show_name: false
