@@ -53,5 +53,5 @@ camera:
       seconds: 10
     auto_update: true
   - platform: generic
-    still_image_url: http://192.168.86.20:2323/?cmd=getCamshot&password=
-    password: !secret fkb_password
+    name: Security
+    still_image_url: !secret fkb_cam
