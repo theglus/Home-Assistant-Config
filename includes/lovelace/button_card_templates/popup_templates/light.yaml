@@ -41,6 +41,32 @@
             cards:
               - type: custom:button-card
                 styles:
+                  card: [background: "#e0f2f4"]
+                tap_action:
+                  haptic: success
+                  action: call-service
+                  service: light.turn_on
+                  service_data:
+                    entity_id: "[[[ return entity.entity_id ]]]"
+                    color_temp: 250
+                template: color_action
+              - type: custom:button-card
+                styles:
+                  card: [background: "#fefaec"]
+                tap_action:
+                  haptic: success
+                  action: call-service
+                  service: light.turn_on
+                  service_data:
+                    entity_id: "[[[ return entity.entity_id ]]]"
+                    color_temp: 333
+                template: color_action
+          - type: custom:hui-element
+            card_type: horizontal-stack
+            style: "#root { justify-content: center; margin-bottom: 1em; }"
+            cards:
+              - type: custom:button-card
+                styles:
                   card: [background: "#ffe7c0"]
                 tap_action:
                   haptic: success
