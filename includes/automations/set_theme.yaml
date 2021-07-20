@@ -1,0 +1,13 @@
+#################################################################
+## Set Theme 
+#
+## Set theme at Home Assistant start.
+#################################################################
+alias: 'Set theme at startup'
+trigger:
+  platform: homeassistant
+  event: start
+action:
+  service: frontend.set_theme
+  data:
+    name: ios-dark-mode
