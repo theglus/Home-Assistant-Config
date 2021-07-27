@@ -809,6 +809,19 @@ cards:
                     - light
                     - icon_lamp
                 #----------------------------------------------------------------
+                ## Kirby
+                #----------------------------------------------------------------
+                # TODO: Loft Dyson button
+                - type: "custom:button-card"
+                  entity: fan.kirby
+                  icon: "mdi:fan"
+                  name: Dyson
+                  # TODO:  Create icon_fan button template
+                  custom_fields:
+                    icon_spot: *icon_fan
+                  styles: *icon_fan_styles
+                  template: base                  
+                #----------------------------------------------------------------
                 ## Nest Hub Mini
                 #----------------------------------------------------------------
                 # TODO: #258 Nest Hub Mini button
