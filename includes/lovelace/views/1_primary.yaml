@@ -397,7 +397,7 @@ cards:
                     </svg>
                 styles:
                   custom_fields:
-                    icon_dryer:
+                    icon_washer:
                       [top: 11%, left: 6%, width: 5.25em, position: absolute]
                 template: base                    
             #----------------------------------------------------------------
