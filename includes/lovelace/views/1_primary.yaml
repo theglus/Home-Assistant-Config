@@ -486,6 +486,7 @@ cards:
                 - type: "custom:button-card"
                   entity: switch.kettle
                   icon: "mdi:fan"
+                  name: Air Circulator
                   # TODO:  Create icon_fan button template
                   custom_fields:
                     icon_fan: >
