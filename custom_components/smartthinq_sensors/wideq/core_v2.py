@@ -18,12 +18,15 @@ from . import(
     as_list,
     gen_uuid,
     AuthHTTPAdapter,
+    CoreVersion,
     DATA_ROOT,
     DEFAULT_COUNTRY,
     DEFAULT_LANGUAGE,
 )
 from . import core_exceptions as exc
 from .device import DeviceInfo, DEFAULT_TIMEOUT
+
+CORE_VERSION = CoreVersion.CoreV2
 
 # v2
 V2_API_KEY = "VGhpblEyLjAgU0VSVklDRQ=="
@@ -554,7 +557,7 @@ class Session(object):
             {"cmd": "Mon", "cmdOpt": "Stop", "deviceId": device_id, "workId": work_id},
         )
 
-    def set_device_controls(self, device_id, ctrl_key, command, value="", data=""):
+    def set_device_controls(self, device_id, ctrl_key, command=None, value=None, data=None):
         """Control a device's settings.
 
         `values` is a key/value map containing the settings to update.
@@ -567,8 +570,8 @@ class Session(object):
             payload = {
                 "cmd": ctrl_key,
                 "cmdOpt": command,
-                "value": value,
-                "data": data,
+                "value": value or "",
+                "data": data or "",
             }
 
         if payload:
@@ -593,8 +596,8 @@ class Session(object):
             payload = {
                 "ctrlKey": ctrl_key,
                 "command": command,
-                "dataKey": key,
-                "dataValue": value,
+                "dataKey": key or "",
+                "dataValue": value or "",
             }
 
         if payload:
@@ -683,6 +686,11 @@ class ClientV2(object):
             # for debug
             # self._inject_thinq2_device()
             # for debug
+
+    @property
+    def api_version(self):
+        """Return core API version"""
+        return CORE_VERSION
 
     @property
     def gateway(self) -> Gateway:
