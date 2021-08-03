@@ -79,6 +79,10 @@ lovelace:
     # https://github.com/thomasloven/lovelace-state-switch
     - url: /hacsfiles/lovelace-state-switch/state-switch.js                       
       type: module
+    # Switch Popup Card
+    # https://github.com/DBuit/switch-popup-card
+    - url: /hacsfiles/switch-popup-card/switch-popup-card.js                       
+      type: module
     # Thermostat Popup Card
     # https://github.com/DBuit/thermostat-popup-card
     - url: /hacsfiles/thermostat-popup-card/thermostat-popup-card.js
