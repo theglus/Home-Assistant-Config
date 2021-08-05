@@ -488,7 +488,7 @@ cards:
                   name: Air Circulator
                   template:
                     - base
-                    - icon_fan_cold
+                    - icon_circulator
                 #----------------------------------------------------------------
                 ## Office Google Home Mini
                 #----------------------------------------------------------------
