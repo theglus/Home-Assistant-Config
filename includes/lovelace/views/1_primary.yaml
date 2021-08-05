@@ -616,7 +616,6 @@ cards:
                 #----------------------------------------------------------------
                 ## Living Room Air Circulator
                 #----------------------------------------------------------------
-                # TODO: #286 Air Circulator button
                 - type: "custom:button-card"
                   entity: switch.air_circulator
                   name: Air Circulator
