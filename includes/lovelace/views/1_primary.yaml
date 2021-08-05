@@ -447,21 +447,21 @@ cards:
                 #----------------------------------------------------------------
                 ## Office Desk Light
                 #----------------------------------------------------------------
-                - type: "custom:button-card"
-                  entity: light.overhead_desk
-                  name: Desk
-                  template:
-                    - light
-                    - icon_overhead
+                # - type: "custom:button-card"
+                #   entity: light.overhead_desk
+                #   name: Desk
+                #   template:
+                #     - light
+                #     - icon_overhead
                 #----------------------------------------------------------------
                 ## Office Bed Light
                 #----------------------------------------------------------------
-                - type: "custom:button-card"
-                  entity: light.overhead_bed
-                  name: Bed
-                  template:
-                    - light
-                    - icon_overhead
+                # - type: "custom:button-card"
+                #   entity: light.overhead_bed
+                #   name: Bed
+                #   template:
+                #     - light
+                #     - icon_overhead
                 #----------------------------------------------------------------
                 ## Printer
                 #----------------------------------------------------------------
@@ -579,30 +579,30 @@ cards:
                 #----------------------------------------------------------------
                 ## Left Track
                 #----------------------------------------------------------------
-                - type: "custom:button-card"
-                  entity: light.left_track
-                  name: Left
-                  template:
-                    - light-color
-                    - icon_spot
+                # - type: "custom:button-card"
+                #   entity: light.left_track
+                #   name: Left
+                #   template:
+                #     - light-color
+                #     - icon_spot
                 #----------------------------------------------------------------
                 ## Center Track
                 #----------------------------------------------------------------
-                - type: "custom:button-card"
-                  entity: light.center_track
-                  name: Center
-                  template:
-                    - light-color
-                    - icon_spot
+                # - type: "custom:button-card"
+                #   entity: light.center_track
+                #   name: Center
+                #   template:
+                #     - light-color
+                #     - icon_spot
                 #----------------------------------------------------------------
                 ## Right Track
                 #----------------------------------------------------------------
-                - type: "custom:button-card"
-                  entity: light.right_track
-                  name: Right
-                  template:
-                    - light-color
-                    - icon_spot
+                # - type: "custom:button-card"
+                #   entity: light.right_track
+                #   name: Right
+                #   template:
+                #     - light-color
+                #     - icon_spot
                 #----------------------------------------------------------------
                 ## Heater
                 #----------------------------------------------------------------
