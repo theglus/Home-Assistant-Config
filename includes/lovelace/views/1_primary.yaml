@@ -614,6 +614,16 @@ cards:
                     - base
                     - icon_heater
                 #----------------------------------------------------------------
+                ## Living Room Air Circulator
+                #----------------------------------------------------------------
+                # TODO: #286 Air Circulator button
+                - type: "custom:button-card"
+                  entity: switch.air_circulator
+                  name: Air Circulator
+                  template:
+                    - base
+                    - icon_circulator
+                #----------------------------------------------------------------
                 ## Shield
                 #----------------------------------------------------------------
                 - type: "custom:button-card"
@@ -701,16 +711,6 @@ cards:
                 ## Paper Shredder
                 #----------------------------------------------------------------
                 # TODO: #266 Paper shredder button
-                #----------------------------------------------------------------
-                ## Kitchen Air Circulator
-                #----------------------------------------------------------------
-                # TODO: #286 Air Circulator button
-                - type: "custom:button-card"
-                  entity: switch.air_circulator
-                  name: Air Circulator
-                  template:
-                    - base
-                    - icon_circulator
                 #----------------------------------------------------------------
                 ## Kitchen Dyson
                 #----------------------------------------------------------------
