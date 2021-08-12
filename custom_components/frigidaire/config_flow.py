@@ -27,7 +27,7 @@ async def validate_input(hass: HomeAssistant, data: dict[str, Any]):
 
     def setup(username: str, password: str) -> list[frigidaire.Appliance]:
         try:
-            client = frigidaire.Frigidaire(username, password)
+            client = frigidaire.Frigidaire(username, password, timeout=60)
             return client.get_appliances()
         except frigidaire.FrigidaireException as err:
             raise InvalidAuth from err

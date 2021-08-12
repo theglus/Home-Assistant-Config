@@ -14,7 +14,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     hass.data.setdefault(DOMAIN, {})
 
     def setup(username: str, password: str) -> frigidaire.Frigidaire:
-        hass.data[DOMAIN][entry.entry_id] = frigidaire.Frigidaire(username, password)
+        hass.data[DOMAIN][entry.entry_id] = frigidaire.Frigidaire(username, password, timeout=60)
 
     await hass.async_add_executor_job(
         setup, entry.data["username"], entry.data["password"]
