@@ -18,7 +18,7 @@ custom_fields:
                 stroke-dashoffset: ${circumference - input / 100 * circumference};
               }
               tspan {
-                font-size: 20px;
+                font-size: 10px;
               }
             </style>
             <circle cx="25" cy="25" r="${radius}" stroke="#b2b2b2" stroke-width="1.5" fill="none" />
