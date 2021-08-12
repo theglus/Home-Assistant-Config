@@ -6,7 +6,6 @@ styles:
     icon_fan: 
       - width: 1em
       - margin-left: 17%
-      - margin-top: 20%
     # [top: 20%, left: 17%, width: 1em, position: absolute]
     icon: 
       - width: 3.5em
