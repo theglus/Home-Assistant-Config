@@ -1,20 +1,12 @@
 #################################################################
 ## Color Light
 #################################################################
-  template: ["base"]
-  custom_fields:
-    circle: >
-      [[[ if (entity.state === 'on' && entity.attributes.brightness) {
-      const brightness = Math.round(entity.attributes.brightness / 2.54);
-      const radius = 20.5; const circumference = radius * 2 * Math.PI; 
-      return `
-      <svg viewBox="0 0 50 50">
-        <circle cx="25" cy="25" r="${radius}" stroke="#b2b2b2" stroke-width="1.5" fill="none" style="
-      transform: rotate(-90deg); transform-origin: 50% 50%; stroke-dasharray: ${circumference}; stroke-dashoffset: ${circumference - brightness / 100 * circumference};" />
-        <text x="50%" y="54%" fill="#8d8e90" font-size="14" text-anchor="middle" alignment-baseline="middle">${brightness}<tspan font-size="10">%</tspan></text>
-        </svg>`; 
-        } 
-        ]]]
+  template:
+    - base
+    - circle
+  variables:
+    circle_input: >
+      [[[ return entity === undefined || Math.round(entity.attributes.brightness / 2.54); ]]]
   hold_action:
     action: failure
   double_tap_action:
