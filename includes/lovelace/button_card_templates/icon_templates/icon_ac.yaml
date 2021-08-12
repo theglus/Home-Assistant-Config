@@ -4,12 +4,12 @@
 styles:
   custom_fields:
     icon_fan: 
-      - width: 10%
+      - width: 1em
       - margin-left: 17%
       - margin-top: 20%
     # [top: 20%, left: 17%, width: 1em, position: absolute]
     icon: 
-      - width: 10%
+      - width: 3.5em
       - margin-left: 10%
       - margin-top: 11%
     # [top: 11%, left: 10%, width: 3.5em, position: absolute]
