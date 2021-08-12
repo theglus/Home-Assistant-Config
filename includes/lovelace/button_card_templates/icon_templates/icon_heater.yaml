@@ -3,8 +3,7 @@
 #################################################################
 styles:
   custom_fields:
-    air_propeller:
-      [top: 17%, left: 14%, width: 1.5em, position: absolute, opacity: 0.6]
+    air_propeller: [top: 17%, left: 14%, width: 1.5em, position: absolute, opacity: 0.6]
     air: [top: 12%, left: 10%, width: 3.5em, position: absolute]
 custom_fields:
   air_propeller: >
