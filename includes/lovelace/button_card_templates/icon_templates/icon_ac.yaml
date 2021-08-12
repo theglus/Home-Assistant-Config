@@ -3,7 +3,11 @@
 #################################################################
 styles:
   custom_fields:
-    icon_fan: [top: 20%, left: 17%, width: 1em, position: absolute]
+    icon_fan: 
+      - width: 70%
+      - margin-left: -8%
+      - margin-top: 3%
+    # [top: 20%, left: 17%, width: 1em, position: absolute]
     icon: [top: 11%, left: 10%, width: 3.5em, position: absolute]
 custom_fields:
   icon_fan: >
