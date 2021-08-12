@@ -622,6 +622,15 @@ cards:
                     - base
                     - icon_circulator
                 #----------------------------------------------------------------
+                ## Ice Bear
+                #----------------------------------------------------------------
+                # TODO: Frigidaire AC button
+                - type: "custom:button-card"
+                  entity: switch.air_circulator
+                  template:
+                    - base
+                    - icon_ac  
+                #----------------------------------------------------------------
                 ## Shield
                 #----------------------------------------------------------------
                 - type: "custom:button-card"
@@ -637,16 +646,7 @@ cards:
                 ## Dennis
                 #----------------------------------------------------------------
                 # TODO: #261 Denon stats button
-                # TODO: #262 Denon control modal
-                #----------------------------------------------------------------
-                ## Ice Bear
-                #----------------------------------------------------------------
-                # TODO: Frigidaire AC button
-                - type: "custom:button-card"
-                  entity: switch.air_circulator
-                  template:
-                    - base
-                    - icon_ac                
+                # TODO: #262 Denon control modal              
           #################################################################
           ## Kitchen Controls
           #################################################################
