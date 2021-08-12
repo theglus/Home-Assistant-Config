@@ -39,12 +39,3 @@
         box-shadow: none,
         transition: none,
       ]
-    custom_fields:
-      circle:
-        [
-          top: 8.5%,
-          left: 56.2%,
-          width: 3.2em,
-          position: absolute,
-          letter-spacing: 0.015em,
-        ]
