@@ -25,17 +25,28 @@
   double_tap_action:
     haptic: selection
   styles:
-    name: [top: 57.7%, left: 11%, line-height: 2em, position: absolute]
-    state: [top: 74%, left: 11%, line-height: 2em, position: absolute]
+    grid:
+      - grid-template-areas: |
+          "icon  circle"
+          "n     n"
+          "s     s"
+      - grid-template-columns: repeat(2, 1fr)
+      - grid-template-rows: auto repeat(2, min-content)
+      - gap: 2%
+      - align-items: start
+    name:
+      - justify-self: start
+      - line-height: 115%
+    state:
+      - justify-self: start
+      - line-height: 115%
     card:
-      [
-        font-family: Sf Display,
-        letter-spacing: 0.05em,
-        font-weight: 400,
-        color: "rgba(255, 255, 255, 0.3)",
-        font-size: 1em,
-        background-color: "rgba(115, 115, 115, 0.2)",
-        border-radius: 2em,
-        box-shadow: none,
-        transition: none,
-      ]
+      - font-family: Sf Display
+      - border-radius: 2em
+      - font-size: 1em
+      - box-shadow: none
+      - transition: none
+      - padding: 10%
+      - background-color: "rgba(115, 115, 115, 0.2)"
+      - color: "rgba(255, 255, 255, 0.3)"
+      - letter-spacing: 0.05em
