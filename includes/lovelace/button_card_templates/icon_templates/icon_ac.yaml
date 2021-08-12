@@ -18,5 +18,5 @@ custom_fields:
 styles:
   custom_fields:
     ac_fan:
-      [top: 17%, left: 14%, width: 1.5em, position: absolute, opacity: 0.6]
+      [top: 17%, left: 14%, width: 1.5em, position: absolute]
     ac_base: [top: 12%, left: 10%, width: 3.5em, position: absolute]
