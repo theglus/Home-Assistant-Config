@@ -609,7 +609,6 @@ cards:
                 # TODO: #259 Sensor cirle with Living Room Temp
                 - type: "custom:button-card"
                   entity: switch.switchbot
-                  icon: "mdi:fan"
                   template:
                     - base
                     - icon_heater
@@ -643,6 +642,11 @@ cards:
                 ## Ice Bear
                 #----------------------------------------------------------------
                 # TODO: Frigidaire AC button
+                - type: "custom:button-card"
+                  entity: switch.air_circulator
+                  template:
+                    - base
+                    - icon_ac                
           #################################################################
           ## Kitchen Controls
           #################################################################
