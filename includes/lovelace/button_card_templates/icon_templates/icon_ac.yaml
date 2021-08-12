@@ -25,5 +25,5 @@ styles:
     ac_base:
       top: 11%
       left: 10%
-      width: 3.5em,
+      width: 3.5em
       position: absolute
