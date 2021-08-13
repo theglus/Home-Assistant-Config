@@ -65,10 +65,10 @@ custom_fields:
       if (variables.state === 'off' && variables.timeout > 2000) {
       return `<svg viewBox="0 0 50 50" fill="#ffffff"><g>${path}</g></svg>`;
       }
-      if (variables.state === 'on' && variables.timeout > 2000) {
+      if (variables.state === 'cool' && variables.timeout > 2000) {
       return `${style}<g class="on_no_delay">${path}</g></svg>`;
       }
-      if (variables.state === 'on' && variables.timeout < 2000) {
+      if (variables.state === 'cool' && variables.timeout < 2000) {
       return `${style}<g class="start">${path}</g><g class="on_delay">${path}</g></svg>`;
       }
     ]]]
