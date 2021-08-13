@@ -1,9 +1,9 @@
 #################################################################
 ## Loader
 #################################################################
-  custom_fields:
-    loader: >
-      <img src="/local/icons/loader.svg" width="100%">
+custom_fields:
+  loader: >
+    <img src="/local/icons/loader.svg" width="100%">
   tap_action:
     loader: >
       [[[
