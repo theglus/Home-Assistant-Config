@@ -23,13 +23,13 @@ custom_fields:
           .start {
             animation: rotate 2.8s ease-in;
             transform-origin: center;
-            fill: #5daeea;
+            fill: #6B9BE0;
             visibility: hidden;
           }
           .on_delay {
             animation: rotate 1.8s linear infinite;
             transform-origin: center;
-            fill: #5daeea;
+            fill: #6B9BE0;
             animation-delay: 2.8s;
             visibility: hidden;
             will-change: transform;
@@ -37,20 +37,20 @@ custom_fields:
           .on_no_delay {
             animation: rotate 1.8s linear infinite;
             transform-origin: center;
-            fill: #5daeea;
+            fill: #6B9BE0;
             will-change: transform;
           }
           .on {
             animation: rotate 1.8s linear forwards;
             transform-origin: center;
-            fill: #5daeea;
+            fill: #6B9BE0;
             visibility: hidden;
             will-change: transform;
           }
           .end {
             animation: rotate 2.8s;
             transform-origin: center;
-            fill: #9ca2a5;
+            fill: #ffffff;
             animation-timing-function: cubic-bezier(.61, 1, .88, 1);
           }
         </style>
@@ -63,7 +63,7 @@ custom_fields:
       return `${style}<g class="end">${path}</g></svg>`;
       }
       if (variables.state === 'off' && variables.timeout > 2000) {
-      return `<svg viewBox="0 0 50 50" fill="#9ca2a5"><g>${path}</g></svg>`;
+      return `<svg viewBox="0 0 50 50" fill="#ffffff"><g>${path}</g></svg>`;
       }
       if (variables.state === 'on' && variables.timeout > 2000) {
       return `${style}<g class="on_no_delay">${path}</g></svg>`;
