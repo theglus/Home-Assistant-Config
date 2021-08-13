@@ -624,9 +624,9 @@ cards:
                 #----------------------------------------------------------------
                 ## Ice Bear
                 #----------------------------------------------------------------
-                # TODO: Frigidaire AC button
                 - type: "custom:button-card"
-                  entity: switch.air_circulator
+                  entity: climate.ice_bear
+                  name: Air Conditioner
                   template:
                     - base
                     - icon_ac  
