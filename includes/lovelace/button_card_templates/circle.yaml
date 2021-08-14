@@ -4,7 +4,8 @@
 custom_fields:
   circle: >
     [[[
-      if (variables.state === 'on') {
+      allowedStates = ['on', 'standby'];
+      if (allowedStates.indexOf(variables.state) > 0) {
         const input = variables.circle_input;
         const radius = 20.5;
         const circumference = radius * 2 * Math.PI;
