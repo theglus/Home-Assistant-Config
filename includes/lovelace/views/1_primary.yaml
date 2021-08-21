@@ -628,10 +628,20 @@ cards:
                 - type: "custom:button-card"
                   entity: climate.ice_bear
                   name: Air Conditioner
+                  double_tap_action:
+                    action: more-info                  
                   template:
                     - base
                     - icon_ac
+                    - climate
                     - loader
+                  variables:
+                    circle_input: >
+                      [[[
+                        return entity === undefined ?
+                          null :
+                          entity.attributes.temperature;
+                      ]]]
                 #----------------------------------------------------------------
                 ## Shield
                 #----------------------------------------------------------------
@@ -726,6 +736,15 @@ cards:
                   template:
                     - base
                     - icon_dyson
+                    - circle
+                    - loader
+                  variables:
+                    circle_input: >
+                      [[[
+                        return entity === undefined ?
+                          null :
+                          parseInt(entity.attributes.percentage);
+                      ]]]
           #################################################################
           ## Loft Controls
           #################################################################
