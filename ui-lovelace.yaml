@@ -1,12 +1,12 @@
 background: var(--background-image)
 # background: center / cover no-repeat url("/local/img/valley.svg") fixed
-# kiosk_mode: 
-#  hide_header: true
+kiosk_mode: 
+  hide_header: true
 sidebar:
   hideTopMenu: true
   digitalClock: true
   twelveHourVersion: true
-  period: true
+  period: false
   date: true
   dateFormat: dddd, MMMM Do
   width:
@@ -25,15 +25,12 @@ sidebar:
       icon: "mdi:robot-vacuum-variant"
       active: true
     - action: navigate
-      navigation_path: "/lovelace/home-theater"
-      name: "Theater"
-      icon: "mdi:theater"
-      active: true
-    - action: navigate
       navigation_path: "/lovelace/ha"
       name: "System"
       icon: "mdi:home-assistant"
-      active: true
+      active: tru
+  template: |
+    <li>The air quality in Dogpatch is {{states('sensor.u_s_air_pollution_level')}} with an AQI of {{states('sensor.aqi')}}.</li>
   style: |
     :host {
         --sidebar-background: rgba(0,0,0,.3);
