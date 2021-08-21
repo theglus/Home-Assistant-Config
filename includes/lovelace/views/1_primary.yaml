@@ -838,7 +838,15 @@ cards:
                   template:
                     - base
                     - icon_dyson
-                #----------------------------------------------------------------
+                    - circle
+                    - loader
+                  variables:
+                    circle_input: >
+                      [[[
+                        return entity === undefined ?
+                          null :
+                          parseInt(entity.attributes.percentage);
+                      ]]]-----------------------------------------------
                 ## Nest Hub Mini
                 #----------------------------------------------------------------
                 # TODO: #258 Nest Hub Mini button
