@@ -17,22 +17,22 @@
         card: [background-color: "rgba(255, 255, 255, 0.8)"]
         name: [color: "rgba(0, 0, 0, 0.6)"]
         state: [color: "rgba(0, 0, 0, 0.6)"]
-    - value: "cool"
-      styles:
-        card: [background-color: "rgba(255, 255, 255, 0.8)"]
-        name: [color: "rgba(0, 0, 0, 0.6)"]
-        state: [color: "rgba(0, 0, 0, 0.6)"]
-    - value: "standby"
-      styles:
-        card: [background-color: "rgba(255, 255, 255, 0.8)"]
-        name: [color: "rgba(0, 0, 0, 0.6)"]
-        state: [color: "rgba(0, 0, 0, 0.6)"]
     - value: "playing"
       styles:
         card: [background-color: "rgba(255, 255, 255, 0.8)"]
         name: [color: "rgba(0, 0, 0, 0.6)"]
         state: [color: "rgba(0, 0, 0, 0.6)"]
     - value: "idle"
+      styles:
+        card: [background-color: "rgba(255, 255, 255, 0.8)"]
+        name: [color: "rgba(0, 0, 0, 0.6)"]
+        state: [color: "rgba(0, 0, 0, 0.6)"]
+    - value: "cool"
+      styles:
+        card: [background-color: "rgba(255, 255, 255, 0.8)"]
+        name: [color: "rgba(0, 0, 0, 0.6)"]
+        state: [color: "rgba(0, 0, 0, 0.6)"]
+    - value: "auto"
       styles:
         card: [background-color: "rgba(255, 255, 255, 0.8)"]
         name: [color: "rgba(0, 0, 0, 0.6)"]
