@@ -71,6 +71,12 @@ custom_fields:
       if (variables.state === 'cool' && variables.timeout < 2000) {
       return `${style}<g class="start">${path}</g><g class="on_delay">${path}</g></svg>`;
       }
+      if (variables.state === 'auto' && variables.timeout > 2000) {
+      return `${style}<g class="on_no_delay">${path}</g></svg>`;
+      }
+      if (variables.state === 'auto' && variables.timeout < 2000) {
+      return `${style}<g class="start">${path}</g><g class="on_delay">${path}</g></svg>`;
+      }
     ]]]
   ac_base: >
     <svg viewBox="0 0 50 50">
