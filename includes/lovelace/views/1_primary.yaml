@@ -903,11 +903,3 @@ cards:
                 template:
                   - media
                   - icon_nest_mini
-                  - climate
-                variables:
-                  circle_input: >
-                    [[[
-                      return entity === undefined ?
-                        null :
-                        sensor.loft_bathroom_alarms;
-                    ]]]
