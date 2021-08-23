@@ -141,6 +141,19 @@ cards:
               ## Loft Bathroom Button
               #################################################################
               # TODO: #252 Create nav toggle for loft bathroom
+              - entity: input_select.lighttoggle
+                name: false
+                icon: "mdi:toilet"
+                state_styles:
+                  Loft:
+                  template: nav_button
+                template: nav_styles
+                tap_action:
+                  action: call-service
+                  service: input_select.select_option
+                  service_data:
+                    entity_id: input_select.lighttoggle
+                    option: Loft Bathroom
       #################################################################
       #----------------------------------------------------------------
       ## Expanded
@@ -861,6 +874,19 @@ cards:
           ## Loft Bathroom Controls
           #################################################################
           # #252: Create view for loft bathroom
+          Loft Bathroom:
+            type: "custom:mod-card"
+            style: |
+              ha-card { 
+                background: rgba(0,0,0,.3); 
+                padding: 10px; 
+                border-radius: 35px; 
+                margin-top: none; 
+                }
+            card:
+              type: grid
+              columns: 3
+              cards:
           #----------------------------------------------------------------
           ## Nest Mini
           #----------------------------------------------------------------
