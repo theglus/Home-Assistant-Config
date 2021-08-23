@@ -1,0 +1,35 @@
+#################################################################
+## Base Properties for Media Popup
+#################################################################
+  tap_action:
+    action: >
+      [[[
+        return !(variables.state === 'off' || variables.state === 'idle' || variables.state === 'standby') ? 'call-service' : 'none';
+      ]]]
+    service: media_player.media_play_pause
+    service_data:
+      entity_id: >
+        [[[ return entity === undefined || entity.entity_id; ]]]
+  double_tap_action:
+    action: call-service
+    service: >
+      [[[ return variables.state === 'off' || variables.state === 'idle' || variables.state === 'standby' ? 'media_player.turn_on' : 'media_player.turn_off'; ]]]
+    service_data:
+      entity_id: >
+        [[[ return entity === undefined || entity.entity_id; ]]]
+  styles:
+    card:
+      - color: >
+          [[[
+            var entity_picture = entity === undefined || entity.attributes.entity_picture;
+            if (variables.state === 'off' || variables.state === 'idle' || variables.state === 'standby' ||
+              variables.state === 'unknown' || variables.state === 'unavailable' || entity === undefined) {
+              return 'rgba(255, 255, 255, 0.3)';
+            }
+            return (variables.state != 'off' && variables.state != 'idle' && variables.state != 'standby') && (entity_picture == null) ? 'rgba(0, 0, 0, 0.6)' : '#efefef';
+          ]]]
+      - text-shadow: >
+          [[[
+            const entity_picture = entity === undefined || entity.attributes.entity_picture;
+            return entity_picture == null ? 'none' : '1px 1px 5px rgba(18, 22, 23, 0.9)';
+          ]]]
