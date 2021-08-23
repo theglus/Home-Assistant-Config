@@ -887,7 +887,13 @@ cards:
               type: grid
               columns: 3
               cards:
-          #----------------------------------------------------------------
-          ## Nest Mini
-          #----------------------------------------------------------------
-          # TODO: #257 Bathroom Nest Mini button
+              #----------------------------------------------------------------
+              ## Nest Mini
+              #----------------------------------------------------------------
+              # TODO: #257 Bathroom Nest Mini button
+              - type: custom:button-card
+                entity: media_player.loft_bathroom
+                name: Nest Mini
+                template:
+                  - media
+                  - icon_nest_mini
