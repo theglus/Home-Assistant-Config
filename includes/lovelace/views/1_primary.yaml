@@ -739,7 +739,7 @@ cards:
                 # TODO: #256 Kitchen Google Home Mini button
                 - type: custom:button-card
                   entity: media_player.living_room_speaker
-                  name: Nest Mini
+                  name: Home Mini
                   template:
                     - media
                     - icon_nest_mini
