@@ -899,7 +899,7 @@ cards:
               # TODO: #257 Bathroom Nest Mini button
               - type: custom:button-card
                 entity: media_player.loft_bathroom
-                name: Bathroom Nest Mini
+                name: Nest Mini
                 template:
                   - media
                   - icon_nest_mini
