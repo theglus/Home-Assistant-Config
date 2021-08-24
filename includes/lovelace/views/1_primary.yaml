@@ -508,7 +508,7 @@ cards:
                 # TODO: #254 Office Google Home Mini button
                 - type: custom:button-card
                   entity: media_player.office_speaker
-                  name: Office Home Mini
+                  name: Home Mini
                   template:
                     - media
                     - icon_nest_mini
