@@ -1,0 +1,29 @@
+#################################################################
+## Media Popup
+#################################################################
+  template:
+    - base
+    - base_media
+  styles:
+    custom_fields:
+      icon:
+        - width: 70%
+        - opacity: >
+            [[[
+              const entity_picture = entity === undefined || entity.attributes.entity_picture;
+              return entity_picture == null ? 1 : 0;
+            ]]]
+    card:
+      - background-color: "rgba(115, 115, 115, 0.2)"
+      - background-size: cover
+      - background-image: >
+          [[[
+            const entity_picture = entity === undefined || entity.attributes.entity_picture;
+            if (variables.state === 'off' || variables.state === 'idle' || variables.state === 'standby' ||
+              variables.state === 'unknown' || variables.state === 'unavailable' || entity === undefined) {
+              return 'color(rgba(255, 255, 255, 0.3))';
+            }
+            return (variables.state != 'off' && variables.state != 'idle' && variables.state != 'standby') && (entity_picture == null) ? 
+              'linear-gradient(0deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.8) 100%)' : 
+              'linear-gradient(0deg, rgba(0,0,0,.8) 0%, rgba(0,0,0,0) 100%), url(' + entity_picture + ')';
+          ]]]
