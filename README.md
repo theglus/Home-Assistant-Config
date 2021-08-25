@@ -1,33 +1,5 @@
 # Home-Assistant-Config
 Welcome to theglus's Home Assistant setup. I hope you find value in the projects and documentation I've been working on. I'll be continuting to update my documentaion in the coming weeks so stay tuned. 
-# Projects in Motion
-I currently have a series of [GitHub Projects](https://github.com/theglus/Home-Assistant-Config/projects) which I use to map out and track the work I'm doing in Home Assistant. As I progress I will be adding wiki pages for each of the below projects.
-## [Project BIG DIG](https://github.com/theglus/Home-Assistant-Config/projects/8)
-Home Assistant infrastructure work.
-## [Project C.H.A.D](https://github.com/theglus/Home-Assistant-Config/projects/10)
-Central Home Assistant Dashboard.
-## [Project DENNIS](https://github.com/theglus/Home-Assistant-Config/projects/4)
-Create a streamlined home theater experience through the setup, integration, and automation of the following devices:
-* Sony XBR55X900H (Sonny)
-* Denon AVR-S960H (Dennis)
-* NVIDIA Shield TV Pro (SHIELD)
-## [Project FARNSWORTH]( https://github.com/theglus/Home-Assistant-Config/projects/5)
-Home Assistance notification system utilizing a Telegram bot named after Professor Farnsworth. 
-## [Project HAARP](https://github.com/theglus/Home-Assistant-Config/projects/7)
-Centralize and simplify the management of my Frigidaire AC and Dyson air purifier through various integrations. automations, and notifications.
-## [Project KIRBY](https://github.com/theglus/Home-Assistant-Config/projects/9)
-Integrate Dyson TP04 air purifying fan and it's associated humidity, temp, and AQI sensors.
-## [Project SNOO](https://github.com/theglus/Home-Assistant-Config/projects/11)
-Prepare theglus/Home-Assistant-Config for Reddit.
-## [Project WINSTON](https://github.com/theglus/Home-Assistant-Config/projects/5)
-### [Checkout the wiki for additional info](https://github.com/theglus/Home-Assistant-Config/wiki/Project-WINSTON:-Roborock-S4)
-Centralize and simplify the management and maintenance of Winston the robovac in order to automate the cleaning of the:
-* Hallway
-* Living room
-* Kitchen
-* Office
-* Guest bathroom
-This will be accomplished through the setup, integration, and automation of a Roborock S4 and it's accompanying mapping of the downstairs.
 # Audio & Video
 ## Home Theater
 I recently built out my home theater system centered around my Denon S960H + NVIDIA SHIELD TV Pro and managed by Home Assistant using `denonavr`, `androidtv`, and `media_player`. The system is primarly controlled using the NVIDIA SHIELD Toblerone as it can accomplish almost everything I need via CEC. The main gaps currently in the system are the following Denon buttons `Setup`, `Options`, `Info`, `Back`, `ECO`, `Input` and the following Sony Bravia buttons `Settings`, `Home`. I currently have a _Home Theater_ Lovelace view which I use to control powering one or many entities (TV, AV, Shield) as well as switching between `AUTO` and `SETTING` Denon sound modes. 
