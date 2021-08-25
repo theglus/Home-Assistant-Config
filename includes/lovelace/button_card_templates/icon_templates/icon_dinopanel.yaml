@@ -4,10 +4,10 @@
 # TODO: Apply gradient to dino icon
 styles:
   custom_fields:
-    icon_dino:
+    icon:
       [top: 11%, left: 6%, width: 5.25em, position: absolute]
 custom_fields:
-  icon_dino: >
+  icon: >
     [[[
       if (variables.state === 'off') {
         return `
