@@ -1,7 +1,6 @@
 #################################################################
 ## Hallway Runner Icon
 #################################################################
-# TODO: #289 Create icon_led button template
 styles:
   custom_fields:
     icon:

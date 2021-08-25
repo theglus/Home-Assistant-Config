@@ -303,7 +303,6 @@ cards:
                 - type: "custom:button-card"
                   entity: light.hallway_runner
                   name: Runner
-                  # TODO: #289 Create icon_led button template
                   template: 
                     - light-color
                     - icon_led
