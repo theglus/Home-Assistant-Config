@@ -5,15 +5,19 @@ Welcome to theglus's Home Assistant setup. I hope you find value in the projects
 * [Software](#software)
 * [Devices](#devices)
 ## Hardware
-### Home Assistant Hardware
-My Home Assistant setup is pretty basic but it gets the job done without any hiccups. I originally planned on booting off of a USB drive, but gave up after the first couple failed attempts in favor in spending the time to actually setup my smart home. I'm exploring the idea of moving the DB and logs a Sandisk USB, but I'm unsure if that will resolve the sluggish page loading. What would make the most sense would be to go the SSD boot route, but it's pretty low on my priority list. 
+### Home Assistant Server
+My Home Assistant setup is pretty basic but it gets the job done without any hiccups.
 | Raspberry Pi 4 Model B 4GB | Raspbee II | SanDisk Extreme 64GB MicroSD | Argon Neo Case |
 | --- | --- | --- | --- |
 | ![Raspberry Pi 4 Model B 4GB](www/readme/ha_hardware/pi_4.jpg) | ![Raspbee II](www/readme/ha_hardware/raspbee_II.jpg) | ![SanDisk Extreme 64GB MicroSD](www/readme/ha_hardware/sandisk_64.jpg) | ![Argon Neo Pi case](www/readme/ha_hardware/argon_neo.jpg) |
 
 I opted to go the Zigbee route primarily because I really like the Aqara platform. I landed on the Raspbee II over the Conbee as it just seemed like a more elegant solution. It's a little bit of a pain to initially setup, but after that it's smooth sailing. 
+### Network
+| [Google Wifi](https://store.google.com/us/product/google_wifi_2nd_gen?hl=en-US) | [TP-Link Switch](https://www.amazon.com/gp/product/B00A121WN6/ref=ppx_od_dt_b_asin_title_s00?ie=UTF8&psc=1) | [MoCa Network Adapter](https://www.amazon.com/Actiontec-MoCA-Network-Adapter-Ethernet/dp/B013J7O3X0/ref=sr_1_3?dchild=1&keywords=ethernet%2Bover%2Bcoax&qid=1629947247&sr=8-3&th=1) |
+| --- | --- | --- |
+| ![Google Wifi](www/readme/network/google_wifi.jpg) | ![TP-Link Switch](www/readme/network/switch.jpg) | ![MoCa Network Adapter](www/readme/network/coax.jpg) |
 ## Software
-### Software + Architecture
+### Architecture
 ![My Home Assistant Architecture](www/readme/architecture.png) 
 ### Voice Assistant
 I'm currently utilizing Nabu Casa to leverage Google Assistant via the aforementioned Google Home devices to enable voice controls. I mainly use voice commands to trigger the lights, music, and theater system. I would like to setup voice commands for Winston and Kirby in the near future. 
