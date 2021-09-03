@@ -187,7 +187,7 @@ cards:
                   custom_fields:
                     s2: |
                       [[[
-                        return (states['weather.climacell_nowcast'].attributes.forecast[0].precipitation || 0) + ' mm precip';
+                        return states['sensor.aqi'].state + ' AQI'
                       ]]]
                   entity: weather.loft
                   label: |
