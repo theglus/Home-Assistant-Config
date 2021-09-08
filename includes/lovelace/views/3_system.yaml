@@ -103,52 +103,116 @@ cards:
         show_state: false
   - type: vertical-stack
     cards:
+      # - type: glance
+      #   entities:
+      #     - entity: zone.home
+      #       icon: 'mdi:speedometer'
+      #       name: Speed Test
+      #       tap_action:
+      #         action: call-service
+      #         service: speedtestdotnet.speedtest
+      #   title: Network
+      #   show_state: false
+      # - type: horizontal-stack
+      #   cards:
+      #     - type: 'custom:mini-graph-card'
+      #       entities:
+      #         - sensor.speedtest_download
+      #       decimals: 0
+      #       color_thresholds:
+      #         - value: 1000
+      #           color: '#6aa84f'
+      #         - value: 800
+      #           color: '#93c47d'
+      #         - value: 650
+      #           color: '#b6d7a8'
+      #         - value: 500
+      #           color: '#f1c232'
+      #         - value: 350
+      #           color: '#e69138'
+      #         - value: 150
+      #           color: '#cc0000'
+      #     - type: 'custom:mini-graph-card'
+      #       entities:
+      #         - sensor.speedtest_upload
+      #       decimals: 0
+      #       color_thresholds:
+      #         - value: 1000
+      #           color: '#6aa84f'
+      #         - value: 800
+      #           color: '#93c47d'
+      #         - value: 650
+      #           color: '#b6d7a8'
+      #         - value: 500
+      #           color: '#f1c232'
+      #         - value: 350
+      #           color: '#e69138'
+      #         - value: 150
+      #           color: '#cc0000'
       - type: glance
         entities:
-          - entity: zone.home
-            icon: 'mdi:speedometer'
-            name: Speed Test
-            tap_action:
-              action: call-service
-              service: speedtestdotnet.speedtest
-        title: Network
-        show_state: false
+          - entity: sensor.pc_memory_used
+            name: RAM
+          - entity: sensor.pc_c_space_used
+            name: SSD
+          - entity: sensor.pc_release
+            name: OS
+          - entity: sensor.pc_bios_version
+            name: BIOS
+        title: Desktop PC
+        state_color: false
       - type: horizontal-stack
         cards:
           - type: 'custom:mini-graph-card'
             entities:
-              - sensor.speedtest_download
+              - sensor.pc_cpu_load
+            show: null
+            name: CPU
             decimals: 0
             color_thresholds:
-              - value: 1000
+              - value: 25
                 color: '#6aa84f'
-              - value: 800
-                color: '#93c47d'
-              - value: 650
-                color: '#b6d7a8'
-              - value: 500
+              - value: 50
                 color: '#f1c232'
-              - value: 350
+              - value: 75
                 color: '#e69138'
-              - value: 150
+              - value: 100
                 color: '#cc0000'
+            line_width: 8
+            font_size: 75
           - type: 'custom:mini-graph-card'
             entities:
-              - sensor.speedtest_upload
+              - sensor.pc_cpu_temperature_2
+            show: null
+            name: CPU Temp
             decimals: 0
             color_thresholds:
-              - value: 1000
+              - value: 40
                 color: '#6aa84f'
-              - value: 800
-                color: '#93c47d'
-              - value: 650
-                color: '#b6d7a8'
-              - value: 500
+              - value: 50
                 color: '#f1c232'
-              - value: 350
+              - value: 60
                 color: '#e69138'
-              - value: 150
+              - value: 100
                 color: '#cc0000'
+            line_width: 8
+            font_size: 75
+          - type: 'custom:mini-graph-card'
+            entities:
+              - sensor.pc_gpu_temperature
+            show: null
+            name: GPU Temp
+            color_thresholds:
+              - value: 60
+                color: '#6aa84f'
+              - value: 70
+                color: '#f1c232'
+              - value: 80
+                color: '#e69138'
+              - value: 100
+                color: '#cc0000'
+            line_width: 8
+            font_size: 75
       - type: sensor
         graph: line
         detail: 2
