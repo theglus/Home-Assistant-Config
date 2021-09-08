@@ -155,7 +155,7 @@ cards:
             name: RAM
           - entity: sensor.pc_c_space_used
             name: SSD
-          - entity: sensor.pc_release
+          - entity: sensor.pc_operating_system
             name: OS
           - entity: sensor.pc_bios_version
             name: BIOS
@@ -182,7 +182,7 @@ cards:
             font_size: 75
           - type: 'custom:mini-graph-card'
             entities:
-              - sensor.pc_cpu_temperature_2
+              - sensor.pc_cpu_temperature
             show: null
             name: CPU Temp
             decimals: 0
