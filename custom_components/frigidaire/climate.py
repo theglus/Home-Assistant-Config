@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import logging
+from typing import Optional, List, Mapping, Any
 
 import frigidaire
 
@@ -35,7 +36,7 @@ async def async_setup_entry(
     """Set up frigidaire from a config entry."""
     client = hass.data[DOMAIN][entry.entry_id]
 
-    def get_entities(username: str, password: str) -> list[frigidaire.Appliance]:
+    def get_entities(username: str, password: str) -> List[frigidaire.Appliance]:
         return client.get_appliances()
 
     appliances = await hass.async_add_executor_job(
@@ -43,8 +44,11 @@ async def async_setup_entry(
     )
 
     async_add_entities(
-        [FrigidaireClimate(client, appliance) for appliance in appliances
-         if appliance.appliance_class == frigidaire.ApplianceClass.AIR_CONDITIONER],
+        [
+            FrigidaireClimate(client, appliance)
+            for appliance in appliances
+            if appliance.appliance_class == frigidaire.ApplianceClass.AIR_CONDITIONER
+        ],
         update_before_add=True,
     )
 
@@ -93,13 +97,13 @@ class FrigidaireClimate(ClimateEntity):
         appliance: the basic information about the frigidaire appliance, used to contact the API
         """
 
-        self._client = client
-        self._appliance = appliance
-        self._details = None
+        self._client: frigidaire.Frigidaire = client
+        self._appliance: frigidaire.Appliance = appliance
+        self._details: Optional[frigidaire.ApplianceDetails] = None
 
         # Entity Class Attributes
-        self._attr_unique_id = appliance.appliance_id
-        self._attr_name = appliance.nickname
+        self._attr_unique_id = self._appliance.appliance_id
+        self._attr_name = self._appliance.nickname
         self._attr_supported_features = SUPPORT_TARGET_TEMPERATURE | SUPPORT_FAN_MODE
         self._attr_target_temperature_step = 1
 
@@ -219,6 +223,16 @@ class FrigidaireClimate(ClimateEntity):
 
         return 32
 
+    @property
+    def extra_state_attributes(self) -> Mapping[str, Any] | None:
+        return {
+            "check_filter": bool(
+                self._details.for_code(
+                    frigidaire.HaclCode.AC_CLEAN_FILTER_ALERT
+                ).number_value
+            ),
+        }
+
     def set_temperature(self, **kwargs):
         """Set new target temperature."""
         temperature = kwargs.get(ATTR_TEMPERATURE)
@@ -252,7 +266,7 @@ class FrigidaireClimate(ClimateEntity):
             return
 
         # Turn on if not currently on.
-        if self._details.for_code(frigidaire.HaclCode.AC_MODE) == 0:
+        if self._details.for_code(frigidaire.HaclCode.AC_MODE).number_value == 0:
             self._client.execute_action(
                 self._appliance, frigidaire.Action.set_power(frigidaire.Power.ON)
             )
@@ -267,8 +281,14 @@ class FrigidaireClimate(ClimateEntity):
         try:
             details = self._client.get_appliance_details(self._appliance)
             self._details = details
-            self._attr_available = True
         except frigidaire.FrigidaireException:
             if self.available:
                 _LOGGER.error("Failed to connect to Frigidaire servers")
             self._attr_available = False
+        else:
+            self._attr_available = (
+                self._details.for_code(
+                    frigidaire.HaclCode.CONNECTIVITY_STATE
+                ).string_value
+                == frigidaire.ConnectivityState.CONNECTED
+            )
