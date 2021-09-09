@@ -80,7 +80,7 @@ cards:
           style: |
             ha-card {
               margin: 0px !important;
-            }
+            }        
         entities:
           - entity: sensor.pc_release
           - entity: sensor.pc_bios_version
@@ -101,7 +101,8 @@ cards:
                 from: 90
                 to: 200
             entity_row: true
-             entities:
+          - type: custom:hui-horizontal-stack-card
+            cards:
               #----------------------------------------------------------------
               ## PC Memory Bar
               #----------------------------------------------------------------               
