@@ -155,7 +155,7 @@ cards:
             name: RAM
           - entity: sensor.pc_c_space_used
             name: SSD
-          - entity: sensor.pc_operating_system
+          - entity: sensor.pc_release
             name: OS
           - entity: sensor.pc_bios_version
             name: BIOS
