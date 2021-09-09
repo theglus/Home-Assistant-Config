@@ -82,6 +82,7 @@ cards:
               tap_action:
                 action: call-service
                 service: automation.reload
+              template: icon_name
   - type: vertical-stack
     cards:
       # - type: glance
