@@ -14,11 +14,6 @@ cards:
             ha-card {
               margin: 0px !important;
             }
-                      - entity: sensor.time_online
-            name: Uptime
-          - entity: sensor.latest_version
-          - entity: binary_sensor.updater
-          - entity: sensor.hacs
         entities:
           - entity: sensor.latest_version
 
