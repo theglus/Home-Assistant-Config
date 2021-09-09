@@ -136,18 +136,6 @@ cards:
                 color: '#cc0000'
             line_width: 8
             font_size: 75
-      - type: horizontal-stack
-        cards:
-          - type: glance
-            entities:
-              - entity: sensor.count_automations
-              - entity: sensor.count_binary_sensors
-              - entity: sensor.count_device_trackers
-              - entity: sensor.count_scripts
-              - entity: sensor.count_sensors
-              - entity: sensor.count_switches
-            columns: 3
-            show_icon: false
       - type: glance
         entities:
           - entity: zone.home
