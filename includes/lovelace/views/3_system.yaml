@@ -18,8 +18,6 @@ cards:
           - entity: sensor.latest_version
           - entity: binary_sensor.updater
           - entity: sensor.hacs
-          - entity: sensor.hacs
-          - entity: sensor.hacs
           - entity: sensor.time_online
           - type: custom:bar-card
             width: 55%
@@ -39,14 +37,14 @@ cards:
                 to: 200
             entity_row: true
             entities:
-
+              # HA CPU Use Bar
               - entity: sensor.processor_use_percent
                 tap_action:
                   action: call-service
                   service: homeassistant.update_entity
                   service_data:
                     entity_id: sensor.processor_use_percent
-
+              # HA Memory Use Bar
               - entity: sensor.memory_use_percent
                 tap_action:
                   action: call-service
@@ -55,47 +53,42 @@ cards:
                     entity_id: sensor.memory_use_percent
               - entity: sensor.processor_temperature
                 name: CPU Temp
-
-          - type: custom:mini-graph-card
-            entities:
-              - color: '#385581'
-                entity: sensor.processor_temperature
-            line_width: 6
-            hour24: true
-            group: true
-            align_icon: left
-            align_state: right
-            align_header: left
-            hours_to_show: 24
-            show:
-              {fill: fade, icon: false, name: false, state: false, 
-              name_adaptive_color: false, labels: hover, legend: false}
-            tap_action:
-              action: none
+              # HA CPU Temp Graph
+              - type: custom:mini-graph-card
+                entities:
+                  - color: '#385581'
+                    entity: sensor.processor_temperature
+                line_width: 6
+                hour24: true
+                group: true
+                align_icon: left
+                align_state: right
+                align_header: left
+                hours_to_show: 24
+                show:
+                  {fill: fade, icon: false, name: false, state: false, 
+                  name_adaptive_color: false, labels: hover, legend: false}
+                tap_action:
+                  action: none
           - type: custom:hui-horizontal-stack-card
             cards:
+              # HA Reload
               - type: custom:button-card
                 name: Home Assistant
                 icon: mdi:reload
                 tap_action:
-                  services: |
-                    [[[
-                      hass.callService('browser_mod', 'toast', {
-                        message: 'Startar om Home Assistant...'
-                      });
-                      hass.callService('homeassistant', 'restart');
-                    ]]]
+                  action: call-service
+                  service: homeassistant.restart
                 template: icon_name
-
+              # Lovelace Reload
               - type: custom:button-card
-                name: Container
+                name: Lovelace
                 icon: mdi:reload
                 tap_action:
                   action: call-service
-                  service: script.turn_on
-                  service_data:
-                    entity_id: script.homeassistant_restart
+                  service: browser_mod:lovelace_reload
                 template: icon_name
+
       - type: horizontal-stack
         cards:
           - type: 'custom:mini-graph-card'
