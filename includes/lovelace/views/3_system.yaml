@@ -82,34 +82,6 @@ cards:
               tap_action:
                 action: call-service
                 service: automation.reload
-      - type: glance
-        entities:
-          - entity: zone.home
-            icon: 'mdi:home-assistant'
-            name: Hassio
-            tap_action:
-              action: call-service
-              service: homeassistant.restart
-          - entity: zone.home
-            icon: 'mdi:cogs'
-            name: Automation
-            tap_action:
-              action: call-service
-              service: automation.reload
-          - entity: zone.home
-            icon: 'mdi:script-text'
-            name: Script
-            tap_action:
-              action: call-service
-              service: script.reload
-          - entity: zone.home
-            icon: 'mdi:food-apple'
-            name: Core
-            tap_action:
-              action: call-service
-              service: homeassistant.reload_core_config
-        title: Restart Services
-        show_state: false
   - type: vertical-stack
     cards:
       # - type: glance
