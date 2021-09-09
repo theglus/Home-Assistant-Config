@@ -184,7 +184,3 @@ cards:
                 service: homeassistant.restart
                 haptic: light
               template: icon_name
-      - type: sensor
-        graph: line
-        detail: 2
-        entity: sensor.temperature_media
