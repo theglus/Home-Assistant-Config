@@ -14,18 +14,23 @@ cards:
             ha-card {
               margin: 0px !important;
             }
+                      - entity: sensor.time_online
+            name: Uptime
+          - entity: sensor.latest_version
+          - entity: binary_sensor.updater
+          - entity: sensor.hacs
         entities:
-          - entity: sensor.hass_version
+          - entity: sensor.latest_version
 
-          - entity: switch.watchtower
+          - entity: binary_sensor.updater
 
-          - entity: sensor.hass_dev_release
+          - entity: sensor.hacs
 
-          - entity: sensor.databas
+          - entity: sensor.hacs
 
-          - entity: sensor.home_assistant_log
+          - entity: sensor.hacs
 
-          - entity: sensor.uptime
+          - entity: sensor.time_online
 
           - type: custom:bar-card
             width: 55%
@@ -46,19 +51,19 @@ cards:
             entity_row: true
             entities:
 
-              - entity: sensor.docker_cpu
+              - entity: sensor.processor_use_percent
                 tap_action:
                   action: call-service
                   service: homeassistant.update_entity
                   service_data:
-                    entity_id: sensor.docker_cpu
+                    entity_id: sensor.processor_use_percent
 
-              - entity: sensor.template_dockermon_mem
+              - entity: sensor.memory_use_percent
                 tap_action:
                   action: call-service
                   service: homeassistant.update_entity
                   service_data:
-                    entity_id: sensor.template_dockermon_mem
+                    entity_id: sensor.memory_use_percent
 
           - type: custom:hui-horizontal-stack-card
             cards:
