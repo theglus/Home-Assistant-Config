@@ -88,10 +88,40 @@ cards:
               margin: 0px !important;
             }
         entities:
-          - entity: sensor.pc_memory_used
-          - entity: sensor.pc_c_space_used
           - entity: sensor.pc_release
           - entity: sensor.pc_bios_version
+          - type: custom:bar-card
+            width: 55%
+            height: 2em
+            decimal: 0
+            unit_of_measurement: '%'
+            positions: &bar_card_positions
+              icon: outside
+              indicator: 'off'
+              name: outside
+            severity: &bar_card_severity
+              - color: '#303435'
+                from: 0
+                to: 89
+              - color: '#6d2525'
+                from: 90
+                to: 200
+            entity_row: true
+            entities:
+              # PC Memory Bar
+              - entity: sensor.pc_memory_used
+                tap_action:
+                  action: call-service
+                  service: homeassistant.update_entity
+                  service_data:
+                    entity_id: sensor.pc_memory_used
+              # PC HDD Bar
+              - entity: sensor.pc_c_space_used
+                tap_action:
+                  action: call-service
+                  service: homeassistant.update_entity
+                  service_data:
+                    entity_id: sensor.pc_c_space_used
           - type: custom:hui-horizontal-stack-card
             cards:
             - type: 'custom:mini-graph-card'
