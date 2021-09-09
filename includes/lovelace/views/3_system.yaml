@@ -7,6 +7,13 @@ cards:
     cards:
       - type: entities
         title: Home Assistant
+        show_header_toggle: false
+        card_mod:
+          class: header
+          style: |
+            ha-card {
+              margin: 0px !important;
+            }
         entities:
           - entity: sensor.latest_version
           - entity: binary_sensor.updater
@@ -68,22 +75,6 @@ cards:
                 tap_action:
                   action: call-service
                   service: homeassistant.restart
-                template: icon_name
-              # Automations Reload
-              - type: custom:button-card
-                name: Automations
-                icon: 'mdi:robot'
-                tap_action:
-                  action: call-service
-                  service: automation.reload
-                template: icon_name
-
-              - type: custom:button-card
-                name: Automations
-                icon: 'mdi:robot'
-                tap_action:
-                  action: call-service
-                  service: automation.reload
                 template: icon_name
   - type: vertical-stack
     cards:
