@@ -101,8 +101,7 @@ cards:
                 from: 90
                 to: 200
             entity_row: true
-          - type: custom:hui-horizontal-stack-card
-            cards:
+            entities:
               #----------------------------------------------------------------
               ## PC Memory Bar
               #----------------------------------------------------------------               
