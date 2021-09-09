@@ -93,56 +93,56 @@ cards:
           - entity: sensor.pc_bios_version
           - type: custom:hui-horizontal-stack-card
             cards:
-              - type: 'custom:mini-graph-card'
-                entities:
-                  - sensor.pc_cpu_load
-                show: null
-                name: CPU
-                decimals: 0
-                color_thresholds:
-                  - value: 25
-                    color: '#6aa84f'
-                  - value: 50
-                    color: '#f1c232'
-                  - value: 75
-                    color: '#e69138'
-                  - value: 100
-                    color: '#cc0000'
-                line_width: 8
-                font_size: 75
-              - type: 'custom:mini-graph-card'
-                entities:
-                  - sensor.pc_cpu_temperature
-                show: null
-                name: CPU Temp
-                decimals: 0
-                color_thresholds:
-                  - value: 40
-                    color: '#6aa84f'
-                  - value: 50
-                    color: '#f1c232'
-                  - value: 60
-                    color: '#e69138'
-                  - value: 100
-                    color: '#cc0000'
-                line_width: 8
-                font_size: 75
-              - type: 'custom:mini-graph-card'
-                entities:
-                  - sensor.pc_gpu_temperature
-                show: null
-                name: GPU Temp
-                color_thresholds:
-                  - value: 60
-                    color: '#6aa84f'
-                  - value: 70
-                    color: '#f1c232'
-                  - value: 80
-                    color: '#e69138'
-                  - value: 100
-                    color: '#cc0000'
-                line_width: 8
-                font_size: 75
+            - type: 'custom:mini-graph-card'
+              entities:
+                - sensor.pc_cpu_load
+              show: null
+              name: CPU
+              decimals: 0
+              color_thresholds:
+                - value: 25
+                  color: '#6aa84f'
+                - value: 50
+                  color: '#f1c232'
+                - value: 75
+                  color: '#e69138'
+                - value: 100
+                  color: '#cc0000'
+              line_width: 8
+              font_size: 75
+            - type: 'custom:mini-graph-card'
+              entities:
+                - sensor.pc_cpu_temperature
+              show: null
+              name: CPU Temp
+              decimals: 0
+              color_thresholds:
+                - value: 40
+                  color: '#6aa84f'
+                - value: 50
+                  color: '#f1c232'
+                - value: 60
+                  color: '#e69138'
+                - value: 100
+                  color: '#cc0000'
+              line_width: 8
+              font_size: 75
+            - type: 'custom:mini-graph-card'
+              entities:
+                - sensor.pc_gpu_temperature
+              show: null
+              name: GPU Temp
+              color_thresholds:
+                - value: 60
+                  color: '#6aa84f'
+                - value: 70
+                  color: '#f1c232'
+                - value: 80
+                  color: '#e69138'
+                - value: 100
+                  color: '#cc0000'
+              line_width: 8
+              font_size: 75
           - type: custom:hui-horizontal-stack-card
             cards:
             - type: custom:button-card
