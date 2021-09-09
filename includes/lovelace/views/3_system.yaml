@@ -66,13 +66,15 @@ cards:
                   color: '#cc0000'
               line_width: 8
               font_size: 75
-          - type: custom:button-card
-            name: Home Assistant
-            icon: 'mdi:home-assistant'
-            tap_action:
-              action: call-service
-              service: homeassistant.restart
-            template: icon_name
+          - type: custom:hui-horizontal-stack-card
+            cards:
+            - type: custom:button-card
+              name: Home Assistant
+              icon: 'mdi:home-assistant'
+              tap_action:
+                action: call-service
+                service: homeassistant.restart
+              template: icon_name
   - type: vertical-stack
     cards:
       # - type: glance
