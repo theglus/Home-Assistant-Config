@@ -1,0 +1,18 @@
+#################################################################
+## System Load Mini Graphs
+#################################################################
+- type: 'custom:mini-graph-card'
+  entities:
+    - [[sensor]]
+  show: null
+  color_thresholds:
+    - value: [[green]]
+      color: '#6aa84f'
+    - value: [[yellow]]
+      color: '#f1c232'
+    - value: [[orange]]
+      color: '#e69138'
+    - value: [[red]]
+      color: '#cc0000'
+  line_width: 8
+  font_size: 75

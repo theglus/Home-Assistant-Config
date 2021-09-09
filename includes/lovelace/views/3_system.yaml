@@ -3,6 +3,9 @@ path: ha
 icon: 'mdi:home-assistant'
 badges: []
 cards:
+  #################################################################
+  ## Home Assistant System Controls
+  #################################################################
   - type: vertical-stack
     cards:
       - type: entities
@@ -21,51 +24,39 @@ cards:
           - entity: sensor.time_online
           - type: custom:hui-horizontal-stack-card
             cards:
-            - type: 'custom:mini-graph-card'
-              entities:
-                - sensor.processor_use_percent
-              show: null
-              color_thresholds:
-                - value: 25
-                  color: '#6aa84f'
-                - value: 50
-                  color: '#f1c232'
-                - value: 75
-                  color: '#e69138'
-                - value: 100
-                  color: '#cc0000'
-              line_width: 8
-              font_size: 75
-            - type: 'custom:mini-graph-card'
-              entities:
-                - sensor.memory_use_percent
-              show: null
-              color_thresholds:
-                - value: 25
-                  color: '#6aa84f'
-                - value: 50
-                  color: '#f1c232'
-                - value: 75
-                  color: '#e69138'
-                - value: 100
-                  color: '#cc0000'
-              line_width: 8
-              font_size: 75
-            - type: 'custom:mini-graph-card'
-              entities:
-                - sensor.processor_temperature
-              show: null
-              color_thresholds:
-                - value: 122
-                  color: '#6aa84f'
-                - value: 140
-                  color: '#f1c232'
-                - value: 176
-                  color: '#e69138'
-                - value: 200
-                  color: '#cc0000'
-              line_width: 8
-              font_size: 75
+            #----------------------------------------------------------------
+            ## HA CPU Utilization Graph
+            #----------------------------------------------------------------
+            - type: "custom:decluttering-card"
+              template: declutter_system_graph
+              variables:
+                - sensor: sensor.processor_use_percent
+                - grenn: 25
+                - yellow: 50
+                - orange: 75
+                - red: 100
+            #----------------------------------------------------------------
+            ## HA Memory Utilization Graph
+            #----------------------------------------------------------------  
+            - type: "custom:decluttering-card"
+              template: declutter_system_graph
+              variables:
+                - sensor: sensor.memory_use_percent
+                - grenn: 25
+                - yellow: 50
+                - orange: 75
+                - red: 100     
+            #----------------------------------------------------------------
+            ## HA CPU Temp Graph
+            #----------------------------------------------------------------                            
+            - type: "custom:decluttering-card"
+              template: declutter_system_graph
+              variables:
+                - sensor: sensor.processor_temperature                           
+                - grenn: 122
+                - yellow: 140
+                - orange: 176
+                - red: 200
           - type: custom:hui-horizontal-stack-card
             cards:
             - type: custom:button-card
@@ -76,6 +67,9 @@ cards:
                 service: homeassistant.restart
                 haptic: light
               template: icon_name
+  #################################################################
+  ## Desktop PC Controls
+  #################################################################
   - type: vertical-stack
     cards:
       - type: entities
@@ -107,15 +101,19 @@ cards:
                 from: 90
                 to: 200
             entity_row: true
-            entities:
-              # PC Memory Bar
+             entities:
+              #----------------------------------------------------------------
+              ## PC Memory Bar
+              #----------------------------------------------------------------               
               - entity: sensor.pc_memory_used
                 tap_action:
                   action: call-service
                   service: homeassistant.update_entity
                   service_data:
                     entity_id: sensor.pc_memory_used
-              # PC HDD Bar
+              #----------------------------------------------------------------
+              ## HA CPU Temp Graph
+              #----------------------------------------------------------------   
               - entity: sensor.pc_c_space_used
                 tap_action:
                   action: call-service
@@ -124,56 +122,42 @@ cards:
                     entity_id: sensor.pc_c_space_used
           - type: custom:hui-horizontal-stack-card
             cards:
-            - type: 'custom:mini-graph-card'
-              entities:
-                - sensor.pc_cpu_load
-              show: null
-              name: CPU
-              decimals: 0
-              color_thresholds:
-                - value: 25
-                  color: '#6aa84f'
-                - value: 50
-                  color: '#f1c232'
-                - value: 75
-                  color: '#e69138'
-                - value: 100
-                  color: '#cc0000'
-              line_width: 8
-              font_size: 75
-            - type: 'custom:mini-graph-card'
-              entities:
-                - sensor.pc_cpu_temperature
-              show: null
-              name: CPU Temp
-              decimals: 0
-              color_thresholds:
-                - value: 40
-                  color: '#6aa84f'
-                - value: 50
-                  color: '#f1c232'
-                - value: 60
-                  color: '#e69138'
-                - value: 100
-                  color: '#cc0000'
-              line_width: 8
-              font_size: 75
-            - type: 'custom:mini-graph-card'
-              entities:
-                - sensor.pc_gpu_temperature
-              show: null
-              name: GPU Temp
-              color_thresholds:
-                - value: 60
-                  color: '#6aa84f'
-                - value: 70
-                  color: '#f1c232'
-                - value: 80
-                  color: '#e69138'
-                - value: 100
-                  color: '#cc0000'
-              line_width: 8
-              font_size: 75
+            #----------------------------------------------------------------
+            ## PC CPU Utilization Graph
+            #----------------------------------------------------------------             
+            - type: "custom:decluttering-card"
+              template: declutter_system_graph
+              variables:
+                - sensor: sensor.pc_cpu_load
+                - grenn: 25
+                - yellow: 50
+                - orange: 75
+                - red: 100
+            #----------------------------------------------------------------
+            ## PC CPU Temp Graph
+            #----------------------------------------------------------------   
+            - type: "custom:decluttering-card"
+              template: declutter_system_graph
+              variables:
+                - sensor: sensor.pc_cpu_temperature
+                - grenn: 45
+                - yellow: 50
+                - orange: 60
+                - red: 100                
+            #----------------------------------------------------------------
+            ## PC GPU Temp Graph
+            #----------------------------------------------------------------   
+            - type: "custom:decluttering-card"
+              template: declutter_system_graph
+              variables:
+                - sensor: sensor.pc_gpu_temperature                           
+                - grenn: 60
+                - yellow: 70
+                - orange: 80
+                - red: 100
+          #----------------------------------------------------------------
+          ## PC Boot Button
+          #----------------------------------------------------------------   
           - type: custom:hui-horizontal-stack-card
             cards:
             - type: custom:button-card
