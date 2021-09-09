@@ -36,40 +36,40 @@ cards:
                 from: 90
                 to: 200
             entity_row: true
+            # HA CPU Use Bar
             entities:
-              # HA CPU Use Bar
-              - entity: sensor.processor_use_percent
-                tap_action:
-                  action: call-service
-                  service: homeassistant.update_entity
-                  service_data:
-                    entity_id: sensor.processor_use_percent
-              # HA Memory Use Bar
-              - entity: sensor.memory_use_percent
-                tap_action:
-                  action: call-service
-                  service: homeassistant.update_entity
-                  service_data:
-                    entity_id: sensor.memory_use_percent
-              - entity: sensor.processor_temperature
-                name: CPU Temp
-              # HA CPU Temp Graph
-              - type: custom:mini-graph-card
-                entities:
-                  - color: '#385581'
-                    entity: sensor.processor_temperature
-                line_width: 6
-                hour24: true
-                group: true
-                align_icon: left
-                align_state: right
-                align_header: left
-                hours_to_show: 24
-                show:
-                  {fill: fade, icon: false, name: false, state: false, 
-                  name_adaptive_color: false, labels: hover, legend: false}
-                tap_action:
-                  action: none
+            - entity: sensor.processor_use_percent
+              tap_action:
+                action: call-service
+                service: homeassistant.update_entity
+                service_data:
+                  entity_id: sensor.processor_use_percent
+            # HA Memory Use Bar
+            - entity: sensor.memory_use_percent
+              tap_action:
+                action: call-service
+                service: homeassistant.update_entity
+                service_data:
+                  entity_id: sensor.memory_use_percent
+          - entity: sensor.processor_temperature
+            name: CPU Temp
+          # HA CPU Temp Graph
+          - type: custom:mini-graph-card
+            entities:
+              - color: '#385581'
+                entity: sensor.processor_temperature
+            line_width: 6
+            hour24: true
+            group: true
+            align_icon: left
+            align_state: right
+            align_header: left
+            hours_to_show: 24
+            show:
+              {fill: fade, icon: false, name: false, state: false, 
+              name_adaptive_color: false, labels: hover, legend: false}
+            tap_action:
+              action: none
           - type: custom:hui-horizontal-stack-card
             cards:
               # HA Reload
