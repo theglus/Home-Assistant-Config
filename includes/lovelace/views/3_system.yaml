@@ -8,12 +8,6 @@ cards:
       - type: entities
         title: Home Assistant
         show_header_toggle: false
-        card_mod:
-          class: header
-          style: |
-            ha-card {
-              margin: 0px !important;
-            }
         entities:
           - entity: sensor.latest_version
           - entity: binary_sensor.updater
