@@ -72,22 +72,22 @@ cards:
               action: none
           - type: custom:hui-horizontal-stack-card
             cards:
-              # HA Reload
-              - type: custom:button-card
-                name: Home Assistant
-                icon: mdi:reload
-                tap_action:
-                  action: call-service
-                  service: homeassistant.restart
-                template: icon_name
-              # Lovelace Reload
-              - type: custom:button-card
-                name: Lovelace
-                icon: mdi:reload
-                tap_action:
-                  action: call-service
-                  service: browser_mod:lovelace_reload
-                template: icon_name
+            # HA Reload
+            - type: custom:button-card
+              name: Home Assistant
+              icon: mdi:reload
+              tap_action:
+                action: call-service
+                service: homeassistant.restart
+              template: icon_name
+            # Lovelace Reload
+            - type: custom:button-card
+              name: Lovelace
+              icon: mdi:reload
+              tap_action:
+                action: call-service
+                service: browser_mod:lovelace_reload
+              template: icon_name
 
       - type: horizontal-stack
         cards:
