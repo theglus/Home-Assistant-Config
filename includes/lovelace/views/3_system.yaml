@@ -31,7 +31,7 @@ cards:
               template: declutter_system_graph
               variables:
                 - sensor: sensor.processor_use_percent
-                - grenn: 25
+                - green: 25
                 - yellow: 50
                 - orange: 75
                 - red: 100
@@ -42,7 +42,7 @@ cards:
               template: declutter_system_graph
               variables:
                 - sensor: sensor.memory_use_percent
-                - grenn: 25
+                - green: 25
                 - yellow: 50
                 - orange: 75
                 - red: 100     
@@ -53,7 +53,7 @@ cards:
               template: declutter_system_graph
               variables:
                 - sensor: sensor.processor_temperature                           
-                - grenn: 122
+                - green: 122
                 - yellow: 140
                 - orange: 176
                 - red: 200
@@ -130,7 +130,7 @@ cards:
               template: declutter_system_graph
               variables:
                 - sensor: sensor.pc_cpu_load
-                - grenn: 25
+                - green: 25
                 - yellow: 50
                 - orange: 75
                 - red: 100
@@ -141,7 +141,7 @@ cards:
               template: declutter_system_graph
               variables:
                 - sensor: sensor.pc_cpu_temperature
-                - grenn: 45
+                - green: 45
                 - yellow: 50
                 - orange: 60
                 - red: 100                
@@ -152,7 +152,7 @@ cards:
               template: declutter_system_graph
               variables:
                 - sensor: sensor.pc_gpu_temperature                           
-                - grenn: 60
+                - green: 60
                 - yellow: 70
                 - orange: 80
                 - red: 100
