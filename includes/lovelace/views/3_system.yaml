@@ -74,6 +74,7 @@ cards:
               tap_action:
                 action: call-service
                 service: homeassistant.restart
+                haptic: light
               template: icon_name
   - type: vertical-stack
     cards:
@@ -151,6 +152,7 @@ cards:
               tap_action:
                 action: call-service
                 service: homeassistant.restart
+                haptic: light
               template: icon_name
       - type: sensor
         graph: line
