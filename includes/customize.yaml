@@ -34,6 +34,22 @@ light.overhead:
 # Track Lights
 light.track:
   icon: "mdi:track-light"
+  
+#################################################################
+## System Bridge PC Sensors
+#################################################################  
+# CPU Load
+sensor.pc_cpu_load:
+  icon: mdi:cpu-64-bit
+# CPU Temp 
+sensor.pc_cpu_temperature:
+  icon: mdi:thermometer
+# GPU Temp
+sensor.pc_gpu_temperature:
+  icon: mdi:thermometer
+# Windows Version
+sensor.pc_release:
+  icon: mdi:microsoft-windows
 #################################################################
 ## Hue Zones
 #################################################################
