@@ -1,6 +1,6 @@
 title: ha
 path: ha
-icon: 'mdi:home-assistant'
+icon: "mdi:home-assistant"
 badges: []
 cards:
   #################################################################
@@ -17,49 +17,49 @@ cards:
           - entity: sensor.time_online
           - type: custom:hui-horizontal-stack-card
             cards:
-            #----------------------------------------------------------------
-            ## HA CPU Utilization Graph
-            #----------------------------------------------------------------
-            - type: "custom:decluttering-card"
-              template: declutter_system_graph
-              variables:
-                - sensor: sensor.processor_use_percent
-                - green: 25
-                - yellow: 50
-                - orange: 75
-                - red: 100
-            #----------------------------------------------------------------
-            ## HA Memory Utilization Graph
-            #----------------------------------------------------------------  
-            - type: "custom:decluttering-card"
-              template: declutter_system_graph
-              variables:
-                - sensor: sensor.memory_use_percent
-                - green: 25
-                - yellow: 50
-                - orange: 75
-                - red: 100     
-            #----------------------------------------------------------------
-            ## HA CPU Temp Graph
-            #----------------------------------------------------------------                            
-            - type: "custom:decluttering-card"
-              template: declutter_system_graph
-              variables:
-                - sensor: sensor.processor_temperature                           
-                - green: 122
-                - yellow: 140
-                - orange: 176
-                - red: 200
+              #----------------------------------------------------------------
+              ## HA CPU Utilization Graph
+              #----------------------------------------------------------------
+              - type: "custom:decluttering-card"
+                template: declutter_system_graph
+                variables:
+                  - sensor: sensor.processor_use_percent
+                  - green: 25
+                  - yellow: 50
+                  - orange: 75
+                  - red: 100
+              #----------------------------------------------------------------
+              ## HA Memory Utilization Graph
+              #----------------------------------------------------------------
+              - type: "custom:decluttering-card"
+                template: declutter_system_graph
+                variables:
+                  - sensor: sensor.memory_use_percent
+                  - green: 25
+                  - yellow: 50
+                  - orange: 75
+                  - red: 100
+              #----------------------------------------------------------------
+              ## HA CPU Temp Graph
+              #----------------------------------------------------------------
+              - type: "custom:decluttering-card"
+                template: declutter_system_graph
+                variables:
+                  - sensor: sensor.processor_temperature
+                  - green: 122
+                  - yellow: 140
+                  - orange: 176
+                  - red: 200
           - type: custom:hui-horizontal-stack-card
             cards:
-            - type: custom:button-card
-              name: Home Assistant
-              icon: 'mdi:home-assistant'
-              tap_action:
-                action: call-service
-                service: homeassistant.restart
-                haptic: light
-              template: icon_name
+              - type: custom:button-card
+                name: Home Assistant
+                icon: "mdi:home-assistant"
+                tap_action:
+                  action: call-service
+                  service: homeassistant.restart
+                  haptic: light
+                template: icon_name
   #################################################################
   ## Desktop PC Controls
   #################################################################
@@ -74,23 +74,23 @@ cards:
             width: 55%
             height: 2em
             decimal: 0
-            unit_of_measurement: '%'
+            unit_of_measurement: "%"
             positions: &bar_card_positions
               icon: outside
-              indicator: 'off'
+              indicator: "off"
               name: outside
             severity: &bar_card_severity
-              - color: '#303435'
+              - color: "#303435"
                 from: 0
                 to: 89
-              - color: '#6d2525'
+              - color: "#6d2525"
                 from: 90
                 to: 200
             entity_row: true
             entities:
               #----------------------------------------------------------------
               ## PC Memory Bar
-              #----------------------------------------------------------------               
+              #----------------------------------------------------------------
               - entity: sensor.pc_memory_used
                 tap_action:
                   action: call-service
@@ -99,7 +99,7 @@ cards:
                     entity_id: sensor.pc_memory_used
               #----------------------------------------------------------------
               ## HA CPU Temp Graph
-              #----------------------------------------------------------------   
+              #----------------------------------------------------------------
               - entity: sensor.pc_c_space_used
                 tap_action:
                   action: call-service
@@ -108,68 +108,65 @@ cards:
                     entity_id: sensor.pc_c_space_used
           #----------------------------------------------------------------
           ## PC CPU Utilization Graph
-          #----------------------------------------------------------------             
+          #----------------------------------------------------------------
           - type: custom:hui-horizontal-stack-card
             cards:
-            - type: "custom:decluttering-card"
-              template: declutter_system_graph
-              variables:
-                - sensor: sensor.pc_cpu_load
-                - green: 25
-                - yellow: 50
-                - orange: 75
-                - red: 100
-            #----------------------------------------------------------------
-            ## PC CPU Temp Graph
-            #----------------------------------------------------------------   
-            - type: "custom:decluttering-card"
-              template: declutter_system_graph
-              variables:
-                - sensor: sensor.pc_cpu_temperature
-                - green: 45
-                - yellow: 50
-                - orange: 60
-                - red: 100                
-            #----------------------------------------------------------------
-            ## PC GPU Temp Graph
-            #----------------------------------------------------------------   
-            - type: "custom:decluttering-card"
-              template: declutter_system_graph
-              variables:
-                - sensor: sensor.pc_gpu_temperature                           
-                - green: 60
-                - yellow: 70
-                - orange: 80
-                - red: 100
+              - type: "custom:decluttering-card"
+                template: declutter_system_graph
+                variables:
+                  - sensor: sensor.pc_cpu_load
+                  - green: 25
+                  - yellow: 50
+                  - orange: 75
+                  - red: 100
+              #----------------------------------------------------------------
+              ## PC CPU Temp Graph
+              #----------------------------------------------------------------
+              - type: "custom:decluttering-card"
+                template: declutter_system_graph
+                variables:
+                  - sensor: sensor.pc_cpu_temperature
+                  - green: 45
+                  - yellow: 50
+                  - orange: 60
+                  - red: 100
+              #----------------------------------------------------------------
+              ## PC GPU Temp Graph
+              #----------------------------------------------------------------
+              - type: "custom:decluttering-card"
+                template: declutter_system_graph
+                variables:
+                  - sensor: sensor.pc_gpu_temperature
+                  - green: 60
+                  - yellow: 70
+                  - orange: 80
+                  - red: 100
           #----------------------------------------------------------------
           ## PC Boot Button
-          #----------------------------------------------------------------   
+          #----------------------------------------------------------------
           - type: custom:hui-horizontal-stack-card
             cards:
-            - type: grid
-              columns: 3
-              card:
-                - type: custom:button-card
-                  name: Wake
-                  icon: 'mdi:monitor'
-                  entity: switch.wake_on_lan
-                  tap_action:
-                    action: toggle
-                    haptic: light
-                  template: icon_name              
-                - type: custom:button-card
-                  name: Sleep
-                  icon: 'mdi:power-sleep'
-                  entity: switch.wake_on_lan
-                  tap_action:
-                    action: toggle
-                    haptic: light
-                  template: icon_name
-                - type: custom:button-card
-                  name: Shutdown
-                  icon: 'mdi:power'
-                  entity: switch.wake_on_lan
-                  tap_action:
-                    action: toggle
-                    haptic: light
-                  template: icon_name
+              - type: custom:button-card
+                name: Wake
+                icon: "mdi:monitor"
+                entity: switch.wake_on_lan
+                tap_action:
+                  action: toggle
+                  haptic: light
+                template: icon_name
+              - type: custom:button-card
+                name: Sleep
+                icon: "mdi:power-sleep"
+                entity: switch.wake_on_lan
+                tap_action:
+                  action: toggle
+                  haptic: light
+                template: icon_name
+              - type: custom:button-card
+                name: Shutdown
+                icon: "mdi:power"
+                entity: switch.wake_on_lan
+                tap_action:
+                  action: toggle
+                  haptic: light
+                template: icon_name
