@@ -163,8 +163,8 @@ cards:
             - type: custom:button-card
               name: Boot
               icon: 'mdi:monitor'
+              entity: switch.wake_on_lan
               tap_action:
-                action: call-service
-                service: homeassistant.restart
+                action: toggle
                 haptic: light
               template: icon_name
