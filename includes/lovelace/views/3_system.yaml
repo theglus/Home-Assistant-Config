@@ -145,7 +145,7 @@ cards:
           ## PC Boot Button
           #----------------------------------------------------------------   
           - type: "custom:mod-card"
-            cards:
+            card:
               type: grid
               columns: 3
               card:
