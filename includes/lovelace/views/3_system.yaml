@@ -144,13 +144,30 @@ cards:
           #----------------------------------------------------------------
           ## PC Boot Button
           #----------------------------------------------------------------   
-          - type: custom:hui-horizontal-stack-card
-            cards:
-            - type: custom:button-card
-              name: Boot
-              icon: 'mdi:monitor'
-              entity: switch.wake_on_lan
-              tap_action:
-                action: toggle
-                haptic: light
-              template: icon_name
+            - type: grid
+              columns: 2
+              cards:
+                - type: custom:button-card
+                  name: Wake
+                  icon: 'mdi:monitor'
+                  entity: switch.wake_on_lan
+                  tap_action:
+                    action: toggle
+                    haptic: light
+                  template: icon_name              
+                - type: custom:button-card
+                  name: Sleep
+                  icon: 'mdi:power-sleep'
+                  entity: switch.wake_on_lan
+                  tap_action:
+                    action: toggle
+                    haptic: light
+                  template: icon_name
+                - type: custom:button-card
+                  name: Shutdown
+                  icon: 'mdi:power'
+                  entity: switch.wake_on_lan
+                  tap_action:
+                    action: toggle
+                    haptic: light
+                  template: icon_name
