@@ -3,11 +3,11 @@ path: ha
 icon: 'mdi:home-assistant'
 badges: []
 cards:
-  - type: vertical-stack
-    cards:
   #################################################################
   ## Home Assistant System Controls
   #################################################################
+  - type: vertical-stack
+    cards:
       - type: entities
         title: Home Assistant
         show_header_toggle: false
@@ -70,6 +70,8 @@ cards:
   #################################################################
   ## Desktop PC Controls
   #################################################################
+  - type: vertical-stack
+    cards:
       - type: entities
         title: Desktop PC
         show_header_toggle: false
