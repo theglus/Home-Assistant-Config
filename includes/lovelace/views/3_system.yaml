@@ -106,11 +106,11 @@ cards:
                   service: homeassistant.update_entity
                   service_data:
                     entity_id: sensor.pc_c_space_used
+          #----------------------------------------------------------------
+          ## PC CPU Utilization Graph
+          #----------------------------------------------------------------             
           - type: custom:hui-horizontal-stack-card
             cards:
-            #----------------------------------------------------------------
-            ## PC CPU Utilization Graph
-            #----------------------------------------------------------------             
             - type: "custom:decluttering-card"
               template: declutter_system_graph
               variables:
@@ -144,9 +144,11 @@ cards:
           #----------------------------------------------------------------
           ## PC Boot Button
           #----------------------------------------------------------------   
-          - type: grid
-            columns: 2
+          - type: custom:hui-horizontal-stack-card
             cards:
+            - type: grid
+            columns: 2
+            card:
               - type: custom:button-card
                 name: Wake
                 icon: 'mdi:monitor'
