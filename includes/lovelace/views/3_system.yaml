@@ -24,7 +24,7 @@ card:
   #################################################################
       - type: entities
         view_layout:
-          grid-area: hass
+          grid-area: ha
         title: Home Assistant
         show_header_toggle: false
         card_mod:
@@ -88,7 +88,7 @@ card:
   #################################################################
       - type: entities
         view_layout:
-          grid-area: tablet
+          grid-area: pc
         title: Desktop PC
         show_header_toggle: false
         card_mod:
