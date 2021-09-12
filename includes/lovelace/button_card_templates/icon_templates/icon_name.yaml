@@ -6,7 +6,6 @@ color: '#9da0a2'
 styles:
   grid:
     - grid-template-areas: '"i n"'
-    - grid-column-gap: 0.1em
   name:
     - font-size: 1.06em
     - letter-spacing: 0.015em
