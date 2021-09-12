@@ -3,22 +3,44 @@ path: ha
 icon: 'mdi:home-assistant'
 badges: []
 card:
-  type: custom:layout-card
-  layout_type: custom:grid-layout
-  layout:
-    grid-template-columns: repeat(2, 1fr)
-    grid-template-rows: 1fr
-    grid-template-areas: |
-      "ha pc"
-    mediaquery:
-      #phone
-      "(max-width: 800px)":
-        grid-template-columns: 1fr
-        grid-template-rows: repeat(2, 1fr)
-        grid-template-areas: |
-          "ha"
-          "pc"
+  type: "custom:mod-card"
+  style: |
+    .: |
+      :host .content {
+        width: calc(385px + 385px + 385px);
+        max-width: 90vw;
+      }
+    layout-card:
+      $grid-layout$:
+        hui-entities-card:
+          $: |
+            .card-content {
+              padding: 1.5em 2.7em 2.3em 2em;
+            }
+            ha-card {
+              animation: border 1s forwards;
+              border-radius: 0;
+            }
+            @keyframes border {
+              0%, 100% {
+                border-right: 1px solid rgba(0, 0, 0, 0.3);
+              }
+            }
+            /* phone */
+            @media screen and (max-width: 800px) {
+              ha-card {
+                animation: none;
+              }
+            }
+          $hui-horizontal-stack-card$: |
+            #root {
+              justify-content: space-evenly;
+              margin-top: 1.9em;
+              margin-left: 0.8em;
+            }
+  card:
     type: grid
+    columns: 2
     cards:
   #################################################################
   ## Home Assistant System Controls
