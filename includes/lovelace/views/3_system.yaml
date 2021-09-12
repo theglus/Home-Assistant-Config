@@ -145,8 +145,8 @@ cards:
           ## PC Boot Button
           #----------------------------------------------------------------   
           - type: custom:hui-horizontal-stack-card
-            card:
-            - type: grid
+            cards:
+              type: grid
               columns: 3
               card:
                 - type: custom:button-card
