@@ -53,7 +53,7 @@ cards:
           - type: custom:hui-horizontal-stack-card
             cards:
               - type: custom:button-card
-                name: Home Assistant
+                name: HA
                 icon: "mdi:home-assistant"
                 tap_action:
                   action: call-service
