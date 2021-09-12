@@ -2,13 +2,29 @@ title: ha
 path: ha
 icon: 'mdi:home-assistant'
 badges: []
-cards:
+card:
+  type: custom:layout-card
+  layout_type: custom:grid-layout
+  layout:
+    grid-template-columns: repeat(3, 1fr)
+    grid-template-rows: 1fr
+    grid-template-areas: |
+      "ha pc"
+    mediaquery:
+      #phone
+      "(max-width: 800px)":
+        grid-template-columns: 1fr
+        grid-template-rows: repeat(3, 1fr)
+        grid-template-areas: |
+          "ha"
+          "pc"
+    cards:
   #################################################################
   ## Home Assistant System Controls
   #################################################################
-  - type: vertical-stack
-    cards:
       - type: entities
+        view_layout:
+          grid-area: hass
         title: Home Assistant
         show_header_toggle: false
         card_mod:
@@ -70,9 +86,9 @@ cards:
   #################################################################
   ## Desktop PC Controls
   #################################################################
-  - type: vertical-stack
-    cards:
       - type: entities
+        view_layout:
+          grid-area: tablet
         title: Desktop PC
         show_header_toggle: false
         card_mod:
