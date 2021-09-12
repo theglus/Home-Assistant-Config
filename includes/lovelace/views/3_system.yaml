@@ -6,7 +6,7 @@ card:
   type: custom:layout-card
   layout_type: custom:grid-layout
   layout:
-    grid-template-columns: repeat(3, 1fr)
+    grid-template-columns: repeat(2, 1fr)
     grid-template-rows: 1fr
     grid-template-areas: |
       "ha pc"
@@ -14,7 +14,7 @@ card:
       #phone
       "(max-width: 800px)":
         grid-template-columns: 1fr
-        grid-template-rows: repeat(3, 1fr)
+        grid-template-rows: repeat(2, 1fr)
         grid-template-areas: |
           "ha"
           "pc"
