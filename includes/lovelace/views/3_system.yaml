@@ -5,9 +5,6 @@ badges: []
 cards:
   - type: vertical-stack
     cards:
-    - type: grid
-      columns: 2
-      cards:
   #################################################################
   ## Home Assistant System Controls
   #################################################################
