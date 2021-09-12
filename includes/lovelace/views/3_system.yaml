@@ -147,7 +147,7 @@ cards:
           - type: custom:hui-horizontal-stack-card
             cards:
             - type: grid
-              columns: 3
+              columns: 2
               card:
                 - type: custom:button-card
                   name: Wake
