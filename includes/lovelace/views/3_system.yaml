@@ -60,6 +60,22 @@ cards:
                   service: homeassistant.restart
                   haptic: light
                 template: icon_name
+              - type: custom:button-card
+                name: HACS
+                icon: "hacs:hacs"
+                tap_action:
+                  action: navigate
+                  navigation_path: "/hacs/entry"
+                  haptic: light
+                template: icon_name
+              - type: custom:button-card
+                name: Terminal
+                icon: "mdi:powershell"
+                tap_action:
+                  action: navigate
+                  navigation_path: "hassio/ingress/core_ssh"
+                  haptic: light
+                template: icon_name
   #################################################################
   ## Desktop PC Controls
   #################################################################
