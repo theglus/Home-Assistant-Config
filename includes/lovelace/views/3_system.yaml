@@ -46,8 +46,6 @@ card:
   ## Home Assistant System Controls
   #################################################################
       - type: entities
-        view_layout:
-          grid-area: ha
         title: Home Assistant
         show_header_toggle: false
         card_mod:
@@ -110,8 +108,6 @@ card:
   ## Desktop PC Controls
   #################################################################
       - type: entities
-        view_layout:
-          grid-area: pc
         title: Desktop PC
         show_header_toggle: false
         card_mod:
