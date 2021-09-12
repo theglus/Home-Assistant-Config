@@ -39,6 +39,10 @@ lovelace:
     # Kiosk
     - url: /hacsfiles/kiosk-mode/kiosk-mode.js
       type: module
+    # Layout Card
+    # https://github.com/thomasloven/lovelace-layout-card
+    - url: /hacsfiles/lovelace-layout-card/layout-card.js
+      type: module
     # Light Popup Card
     # https://github.com/DBuit/light-popup-card
     - url: /hacsfiles/light-popup-card/light-popup-card.js                        
