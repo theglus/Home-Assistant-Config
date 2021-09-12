@@ -145,9 +145,9 @@ cards:
           ## PC Boot Button
           #----------------------------------------------------------------   
           - type: custom:hui-horizontal-stack-card
-            cards:
+            card:
             - type: grid
-              columns: 2
+              columns: 3
               card:
                 - type: custom:button-card
                   name: Wake
