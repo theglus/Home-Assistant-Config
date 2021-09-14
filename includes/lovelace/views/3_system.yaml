@@ -159,7 +159,7 @@ cards:
                 tap_action:
                   action: call-service
                   service: wake_on_lan.send_magic_packet
-                  data:
+                  service_data:
                     mac: !secret 'pc_mac'
                     broadcast_address: !secret pc_ip
                   haptic: light
