@@ -84,8 +84,7 @@ cards:
       - type: entities
         title: Desktop PC
         entities:
-          - entity: sensor.pc_release
-          - entity: sensor.pc_bios_version
+          - entity: sensor.pc_last_active
           - type: custom:bar-card
             width: 55%
             height: 2em
@@ -107,21 +106,12 @@ cards:
               #----------------------------------------------------------------
               ## PC Memory Bar
               #----------------------------------------------------------------
-              - entity: sensor.pc_memory_used
+              - entity: sensor.pc_memory_utilization
                 tap_action:
                   action: call-service
                   service: homeassistant.update_entity
                   service_data:
-                    entity_id: sensor.pc_memory_used
-              #----------------------------------------------------------------
-              ## HA CPU Temp Graph
-              #----------------------------------------------------------------
-              - entity: sensor.pc_c_space_used
-                tap_action:
-                  action: call-service
-                  service: homeassistant.update_entity
-                  service_data:
-                    entity_id: sensor.pc_c_space_used
+                    entity_id: sensor.pc_memory_utilization
           #----------------------------------------------------------------
           ## PC CPU Utilization Graph
           #----------------------------------------------------------------
