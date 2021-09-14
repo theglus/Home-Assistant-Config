@@ -136,15 +136,15 @@ cards:
                   - orange: 75
                   - red: 100
               #----------------------------------------------------------------
-              ## PC CPU Temp Graph
+              ## PC GPU Load Graph
               #----------------------------------------------------------------
               - type: "custom:decluttering-card"
                 template: declutter_system_graph
                 variables:
-                  - sensor: sensor.pc_cpu_temperature
-                  - green: 45
+                  - sensor: sensor.pc_gpu_load
+                  - green: 25
                   - yellow: 50
-                  - orange: 60
+                  - orange: 75
                   - red: 100
               #----------------------------------------------------------------
               ## PC GPU Temp Graph
@@ -152,7 +152,7 @@ cards:
               - type: "custom:decluttering-card"
                 template: declutter_system_graph
                 variables:
-                  - sensor: sensor.pc_gpu_temperature
+                  - sensor: sensor.pc_gpu_temp
                   - green: 60
                   - yellow: 70
                   - orange: 80
