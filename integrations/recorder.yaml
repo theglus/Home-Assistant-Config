@@ -23,8 +23,8 @@ recorder:
       - sensor.speedtest_upload
       # Desktop Computer
       - sensor.pc_cpu_load
-      - sensor.pc_cpu_temperature
-      - sensor.pc_gpu_temperature
+      - sensor.pc_gpu_load
+      - sensor.pc_gpu_temp
     entity_globs:
       - person.jeffrey_*
       - person.tiffany_*
