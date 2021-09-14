@@ -1,0 +1,9 @@
+#################################################################
+## Vacuum Bathroom
+#################################################################
+alias: Clean Bathroom
+service: vacuum.send_command
+data:
+  entity_id: vacuum.winston
+  command: app_segment_clean
+  params: [20]
