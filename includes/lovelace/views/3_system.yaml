@@ -185,7 +185,7 @@ cards:
               - type: custom:button-card
                 name: Shutdown
                 icon: "mdi:power"
-                entity: switch.wake_on_lan
+                entity: switch.pc_shutdown
                 tap_action:
                   action: toggle
                   haptic: light
