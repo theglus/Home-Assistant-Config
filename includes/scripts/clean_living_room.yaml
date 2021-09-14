@@ -2,9 +2,10 @@
 ## Vacuum Living Room
 #################################################################
 alias: Clean Living Room
+sequence:
+  - service: vacuum.send_command
+    data:
+      entity_id: vacuum.winston
+      command: app_segment_clean
+      params: [17]
 icon: 'mdi:sofa'
-service: vacuum.send_command
-data:
-  entity_id: vacuum.winston
-  command: app_segment_clean
-  params: [17]

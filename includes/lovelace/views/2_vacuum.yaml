@@ -32,14 +32,19 @@ cards:
         actions:
           - name: Clean hallway
             service: script.clean_hallway
+            icon: 'mdi:door'
           - name: Clean guest bathroom
             service: script.clean_bathroom
+            icon: 'mdi:shower'
           - name: Clean office
             service: script.clean_office
+            icon: 'mdi:desk'
           - name: Clean living room
             service: script.clean_living_room
+            icon: 'mdi:sofa'
           - name: Clean kitchen
             service: script.clean_kitchen
+            icon: 'mdi:silverware-fork-knife'
       - type: 'custom:xiaomi-vacuum-map-card'
         entity: vacuum.winston
         map_camera: camera.xiaomi_cloud_map_extractor

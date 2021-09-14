@@ -2,9 +2,10 @@
 ## Vacuum Kitchen
 #################################################################
 alias: Clean Kitchen
+sequence:
+  - service: vacuum.send_command
+    data:
+      entity_id: vacuum.winston
+      command: app_segment_clean
+      params: [18]
 icon: 'mdi:silverware-fork-knife'
-service: vacuum.send_command
-data:
-  entity_id: vacuum.winston
-  command: app_segment_clean
-  params: [18]
