@@ -1,6 +1,8 @@
 #################################################################
 ## Vacuum Kitchen
 #################################################################
+alias: Clean Kitchen
+icon: 'mdi:silverware-fork-knife'
 service: vacuum.send_command
 data:
   entity_id: vacuum.winston

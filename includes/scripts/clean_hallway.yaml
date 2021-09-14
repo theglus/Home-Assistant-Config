@@ -1,6 +1,8 @@
 #################################################################
 ## Vacuum Hallway
 #################################################################
+alias: Clean Hallway
+icon: 'mdi:door'
 service: vacuum.send_command
 data:
   entity_id: vacuum.winston

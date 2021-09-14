@@ -2,6 +2,7 @@
 ## Vacuum Bathroom
 #################################################################
 alias: Clean Bathroom
+icon: 'mdi:shower'
 service: vacuum.send_command
 data:
   entity_id: vacuum.winston

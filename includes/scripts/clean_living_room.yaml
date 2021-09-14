@@ -1,6 +1,8 @@
 #################################################################
 ## Vacuum Living Room
 #################################################################
+alias: Clean Living Room
+icon: 'mdi:sofa'
 service: vacuum.send_command
 data:
   entity_id: vacuum.winston
