@@ -167,7 +167,11 @@ cards:
                 icon: "mdi:monitor"
                 entity: switch.wake_on_lan
                 tap_action:
-                  action: toggle
+                  action: call-service
+                  service: wake_on_lan.send_magic_packet
+                  data:
+                    mac: !secret pc_mac
+                    broadcast_address: !secret pc_ip
                   haptic: light
                 template: icon_name
               - type: custom:button-card
