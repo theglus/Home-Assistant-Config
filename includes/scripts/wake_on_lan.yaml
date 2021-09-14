@@ -1,0 +1,9 @@
+#################################################################
+## Wake Desktop PC via LAN
+#################################################################
+alias: Wake on LAN
+sequence:
+  - service: wake_on_lan.send_magic_packet
+    data:
+      mac: !secret pc_mac
+      broadcast_address: !secret pc_ip
