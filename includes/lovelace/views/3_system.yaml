@@ -105,6 +105,15 @@ cards:
             entity_row: true
             entities:
               #----------------------------------------------------------------
+              ## PC Clock Speed Bar
+              #----------------------------------------------------------------
+              - entity: sensor.pc_clock_speed
+                tap_action:
+                  action: call-service
+                  service: homeassistant.update_entity
+                  service_data:
+                    entity_id: sensor.pc_clock_speed
+              #----------------------------------------------------------------
               ## PC Memory Bar
               #----------------------------------------------------------------
               - entity: sensor.pc_memory_use
