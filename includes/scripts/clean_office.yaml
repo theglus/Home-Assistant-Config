@@ -1,6 +1,8 @@
 #################################################################
 ## Vacuum Office
 #################################################################
+alias: Clean Office
+icon: 'mdi:desk'
 service: vacuum.send_command
 data:
   entity_id: vacuum.winston
