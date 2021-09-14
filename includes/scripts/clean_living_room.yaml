@@ -5,4 +5,4 @@ service: vacuum.send_command
 data:
   entity_id: vacuum.winston
   command: app_segment_clean
-  params: [16]
+  params: [17]
