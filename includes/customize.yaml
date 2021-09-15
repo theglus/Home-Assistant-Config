@@ -47,7 +47,6 @@ sensor.pc_gpu_load:
 # GPU Temp
 sensor.pc_gpu_temp:
   icon: mdi:thermometer
-  unit_of_measurement: "ºC"
 #################################################################
 ## Hue Zones
 #################################################################
