@@ -99,10 +99,10 @@ cards:
             severity: &bar_card_severity
               - color: "#303435"
                 from: 0
-                to: 89
+                to: 74
               - color: "#6d2525"
-                from: 90
-                to: 200
+                from: 75
+                to: 100
             entity_row: true
             entities:
               #----------------------------------------------------------------
