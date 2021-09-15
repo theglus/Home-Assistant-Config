@@ -5,6 +5,7 @@ card:
     type: 'custom:mini-graph-card'
     entities:
       - '[[sensor]]'
+    name: '[[name]]'
     show: null
     color_thresholds:
       - value: '[[green]]'

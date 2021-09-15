@@ -123,6 +123,7 @@ cards:
                 template: declutter_system_graph
                 variables:
                   - sensor: sensor.pc_cpu_load
+                  - name: CPU
                   - green: 25
                   - yellow: 50
                   - orange: 75
@@ -134,6 +135,7 @@ cards:
                 template: declutter_system_graph
                 variables:
                   - sensor: sensor.pc_gpu_load
+                  - name: GPU
                   - green: 25
                   - yellow: 50
                   - orange: 75
@@ -145,6 +147,7 @@ cards:
                 template: declutter_system_graph
                 variables:
                   - sensor: sensor.pc_gpu_temp
+                  - name: GPU ºC
                   - green: 60
                   - yellow: 70
                   - orange: 80
