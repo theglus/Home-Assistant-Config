@@ -36,20 +36,18 @@ light.track:
   icon: "mdi:track-light"
   
 #################################################################
-## System Bridge PC Sensors
+## PC Sensors
 #################################################################  
 # CPU Load
 sensor.pc_cpu_load:
   icon: mdi:cpu-64-bit
-# CPU Temp 
-sensor.pc_cpu_temperature:
+# GPU Load 
+sensor.pc_gpu_load:
   icon: mdi:thermometer
 # GPU Temp
-sensor.pc_gpu_temperature:
+sensor.pc_gpu_temp:
   icon: mdi:thermometer
-# Windows Version
-sensor.pc_release:
-  icon: mdi:microsoft-windows
+  unit_of_measurement: "ºC"
 #################################################################
 ## Hue Zones
 #################################################################
