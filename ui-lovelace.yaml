@@ -1,9 +1,9 @@
 background: var(--background-image)
 # background: center / cover no-repeat url("/local/img/valley.svg") fixed
-# kiosk_mode: 
-# hide_header: true
+kiosk_mode: 
+  hide_header: true
 sidebar:
-  hideTopMenu: false
+  hideTopMenu: true
   digitalClock: true
   twelveHourVersion: true
   period: false
