@@ -54,23 +54,23 @@ async def async_setup_entry(
 
 
 FRIGIDAIRE_TO_HA_UNIT = {
-    frigidaire.Unit.FAHRENHEIT.value: TEMP_FAHRENHEIT,
-    frigidaire.Unit.CELSIUS.value: TEMP_CELSIUS,
+    frigidaire.Unit.FAHRENHEIT: TEMP_FAHRENHEIT,
+    frigidaire.Unit.CELSIUS: TEMP_CELSIUS,
 }
 
 FRIGIDAIRE_TO_HA_MODE = {
-    frigidaire.Mode.OFF.value: HVAC_MODE_OFF,
-    frigidaire.Mode.COOL.value: HVAC_MODE_COOL,
-    frigidaire.Mode.FAN.value: HVAC_MODE_FAN_ONLY,
-    frigidaire.Mode.ECO.value: HVAC_MODE_AUTO,
+    frigidaire.Mode.OFF: HVAC_MODE_OFF,
+    frigidaire.Mode.COOL: HVAC_MODE_COOL,
+    frigidaire.Mode.FAN: HVAC_MODE_FAN_ONLY,
+    frigidaire.Mode.ECO: HVAC_MODE_AUTO,
 }
 
 FRIGIDAIRE_TO_HA_FAN_SPEED = {
-    frigidaire.FanSpeed.OFF.value: FAN_OFF,  # when the AC is off
-    frigidaire.FanSpeed.AUTO.value: FAN_AUTO,
-    frigidaire.FanSpeed.LOW.value: FAN_LOW,
-    frigidaire.FanSpeed.MEDIUM.value: FAN_MEDIUM,
-    frigidaire.FanSpeed.HIGH.value: FAN_HIGH,
+    frigidaire.FanSpeed.OFF: FAN_OFF,  # when the AC is off
+    frigidaire.FanSpeed.AUTO: FAN_AUTO,
+    frigidaire.FanSpeed.LOW: FAN_LOW,
+    frigidaire.FanSpeed.MEDIUM: FAN_MEDIUM,
+    frigidaire.FanSpeed.HIGH: FAN_HIGH,
 }
 
 HA_TO_FRIGIDAIRE_FAN_MODE = {
@@ -266,7 +266,7 @@ class FrigidaireClimate(ClimateEntity):
             return
 
         # Turn on if not currently on.
-        if self._details.for_code(frigidaire.HaclCode.AC_MODE).number_value == 0:
+        if self._details.for_code(frigidaire.HaclCode.AC_MODE) == 0:
             self._client.execute_action(
                 self._appliance, frigidaire.Action.set_power(frigidaire.Power.ON)
             )
@@ -287,8 +287,6 @@ class FrigidaireClimate(ClimateEntity):
             self._attr_available = False
         else:
             self._attr_available = (
-                self._details.for_code(
-                    frigidaire.HaclCode.CONNECTIVITY_STATE
-                ).string_value
-                == frigidaire.ConnectivityState.CONNECTED
+                self._details.for_code(frigidaire.HaclCode.CONNECTIVITY_STATE)
+                != frigidaire.ConnectivityState.DISCONNECTED
             )

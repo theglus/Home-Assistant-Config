@@ -59,24 +59,18 @@ async def async_setup_entry(
 
 
 FRIGIDAIRE_TO_HA_MODE = {
-    frigidaire.Mode.DRY.value: MODE_NORMAL,
-    frigidaire.Mode.CONTINUOUS.value: MODE_BOOST,
+    frigidaire.Mode.DRY: MODE_NORMAL,
+    frigidaire.Mode.CONTINUOUS: MODE_BOOST,
 }
 
-HA_TO_FRIGIDAIRE_MODE = {
-    MODE_NORMAL: frigidaire.Mode.DRY,
-    MODE_BOOST: frigidaire.Mode.CONTINUOUS,
-}
+HA_TO_FRIGIDAIRE_MODE = {v: k for k, v in FRIGIDAIRE_TO_HA_MODE.items()}
 
 FRIGIDAIRE_TO_HA_FAN_MODE = {
-    frigidaire.FanSpeed.LOW.value: FAN_LOW,
-    frigidaire.FanSpeed.HIGH.value: FAN_HIGH,
+    frigidaire.FanSpeed.LOW: FAN_LOW,
+    frigidaire.FanSpeed.HIGH: FAN_HIGH,
 }
 
-HA_TO_FRIGIDAIRE_FAN_MODE = {
-    FAN_LOW: frigidaire.FanSpeed.LOW,
-    FAN_HIGH: frigidaire.FanSpeed.HIGH,
-}
+HA_TO_FRIGIDAIRE_FAN_MODE = {v: k for k, v in FRIGIDAIRE_TO_HA_FAN_MODE.items()}
 
 
 class FrigidaireDehumidifier(HumidifierEntity):
@@ -134,10 +128,7 @@ class FrigidaireDehumidifier(HumidifierEntity):
 
     @property
     def is_on(self):
-        return (
-            self._details.for_code(frigidaire.HaclCode.APPLIANCE_STATE).number_value
-            != 0
-        )
+        return self._details.for_code(frigidaire.HaclCode.APPLIANCE_STATE) != 0
 
     @property
     def supported_features(self):
@@ -160,6 +151,9 @@ class FrigidaireDehumidifier(HumidifierEntity):
         frigidaire_mode = self._details.for_code(
             frigidaire.HaclCode.AC_MODE
         ).number_value
+
+        if frigidaire_mode == frigidaire.Mode.OFF:
+            return MODE_NORMAL
 
         return FRIGIDAIRE_TO_HA_MODE[frigidaire_mode]
 
@@ -230,10 +224,7 @@ class FrigidaireDehumidifier(HumidifierEntity):
             return
 
         # Turn on if not currently on.
-        if (
-            self._details.for_code(frigidaire.HaclCode.APPLIANCE_STATE).number_value
-            == 0
-        ):
+        if self._details.for_code(frigidaire.HaclCode.APPLIANCE_STATE) == 0:
             self.turn_on()
 
         self._client.execute_action(
@@ -251,8 +242,6 @@ class FrigidaireDehumidifier(HumidifierEntity):
             self._attr_available = False
         else:
             self._attr_available = (
-                self._details.for_code(
-                    frigidaire.HaclCode.CONNECTIVITY_STATE
-                ).string_value
-                == frigidaire.ConnectivityState.CONNECTED
+                self._details.for_code(frigidaire.HaclCode.CONNECTIVITY_STATE)
+                != frigidaire.ConnectivityState.DISCONNECTED
             )
