@@ -24,6 +24,7 @@ cards:
                 template: declutter_system_graph
                 variables:
                   - sensor: sensor.processor_use_percent
+                  - name: CPU
                   - green: 25
                   - yellow: 50
                   - orange: 75
@@ -35,6 +36,7 @@ cards:
                 template: declutter_system_graph
                 variables:
                   - sensor: sensor.memory_use_percent
+                  - name: RAM
                   - green: 25
                   - yellow: 50
                   - orange: 75
@@ -46,6 +48,7 @@ cards:
                 template: declutter_system_graph
                 variables:
                   - sensor: sensor.processor_temperature
+                  - name: CPU ºF
                   - green: 122
                   - yellow: 140
                   - orange: 176
