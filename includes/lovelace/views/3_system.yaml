@@ -150,11 +150,11 @@ cards:
                 template: declutter_system_graph
                 variables:
                   - sensor: sensor.pc_gpu_temp
-                  - name: GPU ºC
-                  - green: 60
-                  - yellow: 70
-                  - orange: 80
-                  - red: 100
+                  - name: GPU ºF
+                  - green: 140
+                  - yellow: 158
+                  - orange: 176
+                  - red: 210
           #----------------------------------------------------------------
           ## PC Boot Button
           #----------------------------------------------------------------
