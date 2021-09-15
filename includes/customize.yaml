@@ -43,7 +43,7 @@ sensor.pc_cpu_load:
   icon: mdi:cpu-64-bit
 # GPU Load 
 sensor.pc_gpu_load:
-  icon: mdi:thermometer
+  icon: mdi:memory
 # GPU Temp
 sensor.pc_gpu_temp:
   icon: mdi:thermometer
