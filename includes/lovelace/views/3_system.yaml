@@ -53,6 +53,10 @@ cards:
                   - yellow: 140
                   - orange: 176
                   - red: 200
+          #----------------------------------------------------------------
+          ## HA Controls
+          #----------------------------------------------------------------
+          # TODO: Format Dekstop + HA system control buttons.
           - type: custom:hui-horizontal-stack-card
             cards:
               - type: custom:button-card
@@ -82,6 +86,7 @@ cards:
   #################################################################
   ## Desktop PC Controls
   #################################################################
+  # TODO: Off state for Desktop controls.
   - type: vertical-stack
     cards:
       - type: entities
@@ -158,6 +163,7 @@ cards:
           #----------------------------------------------------------------
           ## PC Boot Button
           #----------------------------------------------------------------
+          # TODO: Format Dekstop + HA system control buttons.
           - type: custom:hui-horizontal-stack-card
             cards:
               - type: custom:button-card
@@ -168,6 +174,7 @@ cards:
                   action: toggle
                   haptic: light
                 template: icon_name
+              # TODO: Create Sleep command in HASS Workstation Service.
               - type: custom:button-card
                 name: Sleep
                 icon: "mdi:power-sleep"
