@@ -449,7 +449,6 @@ cards:
                 #----------------------------------------------------------------
                 ## Office Google Home Mini
                 #----------------------------------------------------------------
-                # TODO: #254 Office Google Home Mini button
                 - type: custom:button-card
                   entity: media_player.office_speaker
                   name: Home Mini
