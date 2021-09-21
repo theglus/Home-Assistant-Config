@@ -25,6 +25,7 @@ _pycache_
 .HA_VERSION
 aircast.xml
 deps/
+home-assistant.log.1
 home-assistant_v2.db-shm 
 home-assistant_v2.db-wal
 tts/
