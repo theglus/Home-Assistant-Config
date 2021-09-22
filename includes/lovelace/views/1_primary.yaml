@@ -616,7 +616,7 @@ cards:
                 #----------------------------------------------------------------
                 ## Kitchen Dyson
                 #----------------------------------------------------------------
-                # TODO: #287 Kitchen Dyson button
+                # TODO: #318 Create fan pop-up
                 - type: "custom:button-card"
                   entity: fan.kitchen
                   name: Dyson
@@ -698,7 +698,7 @@ cards:
                 #----------------------------------------------------------------
                 ## Kirby
                 #----------------------------------------------------------------
-                # TODO: Loft Dyson button
+                # TODO: #318 Create fan pop-up
                 - type: "custom:button-card"
                   entity: fan.kirby
                   name: Dyson
