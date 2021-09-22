@@ -449,7 +449,7 @@ cards:
                 #----------------------------------------------------------------
                 ## Office Google Home Mini
                 #----------------------------------------------------------------
-                # TODO: #254 Office Google Home Mini button
+                # TODO: #315 Alarm + timer countdown for Google Home devices.
                 - type: custom:button-card
                   entity: media_player.office_speaker
                   name: Home Mini
@@ -460,6 +460,7 @@ cards:
                 ## Office Smart Clock
                 #----------------------------------------------------------------
                 # TODO: #255 Smart Clock button
+                # TODO: #315 Alarm + timer countdown for Google Home devices.
           #################################################################
           ## Living Room Controls
           #################################################################
@@ -597,7 +598,7 @@ cards:
                 #----------------------------------------------------------------
                 ## Kitchen Google Home Mini
                 #----------------------------------------------------------------
-                # TODO: #256 Kitchen Google Home Mini button
+                # TODO: #315 Alarm + timer countdown for Google Home devices.
                 - type: custom:button-card
                   entity: media_player.living_room_speaker
                   name: Home Mini
@@ -717,6 +718,7 @@ cards:
                 ## Loft Nest Hub
                 #----------------------------------------------------------------
                 # TODO: #258 Nest Hub Mini button
+                # TODO: #315 Alarm + timer countdown for Google Home devices.
           #################################################################
           ## Loft Bathroom Controls
           #################################################################
@@ -737,7 +739,7 @@ cards:
               #----------------------------------------------------------------
               ## Nest Mini
               #----------------------------------------------------------------
-              # TODO: #257 Bathroom Nest Mini button
+              # TODO: #315 Alarm + timer countdown for Google Home devices.
               - type: custom:button-card
                 entity: media_player.loft_bathroom
                 name: Nest Mini
