@@ -527,6 +527,7 @@ cards:
                 #----------------------------------------------------------------
                 ## Ice Bear
                 #----------------------------------------------------------------
+                # TODO: #325 Frigidaire climate pop-up
                 - type: "custom:button-card"
                   entity: climate.ice_bear
                   name: Air Conditioner
