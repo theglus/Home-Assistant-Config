@@ -1,0 +1,8 @@
+#################################################################
+## Smartphone Group
+#################################################################
+name: Smartphones
+platform: group
+services:
+  - service: mobile_app_tiffanys_iphone
+  - service: mobile_app_pixel_5

@@ -1,17 +1,17 @@
 #################################################################
 ## Vacuum Clean
 #
-## Notify Farnsworth when Winston starts cleaning.
+## Notify Smartphones when Winston starts cleaning.
 #################################################################
 alias: Vacuum Clean
-description: Notify Farnsworth when Winston starts cleaning.
+description: Notify Smartphones when Winston starts cleaning.
 trigger:
   - platform: state
     entity_id: vacuum.winston
     from: docked
     to: cleaning
 action:
-  - service: notify.telegram
+  - service: notify.smartphones
     data:
       message: Off to tidy up. Cheerio!
       title: "🤹🏻‍ Winston:"
