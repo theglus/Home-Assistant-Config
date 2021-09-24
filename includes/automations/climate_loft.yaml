@@ -1,0 +1,40 @@
+#################################################################
+## Climate: Loft
+#
+## Turn on fan when Loft is ≥72° and off when ≤71°.
+#################################################################
+alias: "Climate: Loft"
+description: "Turn on fan when Loft is ≥72° and off when ≤71°."
+trigger:
+  - type: temperature
+    platform: device
+    device_id: a9f869ec3d4b012b2455783c52a43eba
+    entity_id: sensor.kirby_temperature
+    domain: sensor
+    above: 72
+  - type: temperature
+    platform: device
+    device_id: a9f869ec3d4b012b2455783c52a43eba
+    entity_id: sensor.kirby_temperature
+    domain: sensor
+    below: 71
+action:
+  - choose:
+      - conditions:
+          - type: is_temperature
+            condition: device
+            device_id: a9f869ec3d4b012b2455783c52a43eba
+            entity_id: sensor.kirby_temperature
+            domain: sensor
+            above: 72
+        sequence:
+          - type: turn_on
+            device_id: 47073cebbaaca58b5f5931a4d0bf7914
+            entity_id: switch.air_circulator
+            domain: switch
+    default:
+      - type: turn_off
+        device_id: 47073cebbaaca58b5f5931a4d0bf7914
+        entity_id: switch.air_circulator
+        domain: switch
+mode: single

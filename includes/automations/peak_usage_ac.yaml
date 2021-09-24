@@ -1,0 +1,68 @@
+#################################################################
+## Peak Usage Alert: Air Conditioner
+#
+## Notify Smartphones when Ice Bear is on during peak usage.
+#################################################################
+alias: "Peak Usage Alert: AC"
+description: "Notify Smartphones when Ice Bear is on during peak usage."
+trigger:
+  - platform: state
+    entity_id: climate.ice_bear
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 30
+      milliseconds: 0
+    to: cool
+  - platform: time
+    at: "16:00:00"
+  - platform: state
+    entity_id: climate.ice_bear
+    to: auto
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 30
+      milliseconds: 0
+action:
+  - choose:
+      - conditions:
+          - condition: and
+            conditions:
+              - condition: state
+                entity_id: climate.ice_bear
+                for:
+                  hours: 0
+                  minutes: 0
+                  seconds: 30
+                  milliseconds: 0
+                state: cool
+              - condition: time
+                after: "16:00:00"
+                before: "21:00:00"
+        sequence:
+          - service: notify.smartphones
+            data:
+              message: Ice Bear is cooling.
+              title: ⚡Peak Usage Alert
+      - conditions:
+          - condition: and
+            conditions:
+              - condition: state
+                entity_id: climate.ice_bear
+                state: auto
+                for:
+                  hours: 0
+                  minutes: 0
+                  seconds: 30
+                  milliseconds: 0
+              - condition: time
+                after: "16:00:00"
+                before: "21:00:00"
+        sequence:
+          - service: notify.smartphones
+            data:
+              message: Ice Bear is in ECO mode.
+              title: ⚡Peak Usage Alert
+    default: []
+mode: single
