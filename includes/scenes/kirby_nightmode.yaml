@@ -1,0 +1,33 @@
+#################################################################
+## Kirby: Nightmode
+#
+## Nightmode: true | Speed: 7 | Oscillate: Off
+#################################################################
+id: "1632519998592"
+name: "Kirby: Nightmode"
+entities:
+  fan.kirby:
+    speed_list:
+      - "off"
+      - low
+      - medium
+      - high
+    preset_modes: []
+    oscillating: false
+    speed: high
+    percentage: 70
+    percentage_step: 10
+    preset_mode:
+    air_quality_target: very sensitive
+    friendly_name: Kirby
+    supported_features: 3
+    state: "on"
+  switch.kirby_night_mode:
+    friendly_name: Kirby Night Mode
+    icon: mdi:power-sleep
+    state: "on"
+  switch.kirby_continuous_monitoring:
+    friendly_name: Kirby Continuous Monitoring
+    icon: mdi:eye
+    state: "on"
+icon: mdi:weather-night
