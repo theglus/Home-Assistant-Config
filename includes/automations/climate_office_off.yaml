@@ -1,0 +1,18 @@
+#################################################################
+## Climate: Office Off
+#
+## Turn fan OFF based off of Overhead light group.
+#################################################################
+alias: "Climate: Office Off"
+description: "Turn fan OFF based off of Overhead light group."
+trigger:
+  - platform: state
+    entity_id: light.overhead
+    from: "on"
+    to: "off"
+action:
+  - type: turn_off
+    device_id: cc9c28d8ff6a11ea876cbbcc11d5e81d
+    entity_id: switch.kettle
+    domain: switch
+mode: single

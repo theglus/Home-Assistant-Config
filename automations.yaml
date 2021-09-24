@@ -52,33 +52,3 @@
       manual_time: '8:00:00'
       sunrise_duration: '25'
       min_mired: '450'
-- id: '1625252823542'
-  alias: Climate Office Off
-  description: Turn fan off based off of Overhead light group.
-  trigger:
-  - platform: state
-    entity_id: light.overhead
-    from: 'on'
-    to: 'off'
-  condition: []
-  action:
-  - type: turn_off
-    device_id: cc9c28d8ff6a11ea876cbbcc11d5e81d
-    entity_id: switch.kettle
-    domain: switch
-  mode: single
-- id: '1625252867258'
-  alias: Climate Office On
-  description: Turn fan on based on of Overhead light group.
-  trigger:
-  - platform: state
-    entity_id: light.overhead
-    to: 'on'
-    from: 'off'
-  condition: []
-  action:
-  - type: turn_on
-    device_id: cc9c28d8ff6a11ea876cbbcc11d5e81d
-    entity_id: switch.kettle
-    domain: switch
-  mode: single
