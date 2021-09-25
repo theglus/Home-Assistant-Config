@@ -1,0 +1,61 @@
+#################################################################
+## Volume Home
+#
+## Turn down volume of Google Home device at 10 pm.
+#################################################################
+alias: Volume
+description: "Turn down volume of Google Home device at 10 pm."
+trigger:
+  - platform: time
+    at: "09:00:00"
+  - platform: time
+    at: "22:00:00"
+action:
+  - choose:
+      - conditions:
+          - condition: and
+            conditions:
+              - condition: time
+                after: "22:00:00"
+                before: "09:00:00"
+        sequence:
+          - service: media_player.volume_set
+            target:
+              entity_id:
+                - media_player.loft_clock
+                - media_player.loft_nest_hub
+            data:
+              volume_level: 0.5
+          - service: media_player.volume_set
+            target:
+              entity_id:
+                - media_player.office_speaker
+                - media_player.living_room_speaker
+                - media_player.loft_bathroom
+            data:
+              volume_level: 0.3
+          - service: notify.mobile_app_pixel_5
+            data:
+              message: Quiet time!
+              title: 🤫 Farnsworth
+    default:
+      - service: media_player.volume_set
+        target:
+          entity_id:
+            - media_player.loft_nest_hub
+            - media_player.loft_clock
+        data:
+          volume_level: 0.6
+      - service: media_player.volume_set
+        data:
+          volume_level: 0.4
+        target:
+          entity_id:
+            - media_player.living_room_speaker
+            - media_player.office_speaker
+            - media_player.loft_bathroom
+      - service: notify.mobile_app_pixel_5
+        data:
+          title: 📢 Farnsworth
+          message: I'm loud and proud, deal with it
+mode: single

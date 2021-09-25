@@ -6,3 +6,4 @@ sequence:
   - service: wake_on_lan.send_magic_packet
     data:
       mac: !secret pc_mac
+icon: mdi:weather-sunset-up
