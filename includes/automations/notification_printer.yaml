@@ -1,18 +1,17 @@
 #################################################################
 ## Notification Printer
 #
-## Notify Farnsworth when Major Laser Printer is ready.
+## Notify Smartphones when Major Laser Printer is ready.
 #################################################################
 alias: Notification Printer
-description: Notify Farnsworth when Major Laser Printer is ready.
+description: Notify Smartphones when Major Laser Printer is ready.
 trigger:
   - platform: state
     entity_id: sensor.hp_laserjet_m14_m17
     from: unavailable
     to: idle
-condition: []
 action:
-  - service: notify.telegram
+  - service: notify.smartphones
     data:
       message: Ready to print.
       title: "🖨️ Major Laser Printer:"
