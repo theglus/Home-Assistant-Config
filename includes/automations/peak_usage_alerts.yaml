@@ -1,10 +1,10 @@
 #################################################################
-## Peak Usage Alert: Air Conditioner
+## Peak Usage Alerts
 #
-## Notify Smartphones when Ice Bear is on during peak usage.
+## Notify Smartphones when AC, Washer, or Dryer is on during peak usage.
 #################################################################
-alias: "Peak Usage Alert: AC"
-description: "Notify Smartphones when Ice Bear is on during peak usage."
+alias: "Peak Usage Alerts"
+description: "Notify Smartphones when AC, Washer, or Dryer is on during peak usage."
 trigger:
   - platform: state
     entity_id: climate.ice_bear
@@ -19,6 +19,22 @@ trigger:
   - platform: state
     entity_id: climate.ice_bear
     to: auto
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 30
+      milliseconds: 0
+  - platform: state
+    entity_id: sensor.dryer
+    to: "on"
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 30
+      milliseconds: 0
+  - platform: state
+    to: "on"
+    entity_id: sensor.washer
     for:
       hours: 0
       minutes: 0
@@ -64,5 +80,43 @@ action:
             data:
               message: Ice Bear is in ECO mode.
               title: ⚡Peak Usage Alert
+      - conditions:
+          - condition: and
+            conditions:
+              - condition: state
+                entity_id: sensor.washer
+                state: "on"
+                for:
+                  hours: 0
+                  minutes: 0
+                  seconds: 30
+                  milliseconds: 0
+              - condition: time
+                after: "16:00:00"
+                before: "21:00:00"
+        sequence:
+          - service: notify.smartphones
+            data:
+              title: ⚡Peak Usage Alert
+              message: Washer is on.
+      - conditions:
+          - condition: and
+            conditions:
+              - condition: state
+                entity_id: sensor.dryer
+                state: "on"
+                for:
+                  hours: 0
+                  minutes: 0
+                  seconds: 30
+                  milliseconds: 0
+              - condition: time
+                after: "16:00:00"
+                before: "21:00:00"
+        sequence:
+          - service: notify.smartphones
+            data:
+              title: ⚡Peak Usage Alert
+              message: Dryer is on.
     default: []
 mode: single
