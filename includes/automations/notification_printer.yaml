@@ -7,7 +7,7 @@ alias: Notification Printer
 description: Notify Smartphones when Major Laser Printer is ready.
 trigger:
   - platform: state
-    entity_id: sensor.hp_laserjet_m14_m17
+    entity_id: sensor.major_laser_printer
     from: unavailable
     to: idle
 action:
