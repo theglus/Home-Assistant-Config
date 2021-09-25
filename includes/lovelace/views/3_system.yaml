@@ -76,7 +76,7 @@ cards:
                   haptic: light
                 template: icon_name
               - type: custom:button-card
-                name: Automation
+                name: Auto
                 icon: "mdi:robot"
                 tap_action:
                   action: call-service
