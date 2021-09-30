@@ -1,0 +1,5 @@
+- platform: drivvo
+  email: !secret drivvo_username
+  password: !secret drivvo_password
+  model: "Vespa GTS 300"
+  id_vehicle: !secret vehicle_id
