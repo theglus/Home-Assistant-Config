@@ -35,13 +35,21 @@ from .wideq import (
 from .wideq.device import WM_DEVICE_TYPES, DeviceType
 
 from homeassistant.components.sensor import (
+    DEVICE_CLASS_PM1,
+    DEVICE_CLASS_PM10,
+    DEVICE_CLASS_PM25,
     DEVICE_CLASS_POWER,
     DEVICE_CLASS_TEMPERATURE,
     STATE_CLASS_MEASUREMENT,
     SensorEntity,
     SensorEntityDescription,
 )
-from homeassistant.const import POWER_WATT, STATE_UNAVAILABLE
+from homeassistant.const import (
+    CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
+    PERCENTAGE,
+    POWER_WATT,
+    STATE_UNAVAILABLE,
+)
 from homeassistant.helpers import entity_platform
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
@@ -51,6 +59,7 @@ from .device_helpers import (
     DEVICE_ICONS,
     WASH_DEVICE_TYPES,
     LGEACDevice,
+    LGEAirPurifierDevice,
     LGERangeDevice,
     LGERefrigeratorDevice,
     LGEWashDevice,
@@ -82,6 +91,12 @@ ATTR_ROOM_TEMP = "room_temperature"
 ATTR_OVEN_LOWER_TARGET_TEMP = "oven_lower_target_temp"
 ATTR_OVEN_UPPER_TARGET_TEMP = "oven_upper_target_temp"
 ATTR_OVEN_TEMP_UNIT = "oven_temp_unit"
+
+# air purifier sensor attributes
+ATTR_FILTER_REMAINING_LIFE = "filter_remaining_life"
+ATTR_PM1 = "pm1"
+ATTR_PM10 = "pm10"
+ATTR_PM25 = "pm25"
 
 # supported features
 SUPPORT_REMOTE_START = 1
@@ -328,6 +343,40 @@ RANGE_SENSORS: Tuple[ThinQSensorEntityDescription, ...] = (
         unit_fn=lambda x: x.oven_temp_unit,
     ),
 )
+AIR_PURIFIER_SENSORS: Tuple[ThinQSensorEntityDescription, ...] = (
+    ThinQSensorEntityDescription(
+        key=ATTR_PM1,
+        name="PM1",
+        state_class=STATE_CLASS_MEASUREMENT,
+        device_class=DEVICE_CLASS_PM1,
+        value_fn=lambda x: x.pm1,
+        native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
+    ),
+    ThinQSensorEntityDescription(
+        key=ATTR_PM25,
+        name="PM2.5",
+        state_class=STATE_CLASS_MEASUREMENT,
+        device_class=DEVICE_CLASS_PM25,
+        value_fn=lambda x: x.pm25,
+        native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
+    ),
+    ThinQSensorEntityDescription(
+        key=ATTR_PM10,
+        name="PM10",
+        state_class=STATE_CLASS_MEASUREMENT,
+        device_class=DEVICE_CLASS_PM10,
+        value_fn=lambda x: x.pm10,
+        native_unit_of_measurement=CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
+    ),
+    ThinQSensorEntityDescription(
+        key=ATTR_FILTER_REMAINING_LIFE,
+        name="Filter Remaining Life",
+        icon="mdi:air-filter",
+        state_class=STATE_CLASS_MEASUREMENT,
+        value_fn=lambda x: x.filter_remaining_life,
+        native_unit_of_measurement=PERCENTAGE,
+    ),
+)
 
 
 def _sensor_exist(lge_device: LGEDevice, sensor_desc: ThinQSensorEntityDescription):
@@ -394,6 +443,16 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
             LGERangeSensor(lge_device, sensor_desc)
             for sensor_desc in RANGE_SENSORS
             for lge_device in lge_devices.get(DeviceType.RANGE, [])
+            if _sensor_exist(lge_device, sensor_desc)
+        ]
+    )
+
+    # add air purifiers
+    lge_sensors.extend(
+        [
+            LGESensor(lge_device, sensor_desc, LGEAirPurifierDevice(lge_device))
+            for sensor_desc in AIR_PURIFIER_SENSORS
+            for lge_device in lge_devices.get(DeviceType.AIR_PURIFIER, [])
             if _sensor_exist(lge_device, sensor_desc)
         ]
     )
