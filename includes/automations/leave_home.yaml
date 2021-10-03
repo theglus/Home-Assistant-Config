@@ -6,11 +6,11 @@
 alias: 'Leave Home'
 description: 'Notify smartphones of door status + turn off lights accordingly.'
 trigger:
-- device_id: 55278effdc88ebe7ffa36b52540fa006
+- device_id: 1a4f22d3b5ce47a298a90508301c8c29
   domain: deconz
   platform: device
-  type: remote_gyro_activated
-  subtype: ''
+  type: remote_button_short_press
+  subtype: turn_on
 condition:
 - condition: state
   entity_id: binary_sensor.front_door
