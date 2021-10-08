@@ -26,6 +26,22 @@ I routinely stream games via Moonlight from my desktop computer (in the Office) 
 ### Architecture
 ![My Home Assistant Architecture](www/readme/architecture.png) 
 ## Integrations
+- [Air Visual](https://www.home-assistant.io/integrations/airvisual)
+- [ClimaCell](https://www.home-assistant.io/integrations/climacell)
+- [deCONZ](https://www.home-assistant.io/integrations/deconz)
+- [Denon AVR Network Receiver](https://www.home-assistant.io/integrations/denonavr)
+- [Denon HEOS](https://www.home-assistant.io/integrations/heos)
+- [DLNA](https://www.home-assistant.io/integrations/dlna_dmr)
+- [Google Cast](https://www.home-assistant.io/integrations/cast)
+- [Mobile App](https://www.home-assistant.io/integrations/mobile_app)
+- [MQTT](https://www.home-assistant.io/integrations/mqtt)
+- [Nanoleaf](https://www.home-assistant.io/integrations/nanoleaf)
+- [Philips Hue](https://www.home-assistant.io/integrations/hue)
+- [Sony Bravia TV](https://www.home-assistant.io/integrations/braviatv)
+- [Tile](https://www.home-assistant.io/integrations/tile)
+- [TP-Link Kasa Smart](https://www.home-assistant.io/integrations/tplink)
+- [Xiaomi Miio](https://www.home-assistant.io/integrations/xiaomi_miio)
+
 ### Custom Components
 - [HACS](https://github.com/hacs/integration): Allows for the installation and management of the various custom components.
 - [BrowserMod](https://github.com/thomasloven/hass-browser_mod): Supports various customizations within Home Assistant.
