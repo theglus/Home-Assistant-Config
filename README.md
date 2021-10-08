@@ -25,6 +25,32 @@ I routinely stream games via Moonlight from my desktop computer (in the Office) 
 ## Software
 ### Architecture
 ![My Home Assistant Architecture](www/readme/architecture.png) 
+## Integrations
+- [Air Visual](https://www.home-assistant.io/integrations/airvisual)
+- [ClimaCell](https://www.home-assistant.io/integrations/climacell)
+- [deCONZ](https://www.home-assistant.io/integrations/deconz)
+- [Denon AVR Network Receiver](https://www.home-assistant.io/integrations/denonavr)
+- [Denon HEOS](https://www.home-assistant.io/integrations/heos)
+- [DLNA](https://www.home-assistant.io/integrations/dlna_dmr)
+- [Google Cast](https://www.home-assistant.io/integrations/cast)
+- [Mobile App](https://www.home-assistant.io/integrations/mobile_app)
+- [MQTT](https://www.home-assistant.io/integrations/mqtt)
+- [Nanoleaf](https://www.home-assistant.io/integrations/nanoleaf)
+- [Philips Hue](https://www.home-assistant.io/integrations/hue)
+- [Sony Bravia TV](https://www.home-assistant.io/integrations/braviatv)
+- [Tile](https://www.home-assistant.io/integrations/tile)
+- [TP-Link Kasa Smart](https://www.home-assistant.io/integrations/tplink)
+- [Xiaomi Miio](https://www.home-assistant.io/integrations/xiaomi_miio)
+
+### Custom Components
+- [HACS](https://github.com/hacs/integration): Allows for the installation and management of the various custom components.
+- [BrowserMod](https://github.com/thomasloven/hass-browser_mod): Supports various customizations within Home Assistant.
+- [Drivvo Integration](https://github.com/theglus/sensor.drivvo): Utilized to pull in Vespa milage + fuel economy from [Drivvo](https://github.com/theglus/sensor.drivvo).
+- [Dyson Local/Cloud](https://github.com/shenxn/ha-dyson): Add support for Dyson air purifiers to HA.
+- [Frigidaire](https://github.com/bm1549/home-assistant-frigidaire): Adds support for Frigidaire portable AC to HA. This is what originally got me interested in Home Assistant. Ironically I wasn't able to get it working until a year in.
+- [Google Home](https://github.com/leikoilja/ha-google-home): Creates HA sensors for alarms + timers that have been set on various Google Home devices.
+- [LG ThinQ Sensors](https://github.com/ollo69/ha-smartthinq-sensors): Supports integrating my LG washer + dryer into HA.
+- [Xiaomi Cloud Map Extractor](https://github.com/PiotrMachowski/Home-Assistant-custom-components-Xiaomi-Cloud-Map-Extractor): Harnesses lidar in RoboRock S4 to create a live map of my home.
 ### Voice Assistant
 I'm currently utilizing Nabu Casa to leverage Google Assistant via the aforementioned Google Home devices to enable voice controls. I mainly use voice commands to trigger the lights, music, and theater system. I would like to setup voice commands for Winston and Kirby in the near future. 
 ## Devices
