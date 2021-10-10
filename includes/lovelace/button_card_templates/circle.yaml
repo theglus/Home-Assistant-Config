@@ -1,7 +1,7 @@
 #################################################################
 ## Circle Button Properties
 #################################################################
-# TODO: Resolve circle errors
+# TODO: #349 Resolve circle errors
 custom_fields:
   circle: >
     [[[
