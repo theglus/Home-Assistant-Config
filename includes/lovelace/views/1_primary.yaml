@@ -590,6 +590,7 @@ cards:
                 #----------------------------------------------------------------
                 ## Nanoleaf Dino Panesl
                 #----------------------------------------------------------------
+                # TODO: #351 Create nanoleaf light pop-up
                 - type: "custom:button-card"
                   entity: light.nanoleaf
                   # TODO: Apply gradient to dino icon
