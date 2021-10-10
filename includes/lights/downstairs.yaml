@@ -6,7 +6,7 @@ name: Downstairs
 entities:
   - light.overhead
   - light.track
-  - light.dino_panel
+  - light.nanoleaf
   - light.hallway_runner
   - light.potter_lamp
   - light.kitchen
