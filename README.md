@@ -81,7 +81,7 @@ I recently built out my home theater system centered around my Denon S960H + NVI
 
 I have a Levovo Smart Tab M8 that is docked in my living room that I use to access my _[Lovelace Dashboards](#lovelace-dashboards)_ including my Home Theater controls in Home Assistant. 
 #### Multi Room Audio
-I have a series of Google Home and Nest Mini's scattered throughout the apartment for the purpose of multi-room audio. The audio quality is subpar, but it gets the job done for now. I eventually plan on augmenting the audio with several Denon Home speakers.
+I have a series of Google Home and Nest Mini's scattered throughout the apartment for the purpose of multi-room audio. The audio quality is subpar, but it gets the job done for now. I plannong on updating to several pairs of Google Nest Audio smart speakers.
 | Google Home/Nest Mini | Google Nest Hub | Lenovo Smart Clock |
 | --- | --- | --- | 
 | ![Google Home Mini](www/readme/av/google_mini.jpg) | ![Google Nest Hub](www/readme/av/google_nest_hub.jpg) | ![Lenovo Smart Clock](www/readme/av/lenovo_smart_clock.jpg) |
