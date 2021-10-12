@@ -4,7 +4,11 @@ Welcome to theglus's Home Assistant setup. I hope you find value in the projects
 * [Hardware](#hardware)
 * [Software](#software)
 * [Devices](#devices)
+* [Lovelace Dashboards](#lovelace-dashboards)
+* [Automations](#automations)
 ## Hardware
+* [Home Assistant Server](#home-assistant-server)
+* [Network](#network)
 ### Home Assistant Server
 My Home Assistant setup is pretty basic but it gets the job done without any hiccups.
 | Raspberry Pi 4 Model B 4GB | Raspbee II | SanDisk Extreme 64GB MicroSD | Argon Neo Case |
@@ -23,9 +27,13 @@ But you can't have a mesh network with just one puck, so in order to eliminate t
 I routinely stream games via Moonlight from my desktop computer (in the Office) to the TV (in the Living Room). Initially, I did this over WiFi, but had very little success. Fortunately, there is a coax outlet right under my desk, so using ethernet-over-coax, I am able to hardwire to the network switch in the Living Room.
 
 ## Software
+* [Architecture](#architecture)
+* [Integrations](#integrations)
+* [Custom Components](#custom-components) 
+* [Voice Assistant](#voice-assistant) 
 ### Architecture
 ![My Home Assistant Architecture](www/readme/architecture.png) 
-## Integrations
+### Integrations
 - [Air Visual](https://www.home-assistant.io/integrations/airvisual)
 - [ClimaCell](https://www.home-assistant.io/integrations/climacell)
 - [deCONZ](https://www.home-assistant.io/integrations/deconz)
@@ -54,6 +62,15 @@ I routinely stream games via Moonlight from my desktop computer (in the Office) 
 ### Voice Assistant
 I'm currently utilizing Nabu Casa to leverage Google Assistant via the aforementioned Google Home devices to enable voice controls. I mainly use voice commands to trigger the lights, music, and theater system. I would like to setup voice commands for Winston and Kirby in the near future. 
 ## Devices
+* [Audio & Video](#audio--video)
+  * [Home Theater](#home-theater)
+  * [Multi Room Audio](#multi-room-audio)
+* [Appliances](#appliances)
+  * [Climate](#climate)
+  * [Vacuum](#vacuum)
+  * [Lighting](#lighting)
+  * [Switches + Outlets](#switches--outlets)
+  * [Laundry](#laundry)
 ### Audio & Video
 #### Home Theater
 I recently built out my home theater system centered around my Denon S960H + NVIDIA SHIELD TV Pro and managed by Home Assistant using `denonavr`, `androidtv`, and `media_player`. The system is primarly controlled using the NVIDIA SHIELD Toblerone as it can accomplish almost everything I need via CEC. The main gaps currently in the system are the following Denon buttons `Setup`, `Options`, `Info`, `Back`, `ECO`, `Input` and the following Sony Bravia buttons `Settings`, `Home`. I'm working to create a series of `custom:button-cards` and 
@@ -62,9 +79,9 @@ I recently built out my home theater system centered around my Denon S960H + NVI
 | --- | --- | --- | --- | --- | --- |
 | ![Denon](www/readme/av/denon.png) | ![Polk S35](www/readme/av/polk_s35.jpg) | ![Polk S10](www/readme/av/polk_s10.jpg) | ![Polk S50](www/readme/av/polk_s50.jpg) | ![NVIDIA SHIELD TV Pro](www/readme/av/nvidia_shield_tv_pro.jpg) | ![Sony](www/readme/av/sony_x900h.jpg) |
 
-I have a Levovo Smart Tab M8 that is docked in my living room that I use to access the _Home Theater_ view in Home Assistant. This view is very much a WIP progress and is my focus over the coming weeks.
+I have a Levovo Smart Tab M8 that is docked in my living room that I use to access my _[Lovelace Dashboards](#lovelace-dashboards)_ including my Home Theater controls in Home Assistant. 
 #### Multi Room Audio
-I have a series of Google Home and Nest Mini's scattered throughout the apartment for the purpose of multi-room audio. The audio quality is subpar, but it gets the job done for now. I eventually plan on augmenting the audio with several Denon Home speakers.
+I have a series of Google Home and Nest Mini's scattered throughout the apartment for the purpose of multi-room audio. The audio quality is subpar, but it gets the job done for now. I'm planning on updating to several pairs of Google Nest Audio smart speakers.
 | Google Home/Nest Mini | Google Nest Hub | Lenovo Smart Clock |
 | --- | --- | --- | 
 | ![Google Home Mini](www/readme/av/google_mini.jpg) | ![Google Nest Hub](www/readme/av/google_nest_hub.jpg) | ![Lenovo Smart Clock](www/readme/av/lenovo_smart_clock.jpg) |
@@ -80,14 +97,14 @@ I have plans to create a comprehensive fan/purifier control card as a keystone f
 My apartment has casement windows so my AC options were fairly limited. The Frigidaire Cool Connect Portable AC (Ice Bear) was an easy decision due to it's high BTUs, small footprint, and WiFi conductivity. Unfortunately the smart functionality is incredibly limited and the Frigidaire app is complete garabage. I have yet to figure out a strategy to get Ice Bear into Home Assistant, but haven't given up hope!
 #### Vacuum
 I recently replaced my Eufy robovac due to it's tendency to try to kill itself by ramming into various objects. The Roborock S4 (Winston) intrigued me due to it's lidar, smart mapping, and friendliness with Home Assistant. A lot of people report that you have to do a crazy hack switching the region in Mainland China, but I didn't have to do that, you can read more about my process/HA vacuum implimentation in the wiki under [Project WINSTON](https://github.com/theglus/Home-Assistant-Config/wiki/Project-WINSTON:-Roborock-S4).
-### Lighting
+#### Lighting
 I'm pretty deep into the Hue ecosystem sans my Sengled lightstrip. As a result I have my lights paired directly to the Hue app using the Hue bridge. The main reason I did this instead of utilizing my Raspbee II was so I can ensure my lights remain functional regardless of if Home Assistant is operational. This allows me a lot more flexibility to work with Home Assistant without adversely effecting the other people in my household. 
 | Hue Starter Kit | BR30 White Ambiance | Hue Color | Sengled Light Strip |
 | --- | --- | --- | --- |
 | ![Hue Starter Kit](www/readme/lighting/hue_starter.jpg) | ![BR30 White Ambiance](www/readme/lighting/hue_br30.jpg) | ![Hue Color](www/readme/lighting/hue_color.jpeg) | ![Sengled Light Strip](www/readme/lighting/sengled_ledstrip.jpg) |
 
 The only light outside the Hue ecosystem is my Sengled LED strip. I needed 6 feet of LEDs just for my stairs not to mention the other areas of the apartment, it would have been $79 for 6.5' of Hue lights where Sengled was ~$60 for 16.5'. The LED strip is hooked up directly to the Raspbee II. 
-## Switches + Outlets
+#### Switches + Outlets
 I have a series of smart plugs which I use to control various appliances. Currently I have my printer (Major Laser Printer) and my kitchen kettle hooked up to two Kasa HS103 outlets which I control mainly through automations and Google Assistant. I recently purchased a Kasa 3-outlet surge protector which I have yet to determine how I will utilize.
 | Hue Smart Plug | [Kasa HS103 Smart Plug](https://smile.amazon.com/gp/product/B07B8W2KHZ/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&psc=1) | Kasa 3-plug Surge | Lutron Aurora | 
 | --- | --- | --- | --- |
@@ -96,3 +113,10 @@ I have a series of smart plugs which I use to control various appliances. Curren
 My old school analog marquee is controlled by the Hue plug which I opted for due to it's ability to be integrated with my other lights via the Hue ecosystem. Lastly, sometimes it's just quicker and quieter to turn on the lights with a switch, being a renter replacing my wall switches isn't appealing. Luckily I discovered Lutron Aurora dimmers which not only gives me a physical button but also a dimmer which I can map to one or many lights. I'm hoping to figure out a way to map secondary actions (double click, triple click, etc.), but the feasiblity is TBD.
 
 Thanks for reading, please star if your are interested in the project.
+## Lovelace Dashboards
+* [Control Card](#control-card)
+  * [Room Controls](#room-controls)
+  * [Light Popup](#light-popup)
+  * [Animated Icons](#animated-icons)
+* [Vacuum Dasboard](#vacuum-dashboard)
+* [System Dashboard](#system-dashboard)
