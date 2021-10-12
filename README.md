@@ -4,7 +4,11 @@ Welcome to theglus's Home Assistant setup. I hope you find value in the projects
 * [Hardware](#hardware)
 * [Software](#software)
 * [Devices](#devices)
+* [Lovelace Dashboards](#lovelace-dashboards)
+* [Automations](#automations)
 ## Hardware
+* [Home Assistant Server](#home-assistant-server)
+* [Network](#network)
 ### Home Assistant Server
 My Home Assistant setup is pretty basic but it gets the job done without any hiccups.
 | Raspberry Pi 4 Model B 4GB | Raspbee II | SanDisk Extreme 64GB MicroSD | Argon Neo Case |
@@ -23,6 +27,10 @@ But you can't have a mesh network with just one puck, so in order to eliminate t
 I routinely stream games via Moonlight from my desktop computer (in the Office) to the TV (in the Living Room). Initially, I did this over WiFi, but had very little success. Fortunately, there is a coax outlet right under my desk, so using ethernet-over-coax, I am able to hardwire to the network switch in the Living Room.
 
 ## Software
+* [Architecture](#architecture)
+* [Integrations](#integrations)
+* [Custom Components](#custom-components) 
+* [Voice Assistant](#voice-assistant) 
 ### Architecture
 ![My Home Assistant Architecture](www/readme/architecture.png) 
 ## Integrations
@@ -54,6 +62,15 @@ I routinely stream games via Moonlight from my desktop computer (in the Office) 
 ### Voice Assistant
 I'm currently utilizing Nabu Casa to leverage Google Assistant via the aforementioned Google Home devices to enable voice controls. I mainly use voice commands to trigger the lights, music, and theater system. I would like to setup voice commands for Winston and Kirby in the near future. 
 ## Devices
+* [Audio & Video](#audio--video)
+  * [Home Theater](#home-theater)
+  * [Multi Room Audio](#multi-room-audio)
+* [Appliances](#appliances)
+  * [Climate](#climate)
+  * [Vacuum](#vacuum)
+  * [Lighting](#lighting)
+  * [Switches + Outlets](#switches--outlets)
+  * [Laundry](#laundry)
 ### Audio & Video
 #### Home Theater
 I recently built out my home theater system centered around my Denon S960H + NVIDIA SHIELD TV Pro and managed by Home Assistant using `denonavr`, `androidtv`, and `media_player`. The system is primarly controlled using the NVIDIA SHIELD Toblerone as it can accomplish almost everything I need via CEC. The main gaps currently in the system are the following Denon buttons `Setup`, `Options`, `Info`, `Back`, `ECO`, `Input` and the following Sony Bravia buttons `Settings`, `Home`. I'm working to create a series of `custom:button-cards` and 
@@ -96,3 +113,10 @@ I have a series of smart plugs which I use to control various appliances. Curren
 My old school analog marquee is controlled by the Hue plug which I opted for due to it's ability to be integrated with my other lights via the Hue ecosystem. Lastly, sometimes it's just quicker and quieter to turn on the lights with a switch, being a renter replacing my wall switches isn't appealing. Luckily I discovered Lutron Aurora dimmers which not only gives me a physical button but also a dimmer which I can map to one or many lights. I'm hoping to figure out a way to map secondary actions (double click, triple click, etc.), but the feasiblity is TBD.
 
 Thanks for reading, please star if your are interested in the project.
+## Lovelace Dashboards
+* [Control Card](#control-card)
+  * [Room Controls](#room-controls)
+  * [Light Popup](#light-popup)
+  * [Animated Icons](#animated-icons)
+* [Vacuum Dasboard](#vacuum-dashboard)
+* [System Dashboard](#system-dashboard)
