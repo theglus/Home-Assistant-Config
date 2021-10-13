@@ -120,3 +120,5 @@ Thanks for reading, please star if your are interested in the project.
   * [Animated Icons](#animated-icons)
 * [Vacuum Dasboard](#vacuum-dashboard)
 * [System Dashboard](#system-dashboard)
+### Control Card
+![Control Card Demo](www/readme/demo/control_card.gif) 
