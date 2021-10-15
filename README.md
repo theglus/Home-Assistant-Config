@@ -121,4 +121,5 @@ Thanks for reading, please star if your are interested in the project.
 * [Vacuum Dasboard](#vacuum-dashboard)
 * [System Dashboard](#system-dashboard)
 ### Control Card
+The Control Card is a logical grouping of Lovelace buttons + cards using many of the [above listed custom components](#custom-components). I first discovered the Control Card when I stumbled upon [Crixle's Dashboard](https://github.com/crixle/homeassistant-config) via r/homeassistant. I was fascinated by the idea of reducing the number of clicks required to control my smart home. This led me to overhaul my Lovelace setup with the goal of making all essential controls availible in 3-clicks or less.
 ![Control Card Demo](www/readme/demo/control_card.gif) 
