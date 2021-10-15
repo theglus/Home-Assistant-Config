@@ -139,3 +139,23 @@ The Quick Access Controls are a logical grouping of Lovelace buttons + cards usi
 - [ ] [Improved Printer + Paper Shredder buttons](https://github.com/theglus/Home-Assistant-Config/milestone/23)
 - [ ] [Animate various light buttons](https://github.com/theglus/Home-Assistant-Config/milestone/7)
 - [ ] [GH Cleanup + Documentation](https://github.com/theglus/Home-Assistant-Config/milestone/15)
+## Automations
+- [Alert Sink](includes/automations/alert_leak.yaml): Alert when water is detected under the sink.
+- [Charge Toothbrushes](includes/automations/charge_toothbrushes.yaml): Start charging toothbrushes at 12 am and stop at 4 am.
+- [Climate Kirby](includes/automations/climate_kirby.yaml): Trigger [Kirby: Daytime](includes/scenes/kirby_daymode.yaml) @ 8 am + [Kirby: Nighttime](includes/scenes/kirby_nightmode.yaml) @ 9 pm.
+- [Climate Loft](includes/automations/climate_loft.yaml): Turn on fan when Loft is ≥72° and off when ≤71°.
+- [Climate Office Off](includes/automations/climate_office_off.yaml): Turn fan OFF based off of Overhead light group.
+- [Climate Office On](includes/automations/climate_office_on.yaml): Turn fan ON based off of Overhead light group.
+- [Leave Home](includes/automations/leave_home.yaml): Notify smartphones of door status + turn off lights accordingly.
+- [Notification Printer](includes/automations/notification_printer.yaml): Notify Smartphones when Major Laser Printer is ready.
+- [On Air](includes/automations/on_air.yaml): Turn Potter light red when webcam turns on.
+- [Peak Usage Alerts](includes/automations/peak_usage_alerts.yaml): Notify Smartphones when AC, Washer, or Dryer is on during peak usage. 
+- [Server Boot Up](includes/automations/server_boot_up.yaml): Notify via Telegram when server has booted up.
+- [Server Reboot](includes/automations/server_reboot.yaml): Telegram notification that alerts of server reboot, restart, or shutdown.
+- [Set Theme](includes/automations/set_theme.yaml): Set theme at Home Assistant start.
+- [Printer Shutoff](includes/automations/shutoff_printer.yaml): Shutoff plug to printer 15-minutes after device has been switched on.
+- [Shutdown Shredder](includes/automations/shutoff_shredder.yaml): Shutoff plug to paper shredder 2-minutes after device has been switched on.
+- [Vacuum Clean](includes/automations/vacuum_clean.yaml): Notify Smartphones when Winston starts cleaning.
+- [Vacuum Docked](includes/automations/vacuum_done.yaml): Notify Smartphones when Winston has returned to dock.
+- [Vacuum Done](includes/automations/vacuum_done.yaml): Notify Smartphones when Winston has completed cleaning.
+- [Volume Home](includes/automations/volume_home.yaml): Turn down volume of Google Home device at 10 pm.
