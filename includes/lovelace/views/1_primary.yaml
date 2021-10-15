@@ -556,12 +556,12 @@ cards:
                     - base
                     - icon_tv
                     - loader
-                  # #263: TV control modal
+                  # TODO: #263 Create TV controls pop-up
                 #----------------------------------------------------------------
                 ## Dennis
                 #----------------------------------------------------------------
-                # TODO: #261 Denon stats button
-                # TODO: #262 Denon control modal              
+                # TODO: #261 Create Denon AVR button
+                # TODO: #356 Create Denon AVR pop-up           
           #################################################################
           ## Kitchen Controls
           #################################################################
