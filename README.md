@@ -115,15 +115,17 @@ My old school analog marquee is controlled by the Hue plug which I opted for due
 
 Thanks for reading, please star if your are interested in the project.
 ## Lovelace Dashboards
-* [Control Card](#control-card)
+* [Quick Access Controls](#quick-access-controls)
   * [Room Controls](#room-controls)
   * [Light Popup](#light-popup)
   * [Animated Icons](#animated-icons)
 * [Vacuum Dasboard](#vacuum-dashboard)
 * [System Dashboard](#system-dashboard)
-### Control Card
-The Control Card is a logical grouping of Lovelace buttons + cards using many of the [above listed custom components](#custom-components). I first discovered the Control Card when I stumbled upon [Crixle's Dashboard](https://github.com/crixle/homeassistant-config) via r/homeassistant. I was fascinated by the idea of reducing the number of clicks required to control my smart home. This led me to overhaul my Lovelace setup with the goal of making all essential controls availible in 3-clicks or less.
-![Control Card Demo](www/readme/demo/control_card.gif) 
+### Quick Access Controls
+The Quick Access Controls are a logical grouping of Lovelace buttons + cards using many of the [above listed custom components](#custom-components). The inspiration for Quick Access came from stumbling upon [Crixle's Light Control Card](https://github.com/crixle/homeassistant-config#light-control-card) via r/homeassistant. I was fascinated by the idea of reducing the number of clicks required to control my smart home. This led me to overhaul my Lovelace setup with the goal of making all essential controls availible in 3-clicks or less.
+
+![Quick Access Controls](www/readme/demo/quick_access_controls.gif) 
+
 ## Planned Improvements
 - [ ] [Notification Automations + Water Alerts](https://github.com/theglus/Home-Assistant-Config/milestone/26)
 - [ ] [Tackle Nanoleaf pop-up + light button bugs](https://github.com/theglus/Home-Assistant-Config/milestone/29)
