@@ -81,17 +81,13 @@ I recently built out my home theater system centered around my Denon S960H + NVI
 | ![Denon](www/readme/av/denon.png) | ![Polk S35](www/readme/av/polk_s35.jpg) | ![Polk S10](www/readme/av/polk_s10.jpg) | ![Polk S50](www/readme/av/polk_s50.jpg) | ![NVIDIA SHIELD TV Pro](www/readme/av/nvidia_shield_tv_pro.jpg) | ![Sony](www/readme/av/sony_x900h.jpg) |
 
 I have a Levovo Smart Tab M8 that is docked in my living room that I use to access my _[Lovelace Dashboards](#lovelace-dashboards)_ including my Home Theater controls in Home Assistant. 
-#### Multi Room Audio
+#### Multi Room Audio + Displays
 I have a series of Google Home and Nest Mini's scattered throughout the apartment for the purpose of multi-room audio. The audio quality is subpar, but it gets the job done for now. I'm planning on updating to several pairs of Google Nest Audio smart speakers.
-| [Google Nest Mini](https://store.google.com/us/product/google_nest_mini?hl=en-US) | [Google Nest Audio](https://store.google.com/us/product/nest_audio?hl=en-US) |
-| --- | --- |
-| ![Google Home Mini](www/readme/av/google_mini.jpg) | ![Google Nest Audio](www/readme/av/nest_audio.jpg) |
-#### Smart Displays
-The Google Nest Hub lives in the loft and is used as a control panel, picture frame, and alarm clock. The Lenovo Smart Clock lives in the downstairs bedroom (referred to in HA as Office) for use as an alarm clock and simplified control panel.
-| Google Nest Hub | [Lenovo Smart Clock](https://www.lenovo.com/gb/en/smart-clock/) | [Lenovo M8 Smart Tablet](https://www.lenovo.com/us/en/p/tablets/android-tablets/lenovo-tab-series/smart-tab-m8-google-assistant/len103l0006) 
-| --- | --- | --- | 
-| ![Google Nest Hub](www/readme/av/google_nest_hub.jpg) | ![Lenovo Smart Clock](www/readme/av/lenovo_smart_clock.jpg) | ![Lenovo M8 Smart Tablet](www/readme/av/lenovo_m8.jpg) |
+| [Google Nest Mini](https://store.google.com/us/product/google_nest_mini?hl=en-US) | [Google Nest Audio](https://store.google.com/us/product/nest_audio?hl=en-US) | Google Nest Hub | [Lenovo Smart Clock](https://www.lenovo.com/gb/en/smart-clock/) | [Lenovo M8 Smart Tablet](https://www.lenovo.com/us/en/p/tablets/android-tablets/lenovo-tab-series/smart-tab-m8-google-assistant/len103l0006) |
+| --- | --- | --- | --- | --- |
+| ![Google Home Mini](www/readme/av/google_mini.jpg) | ![Google Nest Audio](www/readme/av/nest_audio.jpg) | ![Google Nest Hub](www/readme/av/google_nest_hub.jpg) | ![Lenovo Smart Clock](www/readme/av/lenovo_smart_clock.jpg) | ![Lenovo M8 Smart Tablet](www/readme/av/lenovo_m8.jpg) |
 
+The Google Nest Hub lives in the loft and is used as a control panel, picture frame, and alarm clock. The Lenovo Smart Clock lives in the downstairs bedroom (referred to in HA as Office) for use as an alarm clock and simplified control panel.
 ### Appliances
 | [Dyson Pure Cool Purifying Fan TP04](https://www.dyson.com/air-treatment/purifiers/dyson-pure-cool/dyson-pure-cool-tower-white-silver) | [Frigidaire Cool Connect Portable AC FGPC1244T1](https://www.amazon.com/FRIGIDAIRE-Connect-Smart-Portable-Conditioner/dp/B06Y1BLFBN) | [Roborock S4 Robot Vacuum](https://www.amazon.com/Roborock-Navigation-Suction-Multi-Level-Connected/dp/B08CNCB44L) | [LG Smart Washer WM3900HBA](https://www.lg.com/us/washers/lg-WM3900HBA-front-load-washer) | [LG Smart Dryer DLEX3900B](https://www.lg.com/us/dryers/lg-DLEX3900B-electric-dryer) |
 | --- | --- | --- | --- | --- |
