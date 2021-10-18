@@ -18,7 +18,7 @@ trigger:
       milliseconds: 0
 condition: []
 action:
-  - service: notify.telegram
+  - service: notify.smartphones
     data:
       message: Leak in kitchen!
       title: "🚨 ALERT:"
