@@ -11,26 +11,12 @@ entities:
     max_mireds: 833
     effect_list:
     - Christmas
-    - Color Burst
-    - Dragon
-    - Fireworks
-    - Flames
-    - Forest
-    - Inner Peace
     - Meteor Shower
     - Miami Vice
-    - Nemo
     - Northern Lights
     - Paint Splatter
-    - Pitch and Roll
-    - Pulse Pop Beats
-    - Retro Rythm
-    - Rhythmic Northern Lights
-    - Ripple
+    - Red Alert
     - Romantic
-    - Snowfall
-    - Sound Bar
-    - Streaking Notes
     - colorloop
     - random
     supported_color_modes:
@@ -38,17 +24,18 @@ entities:
     - hs
     - xy
     color_mode: hs
-    brightness: 254
+    brightness: 249
     hs_color:
-      - 10.118
-      - 100
+    - 5.45
+    - 50.757
     rgb_color:
-      - 255
-      - 43
-      - 0
+    - 255
+    - 137
+    - 125
     xy_color:
-      - 0.689
-      - 0.309
+    - 0.519
+    - 0.325
+    effect: Red Alert
     entity_id:
     - light.hallway_runner
     - light.potter_lamp
