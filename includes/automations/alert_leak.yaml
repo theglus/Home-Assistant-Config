@@ -22,4 +22,5 @@ action:
     data:
       message: Leak in kitchen!
       title: "🚨 ALERT:"
+  - scene: scene.alert
 mode: single
