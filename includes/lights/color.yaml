@@ -2,7 +2,7 @@
 ## Color Light Group
 #################################################################
 platform: group
-name: Group Color
+name: Color
 entities:
   # Hallway
   - light.hallway_runner
