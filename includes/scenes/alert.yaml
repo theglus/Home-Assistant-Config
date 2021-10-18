@@ -6,15 +6,37 @@
 id: "1634534154802"
 name: Alert
 entities:
-  light.kitchen:
+  light.color:
     min_mireds: 153
-    max_mireds: 500
+    max_mireds: 833
     effect_list:
-      - colorloop
-      - random
+    - Christmas
+    - Color Burst
+    - Dragon
+    - Fireworks
+    - Flames
+    - Forest
+    - Inner Peace
+    - Meteor Shower
+    - Miami Vice
+    - Nemo
+    - Northern Lights
+    - Paint Splatter
+    - Pitch and Roll
+    - Pulse Pop Beats
+    - Retro Rythm
+    - Rhythmic Northern Lights
+    - Ripple
+    - Romantic
+    - Snowfall
+    - Sound Bar
+    - Streaking Notes
+    - colorloop
+    - random
     supported_color_modes:
-      - color_temp
-      - hs
+    - color_temp
+    - hs
+    - xy
     color_mode: hs
     brightness: 254
     hs_color:
@@ -27,41 +49,18 @@ entities:
     xy_color:
       - 0.689
       - 0.309
-    effect: none
-    friendly_name: Kitchen Light
-    icon: mdi:spotlight
-    supported_features: 63
-    state: "on"
-  light.track:
-    min_mireds: 153
-    max_mireds: 500
-    effect_list:
-      - colorloop
-      - random
-    supported_color_modes:
-      - color_temp
-      - hs
-    color_mode: hs
-    brightness: 255
-    hs_color:
-      - 10.118
-      - 100
-    rgb_color:
-      - 255
-      - 43
-      - 0
-    xy_color:
-      - 0.689
-      - 0.309
-    effect: none
     entity_id:
-      - light.left_track
-      - light.center_track
-      - light.right_track
-    friendly_name: Track
-    icon: mdi:track-light
+    - light.hallway_runner
+    - light.potter_lamp
+    - light.left_track
+    - light.center_track
+    - light.right_track
+    - light.nanoleaf
+    - light.kitchen
+    friendly_name: Color
+    icon: mdi:looks
     supported_features: 44
-    state: "on"
+    state: 'on'
   light.garden:
     supported_color_modes:
       - onoff
@@ -77,55 +76,6 @@ entities:
     friendly_name: Marquee
     icon: mdi:billboard
     supported_features: 40
-    state: "on"
-  light.hallway_runner:
-    effect_list:
-      - colorloop
-    supported_color_modes:
-      - hs
-      - xy
-    color_mode: xy
-    brightness: 254
-    hs_color:
-      - 10.118
-      - 100
-    rgb_color:
-      - 255
-      - 43
-      - 0
-    xy_color:
-      - 0.689
-      - 0.309
-    is_deconz_group: false
-    friendly_name: Runner Light
-    icon: mdi:led-strip-variant
-    supported_features: 44
-    state: "on"
-  light.potter_lamp:
-    min_mireds: 153
-    max_mireds: 500
-    effect_list:
-      - colorloop
-      - random
-    supported_color_modes:
-      - color_temp
-      - hs
-    color_mode: hs
-    brightness: 249
-    hs_color:
-      - 10.118
-      - 100
-    rgb_color:
-      - 255
-      - 43
-      - 0
-    xy_color:
-      - 0.689
-      - 0.309
-    effect: none
-    friendly_name: Potter Light
-    icon: mdi:lamp
-    supported_features: 63
     state: "on"
   light.loft_bed_light:
     min_mireds: 153
