@@ -1,0 +1,152 @@
+#################################################################
+## Alert
+#
+## Turn on lights + change color to red for emergency alerts.
+#################################################################
+id: "1634534154802"
+name: Alert
+entities:
+  light.kitchen:
+    min_mireds: 153
+    max_mireds: 500
+    effect_list:
+      - colorloop
+      - random
+    supported_color_modes:
+      - color_temp
+      - hs
+    color_mode: hs
+    brightness: 254
+    hs_color:
+      - 10.118
+      - 100
+    rgb_color:
+      - 255
+      - 43
+      - 0
+    xy_color:
+      - 0.689
+      - 0.309
+    effect: none
+    friendly_name: Kitchen Light
+    icon: mdi:spotlight
+    supported_features: 63
+    state: "on"
+  light.track:
+    min_mireds: 153
+    max_mireds: 500
+    effect_list:
+      - colorloop
+      - random
+    supported_color_modes:
+      - color_temp
+      - hs
+    color_mode: hs
+    brightness: 255
+    hs_color:
+      - 10.118
+      - 100
+    rgb_color:
+      - 255
+      - 43
+      - 0
+    xy_color:
+      - 0.689
+      - 0.309
+    effect: none
+    entity_id:
+      - light.left_track
+      - light.center_track
+      - light.right_track
+    friendly_name: Track
+    icon: mdi:track-light
+    supported_features: 44
+    state: "on"
+  light.garden:
+    supported_color_modes:
+      - onoff
+    color_mode: onoff
+    friendly_name: Garden Lights
+    icon: mdi:string-lights
+    supported_features: 40
+    state: "on"
+  light.hallway_marquee:
+    supported_color_modes:
+      - onoff
+    color_mode: onoff
+    friendly_name: Marquee
+    icon: mdi:billboard
+    supported_features: 40
+    state: "on"
+  light.hallway_runner:
+    effect_list:
+      - colorloop
+    supported_color_modes:
+      - hs
+      - xy
+    color_mode: xy
+    brightness: 254
+    hs_color:
+      - 10.118
+      - 100
+    rgb_color:
+      - 255
+      - 43
+      - 0
+    xy_color:
+      - 0.689
+      - 0.309
+    is_deconz_group: false
+    friendly_name: Runner Light
+    icon: mdi:led-strip-variant
+    supported_features: 44
+    state: "on"
+  light.potter_lamp:
+    min_mireds: 153
+    max_mireds: 500
+    effect_list:
+      - colorloop
+      - random
+    supported_color_modes:
+      - color_temp
+      - hs
+    color_mode: hs
+    brightness: 249
+    hs_color:
+      - 10.118
+      - 100
+    rgb_color:
+      - 255
+      - 43
+      - 0
+    xy_color:
+      - 0.689
+      - 0.309
+    effect: none
+    friendly_name: Potter Light
+    icon: mdi:lamp
+    supported_features: 63
+    state: "on"
+  light.loft_bed_light:
+    min_mireds: 153
+    max_mireds: 454
+    supported_color_modes:
+      - color_temp
+    color_mode: color_temp
+    brightness: 255
+    color_temp: 366
+    hs_color:
+      - 28.327
+      - 64.71
+    rgb_color:
+      - 255
+      - 167
+      - 89
+    xy_color:
+      - 0.524
+      - 0.387
+    friendly_name: Loft Bed Light
+    icon: mdi:spotlight
+    supported_features: 43
+    state: "on"
+icon: mdi:alert
