@@ -9,18 +9,84 @@ trigger:
   - type: moist
     platform: device
     device_id: 6bd7ff509b62f7b1c7fbd08263ceb018
-    entity_id: binary_sensor.water
+    entity_id: binary_sensor.sink
+    domain: binary_sensor
+  - type: moist
+    platform: device
+    device_id: b70266b2d103e0961f82ba09130a1551
+    entity_id: binary_sensor.dishwasher
+    domain: binary_sensor
+  - type: not_moist
+    platform: device
+    device_id: 6bd7ff509b62f7b1c7fbd08263ceb018
+    entity_id: binary_sensor.sink
     domain: binary_sensor
     for:
       hours: 0
       minutes: 0
-      seconds: 0
+      seconds: 1
+      milliseconds: 0
+  - type: not_moist
+    platform: device
+    device_id: b70266b2d103e0961f82ba09130a1551
+    entity_id: binary_sensor.dishwasher
+    domain: binary_sensor
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 1
       milliseconds: 0
 condition: []
 action:
-  - service: notify.smartphones
-    data:
-      message: Leak in kitchen!
-      title: "🚨 ALERT:"
   - scene: scene.alert
+  - choose:
+      - conditions:
+          - condition: and
+            conditions:
+              - condition: state
+                entity_id: binary_sensor.sink
+                state: 'on'
+        sequence:
+          - service: notify.smartphones
+            data:
+              message: Leak in under sink!
+              title: '🚨 WATER ALERT:'
+      - conditions:
+          - condition: and
+            conditions:
+              - condition: state
+                entity_id: binary_sensor.dishwasher
+                state: 'on'
+        sequence:
+          - service: notify.smartphones
+            data:
+              message: Dishwasher is leaking!
+              title: '🚨 WATER ALERT:'
+      - conditions:
+          - condition: and
+            conditions:
+              - condition: state
+                entity_id: binary_sensor.sink
+                state: 'off'
+                for:
+                  hours: 0
+                  minutes: 0
+                  seconds: 5
+                  milliseconds: 0
+        sequence:
+          - scene: scene.normal_lights
+      - conditions:
+          - condition: and
+            conditions:
+              - condition: state
+                entity_id: binary_sensor.dishwasher
+                state: 'off'
+                for:
+                  hours: 0
+                  minutes: 0
+                  seconds: 5
+                  milliseconds: 0
+        sequence:
+          - scene: scene.normal_lights
+    default: []
 mode: single
