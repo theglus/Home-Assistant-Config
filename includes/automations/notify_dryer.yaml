@@ -3,7 +3,7 @@
 #
 ## Notify Smartphones when dryer is complete.
 #################################################################
-alias: Notify Washer
+alias: Notify Dryer
 description: Notify smartphones when dryer is complete.
 trigger:
   - platform: state
