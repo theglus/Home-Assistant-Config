@@ -1,9 +1,9 @@
 #################################################################
-## Notification Printer
+## Notify Printer
 #
 ## Notify Smartphones when Major Laser Printer is ready.
 #################################################################
-alias: Notification Printer
+alias: Notify Printer
 description: Notify Smartphones when Major Laser Printer is ready.
 trigger:
   - platform: state
