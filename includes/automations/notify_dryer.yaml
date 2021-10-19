@@ -1,0 +1,20 @@
+#################################################################
+## Notify Laundry
+#
+## Notify Smartphones when dryer is complete.
+#################################################################
+alias: Notify Washer
+description: Notify smartphones when dryer is complete.
+trigger:
+  - platform: state
+    entity_id: sensor.dryer
+    attribute: run_completed
+    from: 'off'
+    to: 'on'
+condition: []
+action:
+  - service: notify.smartphones
+    data:
+      title: 🧺 Laundry Complete!
+      message: Time to empty the dryer.
+mode: single
