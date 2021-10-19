@@ -26,15 +26,15 @@ entities:
     color_mode: hs
     brightness: 249
     hs_color:
-    - 5.45
-    - 50.757
+      - 10.118
+      - 100
     rgb_color:
-    - 255
-    - 137
-    - 125
+      - 255
+      - 43
+      - 0
     xy_color:
-    - 0.519
-    - 0.325
+      - 0.689
+      - 0.309
     effect: Red Alert
     entity_id:
     - light.hallway_runner
