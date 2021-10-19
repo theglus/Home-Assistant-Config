@@ -1,0 +1,33 @@
+#################################################################
+## Notify Heat Wave
+#
+## Notify smartphones when tomorrows high is  >75 °F.
+#################################################################
+alias: "Notify Heat Wave"
+description: Notify smartphones when tomorrows high is  >75 °F.
+trigger:
+  - platform: time
+    at: "22:00:00"
+condition:
+  - condition: numeric_state
+    entity_id: weather.climacell_daily
+    attribute: forecast[0].temperature
+    above: "75"
+action:
+  - service: notify.smartphones
+    data:
+      title: 🥵 Heat Wave
+      message: >-
+        Tomorrow's high is
+        {{states.weather.climacell_daily.attributes.forecast[0].temperature}}
+        °F.
+  - wait_for_trigger:
+      - platform: time
+        at: "07:00:00"
+  - service: notify.smartphones
+    data:
+      title: 🥵 Heat Wave
+      message: >-
+        Today's high is
+        {{states.weather.climacell_daily.attributes.forecast.temperature}} °F.
+mode: single
