@@ -140,14 +140,18 @@ The Quick Access Controls are a logical grouping of Lovelace buttons + cards usi
 - [ ] [Animate various light buttons](https://github.com/theglus/Home-Assistant-Config/milestone/7)
 - [ ] [GH Cleanup + Documentation](https://github.com/theglus/Home-Assistant-Config/milestone/15)
 ## Automations
-- [Alert Sink](includes/automations/alert_leak.yaml): Alert when water is detected under the sink.
+- [Alert Leak](includes/automations/alert_leak.yaml): Alert when water is detected under the sink or dishwasher.
 - [Charge Toothbrushes](includes/automations/charge_toothbrushes.yaml): Start charging toothbrushes at 12 am and stop at 4 am.
 - [Climate Kirby](includes/automations/climate_kirby.yaml): Trigger [Kirby: Daytime](includes/scenes/kirby_daymode.yaml) @ 8 am + [Kirby: Nighttime](includes/scenes/kirby_nightmode.yaml) @ 9 pm.
 - [Climate Loft](includes/automations/climate_loft.yaml): Turn on fan when Loft is ≥72° and off when ≤71°.
 - [Climate Office Off](includes/automations/climate_office_off.yaml): Turn fan OFF based off of Overhead light group.
 - [Climate Office On](includes/automations/climate_office_on.yaml): Turn fan ON based off of Overhead light group.
 - [Leave Home](includes/automations/leave_home.yaml): Notify smartphones of door status + turn off lights accordingly.
-- [Notification Printer](includes/automations/notification_printer.yaml): Notify Smartphones when Major Laser Printer is ready.
+- [Notify AQU](includes/automations/notify_aqi.yaml):Notify Smartphones when AQI is >75.
+- [Notify Dryer](includes/automations/notify_dryer.yaml): Notify smartphones when dryer is complete.
+- [Notify Heat Wave](includes/automations/notify_heatwave.yaml): Notify smartphones when tomorrows high is  >75 °F.
+- [Notify Printer](includes/automations/notification_printer.yaml): Notify Smartphones when Major Laser Printer is ready.
+- [Notify Washer](includes/automations/notify_washer.yaml): Notify smartphones when washer is complete.
 - [On Air](includes/automations/on_air.yaml): Turn Potter light red when webcam turns on.
 - [Peak Usage Alerts](includes/automations/peak_usage_alerts.yaml): Notify Smartphones when AC, Washer, or Dryer is on during peak usage. 
 - [Server Boot Up](includes/automations/server_boot_up.yaml): Notify via Telegram when server has booted up.
