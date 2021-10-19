@@ -17,6 +17,8 @@ light.office:
 ## Light Groups
 #################################################################
 # Downstairs Lights
+light.color:
+  icon: mdi:looks
 light.downstairs:
   icon: "mdi:home-floor-g"
 # Upstairs Lights
@@ -34,7 +36,6 @@ light.overhead:
 # Track Lights
 light.track:
   icon: "mdi:track-light"
-  
 #################################################################
 ## PC Sensors
 #################################################################  
