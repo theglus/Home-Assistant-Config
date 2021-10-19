@@ -595,7 +595,7 @@ cards:
                   entity: light.nanoleaf
                   # TODO: Apply gradient to dino icon
                   template: 
-                    - light-color
+                    - light-nanoleaf
                     - icon_dinopanel
                 #----------------------------------------------------------------
                 ## Kitchen Google Home Mini
