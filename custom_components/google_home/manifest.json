@@ -17,9 +17,9 @@
   "issue_tracker": "https://github.com/leikoilja/ha-google-home/issues",
   "name": "Google Home",
   "requirements": [
-    "glocaltokens==0.5.1"
+    "glocaltokens==0.5.2"
   ],
-  "version": "1.8.2",
+  "version": "1.9.0",
   "zeroconf": [
     "_googlecast._tcp.local."
   ],
