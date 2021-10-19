@@ -1,10 +1,10 @@
 #################################################################
 ## Alert Leak
 #
-## Alert when water is detected under the sink.
+## Alert when water is detected under the sink or dishwasher.
 #################################################################
 alias: Alert Leak
-description: Alert when water is detected under the sink.
+description: Alert when water is detected under the sink or dishwasher.
 trigger:
   - type: moist
     platform: device

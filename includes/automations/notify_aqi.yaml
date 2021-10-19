@@ -1,0 +1,21 @@
+#################################################################
+## Notify AQI
+#
+## Notify Smartphones when AQI is >75.
+#################################################################
+alias: Notify AQI
+description: Notify Smartphones when AQI is >75.
+trigger:
+  - platform: numeric_state
+    entity_id: sensor.aqi
+    above: "75"
+condition:
+  - condition: time
+    after: "07:00:00"
+    before: "22:00:00"
+action:
+  - service: notify.smartphones
+    data:
+      title: 🚨 AIR QUALITY ALERT!
+      message: The AQI is {{states.sensor.aqi.state}}.
+mode: single
