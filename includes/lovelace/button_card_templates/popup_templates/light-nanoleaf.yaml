@@ -33,8 +33,10 @@ double_tap_action:
           cards:
             # Northern Lights
             - type: custom:button-card
+              icon: "mdi:lightbulb-variant-outline"
               styles:
-                card: [background: "#ffe7c0"]
+                card:
+                  [background: "linear-gradient(0.45turn, #04e287, #025385)"]
               tap_action:
                 haptic: success
                 action: call-service
@@ -45,8 +47,9 @@ double_tap_action:
               template: color_action
             # Meteor Shower
             - type: custom:button-card
+              icon: "mdi:music"
               styles:
-                card: [background: "#ffa200"]
+                card: [background: "linear-gradient(.35turn, #69a6f9, #fa57c1)"]
               tap_action:
                 haptic: success
                 action: call-service
@@ -55,4 +58,3 @@ double_tap_action:
                   entity_id: "[[[ return entity.entity_id ]]]"
                   effect: Meteor Shower
               template: color_action
-
