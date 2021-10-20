@@ -465,6 +465,7 @@ cards:
                   entity: media_player.smart_clock
                   name: Smart Clock
                   template:
+                    - base
                     - icon_smart_clock
           #################################################################
           ## Living Room Controls
