@@ -1,11 +1,10 @@
 #################################################################
 ## Spotlight Icon
 #################################################################
-# TODO: #292 Create icon_spot button template
 styles:
   custom_fields:
     icon:
-      - width: 70%
+      - width: 82%
       - margin-left: -8%
       - margin-top: 3%
 custom_fields:
