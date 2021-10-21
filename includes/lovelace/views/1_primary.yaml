@@ -717,6 +717,12 @@ cards:
                 #----------------------------------------------------------------
                 # TODO: #258 Nest Hub Mini button
                 # TODO: #315 Alarm + timer countdown for Google Home devices.
+                - type: custom:button-card
+                  entity: media_player.loft_nest_hub
+                  name: Nest Hub
+                  template:
+                    - base
+                    - icon_nest_hub                
           #################################################################
           ## Loft Bathroom Controls
           #################################################################
