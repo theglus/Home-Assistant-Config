@@ -3,6 +3,10 @@
 #################################################################
 # TODO: #315 Alarm + timer countdown for Google Home devices.
 # TODO: #316 Volume pop-up for Google Home devices.
+styles:
+  custom_fields:
+    icon:
+      - width: 80%
 custom_fields:
   icon: >
     [[[

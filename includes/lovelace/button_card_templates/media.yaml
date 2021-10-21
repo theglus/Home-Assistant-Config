@@ -7,7 +7,6 @@
   styles:
     custom_fields:
       icon:
-        - width: 70%
         - opacity: >
             [[[
               const entity_picture = entity === undefined || entity.attributes.entity_picture;

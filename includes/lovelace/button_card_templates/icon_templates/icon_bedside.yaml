@@ -1,11 +1,9 @@
 #################################################################
 ## Bedside Lamp Icon
 #################################################################
-# TODO: Create icon_bedside button template
 styles:
   custom_fields:
-    icon:
-      [top: 11%, left: 6%, width: 5.25em, position: absolute]
+    icon: [top: 10%, left: 10%, width: 66%, position: absolute]
 custom_fields:
   icon: >
     <svg viewBox="0 0 50 50" shape-rendering="geometricPrecision" text-rendering="geometricPrecision">

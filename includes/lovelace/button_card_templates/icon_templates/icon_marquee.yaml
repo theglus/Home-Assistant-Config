@@ -4,9 +4,9 @@
 styles:
   custom_fields:
     icon_marquee:
-      - width: 5.25em
+      - width: 75%
       - left: 6%
-      - top: 11%
+      - top: 7%
       - position: absolute
 custom_fields:
   icon_marquee: >
