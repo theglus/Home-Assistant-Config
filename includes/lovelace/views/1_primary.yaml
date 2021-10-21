@@ -451,7 +451,6 @@ cards:
                 #----------------------------------------------------------------
                 ## Office Smart Clock
                 #----------------------------------------------------------------
-                # TODO: #255 Smart Clock button
                 # TODO: #315 Alarm + timer countdown for Google Home devices.
                 - type: custom:button-card
                   entity: media_player.smart_clock
@@ -715,7 +714,6 @@ cards:
                 #----------------------------------------------------------------
                 ## Loft Nest Hub
                 #----------------------------------------------------------------
-                # TODO: #258 Nest Hub Mini button
                 # TODO: #315 Alarm + timer countdown for Google Home devices.
                 - type: custom:button-card
                   entity: media_player.loft_nest_hub
