@@ -6,7 +6,7 @@
     - circle
   variables:
     circle_input: >
-      [[[ return entity === undefined || Math.round(entity.attributes.brightness / 2.54); ]]]
+      [[[ return entity === undefined || Math.round(entity.attributes.volume_level / 0.01); ]]]
   hold_action:
     action: failure
   double_tap_action:
