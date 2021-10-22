@@ -24,8 +24,8 @@
             brightnessWidth: 130px
             brightnessHeight: 300px
             borderRadius: 1.7em
-            # sliderColor: "#ffffff"
-            # sliderTrackColor: "#191919"
+#           sliderColor: "#c7c7c7"
+            sliderTrackColor: "#c7c7c7"
             actions:
               - service: media_player.media_previous_track
                 service_data:
