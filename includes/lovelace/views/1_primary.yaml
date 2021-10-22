@@ -456,8 +456,7 @@ cards:
                   entity: media_player.office_speaker
                   name: Home Mini
                   template:
-                    - media
-                    - volume_speaker
+                    - media 
                     - icon_nest_mini
           #################################################################
           ## Living Room Controls
@@ -602,7 +601,6 @@ cards:
                   name: Home Mini
                   template:
                     - media
-                    - volume_speaker
                     - icon_nest_mini
                 #----------------------------------------------------------------
                 ## Mac/iPad Charger
@@ -721,7 +719,6 @@ cards:
                   entity: media_player.loft_nest_hub
                   name: Nest Hub
                   template:
-                    - volume_speaker
                     - icon_nest_hub                
           #################################################################
           ## Loft Bathroom Controls
@@ -749,5 +746,4 @@ cards:
                 name: Nest Mini
                 template:
                   - media
-                  - volume_speaker
                   - icon_nest_mini
