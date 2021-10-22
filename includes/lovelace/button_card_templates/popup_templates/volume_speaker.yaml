@@ -6,7 +6,7 @@
     - circle
   variables:
     circle_input: >
-      [[[ return entity === undefined || Math.round(entity.attributes.volume_level / 0.01); ]]]
+      [[[ return entity === undefined || (entity.attributes.volume_level / 0.01); ]]]
   hold_action:
     action: failure
   double_tap_action:
@@ -26,7 +26,7 @@
             brightnessHeight: 300px
             borderRadius: 1.7em
             sliderColor: "#c7c7c7"
-            sliderTrackColor: rgba(25, 25, 25, 0.9)
+            sliderTrackColor: "#191919"
             actions:
               - service: media_player.media_previous_track
                 service_data:
