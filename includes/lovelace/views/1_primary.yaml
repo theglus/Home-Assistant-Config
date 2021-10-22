@@ -304,7 +304,7 @@ cards:
                   entity: light.hallway_runner
                   name: Runner
                   template: 
-                    - light-color
+                    - light_color
                     - icon_led
                 #----------------------------------------------------------------
                 ## Potter Lamp
@@ -313,7 +313,7 @@ cards:
                   entity: light.potter_lamp
                   name: Lamp
                   template:
-                    - light-color
+                    - light_color
                     - icon_lamp
                 #----------------------------------------------------------------
                 ## Stair Light
@@ -482,7 +482,7 @@ cards:
                   entity: light.track
                   name: Track
                   template:
-                    - light-color
+                    - light_color
                     - icon_spot
                 #----------------------------------------------------------------
                 ## Garden Light
@@ -501,7 +501,7 @@ cards:
                   entity: light.yumi_lamp
                   name: Lamp
                   template:
-                    - light-color
+                    - light_color
                     - icon_lamp
                 #----------------------------------------------------------------
                 ## Heater
@@ -583,7 +583,7 @@ cards:
                   entity: light.kitchen
                   name: Track
                   template:
-                    - light-color
+                    - light_color
                     - icon_spot
                 #----------------------------------------------------------------
                 ## Nanoleaf Dino Panesl
@@ -591,7 +591,7 @@ cards:
                 - type: "custom:button-card"
                   entity: light.nanoleaf
                   template: 
-                    - light-nanoleaf
+                    - light_nanoleaf
                     - icon_dinopanel
                 #----------------------------------------------------------------
                 ## Kitchen Google Home Mini
