@@ -333,6 +333,16 @@ cards:
                   template: 
                     - base
                     - icon_door
+                #----------------------------------------------------------------
+                ## Hallway Smart Clock
+                #----------------------------------------------------------------
+                # TODO: #315 Alarm + timer countdown for Google Home devices.
+                - type: custom:button-card
+                  entity: media_player.smart_clock
+                  name: Smart Clock
+                  template:
+                    - base
+                    - icon_smart_clock
           #################################################################
           ## Guest Bathroom Controls
           #################################################################
@@ -448,16 +458,6 @@ cards:
                   template:
                     - media
                     - icon_nest_mini
-                #----------------------------------------------------------------
-                ## Office Smart Clock
-                #----------------------------------------------------------------
-                # TODO: #315 Alarm + timer countdown for Google Home devices.
-                - type: custom:button-card
-                  entity: media_player.smart_clock
-                  name: Smart Clock
-                  template:
-                    - base
-                    - icon_smart_clock
           #################################################################
           ## Living Room Controls
           #################################################################
