@@ -304,7 +304,7 @@ cards:
                   entity: light.hallway_runner
                   name: Runner
                   template: 
-                    - light-color
+                    - light_color
                     - icon_led
                 #----------------------------------------------------------------
                 ## Potter Lamp
@@ -313,7 +313,7 @@ cards:
                   entity: light.potter_lamp
                   name: Lamp
                   template:
-                    - light-color
+                    - light_color
                     - icon_lamp
                 #----------------------------------------------------------------
                 ## Stair Light
@@ -333,6 +333,16 @@ cards:
                   template: 
                     - base
                     - icon_door
+                #----------------------------------------------------------------
+                ## Hallway Smart Clock
+                #----------------------------------------------------------------
+                # TODO: #315 Alarm + timer countdown for Google Home devices.
+                - type: custom:button-card
+                  entity: media_player.smart_clock
+                  name: Smart Clock
+                  template:
+                    - base
+                    - icon_smart_clock
           #################################################################
           ## Guest Bathroom Controls
           #################################################################
@@ -446,18 +456,8 @@ cards:
                   entity: media_player.office_speaker
                   name: Home Mini
                   template:
-                    - media
+                    - media 
                     - icon_nest_mini
-                #----------------------------------------------------------------
-                ## Office Smart Clock
-                #----------------------------------------------------------------
-                # TODO: #315 Alarm + timer countdown for Google Home devices.
-                - type: custom:button-card
-                  entity: media_player.smart_clock
-                  name: Smart Clock
-                  template:
-                    - base
-                    - icon_smart_clock
           #################################################################
           ## Living Room Controls
           #################################################################
@@ -481,7 +481,7 @@ cards:
                   entity: light.track
                   name: Track
                   template:
-                    - light-color
+                    - light_color
                     - icon_spot
                 #----------------------------------------------------------------
                 ## Garden Light
@@ -500,7 +500,7 @@ cards:
                   entity: light.yumi_lamp
                   name: Lamp
                   template:
-                    - light-color
+                    - light_color
                     - icon_lamp
                 #----------------------------------------------------------------
                 ## Heater
@@ -582,7 +582,7 @@ cards:
                   entity: light.kitchen
                   name: Track
                   template:
-                    - light-color
+                    - light_color
                     - icon_spot
                 #----------------------------------------------------------------
                 ## Nanoleaf Dino Panesl
@@ -590,7 +590,7 @@ cards:
                 - type: "custom:button-card"
                   entity: light.nanoleaf
                   template: 
-                    - light-nanoleaf
+                    - light_nanoleaf
                     - icon_dinopanel
                 #----------------------------------------------------------------
                 ## Kitchen Google Home Mini
@@ -719,7 +719,6 @@ cards:
                   entity: media_player.loft_nest_hub
                   name: Nest Hub
                   template:
-                    - base
                     - icon_nest_hub                
           #################################################################
           ## Loft Bathroom Controls
