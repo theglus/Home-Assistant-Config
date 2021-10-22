@@ -25,8 +25,7 @@
             brightnessHeight: 300px
             borderRadius: 1.7em
             sliderColor: "#c7c7c7"
-            sliderTrackColor: "rgba(25, 25, 25, 0.9)"
-            sliderThumbColor: "#c7c7c7"
+            sliderTrackColor: rgba(25, 25, 25, 0.9)
             actions:
               - service: media_player.media_previous_track
                 service_data:
