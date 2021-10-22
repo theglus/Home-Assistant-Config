@@ -20,7 +20,6 @@
           - type: custom:media_player-popup-card
             entity: "[[[ return entity.entity_id ]]]"
             icon: none
-            displayType: slider
             fullscreen: false
             brightnessWidth: 130px
             brightnessHeight: 300px
