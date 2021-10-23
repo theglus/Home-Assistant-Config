@@ -111,7 +111,7 @@ lovelace:
     - url: /local/font.css
       type: css
     # Custom Icons
-    - url: '/local/custom_icons.js?v=28082021'
+    - url: /local/custom_icons.js?v=28082021
       type: module
 #################################################################
 ## Add-ons
