@@ -1,0 +1,44 @@
+#################################################################
+## Fan Popup
+#################################################################
+template:
+  - base
+  - circle
+  - loader
+variables:
+  circle_input: >
+    [[[
+    return entity === undefined ?
+      null :
+      parseInt(entity.attributes.percentage);
+    ]]]
+  hold_action:
+    action: failure
+  double_tap_action:
+    action: fire-dom-event
+    browser_mod:
+      command: popup
+      title: "[[[ return entity.attributes.friendly_name ]]]"
+      card:
+        type: entities
+        entities:
+          - type: custom:switch-popup-card
+            icon: none
+            entity: "[[[ return entity.entity_id ]]]"
+            fullscreen: false
+            brightnessWidth: 130px
+            brightnessHeight: 300px
+            borderRadius: 1.7em
+            buttons:
+              - icon: "mdi:fan-plus"
+                entity_id: this
+                service: fan.increase_speed
+                service_data:
+                  entity_id: this
+                  percentage_step: 1
+              - icon: "mdi:fan-minus"
+                entity_id: this
+                service: fan.decrease_speed
+                servuce_data:
+                  entity_id: this
+                  percentage_step: 1
