@@ -147,7 +147,7 @@ The Quick Access Controls are a logical grouping of Lovelace buttons + cards usi
 - [Climate Office Off](includes/automations/climate_office_off.yaml): Turn fan OFF based off of Overhead light group.
 - [Climate Office On](includes/automations/climate_office_on.yaml): Turn fan ON based off of Overhead light group.
 - [Leave Home](includes/automations/leave_home.yaml): Notify smartphones of door status + turn off lights accordingly.
-- [Notify AQU](includes/automations/notify_aqi.yaml):Notify Smartphones when AQI is >75.
+- [Notify AQU](includes/automations/notify_aqi.yaml): Notify Smartphones when AQI is >75.
 - [Notify Dryer](includes/automations/notify_dryer.yaml): Notify smartphones when dryer is complete.
 - [Notify Heat Wave](includes/automations/notify_heatwave.yaml): Notify smartphones when tomorrows high is  >75 °F.
 - [Notify Printer](includes/automations/notification_printer.yaml): Notify Smartphones when Major Laser Printer is ready.
