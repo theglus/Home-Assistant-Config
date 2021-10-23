@@ -127,9 +127,9 @@ The Quick Access Controls are a logical grouping of Lovelace buttons + cards usi
 ![Quick Access Controls](www/readme/demo/quick_access_controls.gif) 
 
 ## Planned Improvements
-- [ ] [Notification Automations + Water Alerts](https://github.com/theglus/Home-Assistant-Config/milestone/26)
-- [ ] [Tackle Nanoleaf pop-up + light button bugs](https://github.com/theglus/Home-Assistant-Config/milestone/29)
-- [ ] [Create buttons for remaining Google Home devices](https://github.com/theglus/Home-Assistant-Config/milestone/18)
+- [x] [Notification Automations + Water Alerts](https://github.com/theglus/Home-Assistant-Config/milestone/26)
+- [x] [Tackle Nanoleaf pop-up + light button bugs](https://github.com/theglus/Home-Assistant-Config/milestone/29)
+- [x] [Create buttons for remaining Google Home devices](https://github.com/theglus/Home-Assistant-Config/milestone/18)
 - [ ] [Granular Google Home Controls](https://github.com/theglus/Home-Assistant-Config/milestone/19)
 - [ ] [Dyson Controls](https://github.com/theglus/Home-Assistant-Config/milestone/27)
 - [ ] [AC climate pop-up](https://github.com/theglus/Home-Assistant-Config/milestone/24)
