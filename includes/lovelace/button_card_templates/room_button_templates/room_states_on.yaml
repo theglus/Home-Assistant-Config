@@ -8,6 +8,8 @@
         custom_fields:
           s2:
             - color: Grey
+        icon:
+          - color: "#f426ff"
         label:
           - color: Grey
           - font-size: 10pt
