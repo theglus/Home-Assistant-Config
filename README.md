@@ -126,6 +126,10 @@ The Quick Access Controls are a logical grouping of Lovelace buttons + cards usi
 
 ![Quick Access Controls](www/readme/demo/quick_access_controls.gif) 
 
+### Room Controls
+
+![Room Controls](www/readme/demo/room_controls.png)
+
 ## Planned Improvements
 - [x] [Notification Automations + Water Alerts](https://github.com/theglus/Home-Assistant-Config/milestone/26)
 - [x] [Tackle Nanoleaf pop-up + light button bugs](https://github.com/theglus/Home-Assistant-Config/milestone/29)
