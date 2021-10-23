@@ -229,7 +229,7 @@ cards:
                     - message_on: Printer on
                     - message_off: Printer off
                     - icon_state: mdi:printer
-                    - icon_default: mdi:desk
+                    - icon_default: custom:room-office
                 #----------------------------------------------------------------
                 ## Living Room button
                 #----------------------------------------------------------------
