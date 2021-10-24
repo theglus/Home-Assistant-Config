@@ -2,7 +2,7 @@
 ## Room Button Layout
 #################################################################
   aspect_ratio: 1/1
-  size: 70%
+  size: 80%
   styles:
     card:
       [
@@ -26,7 +26,8 @@
       - grid-template-areas: '"i l" "n n" "s s" "s2 s2"'
       - grid-template-columns: 1fr 1fr
       - grid-template-rows: 1fr auto auto auto
-    icon: null
+    icon: 
+      - left: 20%
     label:
       - justify-self: start
     name:
