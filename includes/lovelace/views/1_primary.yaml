@@ -270,8 +270,8 @@ cards:
                     - sensor_temp: sensor.kirby_temperature
                     - message_on: Dyson is on
                     - message_off: Dyson is off
-                    - icon_state: mdi:bed-king
-                    - icon_default: mdi:bed-king
+                    - icon_state: custom:room-loft
+                    - icon_default: custom:room-loft
                     - room: Loft
           #################################################################
           ## Entrway Controls
