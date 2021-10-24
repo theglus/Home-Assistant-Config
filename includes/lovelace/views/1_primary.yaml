@@ -216,7 +216,7 @@ cards:
                     - message_on: Door is open
                     - message_off: Door is closed
                     - icon_state: mdi:door-open
-                    - icon_default: mdi:coat-rack
+                    - icon_default: custom:room-hallway
                 #----------------------------------------------------------------
                 ## Office button
                 #----------------------------------------------------------------
