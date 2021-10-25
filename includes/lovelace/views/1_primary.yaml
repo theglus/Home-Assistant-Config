@@ -295,7 +295,6 @@ cards:
                 - type: "custom:button-card"
                   entity: light.hallway_marquee
                   template:
-                    - light
                     - icon_marquee
                 #----------------------------------------------------------------
                 ## Hallway Runner

@@ -2,6 +2,8 @@
 ## Garden Light Icon
 #################################################################
 # TODO:: Create icon_garden button template
+template:
+  - base
 styles:
   custom_fields:
     icon_garden:
