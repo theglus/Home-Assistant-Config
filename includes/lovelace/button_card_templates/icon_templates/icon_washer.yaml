@@ -3,9 +3,6 @@
 #################################################################
 template:
   - base
-variables:
-  state: >
-    [[[ return entity === undefined || entity.attributes.run_state; ]]]
 styles:
   custom_fields:
     icon: [top: 6%, left: 6%, width: 78%, position: absolute]
