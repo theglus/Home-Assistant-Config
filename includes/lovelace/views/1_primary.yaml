@@ -367,7 +367,6 @@ cards:
                   entity: sensor.washer
                   name: Washer
                   template:
-                    - base
                     - icon_washer
                 #----------------------------------------------------------------
                 ## Dryer

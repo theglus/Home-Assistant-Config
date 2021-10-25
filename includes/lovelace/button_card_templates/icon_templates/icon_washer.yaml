@@ -1,9 +1,15 @@
 #################################################################
 ## Washer Icon
 #################################################################
+template:
+  - base
+  - circle
+variables:
+  circle_input: >
+    [[[ return entity === undefined || Math.round(entity.attributes.attributes.initial_time - entity.attributes.attributes.initial_time); ]]]
 styles:
   custom_fields:
-    icon: [top: 6%, left: 6%, width: 77%, position: absolute]
+    icon: [top: 6%, left: 6%, width: 78%, position: absolute]
 custom_fields:
   icon: >
     [[[
