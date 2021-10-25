@@ -9,6 +9,17 @@
       [[[ return entity === undefined || entity.state; ]]]
     timeout: >
       [[[ return entity === undefined || Date.now() - Date.parse(entity.last_changed); ]]]
+    consider_on: >
+      [[[
+        var state = entity === undefined || entity.state;
+        return (
+          state == 'on' ||
+          state == 'home' ||
+          state == 'cool' ||
+          state == 'fan_only' ||
+          state == 'playing'
+        );
+      ]]]
   state:
     - value: "on"
       styles:
