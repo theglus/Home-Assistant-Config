@@ -490,7 +490,6 @@ cards:
                   name: Garden
                   # TODO:: Create icon_garden button template
                   template: 
-                    - light
                     - icon_garden
                 #----------------------------------------------------------------
                 ## Yumi Lamp
