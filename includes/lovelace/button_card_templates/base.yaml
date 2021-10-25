@@ -93,5 +93,6 @@
               : 'var(--state-icon-color);'
           }
         }
+      }  
       `
     ]]]
