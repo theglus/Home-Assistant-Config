@@ -10,7 +10,7 @@
     timeout: >
       [[[ return entity === undefined || Date.now() - Date.parse(entity.last_changed); ]]]
     light_color: >
-      [[[ return entity === undefined ? 'var(--state-icon-color)' : 'var(--button-card-light-color-no-temperature)'; ]]]
+      [[[ return entity === undefined ? 'var(--state-icon-color)' : 'var(--button-card-light-color-auto)'; ]]]
   state:
     - value: "on"
       styles:
