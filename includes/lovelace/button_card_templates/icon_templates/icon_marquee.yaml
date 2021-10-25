@@ -3,7 +3,7 @@
 #################################################################
 template:
   - base
-    - circle
+  - circle
 variables:
   circle_input: >
     [[[ return entity === off || entity.attributes.state; ]]]
