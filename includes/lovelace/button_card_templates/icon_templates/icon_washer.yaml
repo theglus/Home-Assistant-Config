@@ -3,7 +3,7 @@
 #################################################################
 styles:
   custom_fields:
-    icon: [top: 6%, left: 6%, width: 150%, position: absolute]
+    icon: [top: 6%, left: 6%, width: 100%, position: absolute]
 custom_fields:
   icon: >
     [[[
