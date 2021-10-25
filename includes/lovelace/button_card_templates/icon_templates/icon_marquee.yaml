@@ -3,6 +3,10 @@
 #################################################################
 template:
   - base
+    - circle
+variables:
+  circle_input: >
+    [[[ return entity === off || entity.attributes.state; ]]]
 styles:
   custom_fields:
     icon_marquee:
