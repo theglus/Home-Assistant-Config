@@ -10,31 +10,7 @@
     timeout: >
       [[[ return entity === undefined || Date.now() - Date.parse(entity.last_changed); ]]]
     light_color: >
-      [[[
-        if (entity) {
-          let hs = entity.attributes.hs_color == undefined;
-          let h = hs || entity.attributes.hs_color[0];
-          let s = hs || entity.attributes.hs_color[1];
-          let l_min = 28;
-          let l_max = 48;
-          let l_calc =
-            ((entity.attributes.brightness / 2.54) * (l_max - l_min)) / 100 + l_min;
-          var light_color =
-            entity.attributes.color_mode === 'color_temp'
-              ? `hsl(204, 58%, ${l_calc}%);`
-              : `hsl(${h}, ${s}%, ${l_calc}%);`;
-        }
-        return `
-          svg {
-            --light-color:
-            ${ variables.state === 'on' && entity.attributes.brightness != undefined
-                ? light_color
-                : variables.state === 'on' && entity.attributes.brightness == undefined
-                ? 'var(--state-icon-active-color);'
-                : 'var(--state-icon-color);'
-        }
-      }
-      ]]]
+      [[[ return entity === undefined ? 'var(--state-icon-color)' : 'var(--button-card-light-color-no-temperature)'; ]]]
   state:
     - value: "on"
       styles:
