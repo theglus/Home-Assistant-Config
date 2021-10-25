@@ -295,7 +295,6 @@ cards:
                 - type: "custom:button-card"
                   entity: light.hallway_marquee
                   template:
-                    - light
                     - icon_marquee
                 #----------------------------------------------------------------
                 ## Hallway Runner
@@ -491,7 +490,6 @@ cards:
                   name: Garden
                   # TODO:: Create icon_garden button template
                   template: 
-                    - light
                     - icon_garden
                 #----------------------------------------------------------------
                 ## Yumi Lamp
