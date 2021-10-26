@@ -590,17 +590,7 @@ cards:
                   entity: fan.kitchen
                   name: Dyson
                   template:
-                    - base
                     - icon_dyson
-                    - circle
-                    - loader
-                  variables:
-                    circle_input: >
-                      [[[
-                        return entity === undefined ?
-                          null :
-                          parseInt(entity.attributes.percentage);
-                      ]]]
           #################################################################
           ## Loft Controls
           #################################################################
@@ -672,17 +662,7 @@ cards:
                   entity: fan.kirby
                   name: Dyson
                   template:
-                    - base
                     - icon_dyson
-                    - circle
-                    - loader
-                  variables:
-                    circle_input: >
-                      [[[
-                        return entity === undefined ?
-                          null :
-                          parseInt(entity.attributes.percentage);
-                      ]]]
                 #----------------------------------------------------------------
                 ## Loft Nest Hub
                 #----------------------------------------------------------------
