@@ -15,9 +15,13 @@ styles:
       - opacity: 1
 custom_fields:
   circle: >
-    [[[ const state = entity.attributes.remain_time; 
-      return `<svg viewBox="0 0 50 50"><circle cx="25" cy="25" r="20.5" stroke="#b2b2b2" stroke-width="1.5" fill="none" />
-      <text x="50%" y="54%" fill="#8d8e90" font-size="14" text-anchor="middle" alignment-baseline="middle" dominant-baseline="middle">${state}</text></svg>`; ]]]
+    [[[ 
+      if (variables.state != 'off') {
+        return `
+          const state = entity.attributes.remain_time; 
+          return `<svg viewBox="0 0 50 50"><circle cx="25" cy="25" r="20.5" stroke="#b2b2b2" stroke-width="1.5" fill="none" />
+          <text x="50%" y="54%" fill="#8d8e90" font-size="14" text-anchor="middle" alignment-baseline="middle" dominant-baseline="middle">${state}</text></svg>`; ]]]
+        }
   icon: >
     [[[
       if (variables.state == 'off') {
