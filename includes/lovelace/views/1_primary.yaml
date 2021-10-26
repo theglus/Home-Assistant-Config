@@ -375,7 +375,7 @@ cards:
                   entity: sensor.dryer
                   name: Dryer
                   template:
-                    -icon_dryer
+                    - icon_dryer
           #################################################################
           ## Office Controls
           #################################################################
