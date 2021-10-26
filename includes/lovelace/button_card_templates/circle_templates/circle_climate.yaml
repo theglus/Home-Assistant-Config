@@ -1,0 +1,33 @@
+#################################################################
+## Climate Circle Properties
+#################################################################
+styles:
+  custom_fields:
+    circle:
+      - display: initial
+      - width: 90%
+      - letter-spacing: 0.03vw
+      - margin: -6% -6% 0 0
+      - justify-self: end
+      - opacity: 1
+custom_fields:
+  circle: >
+    [[[
+      const input = variables.circle_input;
+      const stroke_color = variables.state === 'cool' ? '#b2b2b2' : '#b2b2b2';
+      const fill_color = variables.state === 'cool' ? 'none' : '#FFFFFF08';
+      return `
+        <svg viewBox="0 0 50 50">
+          <style>
+            circle {
+              transform: none;
+              transform-origin: none;
+              stroke-dasharray: none;
+              stroke-dashoffset: none;
+            }
+          </style>
+          <circle cx="25" cy="25" r="20.5" stroke="${stroke_color}" stroke-width="1.5" fill="${fill_color}" />
+          <text x="50%" y="54%" fill="#8d8e90" font-size="14" text-anchor="middle" alignment-baseline="middle" dominant-baseline="middle">${input}<tspan font-size="10">°F</tspan></text>
+        </svg>
+      `;
+    ]]]

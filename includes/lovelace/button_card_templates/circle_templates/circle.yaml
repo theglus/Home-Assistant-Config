@@ -2,6 +2,15 @@
 ## Circle Button Properties
 #################################################################
 # TODO: #349 Resolve circle errors
+styles:
+  custom_fields:
+    circle: &person
+      - display: initial
+      - width: 90%
+      - letter-spacing: 0.03vw
+      - margin: -6% -6% 0 0
+      - justify-self: end
+      - opacity: 1
 custom_fields:
   circle: >
     [[[
@@ -28,12 +37,3 @@ custom_fields:
         `;
       }
     ]]]
-styles:
-  custom_fields:
-    circle: &person
-      - display: initial
-      - width: 90%
-      - letter-spacing: 0.03vw
-      - margin: -6% -6% 0 0
-      - justify-self: end
-      - opacity: 1
