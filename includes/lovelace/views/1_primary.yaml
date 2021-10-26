@@ -362,7 +362,6 @@ cards:
                 #----------------------------------------------------------------
                 ## Washer
                 #----------------------------------------------------------------
-                # TODO: #250 Create washer dashboard button
                 - type: "custom:button-card"
                   entity: sensor.washer
                   name: Washer
