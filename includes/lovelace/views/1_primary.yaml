@@ -386,7 +386,7 @@ cards:
                         [top: 11%, left: 6%, width: 5.25em, position: absolute]
                   template:
                     - base
-                    - climate
+                    - circle_climate
                   variables:
                     circle_input: >
                       [[[
@@ -524,7 +524,7 @@ cards:
                   template:
                     - base
                     - icon_ac
-                    - climate
+                    - circle_climate
                     - loader
                   variables:
                     circle_input: >
