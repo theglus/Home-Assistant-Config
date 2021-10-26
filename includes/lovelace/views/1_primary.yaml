@@ -370,7 +370,6 @@ cards:
                 #----------------------------------------------------------------
                 ## Dryer
                 #----------------------------------------------------------------
-                # TODO: #251 Create dryer dashboard button
                 - type: "custom:button-card"
                   entity: sensor.dryer
                   name: Dryer
