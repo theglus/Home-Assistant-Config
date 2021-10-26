@@ -6,7 +6,7 @@ template:
   - circle_laundry
 styles:
   custom_fields:
-    icon: [top: 6%, left: 6%, width: 78%, position: absolute]
+    icon: [top: 6%, left: 5%, width: 78%, position: absolute]
 custom_fields:
   icon: >
     [[[
