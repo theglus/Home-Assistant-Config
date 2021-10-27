@@ -287,7 +287,6 @@ Entryway:
       #----------------------------------------------------------------
       - type: "custom:button-card"
         entity: binary_sensor.front_door
-        # TODO: #38 Create icon_door button template
         template: 
           - base
           - icon_door
@@ -372,11 +371,9 @@ Office:
       #----------------------------------------------------------------
       ## Office Overhead Lights
       #----------------------------------------------------------------
-      # TODO: Animate Overhead lights
       - type: "custom:button-card"
         entity: light.overhead
         name: Ceiling
-        # TODO: #291 Create icon_overhead button template
         template:
           - light
           - icon_overhead
@@ -448,7 +445,6 @@ Living Room:
       - type: "custom:button-card"
         entity: light.garden
         name: Garden
-        # TODO:: Create icon_garden button template
         template: 
           - icon_garden
       #----------------------------------------------------------------
@@ -512,6 +508,67 @@ Living Room:
 ```
 </details>
 
+### Kitchen Controls
+
+
+![Kitchen Controls](www/readme/demo/kitchen.png) 
+<details>
+  <summary>Code</summary>
+  
+```
+#################################################################
+## Kitchen Controls
+#################################################################
+Kitchen:
+  type: "custom:mod-card"
+  style: |
+    ha-card { 
+      background: rgba(0,0,0,.3); 
+      padding: 10px; 
+      border-radius: 35px; 
+      margin-top: none; 
+      }
+  card:
+    type: grid
+    columns: 3
+    cards:
+      #----------------------------------------------------------------
+      ## Kitchen Track
+      #----------------------------------------------------------------
+      - type: "custom:button-card"
+        entity: light.kitchen
+        name: Track
+        template:
+          - light_color
+          - icon_spot
+      #----------------------------------------------------------------
+      ## Nanoleaf Dino Panesl
+      #----------------------------------------------------------------
+      - type: "custom:button-card"
+        entity: light.nanoleaf
+        template: 
+          - light_nanoleaf
+          - icon_dinopanel
+      #----------------------------------------------------------------
+      ## Kitchen Google Home Mini
+      #----------------------------------------------------------------
+      - type: custom:button-card
+        entity: media_player.living_room_speaker
+        name: Home Mini
+        template:
+          - media
+          - icon_nest_mini
+      #----------------------------------------------------------------
+      ## Kitchen Dyson
+      #----------------------------------------------------------------
+      - type: "custom:button-card"
+        entity: fan.kitchen
+        name: Dyson
+        template:
+          - icon_dyson
+```
+</details>
+
 ### Loft Controls
 
 ![Loft Controls](www/readme/demo/loft.png) 
@@ -538,11 +595,9 @@ Loft:
       #----------------------------------------------------------------
       ## Bedside Lights
       #----------------------------------------------------------------
-      # TODO: #280 Animate Loft beside lights
       - type: "custom:button-card"
         entity: light.bedside
         name: Bedside
-        # TODO: Create icon_bedside button template
         template: 
           - light
           - icon_bedside
@@ -585,7 +640,6 @@ Loft:
       #----------------------------------------------------------------
       ## Kirby
       #----------------------------------------------------------------
-      # TODO: #318 Create fan pop-up
       - type: "custom:button-card"
         entity: fan.kirby
         name: Dyson
@@ -594,7 +648,6 @@ Loft:
       #----------------------------------------------------------------
       ## Loft Nest Hub
       #----------------------------------------------------------------
-      # TODO: #315 Alarm + timer countdown for Google Home devices.
       - type: custom:button-card
         entity: media_player.loft_nest_hub
         name: Nest Hub
