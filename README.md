@@ -432,6 +432,9 @@ Entryway:
 ### Laundry Controls
 
 ![Laundry Controls](www/readme/demo/laundry.png) 
+#### Icons
+- [Washer Icon](includes/lovelace/button_card_templates/icon_templates/icon_washer.yaml)
+- [Dryer Icon](includes/lovelace/button_card_templates/icon_templates/icon_dryer.yaml)
 <details>
   <summary>Code</summary>
   
@@ -475,6 +478,11 @@ Laundry:
 ### Office Controls
 
 ![Office Controls](www/readme/demo/office.png) 
+#### Icons
+- [Ceiling Icon](includes/lovelace/button_card_templates/icon_templates/icon_overhead.yaml)
+- [Printer Icon](includes/lovelace/button_card_templates/icon_templates/icon_printer.yaml)
+- [Air Circulator Icon](includes/lovelace/button_card_templates/icon_templates/icon_circulator.yaml)
+- [Google Nest Mini Icon](/Users/Glusman/Home-Assistant-Config/includes/lovelace/button_card_templates/icon_templates/icon_nest_mini.yaml)
 <details>
   <summary>Code</summary>
   
