@@ -669,7 +669,7 @@ Loft:
 - [ ] [Granular Google Home Controls](https://github.com/theglus/Home-Assistant-Config/milestone/19)
 - [ ] [Dyson Controls](https://github.com/theglus/Home-Assistant-Config/milestone/27)
 - [ ] [AC climate pop-up](https://github.com/theglus/Home-Assistant-Config/milestone/24)
-- [ ] [Laundry Machine Controls](https://github.com/theglus/Home-Assistant-Config/milestone/5)
+- [x] [Laundry Machine Controls](https://github.com/theglus/Home-Assistant-Config/milestone/5)
 - [ ] [Winston Interface + Automations](https://github.com/theglus/Home-Assistant-Config/milestone/20)
 - [ ] [Home Theater Controls](https://github.com/theglus/Home-Assistant-Config/milestone/30)
 - [ ] [Improved Printer + Paper Shredder buttons](https://github.com/theglus/Home-Assistant-Config/milestone/23)
