@@ -544,7 +544,15 @@ Office:
 
 ### Living Room Controls
 
-![Living Room Controls](www/readme/demo/living_room.png) 
+![Living Room Controls](www/readme/demo/living_room.png)
+#### Icons
+- [Spotlight Icon](includes/lovelace/button_card_templates/icon_templates/icon_spot.yaml)
+- [Garden Lights Icon](includes/lovelace/button_card_templates/icon_templates/icon_garden.yaml)
+- [Lamp Icon](includes/lovelace/button_card_templates/icon_templates/icon_lamp.yaml)
+- [Heater Icon](includes/lovelace/button_card_templates/icon_templates/icon_heater.yaml)
+- [Air Circulator Icon](includes/lovelace/button_card_templates/icon_templates/icon_circulator.yaml) 
+- [AC Icon](includes/lovelace/button_card_templates/icon_templates/icon_ac.yaml)
+- [TV Icon](includes/lovelace/button_card_templates/icon_templates/icon_tv.yaml)
 <details>
   <summary>Code</summary>
   
