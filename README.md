@@ -304,6 +304,49 @@ Entryway:
 ```
 </details>
 
+### Laundry Controls
+
+![Laundry Controls](www/readme/demo/laundry.png) 
+<details>
+  <summary>Code</summary>
+  
+```
+#################################################################
+## Guest Bathroom Controls
+#################################################################
+#249 Create view for downstairs bathroom
+Laundry:
+  type: "custom:mod-card"
+  style: |
+    ha-card { 
+      background: rgba(0,0,0,.3); 
+      padding: 10px; 
+      border-radius: 35px; 
+      margin-top: none; 
+      }
+  card:
+    type: grid
+    columns: 3
+    cards:
+      #----------------------------------------------------------------
+      ## Washer
+      #----------------------------------------------------------------
+      - type: "custom:button-card"
+        entity: sensor.washer
+        name: Washer
+        template:
+          - icon_washer
+      #----------------------------------------------------------------
+      ## Dryer
+      #----------------------------------------------------------------
+      - type: "custom:button-card"
+        entity: sensor.dryer
+        name: Dryer
+        template:
+          - icon_dryer
+```
+</details>
+
 ## Planned Improvements
 - [x] [Notification Automations + Water Alerts](https://github.com/theglus/Home-Assistant-Config/milestone/26)
 - [x] [Tackle Nanoleaf pop-up + light button bugs](https://github.com/theglus/Home-Assistant-Config/milestone/29)
