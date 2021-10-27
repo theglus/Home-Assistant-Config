@@ -117,6 +117,13 @@ Thanks for reading, please star if your are interested in the project.
 ## Lovelace Dashboards
 * [Quick Access Controls](#quick-access-controls)
   * [Room Controls](#room-controls)
+  * [Hallway Controls](#hallway-controls)
+  * [Laundry Controls](#laundry-controls)
+  * [Office Controls](#office-controls)
+  * [Living Room Controls](#living-room-controls)
+  * [Kitchen Controls](#kitchen-controls)
+  * [Loft Controls](#loft-controls)
+* [Popup Controls](#popup-controls)
   * [Light Popup](#light-popup)
   * [Animated Icons](#animated-icons)
 * [Vacuum Dasboard](#vacuum-dashboard)
@@ -125,10 +132,535 @@ Thanks for reading, please star if your are interested in the project.
 The Quick Access Controls are a logical grouping of Lovelace buttons + cards using many of the [above listed custom components](#custom-components). The inspiration for Quick Access came from stumbling upon [Crixle's Light Control Card](https://github.com/crixle/homeassistant-config#light-control-card) via r/homeassistant. I was fascinated by the idea of reducing the number of clicks required to control my smart home. This led me to overhaul my Lovelace setup with the goal of making all essential controls availible in 3-clicks or less.
 
 ![Quick Access Controls](www/readme/demo/quick_access_controls.gif) 
+<details>
+  <summary>Code</summary>
+  
+```
+#################################################################
+#----------------------------------------------------------------
+## Toggle Nav
+#----------------------------------------------------------------
+#################################################################
+entities:
+  - type: "custom:paper-buttons-row"
+    buttons:
+      #################################################################
+      ## General Button
+      #################################################################
+      - entity: input_select.lighttoggle
+        name: false
+        icon: "mdi:home-assistant"
+        state_styles:
+          General:
+          template: nav_button
+        template: nav_styles
+        tap_action:
+          action: call-service
+          service: input_select.select_option
+          service_data:
+            entity_id: input_select.lighttoggle
+            option: General
+      #################################################################
+      ## Entryway Button
+      #################################################################
+      - entity: input_select.lighttoggle
+        name: false
+        icon: "mdi:coat-rack"
+        state_styles:
+          Entrway:
+          template: nav_button
+        template: nav_styles
+        tap_action:
+          action: call-service
+          service: input_select.select_option
+          service_data:
+            entity_id: input_select.lighttoggle
+            option: Entryway
+#################################################################
+#----------------------------------------------------------------
+## Expanded
+#----------------------------------------------------------------
+#################################################################
+- type: "custom:state-switch"
+  entity: input_select.lighttoggle
+  default: Entryway
+  transition: none
+  states:
+  #################################################################
+  ## General Controls
+  #################################################################
+  General:
+    type: "custom:mod-card"
+    style: |
+      ha-card { 
+        background: rgba(0,0,0,.3); 
+        padding: 10px; 
+        border-radius: 35px; 
+        margin-top: none; 
+        }
+    card:
+      type: grid
+      columns: 3
+      cards:
+
+    ## <--- Buttons --->
+  
+  #################################################################
+  ## Entryway Controls
+  #################################################################
+  General:
+    type: "custom:mod-card"
+    style: |
+      ha-card { 
+        background: rgba(0,0,0,.3); 
+        padding: 10px; 
+        border-radius: 35px; 
+        margin-top: none; 
+        }
+    card:
+      type: grid
+      columns: 3
+      cards:
+
+    ## <--- Buttons --->
+```
+</details>
 
 ### Room Controls
 
 ![Room Controls](www/readme/demo/room_controls.png)
+
+### Hallway Controls
+
+![Hallway Controls](www/readme/demo/hallway.png)
+
+<details>
+  <summary>Code</summary>
+  
+```
+#################################################################
+## Entrway Controls
+#################################################################
+Entryway:
+  type: "custom:mod-card"
+  style: |
+    ha-card { 
+      background: rgba(0,0,0,.3); 
+      padding: 10px; 
+      border-radius: 35px; 
+      margin-top: none; 
+      }
+  card:
+    type: grid
+    columns: 3
+    cards:
+      #----------------------------------------------------------------
+      ## Hallway Marquee
+      #----------------------------------------------------------------
+      - type: "custom:button-card"
+        entity: light.hallway_marquee
+        template:
+          - icon_marquee
+      #----------------------------------------------------------------
+      ## Hallway Runner
+      #----------------------------------------------------------------
+      - type: "custom:button-card"
+        entity: light.hallway_runner
+        name: Runner
+        template: 
+          - light_color
+          - icon_led
+      #----------------------------------------------------------------
+      ## Potter Lamp
+      #----------------------------------------------------------------
+      - type: "custom:button-card"
+        entity: light.potter_lamp
+        name: Lamp
+        template:
+          - light_color
+          - icon_lamp
+      #----------------------------------------------------------------
+      ## Stair Light
+      #----------------------------------------------------------------
+      - type: "custom:button-card"
+        entity: light.stair
+        name: Lamp
+        template:
+          - light
+          - icon_spot
+      #----------------------------------------------------------------
+      ## Front Door Sensor
+      #----------------------------------------------------------------
+      - type: "custom:button-card"
+        entity: binary_sensor.front_door
+        template: 
+          - base
+          - icon_door
+      #----------------------------------------------------------------
+      ## Hallway Smart Clock
+      #----------------------------------------------------------------
+      - type: custom:button-card
+        entity: media_player.smart_clock
+        name: Smart Clock
+        template:
+          - base
+          - icon_smart_clock
+```
+</details>
+
+### Laundry Controls
+
+![Laundry Controls](www/readme/demo/laundry.png) 
+<details>
+  <summary>Code</summary>
+  
+```
+#################################################################
+## Guest Bathroom Controls
+#################################################################
+#249 Create view for downstairs bathroom
+Laundry:
+  type: "custom:mod-card"
+  style: |
+    ha-card { 
+      background: rgba(0,0,0,.3); 
+      padding: 10px; 
+      border-radius: 35px; 
+      margin-top: none; 
+      }
+  card:
+    type: grid
+    columns: 3
+    cards:
+      #----------------------------------------------------------------
+      ## Washer
+      #----------------------------------------------------------------
+      - type: "custom:button-card"
+        entity: sensor.washer
+        name: Washer
+        template:
+          - icon_washer
+      #----------------------------------------------------------------
+      ## Dryer
+      #----------------------------------------------------------------
+      - type: "custom:button-card"
+        entity: sensor.dryer
+        name: Dryer
+        template:
+          - icon_dryer
+```
+</details>
+
+### Office Controls
+
+![Office Controls](www/readme/demo/office.png) 
+<details>
+  <summary>Code</summary>
+  
+```
+#################################################################
+## Office Controls
+#################################################################
+Office:
+  type: "custom:mod-card"
+  style: |
+    ha-card { 
+      background: rgba(0,0,0,.3); 
+      padding: 10px; 
+      border-radius: 35px; 
+      margin-top: none; 
+      }
+  card:
+    type: grid
+    columns: 3
+    cards:
+      #----------------------------------------------------------------
+      ## Office Overhead Lights
+      #----------------------------------------------------------------
+      - type: "custom:button-card"
+        entity: light.overhead
+        name: Ceiling
+        template:
+          - light
+          - icon_overhead
+      #----------------------------------------------------------------
+      ## Printer
+      #----------------------------------------------------------------
+      - type: "custom:button-card"
+        entity: switch.major_laser_printer
+        name: Major Laser
+        template: 
+          - base
+          - icon_printer
+      #----------------------------------------------------------------
+      ## Air Circulator
+      #----------------------------------------------------------------
+      - type: "custom:button-card"
+        entity: switch.kettle
+        name: Air Circulator
+        template:
+          - base
+          - icon_circulator
+      #----------------------------------------------------------------
+      ## Office Google Home Mini
+      #----------------------------------------------------------------
+      - type: custom:button-card
+        entity: media_player.office_speaker
+        name: Home Mini
+        template:
+          - media 
+          - icon_nest_mini
+```
+</details>
+
+### Living Room Controls
+
+![Living Room Controls](www/readme/demo/living_room.png) 
+<details>
+  <summary>Code</summary>
+  
+```
+#################################################################
+## Living Room Controls
+#################################################################
+Living Room:
+  type: "custom:mod-card"
+  style: |
+    ha-card { 
+      background: rgba(0,0,0,.3); 
+      padding: 10px; 
+      border-radius: 35px; 
+      margin-top: none; 
+      }
+  card:
+    type: grid
+    columns: 3
+    cards:
+      #----------------------------------------------------------------
+      ## Track Light
+      #----------------------------------------------------------------
+      - type: "custom:button-card"
+        entity: light.track
+        name: Track
+        template:
+          - light_color
+          - icon_spot
+      #----------------------------------------------------------------
+      ## Garden Light
+      #----------------------------------------------------------------
+      - type: "custom:button-card"
+        entity: light.garden
+        name: Garden
+        template: 
+          - icon_garden
+      #----------------------------------------------------------------
+      ## Yumi Lamp
+      #----------------------------------------------------------------
+      - type: "custom:button-card"
+        entity: light.yumi_lamp
+        name: Lamp
+        template:
+          - light_color
+          - icon_lamp
+      #----------------------------------------------------------------
+      ## Heater
+      #----------------------------------------------------------------
+      - type: "custom:button-card"
+        entity: switch.switchbot
+        template:
+          - base
+          - icon_heater
+          - loader
+      #----------------------------------------------------------------
+      ## Living Room Air Circulator
+      #----------------------------------------------------------------
+      - type: "custom:button-card"
+        entity: switch.air_circulator
+        name: Air Circulator
+        template:
+          - base
+          - icon_circulator
+      #----------------------------------------------------------------
+      ## Ice Bear
+      #----------------------------------------------------------------
+      - type: "custom:button-card"
+        entity: climate.ice_bear
+        name: Air Conditioner
+        double_tap_action:
+          action: more-info                  
+        template:
+          - base
+          - icon_ac
+          - circle_climate
+          - loader
+        variables:
+          circle_input: >
+            [[[
+              return entity === undefined ?
+                null :
+                entity.attributes.temperature;
+            ]]]
+      #----------------------------------------------------------------
+      ## Shield
+      #----------------------------------------------------------------
+      - type: "custom:button-card"
+        entity: media_player.shield_tv
+        tap_action:
+          action: toggle
+        template:
+          - base
+          - icon_tv
+          - loader 
+```
+</details>
+
+### Kitchen Controls
+
+
+![Kitchen Controls](www/readme/demo/kitchen.png) 
+<details>
+  <summary>Code</summary>
+  
+```
+#################################################################
+## Kitchen Controls
+#################################################################
+Kitchen:
+  type: "custom:mod-card"
+  style: |
+    ha-card { 
+      background: rgba(0,0,0,.3); 
+      padding: 10px; 
+      border-radius: 35px; 
+      margin-top: none; 
+      }
+  card:
+    type: grid
+    columns: 3
+    cards:
+      #----------------------------------------------------------------
+      ## Kitchen Track
+      #----------------------------------------------------------------
+      - type: "custom:button-card"
+        entity: light.kitchen
+        name: Track
+        template:
+          - light_color
+          - icon_spot
+      #----------------------------------------------------------------
+      ## Nanoleaf Dino Panesl
+      #----------------------------------------------------------------
+      - type: "custom:button-card"
+        entity: light.nanoleaf
+        template: 
+          - light_nanoleaf
+          - icon_dinopanel
+      #----------------------------------------------------------------
+      ## Kitchen Google Home Mini
+      #----------------------------------------------------------------
+      - type: custom:button-card
+        entity: media_player.living_room_speaker
+        name: Home Mini
+        template:
+          - media
+          - icon_nest_mini
+      #----------------------------------------------------------------
+      ## Kitchen Dyson
+      #----------------------------------------------------------------
+      - type: "custom:button-card"
+        entity: fan.kitchen
+        name: Dyson
+        template:
+          - icon_dyson
+```
+</details>
+
+### Loft Controls
+
+![Loft Controls](www/readme/demo/loft.png) 
+<details>
+  <summary>Code</summary>
+  
+```
+#################################################################
+## Loft Controls
+#################################################################
+Loft:
+  type: "custom:mod-card"
+  style: |
+    ha-card { 
+      background: rgba(0,0,0,.3); 
+      padding: 10px; 
+      border-radius: 35px; 
+      margin-top: none; 
+      }
+  card:
+    type: grid
+    columns: 3
+    cards:
+      #----------------------------------------------------------------
+      ## Bedside Lights
+      #----------------------------------------------------------------
+      - type: "custom:button-card"
+        entity: light.bedside
+        name: Bedside
+        template: 
+          - light
+          - icon_bedside
+      #----------------------------------------------------------------
+      ## Jeffrey's Lights
+      #----------------------------------------------------------------
+      - type: "custom:button-card"
+        entity: light.jeffreys_lamp
+        name: Jeffrey's
+        template: 
+          - light
+          - icon_bed
+      #----------------------------------------------------------------
+      ## Tiffany's Light
+      #----------------------------------------------------------------
+      - type: "custom:button-card"
+        entity: light.tiffanys_lamp
+        name: Tiffany's
+        template: 
+          - light
+          - icon_bed
+      #----------------------------------------------------------------
+      ## Bed Track
+      #----------------------------------------------------------------
+      - type: "custom:button-card"
+        entity: light.loft_bed_light
+        name: Ceiling
+        template:
+          - light
+          - icon_spot
+      #----------------------------------------------------------------
+      ## Desk Lights
+      #----------------------------------------------------------------
+      - type: "custom:button-card"
+        entity: light.loft_desk_lamp
+        name: Desk
+        template:
+          - light
+          - icon_lamp
+      #----------------------------------------------------------------
+      ## Kirby
+      #----------------------------------------------------------------
+      - type: "custom:button-card"
+        entity: fan.kirby
+        name: Dyson
+        template:
+          - icon_dyson
+      #----------------------------------------------------------------
+      ## Loft Nest Hub
+      #----------------------------------------------------------------
+      - type: custom:button-card
+        entity: media_player.loft_nest_hub
+        name: Nest Hub
+        template:
+          - icon_nest_hub    
+```
+</details>
 
 ## Planned Improvements
 - [x] [Notification Automations + Water Alerts](https://github.com/theglus/Home-Assistant-Config/milestone/26)
