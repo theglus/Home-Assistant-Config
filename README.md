@@ -348,8 +348,7 @@ Laundry:
 
 ### Office Controls
 
-
-![QOffice Controls](www/readme/demo/office.png) 
+![Office Controls](www/readme/demo/office.png) 
 <details>
   <summary>Code</summary>
   
@@ -408,6 +407,108 @@ Office:
         template:
           - media 
           - icon_nest_mini
+```
+</details>
+
+### Living Room Controls
+
+![Living Room Controls](www/readme/demo/living_room.png) 
+<details>
+  <summary>Code</summary>
+  
+```
+#################################################################
+## Living Room Controls
+#################################################################
+Living Room:
+  type: "custom:mod-card"
+  style: |
+    ha-card { 
+      background: rgba(0,0,0,.3); 
+      padding: 10px; 
+      border-radius: 35px; 
+      margin-top: none; 
+      }
+  card:
+    type: grid
+    columns: 3
+    cards:
+      #----------------------------------------------------------------
+      ## Track Light
+      #----------------------------------------------------------------
+      - type: "custom:button-card"
+        entity: light.track
+        name: Track
+        template:
+          - light_color
+          - icon_spot
+      #----------------------------------------------------------------
+      ## Garden Light
+      #----------------------------------------------------------------
+      - type: "custom:button-card"
+        entity: light.garden
+        name: Garden
+        # TODO:: Create icon_garden button template
+        template: 
+          - icon_garden
+      #----------------------------------------------------------------
+      ## Yumi Lamp
+      #----------------------------------------------------------------
+      - type: "custom:button-card"
+        entity: light.yumi_lamp
+        name: Lamp
+        template:
+          - light_color
+          - icon_lamp
+      #----------------------------------------------------------------
+      ## Heater
+      #----------------------------------------------------------------
+      - type: "custom:button-card"
+        entity: switch.switchbot
+        template:
+          - base
+          - icon_heater
+          - loader
+      #----------------------------------------------------------------
+      ## Living Room Air Circulator
+      #----------------------------------------------------------------
+      - type: "custom:button-card"
+        entity: switch.air_circulator
+        name: Air Circulator
+        template:
+          - base
+          - icon_circulator
+      #----------------------------------------------------------------
+      ## Ice Bear
+      #----------------------------------------------------------------
+      - type: "custom:button-card"
+        entity: climate.ice_bear
+        name: Air Conditioner
+        double_tap_action:
+          action: more-info                  
+        template:
+          - base
+          - icon_ac
+          - circle_climate
+          - loader
+        variables:
+          circle_input: >
+            [[[
+              return entity === undefined ?
+                null :
+                entity.attributes.temperature;
+            ]]]
+      #----------------------------------------------------------------
+      ## Shield
+      #----------------------------------------------------------------
+      - type: "custom:button-card"
+        entity: media_player.shield_tv
+        tap_action:
+          action: toggle
+        template:
+          - base
+          - icon_tv
+          - loader 
 ```
 </details>
 
