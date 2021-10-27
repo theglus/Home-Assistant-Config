@@ -229,6 +229,13 @@ entities:
 ### Room Controls
 
 ![Room Controls](www/readme/demo/room_controls.png)
+#### Icons
+- [Entryway Icon](www/custom_icons.js)
+- [Office Icon](www/custom_icons.js)
+- [Living Room Icon](www/custom_icons.js)
+- [Kitchen Icon](www/custom_icons.js)
+- [Loft Icon](www/custom_icons.js)
+
 <details>
   <summary>Code</summary>
   
