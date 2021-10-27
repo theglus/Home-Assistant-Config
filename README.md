@@ -347,6 +347,97 @@ Laundry:
 ```
 </details>
 
+### Loft Controls
+
+![Loft Controls](www/readme/demo/loft.png) 
+<details>
+  <summary>Code</summary>
+  
+```
+#################################################################
+## Loft Controls
+#################################################################
+Loft:
+  type: "custom:mod-card"
+  style: |
+    ha-card { 
+      background: rgba(0,0,0,.3); 
+      padding: 10px; 
+      border-radius: 35px; 
+      margin-top: none; 
+      }
+  card:
+    type: grid
+    columns: 3
+    cards:
+      #----------------------------------------------------------------
+      ## Bedside Lights
+      #----------------------------------------------------------------
+      # TODO: #280 Animate Loft beside lights
+      - type: "custom:button-card"
+        entity: light.bedside
+        name: Bedside
+        # TODO: Create icon_bedside button template
+        template: 
+          - light
+          - icon_bedside
+      #----------------------------------------------------------------
+      ## Jeffrey's Lights
+      #----------------------------------------------------------------
+      - type: "custom:button-card"
+        entity: light.jeffreys_lamp
+        name: Jeffrey's
+        template: 
+          - light
+          - icon_bed
+      #----------------------------------------------------------------
+      ## Tiffany's Light
+      #----------------------------------------------------------------
+      - type: "custom:button-card"
+        entity: light.tiffanys_lamp
+        name: Tiffany's
+        template: 
+          - light
+          - icon_bed
+      #----------------------------------------------------------------
+      ## Bed Track
+      #----------------------------------------------------------------
+      - type: "custom:button-card"
+        entity: light.loft_bed_light
+        name: Ceiling
+        template:
+          - light
+          - icon_spot
+      #----------------------------------------------------------------
+      ## Desk Lights
+      #----------------------------------------------------------------
+      - type: "custom:button-card"
+        entity: light.loft_desk_lamp
+        name: Desk
+        template:
+          - light
+          - icon_lamp
+      #----------------------------------------------------------------
+      ## Kirby
+      #----------------------------------------------------------------
+      # TODO: #318 Create fan pop-up
+      - type: "custom:button-card"
+        entity: fan.kirby
+        name: Dyson
+        template:
+          - icon_dyson
+      #----------------------------------------------------------------
+      ## Loft Nest Hub
+      #----------------------------------------------------------------
+      # TODO: #315 Alarm + timer countdown for Google Home devices.
+      - type: custom:button-card
+        entity: media_player.loft_nest_hub
+        name: Nest Hub
+        template:
+          - icon_nest_hub    
+```
+</details>
+
 ## Planned Improvements
 - [x] [Notification Automations + Water Alerts](https://github.com/theglus/Home-Assistant-Config/milestone/26)
 - [x] [Tackle Nanoleaf pop-up + light button bugs](https://github.com/theglus/Home-Assistant-Config/milestone/29)
