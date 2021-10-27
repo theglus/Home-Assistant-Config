@@ -347,6 +347,13 @@ General:
 ### Hallway Controls
 
 ![Hallway Controls](www/readme/demo/hallway.png)
+#### Icons
+- [Marquee Icon](includes/lovelace/button_card_templates/icon_templates/icon_marquee.yaml)
+- [Stair Icon](includes/lovelace/button_card_templates/icon_templates/icon_led.yaml)
+- [Lamp Icon](includes/lovelace/button_card_templates/icon_templates/icon_lamp.yaml)
+- [Spotlight Icon](includes/lovelace/button_card_templates/icon_templates/icon_spot.yaml)
+- [Door Icon](includes/lovelace/button_card_templates/icon_templates/icon_door.yaml)
+- [Smart Clock Icon](includes/lovelace/button_card_templates/icon_templates/icon_smart_clock.yaml)
 
 <details>
   <summary>Code</summary>
