@@ -229,6 +229,120 @@ entities:
 ### Room Controls
 
 ![Room Controls](www/readme/demo/room_controls.png)
+<details>
+  <summary>Code</summary>
+  
+```
+#################################################################
+## General Controls
+#################################################################
+General:
+  type: "custom:mod-card"
+  style: |
+    ha-card { 
+      background: rgba(0,0,0,.3); 
+      padding: 10px; 
+      border-radius: 35px; 
+      margin-top: none; 
+      }
+  card:
+    type: grid
+    columns: 3
+    cards:
+      #----------------------------------------------------------------
+      ## Weather button
+      #----------------------------------------------------------------
+      - type: "custom:button-card"
+        custom_fields:
+          s2: |
+            [[[
+              return states['sensor.aqi'].state + ' AQI'
+            ]]]
+        entity: weather.loft
+        label: |
+          [[[
+            return states['weather.climacell_nowcast'].attributes.temperature + '°F '
+          ]]]
+        name: |
+          [[[
+            return "Next hour " + states['weather.climacell_hourly'].attributes.forecast[1].temperature + '°F'
+          ]]]
+        template:
+          - weather_layout
+          - weather
+          - icon_weather
+        triggers_update:
+          - sun.sun
+      #----------------------------------------------------------------
+      ## Entryway button
+      #----------------------------------------------------------------
+      - type: "custom:decluttering-card"
+        template: declutter_room_button
+        variables:
+          - room: Entryway
+          - light: light.group_hallway
+          - sensor: binary_sensor.front_door
+          - message_on: Door is open
+          - message_off: Door is closed
+          - icon_state: mdi:door-open
+          - icon_default: custom:room-hallway
+      #----------------------------------------------------------------
+      ## Office button
+      #----------------------------------------------------------------
+      - type: "custom:decluttering-card"
+        template: declutter_room_button
+        variables:
+          - room: Office
+          - light: light.overhead
+          - sensor: sensor.major_laser_printer
+          - message_on: Printer on
+          - message_off: Printer off
+          - icon_state: mdi:printer
+          - icon_default: custom:room-office
+      #----------------------------------------------------------------
+      ## Living Room button
+      #----------------------------------------------------------------
+      - type: "custom:decluttering-card"
+        template: declutter_temp_button
+        variables:
+          - light: light.group_living_room
+          - hvac: switch.switchbot
+          - sensor_temp: sensor.temperature_living_room
+          - message_on: Heat is on
+          - message_off: Heat is off
+          - icon_state: mdi:radiator
+          - icon_default: custom:room-living
+          - room: Living Room
+      #----------------------------------------------------------------
+      ## Kitchen button
+      #----------------------------------------------------------------
+      - type: "custom:decluttering-card"
+        template: declutter_temp_button
+        variables:
+          - light: light.group_kitchen
+          - hvac: fan.kitchen
+          - sensor_temp: sensor.kitchen_temperature
+          - message_on: Dyson is on
+          - message_off: Dyson is off
+          - icon_state: custom:room-kitchen
+          - icon_default: custom:room-kitchen
+          - room: Kitchen
+      #----------------------------------------------------------------
+      ## Loft button
+      #----------------------------------------------------------------
+      - type: "custom:decluttering-card"
+        template: declutter_temp_button
+        variables:
+          - light: light.loft
+          - hvac: fan.kirby
+          - sensor_temp: sensor.kirby_temperature
+          - message_on: Dyson is on
+          - message_off: Dyson is off
+          - icon_state: custom:room-loft
+          - icon_default: custom:room-loft
+          - room: Loft
+```
+</details>
 
 ### Hallway Controls
 
