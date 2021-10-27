@@ -720,6 +720,14 @@ Kitchen:
 ### Loft Controls
 
 ![Loft Controls](www/readme/demo/loft.png) 
+#### Icons
+- [Bedside Icon](includes/lovelace/button_card_templates/icon_templates/icon_bed.yaml)
+- [Table Lamp Icon](includes/lovelace/button_card_templates/icon_templates/icon_bedside.yaml)
+- [Spotlight Icon](includes/lovelace/button_card_templates/icon_templates/icon_spot.yaml)
+- [Lamp Icon](includes/lovelace/button_card_templates/icon_templates/icon_lamp.yaml)
+- [Dyson Icon](includes/lovelace/button_card_templates/icon_templates/icon_dyson.yaml)
+- [Nest Hub Mini Icon](includes/lovelace/button_card_templates/icon_templates/icon_nest_hub.yaml)
+
 <details>
   <summary>Code</summary>
   
