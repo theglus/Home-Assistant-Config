@@ -294,7 +294,6 @@ Entryway:
       #----------------------------------------------------------------
       ## Hallway Smart Clock
       #----------------------------------------------------------------
-      # TODO: #315 Alarm + timer countdown for Google Home devices.
       - type: custom:button-card
         entity: media_player.smart_clock
         name: Smart Clock
@@ -344,6 +343,71 @@ Laundry:
         name: Dryer
         template:
           - icon_dryer
+```
+</details>
+
+### Office Controls
+
+
+![QOffice Controls](www/readme/demo/office.png) 
+<details>
+  <summary>Code</summary>
+  
+```
+#################################################################
+## Office Controls
+#################################################################
+Office:
+  type: "custom:mod-card"
+  style: |
+    ha-card { 
+      background: rgba(0,0,0,.3); 
+      padding: 10px; 
+      border-radius: 35px; 
+      margin-top: none; 
+      }
+  card:
+    type: grid
+    columns: 3
+    cards:
+      #----------------------------------------------------------------
+      ## Office Overhead Lights
+      #----------------------------------------------------------------
+      # TODO: Animate Overhead lights
+      - type: "custom:button-card"
+        entity: light.overhead
+        name: Ceiling
+        # TODO: #291 Create icon_overhead button template
+        template:
+          - light
+          - icon_overhead
+      #----------------------------------------------------------------
+      ## Printer
+      #----------------------------------------------------------------
+      - type: "custom:button-card"
+        entity: switch.major_laser_printer
+        name: Major Laser
+        template: 
+          - base
+          - icon_printer
+      #----------------------------------------------------------------
+      ## Air Circulator
+      #----------------------------------------------------------------
+      - type: "custom:button-card"
+        entity: switch.kettle
+        name: Air Circulator
+        template:
+          - base
+          - icon_circulator
+      #----------------------------------------------------------------
+      ## Office Google Home Mini
+      #----------------------------------------------------------------
+      - type: custom:button-card
+        entity: media_player.office_speaker
+        name: Home Mini
+        template:
+          - media 
+          - icon_nest_mini
 ```
 </details>
 
