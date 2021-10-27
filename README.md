@@ -125,6 +125,99 @@ Thanks for reading, please star if your are interested in the project.
 The Quick Access Controls are a logical grouping of Lovelace buttons + cards using many of the [above listed custom components](#custom-components). The inspiration for Quick Access came from stumbling upon [Crixle's Light Control Card](https://github.com/crixle/homeassistant-config#light-control-card) via r/homeassistant. I was fascinated by the idea of reducing the number of clicks required to control my smart home. This led me to overhaul my Lovelace setup with the goal of making all essential controls availible in 3-clicks or less.
 
 ![Quick Access Controls](www/readme/demo/quick_access_controls.gif) 
+<details>
+  <summary>Code</summary>
+  
+```
+#################################################################
+#----------------------------------------------------------------
+## Toggle Nav
+#----------------------------------------------------------------
+#################################################################
+entities:
+  - type: "custom:paper-buttons-row"
+    buttons:
+      #################################################################
+      ## General Button
+      #################################################################
+      - entity: input_select.lighttoggle
+        name: false
+        icon: "mdi:home-assistant"
+        state_styles:
+          General:
+          template: nav_button
+        template: nav_styles
+        tap_action:
+          action: call-service
+          service: input_select.select_option
+          service_data:
+            entity_id: input_select.lighttoggle
+            option: General
+      #################################################################
+      ## Entryway Button
+      #################################################################
+      - entity: input_select.lighttoggle
+        name: false
+        icon: "mdi:coat-rack"
+        state_styles:
+          Entrway:
+          template: nav_button
+        template: nav_styles
+        tap_action:
+          action: call-service
+          service: input_select.select_option
+          service_data:
+            entity_id: input_select.lighttoggle
+            option: Entryway
+#################################################################
+#----------------------------------------------------------------
+## Expanded
+#----------------------------------------------------------------
+#################################################################
+- type: "custom:state-switch"
+  entity: input_select.lighttoggle
+  default: Entryway
+  transition: none
+  states:
+  #################################################################
+  ## General Controls
+  #################################################################
+  General:
+    type: "custom:mod-card"
+    style: |
+      ha-card { 
+        background: rgba(0,0,0,.3); 
+        padding: 10px; 
+        border-radius: 35px; 
+        margin-top: none; 
+        }
+    card:
+      type: grid
+      columns: 3
+      cards:
+
+    ## <--- Buttons --->
+  
+  #################################################################
+  ## Entryway Controls
+  #################################################################
+  General:
+    type: "custom:mod-card"
+    style: |
+      ha-card { 
+        background: rgba(0,0,0,.3); 
+        padding: 10px; 
+        border-radius: 35px; 
+        margin-top: none; 
+        }
+    card:
+      type: grid
+      columns: 3
+      cards:
+
+    ## <--- Buttons --->
+```
+</details>
 
 ### Room Controls
 
