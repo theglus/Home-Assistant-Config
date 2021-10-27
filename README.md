@@ -117,6 +117,7 @@ Thanks for reading, please star if your are interested in the project.
 ## Lovelace Dashboards
 * [Quick Access Controls](#quick-access-controls)
   * [Room Controls](#room-controls)
+  * [Hallway Controls](#hallway-controls)
   * [Light Popup](#light-popup)
   * [Animated Icons](#animated-icons)
 * [Vacuum Dasboard](#vacuum-dashboard)
@@ -222,6 +223,86 @@ entities:
 ### Room Controls
 
 ![Room Controls](www/readme/demo/room_controls.png)
+
+### Hallway Controls
+
+![Hallway Controls](www/readme/demo/hallway.png)
+
+<details>
+  <summary>Code</summary>
+  
+```
+#################################################################
+## Entrway Controls
+#################################################################
+Entryway:
+  type: "custom:mod-card"
+  style: |
+    ha-card { 
+      background: rgba(0,0,0,.3); 
+      padding: 10px; 
+      border-radius: 35px; 
+      margin-top: none; 
+      }
+  card:
+    type: grid
+    columns: 3
+    cards:
+      #----------------------------------------------------------------
+      ## Hallway Marquee
+      #----------------------------------------------------------------
+      - type: "custom:button-card"
+        entity: light.hallway_marquee
+        template:
+          - icon_marquee
+      #----------------------------------------------------------------
+      ## Hallway Runner
+      #----------------------------------------------------------------
+      - type: "custom:button-card"
+        entity: light.hallway_runner
+        name: Runner
+        template: 
+          - light_color
+          - icon_led
+      #----------------------------------------------------------------
+      ## Potter Lamp
+      #----------------------------------------------------------------
+      - type: "custom:button-card"
+        entity: light.potter_lamp
+        name: Lamp
+        template:
+          - light_color
+          - icon_lamp
+      #----------------------------------------------------------------
+      ## Stair Light
+      #----------------------------------------------------------------
+      - type: "custom:button-card"
+        entity: light.stair
+        name: Lamp
+        template:
+          - light
+          - icon_spot
+      #----------------------------------------------------------------
+      ## Front Door Sensor
+      #----------------------------------------------------------------
+      - type: "custom:button-card"
+        entity: binary_sensor.front_door
+        # TODO: #38 Create icon_door button template
+        template: 
+          - base
+          - icon_door
+      #----------------------------------------------------------------
+      ## Hallway Smart Clock
+      #----------------------------------------------------------------
+      # TODO: #315 Alarm + timer countdown for Google Home devices.
+      - type: custom:button-card
+        entity: media_player.smart_clock
+        name: Smart Clock
+        template:
+          - base
+          - icon_smart_clock
+```
+</details>
 
 ## Planned Improvements
 - [x] [Notification Automations + Water Alerts](https://github.com/theglus/Home-Assistant-Config/milestone/26)
