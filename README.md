@@ -653,8 +653,13 @@ Living Room:
 
 ### Kitchen Controls
 
-
 ![Kitchen Controls](www/readme/demo/kitchen.png) 
+#### Icons
+- [Spotlight Icon](includes/lovelace/button_card_templates/icon_templates/icon_spot.yaml)
+- [Nanoleaf Icon](includes/lovelace/button_card_templates/icon_templates/icon_dinopanel.yaml)
+- [Google Nest Mini Icon](/Users/Glusman/Home-Assistant-Config/includes/lovelace/button_card_templates/icon_templates/icon_nest_mini.yaml)
+- [Dyson Icon](includes/lovelace/button_card_templates/icon_templates/icon_dyson.yaml)
+
 <details>
   <summary>Code</summary>
   
