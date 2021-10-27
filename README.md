@@ -131,7 +131,7 @@ Thanks for reading, please star if your are interested in the project.
 ### Quick Access Controls
 The Quick Access Controls are a logical grouping of Lovelace buttons + cards using many of the [above listed custom components](#custom-components). The inspiration for Quick Access came from stumbling upon [Crixle's Light Control Card](https://github.com/crixle/homeassistant-config#light-control-card) via r/homeassistant. I was fascinated by the idea of reducing the number of clicks required to control my smart home. This led me to overhaul my Lovelace setup with the goal of making all essential controls availible in 3-clicks or less.
 
-![Quick Access Controls](www/readme/demo/quick_access_controls.gif) 
+![Quick Access Controls](www/readme/demo/quick_access_controls.mp4) 
 <details>
   <summary>Code</summary>
   
