@@ -229,10 +229,138 @@ entities:
 ### Room Controls
 
 ![Room Controls](www/readme/demo/room_controls.png)
+#### Icons
+- [Entryway Icon](www/custom_icons.js)
+- [Office Icon](www/custom_icons.js)
+- [Living Room Icon](www/custom_icons.js)
+- [Kitchen Icon](www/custom_icons.js)
+- [Loft Icon](www/custom_icons.js)
+
+<details>
+  <summary>Code</summary>
+  
+```
+#################################################################
+## General Controls
+#################################################################
+General:
+  type: "custom:mod-card"
+  style: |
+    ha-card { 
+      background: rgba(0,0,0,.3); 
+      padding: 10px; 
+      border-radius: 35px; 
+      margin-top: none; 
+      }
+  card:
+    type: grid
+    columns: 3
+    cards:
+      #----------------------------------------------------------------
+      ## Weather button
+      #----------------------------------------------------------------
+      - type: "custom:button-card"
+        custom_fields:
+          s2: |
+            [[[
+              return states['sensor.aqi'].state + ' AQI'
+            ]]]
+        entity: weather.loft
+        label: |
+          [[[
+            return states['weather.climacell_nowcast'].attributes.temperature + '°F '
+          ]]]
+        name: |
+          [[[
+            return "Next hour " + states['weather.climacell_hourly'].attributes.forecast[1].temperature + '°F'
+          ]]]
+        template:
+          - weather_layout
+          - weather
+          - icon_weather
+        triggers_update:
+          - sun.sun
+      #----------------------------------------------------------------
+      ## Entryway button
+      #----------------------------------------------------------------
+      - type: "custom:decluttering-card"
+        template: declutter_room_button
+        variables:
+          - room: Entryway
+          - light: light.group_hallway
+          - sensor: binary_sensor.front_door
+          - message_on: Door is open
+          - message_off: Door is closed
+          - icon_state: mdi:door-open
+          - icon_default: custom:room-hallway
+      #----------------------------------------------------------------
+      ## Office button
+      #----------------------------------------------------------------
+      - type: "custom:decluttering-card"
+        template: declutter_room_button
+        variables:
+          - room: Office
+          - light: light.overhead
+          - sensor: sensor.major_laser_printer
+          - message_on: Printer on
+          - message_off: Printer off
+          - icon_state: mdi:printer
+          - icon_default: custom:room-office
+      #----------------------------------------------------------------
+      ## Living Room button
+      #----------------------------------------------------------------
+      - type: "custom:decluttering-card"
+        template: declutter_temp_button
+        variables:
+          - light: light.group_living_room
+          - hvac: switch.switchbot
+          - sensor_temp: sensor.temperature_living_room
+          - message_on: Heat is on
+          - message_off: Heat is off
+          - icon_state: mdi:radiator
+          - icon_default: custom:room-living
+          - room: Living Room
+      #----------------------------------------------------------------
+      ## Kitchen button
+      #----------------------------------------------------------------
+      - type: "custom:decluttering-card"
+        template: declutter_temp_button
+        variables:
+          - light: light.group_kitchen
+          - hvac: fan.kitchen
+          - sensor_temp: sensor.kitchen_temperature
+          - message_on: Dyson is on
+          - message_off: Dyson is off
+          - icon_state: custom:room-kitchen
+          - icon_default: custom:room-kitchen
+          - room: Kitchen
+      #----------------------------------------------------------------
+      ## Loft button
+      #----------------------------------------------------------------
+      - type: "custom:decluttering-card"
+        template: declutter_temp_button
+        variables:
+          - light: light.loft
+          - hvac: fan.kirby
+          - sensor_temp: sensor.kirby_temperature
+          - message_on: Dyson is on
+          - message_off: Dyson is off
+          - icon_state: custom:room-loft
+          - icon_default: custom:room-loft
+          - room: Loft
+```
+</details>
 
 ### Hallway Controls
 
 ![Hallway Controls](www/readme/demo/hallway.png)
+#### Icons
+- [Marquee Icon](includes/lovelace/button_card_templates/icon_templates/icon_marquee.yaml)
+- [Stair Icon](includes/lovelace/button_card_templates/icon_templates/icon_led.yaml)
+- [Lamp Icon](includes/lovelace/button_card_templates/icon_templates/icon_lamp.yaml)
+- [Spotlight Icon](includes/lovelace/button_card_templates/icon_templates/icon_spot.yaml)
+- [Door Icon](includes/lovelace/button_card_templates/icon_templates/icon_door.yaml)
+- [Smart Clock Icon](includes/lovelace/button_card_templates/icon_templates/icon_smart_clock.yaml)
 
 <details>
   <summary>Code</summary>
@@ -311,6 +439,9 @@ Entryway:
 ### Laundry Controls
 
 ![Laundry Controls](www/readme/demo/laundry.png) 
+#### Icons
+- [Washer Icon](includes/lovelace/button_card_templates/icon_templates/icon_washer.yaml)
+- [Dryer Icon](includes/lovelace/button_card_templates/icon_templates/icon_dryer.yaml)
 <details>
   <summary>Code</summary>
   
@@ -354,6 +485,11 @@ Laundry:
 ### Office Controls
 
 ![Office Controls](www/readme/demo/office.png) 
+#### Icons
+- [Ceiling Icon](includes/lovelace/button_card_templates/icon_templates/icon_overhead.yaml)
+- [Printer Icon](includes/lovelace/button_card_templates/icon_templates/icon_printer.yaml)
+- [Air Circulator Icon](includes/lovelace/button_card_templates/icon_templates/icon_circulator.yaml)
+- [Google Nest Mini Icon](/Users/Glusman/Home-Assistant-Config/includes/lovelace/button_card_templates/icon_templates/icon_nest_mini.yaml)
 <details>
   <summary>Code</summary>
   
@@ -415,7 +551,15 @@ Office:
 
 ### Living Room Controls
 
-![Living Room Controls](www/readme/demo/living_room.png) 
+![Living Room Controls](www/readme/demo/living_room.png)
+#### Icons
+- [Spotlight Icon](includes/lovelace/button_card_templates/icon_templates/icon_spot.yaml)
+- [Garden Lights Icon](includes/lovelace/button_card_templates/icon_templates/icon_garden.yaml)
+- [Lamp Icon](includes/lovelace/button_card_templates/icon_templates/icon_lamp.yaml)
+- [Heater Icon](includes/lovelace/button_card_templates/icon_templates/icon_heater.yaml)
+- [Air Circulator Icon](includes/lovelace/button_card_templates/icon_templates/icon_circulator.yaml) 
+- [AC Icon](includes/lovelace/button_card_templates/icon_templates/icon_ac.yaml)
+- [TV Icon](includes/lovelace/button_card_templates/icon_templates/icon_tv.yaml)
 <details>
   <summary>Code</summary>
   
@@ -516,8 +660,13 @@ Living Room:
 
 ### Kitchen Controls
 
-
 ![Kitchen Controls](www/readme/demo/kitchen.png) 
+#### Icons
+- [Spotlight Icon](includes/lovelace/button_card_templates/icon_templates/icon_spot.yaml)
+- [Nanoleaf Icon](includes/lovelace/button_card_templates/icon_templates/icon_dinopanel.yaml)
+- [Google Nest Mini Icon](/Users/Glusman/Home-Assistant-Config/includes/lovelace/button_card_templates/icon_templates/icon_nest_mini.yaml)
+- [Dyson Icon](includes/lovelace/button_card_templates/icon_templates/icon_dyson.yaml)
+
 <details>
   <summary>Code</summary>
   
@@ -578,6 +727,14 @@ Kitchen:
 ### Loft Controls
 
 ![Loft Controls](www/readme/demo/loft.png) 
+#### Icons
+- [Bedside Icon](includes/lovelace/button_card_templates/icon_templates/icon_bed.yaml)
+- [Table Lamp Icon](includes/lovelace/button_card_templates/icon_templates/icon_bedside.yaml)
+- [Spotlight Icon](includes/lovelace/button_card_templates/icon_templates/icon_spot.yaml)
+- [Lamp Icon](includes/lovelace/button_card_templates/icon_templates/icon_lamp.yaml)
+- [Dyson Icon](includes/lovelace/button_card_templates/icon_templates/icon_dyson.yaml)
+- [Nest Hub Mini Icon](includes/lovelace/button_card_templates/icon_templates/icon_nest_hub.yaml)
+
 <details>
   <summary>Code</summary>
   
@@ -669,7 +826,7 @@ Loft:
 - [ ] [Granular Google Home Controls](https://github.com/theglus/Home-Assistant-Config/milestone/19)
 - [ ] [Dyson Controls](https://github.com/theglus/Home-Assistant-Config/milestone/27)
 - [ ] [AC climate pop-up](https://github.com/theglus/Home-Assistant-Config/milestone/24)
-- [ ] [Laundry Machine Controls](https://github.com/theglus/Home-Assistant-Config/milestone/5)
+- [x] [Laundry Machine Controls](https://github.com/theglus/Home-Assistant-Config/milestone/5)
 - [ ] [Winston Interface + Automations](https://github.com/theglus/Home-Assistant-Config/milestone/20)
 - [ ] [Home Theater Controls](https://github.com/theglus/Home-Assistant-Config/milestone/30)
 - [ ] [Improved Printer + Paper Shredder buttons](https://github.com/theglus/Home-Assistant-Config/milestone/23)
