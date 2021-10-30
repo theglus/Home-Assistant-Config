@@ -10,7 +10,7 @@
 #################################################################
 - platform: scrape
   resource: "https://github.com/home-assistant/core/releases/latest"
-  select: "d-inline.mr-3 h1"
+  select: ".d-inline.mr-3 h1"
   name: Core Release
 #################################################################
 ## Supervisor Release sensor.
