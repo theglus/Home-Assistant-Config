@@ -1,3 +1,79 @@
+  show_state: false
+  show_icon: false
+  tap_action:
+    action: none
+  name: |
+    [[[
+      if (entity) {
+        let attributes = '';
+        for (const [key, value] of Object.entries(entity.attributes)) {
+          value != false ? attributes += `<p>${value}</p>` : null;
+        }
+        return attributes;
+      }
+    ]]]
+  extra_styles: |
+    #card {
+      padding: 0;
+    }
+    #container {
+      display: flex !important;
+    }
+    #name {
+      padding: 1.8vw 2.5vw 0 var(--custom-layout-card-padding);
+      white-space: normal;
+      text-align: left;
+    }
+    .time {
+      font-family: SF Text;
+      font-size: var(--sidebar-time-font-size);
+      font-weight: 200;
+      line-height: var(--sidebar-time-line-height);
+      letter-spacing: -0.05vw;
+      margin-left: -0.3vw;
+      color: rgba(255, 255, 255, 0.8);
+    }
+    .time-colon {
+      position: relative;
+      top: -.09em;
+    }
+    p {
+      font-family: SF Display;
+      font-size: var(--sidebar-font-size);
+      line-height: var(--sidebar-line-height);
+      font-weight: 300;
+      letter-spacing: 0.06vw;
+      color: #6a7377;
+    }
+    
+    p > b {
+      color: rgba(255, 255, 255, 0.8);
+    }
+    /* portrait */
+    @media screen and (max-width: 1200px) {
+      .time {
+        font-size: calc(var(--sidebar-time-font-size) * 1.4 );
+        line-height: calc(var(--sidebar-time-line-height) * 1.4 );
+      }
+      p {
+        font-size: calc(var(--sidebar-font-size) * 1.4 );
+        line-height: calc(var(--sidebar-line-height) * 1.4 );
+      }
+    }
+    /* phone */
+    @media screen and (max-width: 800px) {
+      .time {
+        font-size: calc(var(--sidebar-time-font-size) * 2.6 );
+      }
+      p {
+        font-size: calc(var(--sidebar-font-size) * 2.6 );
+        line-height: calc(var(--sidebar-line-height) * 2.6 );
+        letter-spacing: 0.16vw;
+      }
+      #name {
+        padding: 0 0 0 1vw;
+      }
+    }
   hold_action:
     action: failure
   double_tap_action:
