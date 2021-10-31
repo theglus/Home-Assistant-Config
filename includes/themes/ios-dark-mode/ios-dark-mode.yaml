@@ -81,33 +81,3 @@ ios-dark-mode:
   mini-media-player-base-color: white
   mini-media-player-icon-color: white
   # mini-media-player-artwork-opacity: 0.7  # causing some bug
-      #custom variables
-  ha-card-background-color: rgba(34,38,39,0.9)
-  ha-card-header-background-color: rgba(48,52,52,0.8)
-  custom-layout-card-padding: 3.3vw
-  custom-button-card-border-radius: 8%
-  sidebar-time-font-size: 5vw
-  sidebar-time-line-height: 4vw
-  sidebar-font-size: 1.5vw
-  sidebar-line-height: 2.1vw
-  card-content-padding: 1.8em 2.2em 1.8em 2em
-
-####################################################
-#                                                  #
-#                     CARD-MOD                     #
-#                                                  #
-####################################################
-
-  card-mod-theme: tablet
-
-  card-mod-root: |
-    ha-app-layout {
-      background: url('/local/background.png');
-      background-size: cover;
-    }
-  card-mod-view-yaml: |
-    .: |
-      hui-view {
-        background: none !important;
-        min-height: 100vh;
-      }
