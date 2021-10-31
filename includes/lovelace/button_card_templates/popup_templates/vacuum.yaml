@@ -1,3 +1,5 @@
+  template:
+    - base
   hold_action:
     action: failure
   double_tap_action:
@@ -98,7 +100,7 @@
                       margin-top: 2.2em;
                     }
                 cards:
-                
+
                 - type: custom:button-card
                   entity: vacuum.winston
                   icon: mdi:play-pause
