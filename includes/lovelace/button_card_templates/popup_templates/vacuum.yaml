@@ -38,111 +38,97 @@
             #################################################################
             ## Settings
             #################################################################
-            - type: vertical-stack
-              view_layout:
-                grid-area: info
-              cards:
-              - type: entities
-                title: Settings
-                card_mod:
-                  font-family: SF Text;
-                  letter-spacing: 0.005em;
-                  font-size: 1.6em;
-                  font-weight: 500;
-                  padding: 1em 0 0 1.68em;
-                  line-height: initial;
-                  cursor: default;
+              entities:
+
+              - entity: vacuum.winston
+
+              # - entity: vacuum.winston.attributes.total_cleaning_time
+
+              - type: custom:bar-card
+                width: 55%
+                height: 2em
+                decimal: 0
+                unit_of_measurement: '%'
+                positions:
+                  icon: outside
+                  indicator: 'off'
+                  name: outside
+                severity:
+                  - color: '#303435'
+                    from: 11
+                    to: 100
+                  - color: '#6d2525'
+                    from: 0
+                    to: 10
+                entity_row: true
                 entities:
 
-                - entity: vacuum.winston
+                  - entity: vacuum.winston
+                    attribute: battery_level
+                    name: Battery
+                    icon: mdi:battery
 
-                # - entity: vacuum.winston.attributes.total_cleaning_time
+                  - entity: vacuum.winston
+                    attribute: filter_left
+                    name: Filter
+                    icon: custom:vacuum-filter
 
-                - type: custom:bar-card
-                  width: 55%
-                  height: 2em
-                  decimal: 0
-                  unit_of_measurement: '%'
-                  positions:
-                    icon: outside
-                    indicator: 'off'
-                    name: outside
-                  severity:
-                    - color: '#303435'
-                      from: 11
-                      to: 100
-                    - color: '#6d2525'
-                      from: 0
-                      to: 10
-                  entity_row: true
-                  entities:
+                  - entity: vacuum.winston
+                    attribute: main_brush_left
+                    name: Main Brush
+                    icon: custom:vacuum-mainbrush
 
-                    - entity: vacuum.winston
-                      attribute: battery_level
-                      name: Battery
-                      icon: mdi:battery
+                  - entity: vacuum.winston
+                    attribute: side_brush_left
+                    name: Side Brush
+                    icon: custom:vacuum-sidebrush
 
-                    - entity: vacuum.winston
-                      attribute: filter_left
-                      name: Filter
-                      icon: custom:vacuum-filter
+                  - entity: vacuum.winston
+                    attribute: sensor_dirty_left
+                    icon: custom:vacuum-sensor
 
-                    - entity: vacuum.winston
-                      attribute: main_brush_left
-                      name: Main Brush
-                      icon: custom:vacuum-mainbrush
+              - entity: input_select.vacuum_speed
 
-                    - entity: vacuum.winston
-                      attribute: side_brush_left
-                      name: Side Brush
-                      icon: custom:vacuum-sidebrush
+            - type: horizontal-stack
+              cards:
 
-                    - entity: vacuum.winston
-                      attribute: sensor_dirty_left
-                      icon: custom:vacuum-sensor
+                - type: custom:button-card
+                  entity: vacuum.winston
+                  icon: mdi:play-pause
+                  tap_action:
+                    action: call-service
+                    service: >
+                      [[[
+                        return entity.state === 'docked' || entity.state === 'paused'
+                          ? 'vacuum.start'
+                          : 'vacuum.pause';
+                      ]]]
+                    service_data:
+                      entity_id: >
+                        [[[ return entity.entity_id; ]]]
+                  template: icon_only
 
-                - entity: input_select.vacuum_speed
+                - type: custom:button-card
+                  entity: vacuum.winston
+                  icon: mdi:battery-charging
+                  tap_action:
+                    action: call-service
+                    service: vacuum.return_to_base
+                    service_data:
+                      entity_id: >
+                        [[[ return entity.entity_id; ]]]
+                  template: icon_only
 
-              - type: horizontal-stack
-                cards:
-
-                  - type: custom:button-card
-                    entity: vacuum.winston
-                    icon: mdi:play-pause
-                    tap_action:
-                      action: call-service
-                      service: >
-                        [[[
-                          return entity.state === 'docked' || entity.state === 'paused'
-                            ? 'vacuum.start'
-                            : 'vacuum.pause';
-                        ]]]
-                      service_data:
-                        entity_id: >
-                          [[[ return entity.entity_id; ]]]
-                    template: icon_only
-
-                  - type: custom:button-card
-                    entity: vacuum.winston
-                    icon: mdi:battery-charging
-                    tap_action:
-                      action: call-service
-                      service: vacuum.return_to_base
-                      service_data:
-                        entity_id: >
-                          [[[ return entity.entity_id; ]]]
-                    template: icon_only
-
-                  - type: custom:button-card
-                    icon: mdi:delete-empty
-                    tap_action:
-                      action: call-service
-                      service: vacuum.send_command
-                      service_data:
-                        entity_id: vacuum.winston
-                        command: app_goto_target
-                        params: [30750,22150]
-                    template: icon_only
+                - type: custom:button-card
+                  icon: mdi:delete-empty
+                  tap_action:
+                    action: call-service
+                    service: vacuum.send_command
+                    service_data:
+                      entity_id: vacuum.winston
+                      command: app_goto_target
+                      params: [30750,22150]
+                  template: icon_only
 
             #################################################################
             ## Vacuum Map
