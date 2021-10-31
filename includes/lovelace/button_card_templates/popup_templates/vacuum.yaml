@@ -57,164 +57,164 @@ browser_mod:
             "map"
     cards:
 
-  #################################################################
-  ## Settings
-  #################################################################
-  - type: vertical-stack
-    view_layout:
-      grid-area: info
-    cards:
-    - type: entities
-      title: Settings
-      card_mod:
-        class: header
-      entities:
-
-      - entity: vacuum.winston
-
-     # - entity: vacuum.winston.attributes.total_cleaning_time
-
-      - type: custom:bar-card
-        width: 55%
-        height: 2em
-        decimal: 0
-        unit_of_measurement: '%'
-        positions:
-          icon: outside
-          indicator: 'off'
-          name: outside
-        severity:
-          - color: '#303435'
-            from: 11
-            to: 100
-          - color: '#6d2525'
-            from: 0
-            to: 10
-        entity_row: true
+    #################################################################
+    ## Settings
+    #################################################################
+    - type: vertical-stack
+      view_layout:
+        grid-area: info
+      cards:
+      - type: entities
+        title: Settings
+        card_mod:
+          class: header
         entities:
 
-          - entity: vacuum.winston
-            attribute: battery_level
-            name: Battery
-            icon: mdi:battery
+        - entity: vacuum.winston
 
-          - entity: vacuum.winston
-            attribute: filter_left
-            name: Filter
-            icon: custom:vacuum-filter
+        # - entity: vacuum.winston.attributes.total_cleaning_time
 
-          - entity: vacuum.winston
-            attribute: main_brush_left
-            name: Main Brush
-            icon: custom:vacuum-mainbrush
+        - type: custom:bar-card
+          width: 55%
+          height: 2em
+          decimal: 0
+          unit_of_measurement: '%'
+          positions:
+            icon: outside
+            indicator: 'off'
+            name: outside
+          severity:
+            - color: '#303435'
+              from: 11
+              to: 100
+            - color: '#6d2525'
+              from: 0
+              to: 10
+          entity_row: true
+          entities:
 
-          - entity: vacuum.winston
-            attribute: side_brush_left
-            name: Side Brush
-            icon: custom:vacuum-sidebrush
+            - entity: vacuum.winston
+              attribute: battery_level
+              name: Battery
+              icon: mdi:battery
 
-          - entity: vacuum.winston
-            attribute: sensor_dirty_left
-            icon: custom:vacuum-sensor
+            - entity: vacuum.winston
+              attribute: filter_left
+              name: Filter
+              icon: custom:vacuum-filter
 
-      - entity: input_select.vacuum_speed
+            - entity: vacuum.winston
+              attribute: main_brush_left
+              name: Main Brush
+              icon: custom:vacuum-mainbrush
 
-    - type: horizontal-stack
+            - entity: vacuum.winston
+              attribute: side_brush_left
+              name: Side Brush
+              icon: custom:vacuum-sidebrush
+
+            - entity: vacuum.winston
+              attribute: sensor_dirty_left
+              icon: custom:vacuum-sensor
+
+        - entity: input_select.vacuum_speed
+
+      - type: horizontal-stack
+        cards:
+
+          - type: custom:button-card
+            entity: vacuum.winston
+            icon: mdi:play-pause
+            tap_action:
+              action: call-service
+              service: >
+                [[[
+                  return entity.state === 'docked' || entity.state === 'paused'
+                    ? 'vacuum.start'
+                    : 'vacuum.pause';
+                ]]]
+              service_data:
+                entity_id: >
+                  [[[ return entity.entity_id; ]]]
+            template: icon_only
+
+          - type: custom:button-card
+            entity: vacuum.winston
+            icon: mdi:battery-charging
+            tap_action:
+              action: call-service
+              service: vacuum.return_to_base
+              service_data:
+                entity_id: >
+                  [[[ return entity.entity_id; ]]]
+            template: icon_only
+
+          - type: custom:button-card
+            icon: mdi:delete-empty
+            tap_action:
+              action: call-service
+              service: vacuum.send_command
+              service_data:
+                entity_id: vacuum.winston
+                command: app_goto_target
+                params: [30750,22150]
+            template: icon_only
+
+    #################################################################
+    ## Vacuum Map
+    #################################################################
+
+    - type: vertical-stack
+      view_layout:
+        grid-area: map
       cards:
-
-        - type: custom:button-card
-          entity: vacuum.winston
-          icon: mdi:play-pause
-          tap_action:
-            action: call-service
-            service: >
-              [[[
-                return entity.state === 'docked' || entity.state === 'paused'
-                  ? 'vacuum.start'
-                  : 'vacuum.pause';
-              ]]]
-            service_data:
-              entity_id: >
-                [[[ return entity.entity_id; ]]]
-          template: icon_only
-
-        - type: custom:button-card
-          entity: vacuum.winston
-          icon: mdi:battery-charging
-          tap_action:
-            action: call-service
-            service: vacuum.return_to_base
-            service_data:
-              entity_id: >
-                [[[ return entity.entity_id; ]]]
-          template: icon_only
-
-        - type: custom:button-card
-          icon: mdi:delete-empty
-          tap_action:
-            action: call-service
-            service: vacuum.send_command
-            service_data:
-              entity_id: vacuum.winston
-              command: app_goto_target
-              params: [30750,22150]
-          template: icon_only
-
-  #################################################################
-  ## Vacuum Map
-  #################################################################
-
-  - type: vertical-stack
-    view_layout:
-      grid-area: map
-    cards:
-    - type: entities
-      title: Map
-      card_mod:
-        class: header
-        style: |
-          #states {
-            padding-bottom: 0;
-          }
-      entities:
-        - type: custom:xiaomi-vacuum-map-card
-          title: Map
-          entity: vacuum.winston
-          map_camera: camera.xiaomi_cloud_map_extractor
-          camera_calibration: true
-          zones:
-            - - - 26710
-                - 22064
-                - 32110
-                - 23314
-                - 1
-              - - 27265
-                - 20396
-                - 32115
-                - 22096
-                - 1
-            - - - 26644
-                - 23295
-                - 32094
-                - 26045
-                - 1
-            - - - 23464
-                - 20509
-                - 26664
-                - 24009
-                - 1
-              - - 26606
-                - 20742
-                - 27206
-                - 21942
-                - 1
-            - - - 20984
-                - 23974
-                - 26934
-                - 26024
-                - 1
-            - - - 21143
-                - 21284
-                - 23293
-                - 23984
-                - 1
+      - type: entities
+        title: Map
+        card_mod:
+          class: header
+          style: |
+            #states {
+              padding-bottom: 0;
+            }
+        entities:
+          - type: custom:xiaomi-vacuum-map-card
+            title: Map
+            entity: vacuum.winston
+            map_camera: camera.xiaomi_cloud_map_extractor
+            camera_calibration: true
+            zones:
+              - - - 26710
+                  - 22064
+                  - 32110
+                  - 23314
+                  - 1
+                - - 27265
+                  - 20396
+                  - 32115
+                  - 22096
+                  - 1
+              - - - 26644
+                  - 23295
+                  - 32094
+                  - 26045
+                  - 1
+              - - - 23464
+                  - 20509
+                  - 26664
+                  - 24009
+                  - 1
+                - - 26606
+                  - 20742
+                  - 27206
+                  - 21942
+                  - 1
+              - - - 20984
+                  - 23974
+                  - 26934
+                  - 26024
+                  - 1
+              - - - 21143
+                  - 21284
+                  - 23293
+                  - 23984
+                  - 1
