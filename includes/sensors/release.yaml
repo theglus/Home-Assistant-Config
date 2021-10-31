@@ -3,7 +3,7 @@
 #################################################################
 - platform: scrape
   resource: "https://github.com/home-assistant/operating-system/releases/latest"
-  select: ".release-header a[href]"
+  select: "h1.d-inline.mr-3"
   name: OS Release
 #################################################################
 ## Core Release sensor.
@@ -17,12 +17,12 @@
 #################################################################
 - platform: scrape
   resource: "https://github.com/home-assistant/supervisor/releases/latest"
-  select: ".release-header a[href]"
+  select: "h1.d-inline.mr-3"
   name: Supervisor Release
 #################################################################
 ## Mac Release sensor.
 #################################################################
 - platform: scrape
   resource: "https://github.com/home-assistant/iOS/releases/latest"
-  select: ".release-header a[href]"
+  select: "h1.d-inline.mr-3"
   name: Mac Release
