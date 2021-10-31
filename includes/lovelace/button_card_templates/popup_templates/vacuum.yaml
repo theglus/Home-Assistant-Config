@@ -4,7 +4,7 @@
     action: fire-dom-event
     browser_mod:
       command: popup
-      title: Dammsugare
+      title: Vacuum
       style:
         .: |
           :host .content {
@@ -70,7 +70,13 @@
           - type: entities
             title: Settings
             card_mod:
-              class: header
+              font-family: SF Text;
+              letter-spacing: 0.005em;
+              font-size: 1.6em;
+              font-weight: 500;
+              padding: 1em 0 0 1.68em;
+              line-height: initial;
+              cursor: default;
             entities:
 
             - entity: vacuum.winston
