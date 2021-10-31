@@ -89,9 +89,16 @@
 
               - entity: input_select.vacuum_speed
 
-            - type: horizontal-stack
-              cards:
-
+              - type: custom:hui-element
+                card_type: horizontal-stack
+                card_mod:
+                  style: |
+                    #root {
+                      justify-content: space-evenly;
+                      margin-top: 2.2em;
+                    }
+                cards:
+                
                 - type: custom:button-card
                   entity: vacuum.winston
                   icon: mdi:play-pause
