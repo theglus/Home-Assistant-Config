@@ -1,4 +1,8 @@
 action: fire-dom-event
+hold_action:
+  action: failure
+double_tap_action:
+  action: fire-dom-event
 browser_mod:
   command: popup
   title: Dammsugare
