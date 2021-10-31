@@ -10,45 +10,45 @@ camera:
     password: !secret winston_password
     country: us
     colors:
-      color_map_outside: [3, 169, 244]
+      color_robo: [224,224,224]
+      color_charger: [27,117,27]
+      color_path: [30,80,113]
+      color_goto_path: [30,80,113]
+      color_map_wall_v2: [30,30,30]
+      color_obstacle: [30,30,30]
+      color_virtual_walls: [255,0,0,60]
+      color_no_go_zones_outline: [255,0,0,60]
+      color_no_go_zones: [255,0,0,28]
+      color_scan: [0,0,0,0]
+      color_map_inside: [0,0,0,0]
+      color_map_outside: [0,0,0,0]
+      color_grey_wall: [0,0,0,0]
+      color_map_wall: [0,0,0,0]
     room_colors:
       # Hallway
-      16: [253, 211, 82]
+      16: [42,46,48]
       # Living Room
-      17: [106, 191, 209]
+      17: [42,46,48]
       # Kitchen
-      18: [145, 200, 255]
+      18: [42,46,48]
       # Office
-      19: [245, 142, 110]
+      19: [42,46,48]
       # Bathroom
-      20: [7, 152, 183]
-    draw: ["all"]
+      20: [42,46,48]
+    draw:
+      - all
     map_transformation:
       scale: 2
       trim:
-        top: 22
-        bottom: 22
-        left: 22
+        top: 16
         right: 22
+        bottom: 25
+        left: 21
+    sizes:
+      charger_radius: 10
+      vacuum_radius: 10
     attributes:
       - calibration_points
-      - charger
-      - goto
-      - goto_path
-      - goto_predicted_path
-      - image
-      - is_empty
-      - map_name
-      - no_go_areas
-      - no_mopping_areas
-      - obstacles
-      - path
-      - room_numbers
-      - rooms
-      - vacuum_position
-      - vacuum_room
-      - walls
-      - zones
     scan_interval:
       seconds: 10
     auto_update: true
