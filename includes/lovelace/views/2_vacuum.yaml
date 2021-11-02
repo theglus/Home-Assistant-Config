@@ -19,7 +19,7 @@ cards:
 
       - entity: vacuum.winston
 
-      - entity: sensor.vacuum_lastclean
+      - entity: sensor.vacuum_last_clean
 
       - type: custom:bar-card
         width: 55%

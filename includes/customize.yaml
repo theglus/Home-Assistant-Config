@@ -51,15 +51,15 @@ sensor.pc_gpu_temp:
 #################################################################
 ## Vacuum Sensors
 #################################################################
-vacuum_filter:
+sensor.vacuum_filter:
   icon: custom:vacuum-filter
-vacuum_mainbrush:
+sensor.vacuum_mainbrush:
   icon: custom:vacuum-mainbrush
-vacuum_sensors:
+sensor.vacuum_sensors:
   icon: custom:vacuum-sensors
-vacuum_sidebrush:
+sensor.vacuum_sidebrush:
   icon: custom:vacuum-sidebrush
-vacuum_lastclean:
+sensor.vacuum_last_clean:
   icon: mdi:calendar-clock
 #################################################################
 ## Hue Zones
