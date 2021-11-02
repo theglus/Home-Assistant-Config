@@ -23,7 +23,7 @@ camera:
       color_map_inside: [0,0,0,0]
       color_map_outside: [0,0,0,0]
       color_grey_wall: [0,0,0,0]
-      color_map_wall: [0,0,0,0]
+      color_map_wall: [30,30,30]
     room_colors:
       # Hallway
       16: [42,46,48]
@@ -40,15 +40,16 @@ camera:
     map_transformation:
       scale: 2
       trim:
-        top: 16
-        right: 22
-        bottom: 25
-        left: 21
+        top: 30
+        right: 23
+        bottom: 35
+        left: 22
     sizes:
       charger_radius: 10
       vacuum_radius: 10
     attributes:
       - calibration_points
+      - vacuum_room_name
     scan_interval:
       seconds: 10
     auto_update: true
