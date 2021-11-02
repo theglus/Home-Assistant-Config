@@ -38,6 +38,34 @@ cards:
             from: 0
             to: 10
         entity_row: true
+        style: |
+          bar-card-value { 
+            font-size: 1em; 
+            font-weight: 400; 
+            color: #e0e1e1; 
+            letter-spacing: 0.01em; 
+            text-shadow: none; 
+            margin-right: auto; 
+            margin-top: 5px; 
+          } 
+          bar-card-name { 
+            padding-left: 0.25em; 
+          } 
+          bar-card-iconbar { 
+            padding-left: 0.23em; 
+          } 
+          bar-card-backgroundbar { 
+            background: none; 
+          } 
+          bar-card-currentbar {
+            border-radius: 0.3em;
+          }
+          bar-card-background { 
+            background: radial-gradient(circle, rgba(52, 57, 58, 0.1) 0%, rgba(17, 18, 18, 0.2) 75%); 
+            box-shadow: inset 0 0 25px #00000045; 
+            border-radius: 0.3em; 
+            overflow: hidden; 
+          }
         entities:
 
           - entity: vacuum.winston
@@ -45,23 +73,20 @@ cards:
             name: Battery
             icon: mdi:battery
 
-          - entity: vacuum.winston
-            attribute: filter_left
+          - entity: sensor.vacuum_filter
             name: Filter
             icon: custom:vacuum-filter
 
-          - entity: vacuum.winston
-            attribute: main_brush_left
+          - entity: sensor.vacuum_mainbrush
             name: Main Brush
             icon: custom:vacuum-mainbrush
 
-          - entity: vacuum.winston
-            attribute: side_brush_left
+          - entity: sensor.vacuum_sidebrush
             name: Side Brush
             icon: custom:vacuum-sidebrush
 
-          - entity: vacuum.winston
-            attribute: sensor_dirty_left
+          - entity: sensor.vacuum_sensors
+            name: Sensors
             icon: custom:vacuum-sensor
 
       - entity: input_select.vacuum_speed
@@ -124,15 +149,21 @@ cards:
     cards:
     - type: entities
       title: Map
+      color: transparent
       card_mod:
         class: header
         style: |
           #states {
             padding-bottom: 0;
+            padding-top: 0;
           }
       entities:
         - type: custom:xiaomi-vacuum-map-card
-          title: Map
+          style: |
+            ha-card {
+              background: transparent;
+              box-shadow: none;
+            }
           entity: vacuum.winston
           map_camera: camera.xiaomi_cloud_map_extractor
           camera_calibration: true
