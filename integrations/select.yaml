@@ -1,0 +1,17 @@
+#################################################################
+## This handles Input Selects.
+################################################################# 
+- platform: template
+  select:
+    - name: vacuum_speed
+      state: >
+        {{ state_attr('vacuum.winston', 'fan_speed') }}
+      options: >
+        {{ state_attr('vacuum.winston', 'fan_speed_list') }}
+      select_option:
+        service: vacuum.set_fan_speed
+        target:
+          entity_id: vacuum.winston
+        data:
+          fan_speed: >
+            {{ option }}
