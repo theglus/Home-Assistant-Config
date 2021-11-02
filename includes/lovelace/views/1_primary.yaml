@@ -699,9 +699,3 @@ cards:
                 template:
                   - media
                   - icon_nest_mini
-              - type: custom:button-card
-                entity: vacuum.winston
-                name: Winston
-                template:
-                  - base
-                  - vacuum
