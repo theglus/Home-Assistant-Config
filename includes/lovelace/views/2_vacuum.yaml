@@ -8,18 +8,29 @@ cards:
   ## Settings
   #################################################################
   - type: vertical-stack
-    view_layout:
-      grid-area: info
     cards:
     - type: entities
       title: Settings
       card_mod:
         class: header
+        style: |
+          .card-header {
+            font-family: SF Text;
+            letter-spacing: 0.005em;
+            font-size: 1.6em;
+            font-weight: 500;
+            line-height: initial;
+            padding: 0.75em 0em 1em 1.1em;
+            cursor: default;
+          }
+          ha-card {
+            padding-right: 0.75em;
+          }
       entities:
 
       - entity: vacuum.winston
 
-      - entity: sensor.vacuum_last_clean
+      - entity: sensor.vacuum_lastclean
 
       - type: custom:bar-card
         width: 55%
@@ -46,13 +57,14 @@ cards:
             letter-spacing: 0.01em; 
             text-shadow: none; 
             margin-right: auto; 
+            margin-left: auto;
             margin-top: 5px; 
           } 
           bar-card-name { 
             padding-left: 0.25em; 
           } 
           bar-card-iconbar { 
-            padding-left: 0.23em; 
+            padding-left: 0.23em;
           } 
           bar-card-backgroundbar { 
             background: none; 
@@ -89,118 +101,124 @@ cards:
             name: Sensors
             icon: custom:vacuum-sensor
 
-      - entity: input_select.vacuum_speed
-
       - type: custom:hui-element
         card_type: horizontal-stack
-        card_mod:
-          style: |
-            #root {
-              justify-content: space-evenly;
-              margin-top: 2.2em;
-            }
         cards:
-
-        - type: custom:button-card
-          entity: vacuum.winston
-          icon: mdi:play-pause
-          tap_action:
-            action: call-service
-            service: >
-              [[[
-                return entity.state === 'docked' || entity.state === 'paused'
-                  ? 'vacuum.start'
-                  : 'vacuum.pause';
-              ]]]
-            service_data:
-              entity_id: >
-                [[[ return entity.entity_id; ]]]
-          template: icon_only
-
-        - type: custom:button-card
-          entity: vacuum.winston
-          icon: mdi:battery-charging
-          tap_action:
-            action: call-service
-            service: vacuum.return_to_base
-            service_data:
-              entity_id: >
-                [[[ return entity.entity_id; ]]]
-          template: icon_only
-
-        - type: custom:button-card
-          icon: mdi:delete-empty
-          tap_action:
-            action: call-service
-            service: vacuum.send_command
-            service_data:
-              entity_id: vacuum.winston
-              command: app_goto_target
-              params: [30750,22150]
-          template: icon_only
+          - type: custom:button-card
+            entity: vacuum.winston
+            icon: mdi:play-pause
+            tap_action:
+              action: call-service
+              service: >
+                [[[
+                  return entity.state === 'docked' || entity.state === 'paused'
+                    ? 'vacuum.start'
+                    : 'vacuum.pause';
+                ]]]
+              service_data:
+                entity_id: >
+                  [[[ return entity.entity_id; ]]]
+            template: icon_only
+  
+          - type: custom:button-card
+            entity: vacuum.winston
+            icon: mdi:battery-charging
+            tap_action:
+              action: call-service
+              service: vacuum.return_to_base
+              service_data:
+                entity_id: >
+                  [[[ return entity.entity_id; ]]]
+            template: icon_only
+  
+          - type: custom:button-card
+            icon: mdi:delete-empty
+            tap_action:
+              action: call-service
+              service: vacuum.send_command
+              service_data:
+                entity_id: vacuum.winston
+                command: app_goto_target
+                params: [30750,22150]
+            template: icon_only
 
   #################################################################
   ## Vacuum Map
   #################################################################
 
   - type: vertical-stack
-    view_layout:
-      grid-area: map
     cards:
     - type: entities
       title: Map
       color: transparent
       card_mod:
-        class: header
         style: |
+          .card-header {
+            font-family: SF Text;
+            letter-spacing: 0.005em;
+            font-size: 1.6em;
+            font-weight: 500;
+            padding: 0.75em 0em 1em 1.1em;
+            line-height: initial;
+            cursor: default;
+          }
           #states {
             padding-bottom: 0;
             padding-top: 0;
           }
+          ha-card {
+            padding-right: 0.75em;
+          }
+        class: header
       entities:
-        - type: custom:xiaomi-vacuum-map-card
-          style: |
-            ha-card {
-              background: transparent;
-              box-shadow: none;
-            }
-          entity: vacuum.winston
-          map_camera: camera.xiaomi_cloud_map_extractor
-          camera_calibration: true
-          zones:
-            - - - 26710
-                - 22064
-                - 32110
-                - 23314
-                - 1
-              - - 27265
-                - 20396
-                - 32115
-                - 22096
-                - 1
-            - - - 26644
-                - 23295
-                - 32094
-                - 26045
-                - 1
-            - - - 23464
-                - 20509
-                - 26664
-                - 24009
-                - 1
-              - - 26606
-                - 20742
-                - 27206
-                - 21942
-                - 1
-            - - - 20984
-                - 23974
-                - 26934
-                - 26024
-                - 1
-            - - - 21143
-                - 21284
-                - 23293
-                - 23984
-                - 1
-
+      - entity: input_select.vacuum_speed
+        icon: []
+        style: |
+          :host state-badge {
+            display: none;
+          }
+      - type: custom:xiaomi-vacuum-map-card
+        style: |
+          ha-card {
+            background: transparent;
+            box-shadow: none;
+          }
+        entity: vacuum.winston
+        map_camera: camera.xiaomi_cloud_map_extractor
+        camera_calibration: true
+        zones:
+          - - - 26710
+              - 22064
+              - 32110
+              - 23314
+              - 1
+            - - 27265
+              - 20396
+              - 32115
+              - 22096
+              - 1
+          - - - 26644
+              - 23295
+              - 32094
+              - 26045
+              - 1
+          - - - 23464
+              - 20509
+              - 26664
+              - 24009
+              - 1
+            - - 26606
+              - 20742
+              - 27206
+              - 21942
+              - 1
+          - - - 20984
+              - 23974
+              - 26934
+              - 26024
+              - 1
+          - - - 21143
+              - 21284
+              - 23293
+              - 23984
+              - 1
