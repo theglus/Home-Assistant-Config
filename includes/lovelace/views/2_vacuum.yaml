@@ -5,6 +5,87 @@ panel: false
 badges: []
 cards:
   #################################################################
+  ## Vacuum Map
+  #################################################################
+
+  - type: vertical-stack
+    cards:
+    - type: entities
+      title: Map
+      color: transparent
+      card_mod:
+        style: |
+          .card-header {
+            font-family: SF Text;
+            letter-spacing: 0.005em;
+            font-size: 1.6em;
+            font-weight: 500;
+            padding: 0.75em 0em 1em 1.1em;
+            line-height: initial;
+            cursor: default;
+          }
+          #states {
+            padding-bottom: 0;
+            padding-top: 0;
+          }
+          ha-card {
+            padding-right: 0.75em;
+          }
+        class: header
+      entities:
+      - entity: input_select.vacuum_speed
+        icon: []
+        style: |
+          :host state-badge {
+            display: none;
+          }
+      - type: custom:xiaomi-vacuum-map-card
+        style: |
+          ha-card {
+            background: transparent;
+            box-shadow: none;
+          }
+        entity: vacuum.winston
+        map_camera: camera.xiaomi_cloud_map_extractor
+        camera_calibration: true
+        zones:
+          - - - 26710
+              - 22064
+              - 32110
+              - 23314
+              - 1
+            - - 27265
+              - 20396
+              - 32115
+              - 22096
+              - 1
+          - - - 26644
+              - 23295
+              - 32094
+              - 26045
+              - 1
+          - - - 23464
+              - 20509
+              - 26664
+              - 24009
+              - 1
+            - - 26606
+              - 20742
+              - 27206
+              - 21942
+              - 1
+          - - - 20984
+              - 23974
+              - 26934
+              - 26024
+              - 1
+          - - - 21143
+              - 21284
+              - 23293
+              - 23984
+              - 1
+
+  #################################################################
   ## Settings
   #################################################################
   - type: vertical-stack
@@ -141,84 +222,3 @@ cards:
                 command: app_goto_target
                 params: [30750,22150]
             template: icon_only
-
-  #################################################################
-  ## Vacuum Map
-  #################################################################
-
-  - type: vertical-stack
-    cards:
-    - type: entities
-      title: Map
-      color: transparent
-      card_mod:
-        style: |
-          .card-header {
-            font-family: SF Text;
-            letter-spacing: 0.005em;
-            font-size: 1.6em;
-            font-weight: 500;
-            padding: 0.75em 0em 1em 1.1em;
-            line-height: initial;
-            cursor: default;
-          }
-          #states {
-            padding-bottom: 0;
-            padding-top: 0;
-          }
-          ha-card {
-            padding-right: 0.75em;
-          }
-        class: header
-      entities:
-      - entity: input_select.vacuum_speed
-        icon: []
-        style: |
-          :host state-badge {
-            display: none;
-          }
-      - type: custom:xiaomi-vacuum-map-card
-        style: |
-          ha-card {
-            background: transparent;
-            box-shadow: none;
-          }
-        entity: vacuum.winston
-        map_camera: camera.xiaomi_cloud_map_extractor
-        camera_calibration: true
-        zones:
-          - - - 26710
-              - 22064
-              - 32110
-              - 23314
-              - 1
-            - - 27265
-              - 20396
-              - 32115
-              - 22096
-              - 1
-          - - - 26644
-              - 23295
-              - 32094
-              - 26045
-              - 1
-          - - - 23464
-              - 20509
-              - 26664
-              - 24009
-              - 1
-            - - 26606
-              - 20742
-              - 27206
-              - 21942
-              - 1
-          - - - 20984
-              - 23974
-              - 26934
-              - 26024
-              - 1
-          - - - 21143
-              - 21284
-              - 23293
-              - 23984
-              - 1
