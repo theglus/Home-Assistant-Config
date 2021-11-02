@@ -19,7 +19,7 @@ cards:
 
       - entity: vacuum.winston
 
-     # - entity: vacuum.winston.attributes.total_cleaning_time
+      - entity: vacuum.lastclean
 
       - type: custom:bar-card
         width: 55%

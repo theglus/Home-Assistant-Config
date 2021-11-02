@@ -49,6 +49,19 @@ sensor.pc_gpu_load:
 sensor.pc_gpu_temp:
   icon: mdi:thermometer
 #################################################################
+## Vacuum Sensors
+#################################################################
+vacuum_filter:
+  icon: custom:vacuum-filter
+vacuum_mainbrush:
+  icon: custom:vacuum-mainbrush
+vacuum_sensors:
+  icon: custom:vacuum-sensors
+vacuum_sidebrush:
+  icon: custom:vacuum-sidebrush
+vacuum_lastclean:
+  icon: mdi:calendar-clock
+#################################################################
 ## Hue Zones
 #################################################################
 # Loft Bedside Lights

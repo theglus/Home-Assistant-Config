@@ -1,0 +1,25 @@
+#################################################################
+## Vacuums sensors.
+#################################################################
+- platform: template
+  sensors:
+    vacuum_filter:
+      friendly_name: Filter
+      unit_of_measurement: " % "
+      value_template: "{{ (state_attr('vacuum.winston', 'filter_left') / 1.5) | round }}"
+    vacuum_mainbrush:
+      friendly_name: Mainbrush    
+      unit_of_measurement: " % "
+      value_template: "{{ (state_attr('vacuum.winston', 'main_brush_left') / 3) | round }}"
+    vacuum_sensors:
+      friendly_name: Sensors
+      unit_of_measurement: " % "
+      value_template: "{{ (state_attr('vacuum.winston', 'sensor_dirty_left') / 0.3) | round }}"
+    vacuum_sidebrush:
+      friendly_name: Sidebrush
+      unit_of_measurement: " % "
+      value_template: "{{ (state_attr('vacuum.winston', 'side_brush_left') / 2) | round }}"
+    vacuum_lastclean:
+      friendly_name: Last Clean
+      device_class: timestamp
+      value_template: "{{ state_attr('vacuum.winston', 'clean_stop') | replace(' ','T') }}"
