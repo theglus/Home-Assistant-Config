@@ -42,7 +42,7 @@ camera:
       trim:
         top: 30
         right: 23
-        bottom: 35
+        bottom: 32
         left: 22
     sizes:
       charger_radius: 10
