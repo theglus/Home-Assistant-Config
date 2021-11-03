@@ -4,51 +4,188 @@ icon: 'mdi:robot-vacuum-variant'
 panel: false
 badges: []
 cards:
-  - type: 'custom:vertical-stack-in-card'
+  #################################################################
+  ## Settings
+  #################################################################
+  - type: vertical-stack
     cards:
-      - type: 'custom:vacuum-card'
-        entity: vacuum.winston
-        stats:
-          default:
-            - attribute: filter_left
-              unit: hours
-              subtitle: Filter
-            - attribute: side_brush_left
-              unit: hours
-              subtitle: Side bish
-            - attribute: main_brush_left
-              unit: hours
-              subtitle: Main bish
-            - attribute: sensor_dirty_left
-              unit: hours
-              subtitle: Sensors
-          cleaning:
-            - attribute: cleaned_area
-              unit: m2
-              subtitle: Cleaning area
-            - attribute: cleaning_time
-              unit: minutes
-              subtitle: Cleaning time
-        actions:
-          - name: Clean hallway
-            service: script.clean_hallway
-            icon: 'mdi:door'
-          - name: Clean guest bathroom
-            service: script.clean_bathroom
-            icon: 'mdi:shower'
-          - name: Clean office
-            service: script.clean_office
-            icon: 'mdi:desk'
-          - name: Clean living room
-            service: script.clean_living_room
-            icon: 'mdi:sofa'
-          - name: Clean kitchen
-            service: script.clean_kitchen
-            icon: 'mdi:silverware-fork-knife'
-      - type: 'custom:xiaomi-vacuum-map-card'
+    - type: entities
+      title: Settings
+      card_mod:
+        class: header
+        style: |
+          .card-header {
+            font-family: SF Text;
+            letter-spacing: 0.005em;
+            font-size: 1.6em;
+            font-weight: 500;
+            line-height: initial;
+            padding: 0.75em 0em 1em 1.1em;
+            cursor: default;
+          }
+          ha-card {
+            padding-right: 0.75em;
+          }
+      entities:
+
+      - entity: vacuum.winston
+
+      - entity: sensor.vacuum_lastclean
+
+      - type: custom:bar-card
+        width: 55%
+        height: 2em
+        decimal: 0
+        unit_of_measurement: '%'
+        positions:
+          icon: outside
+          indicator: 'off'
+          name: outside
+        severity:
+          - color: '#303435'
+            from: 11
+            to: 100
+          - color: '#6d2525'
+            from: 0
+            to: 10
+        entity_row: true
+        style: |
+          bar-card-value { 
+            font-size: 1em; 
+            font-weight: 400; 
+            color: #e0e1e1; 
+            letter-spacing: 0.01em; 
+            text-shadow: none; 
+            margin-right: auto; 
+            margin-left: auto;
+            margin-top: 5px; 
+          } 
+          bar-card-name { 
+            padding-left: 0.25em; 
+          } 
+          bar-card-iconbar { 
+            padding-left: 0.23em;
+          } 
+          bar-card-backgroundbar { 
+            background: none; 
+          } 
+          bar-card-currentbar {
+            border-radius: 0.3em;
+          }
+          bar-card-background { 
+            background: radial-gradient(circle, rgba(52, 57, 58, 0.1) 0%, rgba(17, 18, 18, 0.2) 75%); 
+            box-shadow: inset 0 0 25px #00000045; 
+            border-radius: 0.3em; 
+            overflow: hidden; 
+          }
+        entities:
+
+          - entity: vacuum.winston
+            attribute: battery_level
+            name: Battery
+            icon: mdi:battery
+
+          - entity: sensor.vacuum_filter
+            name: Filter
+            icon: custom:vacuum-filter
+
+          - entity: sensor.vacuum_mainbrush
+            name: Main Brush
+            icon: custom:vacuum-mainbrush
+
+          - entity: sensor.vacuum_sidebrush
+            name: Side Brush
+            icon: custom:vacuum-sidebrush
+
+          - entity: sensor.vacuum_sensors
+            name: Sensors
+            icon: custom:vacuum-sensor
+
+      - type: custom:hui-element
+        card_type: horizontal-stack
+        cards:
+          - type: custom:button-card
+            entity: vacuum.winston
+            icon: mdi:play-pause
+            tap_action:
+              action: call-service
+              service: >
+                [[[
+                  return entity.state === 'docked' || entity.state === 'paused'
+                    ? 'vacuum.start'
+                    : 'vacuum.pause';
+                ]]]
+              service_data:
+                entity_id: >
+                  [[[ return entity.entity_id; ]]]
+            template: icon_only
+  
+          - type: custom:button-card
+            entity: vacuum.winston
+            icon: mdi:battery-charging
+            tap_action:
+              action: call-service
+              service: vacuum.return_to_base
+              service_data:
+                entity_id: >
+                  [[[ return entity.entity_id; ]]]
+            template: icon_only
+  
+          - type: custom:button-card
+            icon: mdi:delete-empty
+            tap_action:
+              action: call-service
+              service: vacuum.send_command
+              service_data:
+                entity_id: vacuum.winston
+                command: app_goto_target
+                params: [30750,22150]
+            template: icon_only
+
+  #################################################################
+  ## Vacuum Map
+  #################################################################
+
+  - type: vertical-stack
+    cards:
+    - type: entities
+      title: Map
+      color: transparent
+      card_mod:
+        style: |
+          .card-header {
+            font-family: SF Text;
+            letter-spacing: 0.005em;
+            font-size: 1.6em;
+            font-weight: 500;
+            padding: 0.75em 0em 1em 1.1em;
+            line-height: initial;
+            cursor: default;
+          }
+          #states {
+            padding-bottom: 0;
+            padding-top: 0;
+          }
+          ha-card {
+            padding-right: 0.75em;
+          }
+        class: header
+      entities:
+      - entity: input_select.vacuum_speed
+        icon: []
+        style: |
+          :host state-badge {
+            display: none;
+          }
+      - type: custom:xiaomi-vacuum-map-card
+        style: |
+          ha-card {
+            background: transparent;
+            box-shadow: none;
+          }
         entity: vacuum.winston
         map_camera: camera.xiaomi_cloud_map_extractor
-        camera_calibration: enable
+        camera_calibration: true
         zones:
           - - - 26710
               - 22064
@@ -85,5 +222,3 @@ cards:
               - 23293
               - 23984
               - 1
-        rooms:
-          - all

@@ -49,25 +49,15 @@ sensor.pc_gpu_load:
 sensor.pc_gpu_temp:
   icon: mdi:thermometer
 #################################################################
-## Hue Zones
+## Vacuum Sensors
 #################################################################
-# Loft Bedside Lights
-# light.bedside:
-#   friendly-name: Bedside Lights
-#   icon: mdi:desk-lamp
-# Downstairs Lights
-# light.downstairs:
-#   friendly-name: Downstairs Lights
-#   icon: mdi:home-floor-g
-# Office Overhead Lights
-# light.overhead:
-#   friendly-name: Overhead Lights
-#   icon: mdi:dome-light
-# Track Lights
-# light.track:
-#   friendly-name: Track Lights
-#   icon: mdi:track-light
-# Upstairs Lights
-# light.upstairs:
-#   friendly-name: "Upstairs Lights"
-#   icon: mdi:home-roof
+sensor.vacuum_filter:
+  icon: custom:vacuum-filter
+sensor.vacuum_mainbrush:
+  icon: custom:vacuum-mainbrush
+sensor.vacuum_sensors:
+  icon: custom:vacuum-sensors
+sensor.vacuum_sidebrush:
+  icon: custom:vacuum-sidebrush
+sensor.vacuum_last_clean:
+  icon: mdi:calendar-clock

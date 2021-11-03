@@ -1,0 +1,18 @@
+#################################################################
+## Select Vacuum Speed
+#
+## Adds vacuum.set_fan_speed service calls to Vacuum Speed Helper.
+#################################################################
+alias: Select Vacuum Speed
+description: "Adds vacuum.set_fan_speed service calls to Vacuum Speed Helper."
+trigger:
+  - platform: state
+    entity_id: input_select.vacuum_speed
+condition: []
+action:
+  - service: vacuum.set_fan_speed
+    data:
+      fan_speed: "{{ states('input_select.vacuum_speed') }}"
+    target:
+      device_id: 62c2564944db27e46b6382dbb56205f9
+mode: single
