@@ -99,10 +99,6 @@ lovelace:
     # https://github.com/DBuit/thermostat-popup-card
     - url: /hacsfiles/thermostat-popup-card/thermostat-popup-card.js
       type: module
-    # Vacuum Card
-    # https://github.com/denysdovhan/vacuum-card
-    - url: /hacsfiles/vacuum-card/vacuum-card.js                                  
-      type: module
     # Vertical Stack in Card
     # https://github.com/ofekashery/vertical-stack-in-card
     - url: /hacsfiles/vertical-stack-in-card/vertical-stack-in-card.js            
