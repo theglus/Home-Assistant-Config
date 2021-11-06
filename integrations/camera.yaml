@@ -50,6 +50,9 @@ camera:
     attributes:
       - calibration_points
       - vacuum_room_name
+      - room_numbers
+      - rooms
+      - vacuum_room
     scan_interval:
       seconds: 10
     auto_update: true

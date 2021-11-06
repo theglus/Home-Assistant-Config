@@ -6,20 +6,16 @@
     vacuum_filter:
       friendly_name: Filter
       unit_of_measurement: " % "
-      value_template: "{{ (state_attr('vacuum.winston', 'filter_left') / 1.5) | round }}"
+      value_template: "{{ (states('sensor.winston_filter') | float / 5372 | round)}}"
     vacuum_mainbrush:
       friendly_name: Mainbrush    
       unit_of_measurement: " % "
-      value_template: "{{ (state_attr('vacuum.winston', 'main_brush_left') / 3) | round }}"
+      value_template:  "{{ (states('sensor.winston_main_brush') | float / 10680 | round)}}"
     vacuum_sensors:
       friendly_name: Sensors
       unit_of_measurement: " % "
-      value_template: "{{ (state_attr('vacuum.winston', 'sensor_dirty_left') / 0.3) | round }}"
+      value_template: "{{ (states('sensor.winston_sensors') | float / 1073 | round)}}"
     vacuum_sidebrush:
       friendly_name: Sidebrush
       unit_of_measurement: " % "
-      value_template: "{{ (state_attr('vacuum.winston', 'side_brush_left') / 2) | round }}"
-    vacuum_lastclean:
-      friendly_name: Last Clean
-      device_class: timestamp
-      value_template: "{{ state_attr('vacuum.winston', 'clean_stop') | replace(' ','T') }}"
+      value_template: "{{ (states('sensor.winston_side_brush') | float / 7170 | round)}}"
