@@ -102,8 +102,12 @@ cards:
             name: Sensors
             icon: custom:vacuum-sensor
 
-      - type: custom:hui-element
-        card_type: horizontal-stack
+      - type: custom:hui-horizontal-stack-card
+        card_mod:
+          style: >
+            #root {
+              justify-content: space-evenly;
+            }
         cards:
           - type: custom:button-card
             entity: vacuum.winston
