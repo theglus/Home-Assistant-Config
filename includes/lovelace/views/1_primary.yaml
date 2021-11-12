@@ -221,11 +221,12 @@ cards:
                 ## Office button
                 #----------------------------------------------------------------
                 - type: "custom:decluttering-card"
-                  template: declutter_room_button
+                  template: declutter_temp_button
                   variables:
                     - room: Office
                     - light: light.overhead
-                    - sensor: sensor.major_laser_printer
+                    - hvac: switch.major_laser_printer
+                    - sensor_temp: sensor.temperature_office
                     - message_on: Printer on
                     - message_off: Printer off
                     - icon_state: mdi:printer
