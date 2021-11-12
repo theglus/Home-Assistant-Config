@@ -119,11 +119,6 @@ lovelace:
 
 browser_mod:
   prefix: "browser_mod_"
-  devices:
-    a314828b-6ae30387:
-      name: "Lilt MacBook Pro"
-    3c128bb5-c3057093:
-      name: "Lenovo M8"
   disable:
     - all
 
