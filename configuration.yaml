@@ -32,6 +32,10 @@ lovelace:
     # https://github.com/custom-cards/decluttering-card
     - url: /hacsfiles/decluttering-card/decluttering-card.js
       type: module
+    # Hue Icon
+    # https://github.com/arallsopp/hass-hue-icons
+    - url: /hacsfiles/hass-hue-icons/hass-hue-icons.js
+      type: module
     # Hui Element
     # https://github.com/thomasloven/lovelace-hui-element
     - url: /hacsfiles/lovelace-hui-element/hui-element.js                         
@@ -115,11 +119,6 @@ lovelace:
 
 browser_mod:
   prefix: "browser_mod_"
-  devices:
-    a314828b-6ae30387:
-      name: "Lilt MacBook Pro"
-    3c128bb5-c3057093:
-      name: "Lenovo M8"
   disable:
     - all
 

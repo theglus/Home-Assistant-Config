@@ -27,9 +27,13 @@ double_tap_action:
           borderRadius: 1.7em
           sliderColor: "#c7c7c7"
           sliderTrackColor: rgba(25, 25, 25, 0.9)
-        - type: custom:hui-element
-          card_type: horizontal-stack
-          style: "#root { justify-content: center; margin-top: 2em; }"
+        - type: custom:hui-horizontal-stack-card
+          card_mod:
+            style: >
+              #root { 
+                justify-content: center; 
+                margin-top: 2em;
+              }"
           cards:
             # Northern Lights
             - type: custom:button-card

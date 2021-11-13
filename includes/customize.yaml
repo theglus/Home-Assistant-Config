@@ -3,22 +3,22 @@
 #################################################################
 # Hallway
 light.hallway:
-  icon: mdi:coat-rack
+  icon: "mdi:coat-rack"
 # Living Room
 light.living_room:
-  icon: mdi:sofa
+  icon: "mdi:sofa"
 # Loft
 light.loft:
-  icon: mdi:bed-king
+  icon: "mdi:bed-king"
 # Office
 light.office:
-  icon: mdi:desk
+  icon: "mdi:desk"
 #################################################################
 ## Light Groups
 #################################################################
 # Downstairs Lights
 light.color:
-  icon: mdi:looks
+  icon: "mdi:looks"
 light.downstairs:
   icon: "mdi:home-floor-g"
 # Upstairs Lights
@@ -35,29 +35,40 @@ light.overhead:
   icon: "mdi:dome-light"
 # Track Lights
 light.track:
-  icon: "mdi:track-light"
+  icon: "hue:ceiling-buratto-three"
+# Kitchen Light Group
+light.group_kitchen:
+  icon: "mdi:home-lightbulb-outline"
+# Hallway Light Group
+light.group_hallway:
+  icon: "mdi:home-lightbulb-outline"
+# Living Room Light Group
+light.group_living_room:
+  icon: "mdi:home-lightbulb-outline"
 #################################################################
 ## PC Sensors
-#################################################################  
+#################################################################
 # CPU Load
 sensor.pc_cpu_load:
-  icon: mdi:cpu-64-bit
-# GPU Load 
+  icon: "mdi:cpu-64-bit"
+# GPU Load
 sensor.pc_gpu_load:
-  icon: mdi:memory
+  icon: "mdi:memory"
 # GPU Temp
 sensor.pc_gpu_temp:
-  icon: mdi:thermometer
+  icon: "mdi:thermometer"
 #################################################################
 ## Vacuum Sensors
 #################################################################
+camera.xiaomi_cloud_map_extractor:
+  icon: "mdi:map-search-outline"
 sensor.vacuum_filter:
-  icon: custom:vacuum-filter
+  icon: "custom:vacuum-filter"
 sensor.vacuum_mainbrush:
-  icon: custom:vacuum-mainbrush
+  icon: "custom:vacuum-mainbrush"
 sensor.vacuum_sensors:
-  icon: custom:vacuum-sensors
+  icon: "custom:vacuum-sensors"
 sensor.vacuum_sidebrush:
-  icon: custom:vacuum-sidebrush
+  icon: "custom:vacuum-sidebrush"
 sensor.vacuum_last_clean:
-  icon: mdi:calendar-clock
+  icon: "mdi:calendar-clock"
