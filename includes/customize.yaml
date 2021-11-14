@@ -36,6 +36,8 @@ light.overhead:
 # Track Lights
 light.track:
   icon: "hue:ceiling-buratto-three"
+light.recessed:
+  icon: "hue:recessed-ceiling"
 # Kitchen Light Group
 light.group_kitchen:
   icon: "mdi:home-lightbulb-outline"
