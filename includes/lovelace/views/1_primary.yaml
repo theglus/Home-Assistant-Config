@@ -576,6 +576,14 @@ cards:
                     - media
                     - icon_nest_mini
                 #----------------------------------------------------------------
+                ## Recessed Lights
+                #----------------------------------------------------------------
+                - type: "custom:button-card"
+                  entity: light.recessed
+                  name: Recessed
+                  template:
+                    - light_color
+                #----------------------------------------------------------------
                 ## Mac/iPad Charger
                 #----------------------------------------------------------------
                 # TODO: #285 Mac charger button
