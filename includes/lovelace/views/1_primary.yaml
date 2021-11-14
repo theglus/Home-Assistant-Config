@@ -582,7 +582,7 @@ cards:
                   entity: light.recessed
                   name: Recessed
                   template:
-                    - light_color
+                    - icon_recessed
                 #----------------------------------------------------------------
                 ## Mac/iPad Charger
                 #----------------------------------------------------------------
