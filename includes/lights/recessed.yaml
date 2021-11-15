@@ -1,0 +1,8 @@
+#################################################################
+## Recessed Light Group
+#################################################################
+platform: group
+name: Recessed
+entities:
+  - light.recessed_coffee
+  - light.recessed_dining

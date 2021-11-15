@@ -1,0 +1,55 @@
+#################################################################
+## Reload various Home Assistant services.
+#################################################################
+alias: "Reload"
+icon: mdi:reload-alert
+sequence:
+  - service: browser_mod.toast
+    data:
+      duration: 1000
+      message: 1. Reloading Automations...
+  - service: automation.reload
+    data: {}
+  - service: browser_mod.toast
+    data:
+      duration: 1000
+      message: 2. Reloading Core Config...
+  - service: homeassistant.reload_core_config
+    data: {}
+  - service: browser_mod.toast
+    data:
+      duration: 1000
+      message: 3. Reloading Frontend Themes...
+  - service: frontend.reload_themes
+    data: {}
+  - service: browser_mod.toast
+    data:
+      duration: 1000
+      message: 4. Reloading Groups...
+  - service: group.reload
+    data: {}
+  - service: browser_mod.toast
+    data:
+      duration: 1000
+      message: 5. Reloading Lovelace Resources...
+  - service: lovelace.reload_resources
+    data: {}
+  - service: browser_mod.toast
+    data:
+      duration: 1000
+      message: 6. Reloading Scenes...
+  - service: scene.reload
+    data: {}
+  - service: browser_mod.toast
+    data:
+      duration: 1000
+      message: 7. Reloading Templates...
+  - service: template.reload
+    data: {}
+  - service: browser_mod.toast
+    data:
+      duration: 1000
+      message: 8. Reloading Vacuum Extractor...
+  - service: xiaomi_cloud_map_extractor.reload
+    data: {}
+mode: single

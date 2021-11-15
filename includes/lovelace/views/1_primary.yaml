@@ -566,6 +566,14 @@ cards:
                     - light_nanoleaf
                     - icon_dinopanel
                 #----------------------------------------------------------------
+                ## Recessed Lights
+                #----------------------------------------------------------------
+                - type: "custom:button-card"
+                  entity: light.recessed
+                  name: Recessed
+                  template:
+                    - icon_recessed
+                #----------------------------------------------------------------
                 ## Kitchen Google Home Mini
                 #----------------------------------------------------------------
                 # TODO: #315 Alarm + timer countdown for Google Home devices.
