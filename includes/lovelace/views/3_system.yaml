@@ -78,6 +78,7 @@ cards:
                 template: icon_name
               - type: custom:button-card
                 name: RELOAD
+                icon: "mdi:reload-alert"
                 tap_action:
                   action: call-service
                   service: script.reload
