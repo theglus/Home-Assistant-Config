@@ -480,7 +480,7 @@ cards:
                 #----------------------------------------------------------------
                 # TODO: #259 Sensor cirle with Living Room Temp
                 - type: "custom:button-card"
-                  entity: switch.switchbot
+                  entity: switch.heat
                   template:
                     - base
                     - icon_heater

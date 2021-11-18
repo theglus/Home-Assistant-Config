@@ -1,5 +1,19 @@
 #################################################################
-## Switchbot for heater.
+## Switches for Heater.
 #################################################################
+# Switchbot for heater
 - platform: switchbot
-  mac: !secret switchbot_mac  
+  mac: !secret switchbot_mac
+# Heater switch with status
+- platform: template
+  switches:
+    heat:
+      friendly_name: "Heat"
+      turn_on:
+        service: switch.turn_on
+        target:
+          entity_id: switch.switchbot
+      turn_off:
+        service: switch.turn_off
+        target:
+          entity_id: switch.switchbot
