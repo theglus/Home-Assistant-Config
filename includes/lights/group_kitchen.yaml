@@ -6,3 +6,5 @@ name: Group Kitchen
 entities:
   - light.nanoleaf
   - light.kitchen
+  - light.recessed_dining
+  - light.recessed_coffee
