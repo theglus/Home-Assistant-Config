@@ -17,3 +17,9 @@
         service: switch.turn_off
         target:
           entity_id: switch.switchbot
+      icon_template: >-
+        {% if is_state('switch.heat', 'on') %}
+          mdi:radiator
+        {% else %}
+          mdi:radiator-disabled
+        {% endif %}
