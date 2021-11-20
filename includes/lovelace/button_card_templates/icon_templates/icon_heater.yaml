@@ -1,6 +1,9 @@
 #################################################################
 ## Heater
 #################################################################
+template:
+  - base
+  - loader
 styles:
   custom_fields:
     icon_fan: [top: 13%, left: 14.5%, width: 19%, position: absolute]

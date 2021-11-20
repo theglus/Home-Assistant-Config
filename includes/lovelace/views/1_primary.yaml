@@ -238,7 +238,7 @@ cards:
                   template: declutter_temp_button
                   variables:
                     - light: light.group_living_room
-                    - hvac: switch.switchbot
+                    - hvac: switch.heat
                     - sensor_temp: sensor.temperature_living_room
                     - message_on: Heat is on
                     - message_off: Heat is off
@@ -303,7 +303,7 @@ cards:
                 - type: "custom:button-card"
                   entity: light.hallway_runner
                   name: Runner
-                  template: 
+                  template:
                     - light_color
                     - icon_led
                 #----------------------------------------------------------------
@@ -330,7 +330,7 @@ cards:
                 - type: "custom:button-card"
                   entity: binary_sensor.front_door
                   # TODO: #38 Create icon_door button template
-                  template: 
+                  template:
                     - base
                     - icon_door
                 #----------------------------------------------------------------
@@ -410,7 +410,7 @@ cards:
                 - type: "custom:button-card"
                   entity: switch.major_laser_printer
                   name: Major Laser
-                  template: 
+                  template:
                     - base
                     - icon_printer
                 #----------------------------------------------------------------
@@ -430,7 +430,7 @@ cards:
                   entity: media_player.office_speaker
                   name: Home Mini
                   template:
-                    - media 
+                    - media
                     - icon_nest_mini
           #################################################################
           ## Living Room Controls
@@ -464,7 +464,7 @@ cards:
                   entity: light.garden
                   name: Garden
                   # TODO:: Create icon_garden button template
-                  template: 
+                  template:
                     - icon_garden
                 #----------------------------------------------------------------
                 ## Yumi Lamp
@@ -482,9 +482,7 @@ cards:
                 - type: "custom:button-card"
                   entity: switch.heat
                   template:
-                    - base
                     - icon_heater
-                    - loader
                 #----------------------------------------------------------------
                 ## Living Room Air Circulator
                 #----------------------------------------------------------------
@@ -502,7 +500,7 @@ cards:
                   entity: climate.ice_bear
                   name: Air Conditioner
                   double_tap_action:
-                    action: more-info                  
+                    action: more-info
                   template:
                     - base
                     - icon_ac
@@ -531,7 +529,7 @@ cards:
                 ## Dennis
                 #----------------------------------------------------------------
                 # TODO: #261 Create Denon AVR button
-                # TODO: #356 Create Denon AVR pop-up           
+                # TODO: #356 Create Denon AVR pop-up
           #################################################################
           ## Kitchen Controls
           #################################################################
@@ -562,7 +560,7 @@ cards:
                 #----------------------------------------------------------------
                 - type: "custom:button-card"
                   entity: light.nanoleaf
-                  template: 
+                  template:
                     - light_nanoleaf
                     - icon_dinopanel
                 #----------------------------------------------------------------
@@ -624,7 +622,7 @@ cards:
                   entity: light.bedside
                   name: Bedside
                   # TODO: Create icon_bedside button template
-                  template: 
+                  template:
                     - light
                     - icon_bedside
                 #----------------------------------------------------------------
@@ -633,7 +631,7 @@ cards:
                 - type: "custom:button-card"
                   entity: light.jeffreys_lamp
                   name: Jeffrey's
-                  template: 
+                  template:
                     - light
                     - icon_bed
                 #----------------------------------------------------------------
@@ -642,7 +640,7 @@ cards:
                 - type: "custom:button-card"
                   entity: light.tiffanys_lamp
                   name: Tiffany's
-                  template: 
+                  template:
                     - light
                     - icon_bed
                 #----------------------------------------------------------------
@@ -680,7 +678,7 @@ cards:
                   entity: media_player.loft_nest_hub
                   name: Nest Hub
                   template:
-                    - icon_nest_hub                
+                    - icon_nest_hub
           #################################################################
           ## Loft Bathroom Controls
           #################################################################
@@ -698,13 +696,13 @@ cards:
               type: grid
               columns: 3
               cards:
-              #----------------------------------------------------------------
-              ## Nest Mini
-              #----------------------------------------------------------------
-              # TODO: #315 Alarm + timer countdown for Google Home devices.
-              - type: custom:button-card
-                entity: media_player.loft_bathroom
-                name: Nest Mini
-                template:
-                  - media
-                  - icon_nest_mini
+                #----------------------------------------------------------------
+                ## Nest Mini
+                #----------------------------------------------------------------
+                # TODO: #315 Alarm + timer countdown for Google Home devices.
+                - type: custom:button-card
+                  entity: media_player.loft_bathroom
+                  name: Nest Mini
+                  template:
+                    - media
+                    - icon_nest_mini
