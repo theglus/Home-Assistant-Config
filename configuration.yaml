@@ -6,9 +6,49 @@
 default_config:
 
 #################################################################
-## Theme
+## Custom Sidebar
 #################################################################
+panel_custom:
+  - name: ha_entities
+    sidebar_title: Entities
+    sidebar_icon: mdi:one-up
+    js_url: /api/hassio/app/entrypoint.js
+    url_path: "config/entities"
+    embed_iframe: true
+    require_admin: true
+    config:
+      ingress: core_configurator
+  - name: ha_debug
+    sidebar_title: Debug
+    sidebar_icon: mdi:bacteria-outline
+    js_url: /api/hassio/app/entrypoint.js
+    url_path: "hassio/system"
+    embed_iframe: true
+    require_admin: true
+    config:
+      ingress: core_configurator
+  - name: ha_config_check
+    sidebar_title: Config Check
+    sidebar_icon: mdi:bug-check-outline
+    js_url: /api/hassio/app/entrypoint.js
+    url_path: "config/server_control"
+    embed_iframe: true
+    require_admin: true
+    config:
+      ingress: core_configurator
+  - name: ha_logs
+    sidebar_title: Logs
+    sidebar_icon: mdi:campfire
+    js_url: /api/hassio/app/entrypoint.js
+    url_path: "config/logs"
+    embed_iframe: true
+    require_admin: true
+    config:
+      ingress: core_configurator
 
+#################################################################
+## Lovelace Resources
+#################################################################
 lovelace:
   mode: yaml
   resources:
@@ -18,15 +58,11 @@ lovelace:
       type: module
     # Button Card
     # https://github.com/custom-cards/button-card
-    - url: /hacsfiles/button-card/button-card.js                                  
+    - url: /hacsfiles/button-card/button-card.js
       type: module
     # Card Mod
     # https://github.com/thomasloven/lovelace-card-mod
-    - url: /hacsfiles/lovelace-card-mod/card-mod.js                               
-      type: module
-    # Custom Sidebar 
-    # https://github.com/Villhellm/custom-sidebar
-    - url: /hacsfiles/custom-sidebar/custom-sidebar.js                            
+    - url: /hacsfiles/lovelace-card-mod/card-mod.js
       type: module
     # Declutter Card
     # https://github.com/custom-cards/decluttering-card
@@ -38,7 +74,7 @@ lovelace:
       type: module
     # Hui Element
     # https://github.com/thomasloven/lovelace-hui-element
-    - url: /hacsfiles/lovelace-hui-element/hui-element.js                         
+    - url: /hacsfiles/lovelace-hui-element/hui-element.js
       type: module
     # Kiosk
     - url: /hacsfiles/kiosk-mode/kiosk-mode.js
@@ -49,15 +85,15 @@ lovelace:
       type: module
     # Light Popup Card
     # https://github.com/DBuit/light-popup-card
-    - url: /hacsfiles/light-popup-card/light-popup-card.js                        
+    - url: /hacsfiles/light-popup-card/light-popup-card.js
       type: module
     # Lovelace Swipe Navigation
     # https://github.com/maykar/lovelace-swipe-navigation
-    - url: /hacsfiles/lovelace-swipe-navigation/swipe-navigation.js               
-      type: module       
+    - url: /hacsfiles/lovelace-swipe-navigation/swipe-navigation.js
+      type: module
     # Lovelace Xiaomi Vacuum Map card
     # https://github.com/PiotrMachowski/lovelace-xiaomi-vacuum-map-card
-    - url: /hacsfiles/lovelace-xiaomi-vacuum-map-card/xiaomi-vacuum-map-card.js   
+    - url: /hacsfiles/lovelace-xiaomi-vacuum-map-card/xiaomi-vacuum-map-card.js
       type: module
     # Media Player Popup Card
     # https://github.com/DBuit/media_player-popup-card
@@ -65,15 +101,15 @@ lovelace:
       type: module
     # Mini Graph Card
     # https://github.com/kalkih/mini-graph-card
-    - url: /hacsfiles/mini-graph-card/mini-graph-card-bundle.js                   
+    - url: /hacsfiles/mini-graph-card/mini-graph-card-bundle.js
       type: module
     # RGB Light Card
     # https://github.com/bokub/rgb-light-card
-    - url: /hacsfiles/rgb-light-card/card.js                                      
-      type: module      
+    - url: /hacsfiles/rgb-light-card/card.js
+      type: module
     # Paper Button Rows
     # https://github.com/jcwillox/lovelace-paper-buttons-row
-    - url: /hacsfiles/lovelace-paper-buttons-row/paper-buttons-row.js             
+    - url: /hacsfiles/lovelace-paper-buttons-row/paper-buttons-row.js
       type: module
     # Sidebar Card
     # https://github.com/DBuit/sidebar-card
@@ -85,19 +121,19 @@ lovelace:
       type: module
     # Slider Entity Row
     # https://github.com/thomasloven/lovelace-slider-entity-row
-    - url: /hacsfiles/lovelace-slider-entity-row/slider-entity-row.js             
+    - url: /hacsfiles/lovelace-slider-entity-row/slider-entity-row.js
       type: module
     # Stack in Card
     # https://github.com/custom-cards/stack-in-card
-    - url: /hacsfiles/stack-in-card/stack-in-card.js                              
-      type: module  
+    - url: /hacsfiles/stack-in-card/stack-in-card.js
+      type: module
     # State Switch
     # https://github.com/thomasloven/lovelace-state-switch
-    - url: /hacsfiles/lovelace-state-switch/state-switch.js                       
+    - url: /hacsfiles/lovelace-state-switch/state-switch.js
       type: module
     # Switch Popup Card
     # https://github.com/DBuit/switch-popup-card
-    - url: /hacsfiles/switch-popup-card/switch-popup-card.js                       
+    - url: /hacsfiles/switch-popup-card/switch-popup-card.js
       type: module
     # Thermostat Popup Card
     # https://github.com/DBuit/thermostat-popup-card
@@ -105,13 +141,13 @@ lovelace:
       type: module
     # Vertical Stack in Card
     # https://github.com/ofekashery/vertical-stack-in-card
-    - url: /hacsfiles/vertical-stack-in-card/vertical-stack-in-card.js            
+    - url: /hacsfiles/vertical-stack-in-card/vertical-stack-in-card.js
       type: module
     # Local Fonts
     - url: /local/font.css
       type: css
     # Custom Icons
-    - url: '/local/custom_icons.js?v=28082021'
+    - url: "/local/custom_icons.js?v=28082021"
       type: module
 #################################################################
 ## Add-ons
