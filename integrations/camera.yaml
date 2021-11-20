@@ -54,7 +54,7 @@ camera:
       - rooms
       - vacuum_room
     scan_interval:
-      seconds: 10
+      seconds: 5
     auto_update: true
   - platform: generic
     name: Security
