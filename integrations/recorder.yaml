@@ -11,10 +11,10 @@ recorder:
       - device_tracker.keys
       # Temperature
       - sensor.temperature_living_room
-      - sensor.temperature_media
+      - sensor.temperature_office
       # Humidity
       - sensor.humidity_living_room
-      - sensor.humidity_media
+      - sensor.humidity_office
       # Home Assistant Sensors
       - sensor.memory_use_percent
       - sensor.time_online
