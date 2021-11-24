@@ -22,8 +22,8 @@ action:
           - service: media_player.volume_set
             target:
               entity_id:
-                - media_player.loft_clock
                 - media_player.loft_nest_hub
+                - media_player.smart_clock
             data:
               volume_level: 0.5
           - service: media_player.volume_set
@@ -43,7 +43,7 @@ action:
         target:
           entity_id:
             - media_player.loft_nest_hub
-            - media_player.loft_clock
+            - media_player.smart_clock
         data:
           volume_level: 0.6
       - service: media_player.volume_set
