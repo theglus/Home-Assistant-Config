@@ -60,6 +60,29 @@ I routinely stream games via Moonlight from my desktop computer (in the Office) 
 - [Google Home](https://github.com/leikoilja/ha-google-home): Creates HA sensors for alarms + timers that have been set on various Google Home devices.
 - [LG ThinQ Sensors](https://github.com/ollo69/ha-smartthinq-sensors): Supports integrating my LG washer + dryer into HA.
 - [Xiaomi Cloud Map Extractor](https://github.com/PiotrMachowski/Home-Assistant-custom-components-Xiaomi-Cloud-Map-Extractor): Harnesses lidar in RoboRock S4 to create a live map of my home.
+### Lovelace Resources
+- [Bar Card](https://github.com/custom-cards/bar-card)
+- [Button Card](https://github.com/custom-cards/button-card)
+- [Card Mod](https://github.com/thomasloven/lovelace-card-mod)
+- [Declutter Card](https://github.com/custom-cards/decluttering-card)
+- [Hue Icon](https://github.com/arallsopp/hass-hue-icons)
+- [Hui Element](https://github.com/thomasloven/lovelace-hui-element)
+- [Layout Card](https://github.com/thomasloven/lovelace-layout-card)
+- [Light Popup Card](https://github.com/DBuit/light-popup-card)
+- [Lovelace Swipe Navigation](https://github.com/maykar/lovelace-swipe-navigation)
+- [Lovelace Xiaomi Vacuum Map card](https://github.com/PiotrMachowski/lovelace-xiaomi-vacuum-map-card)
+- [Media Player Popup Card](https://github.com/DBuit/media_player-popup-card)
+- [Mini Graph Card](https://github.com/kalkih/mini-graph-card)
+- [RGB Light Card](https://github.com/bokub/rgb-light-card)
+- [Paper Button Rows](https://github.com/jcwillox/lovelace-paper-buttons-row)
+- [Sidebar Card](https://github.com/DBuit/sidebar-card)
+- [Simple Thermostat](https://github.com/nervetattoo/simple-thermostat)
+- [Slider Entity Row](https://github.com/thomasloven/lovelace-slider-entity-row)
+- [Stack in Card](https://github.com/custom-cards/stack-in-card)
+- [State Switch](https://github.com/thomasloven/lovelace-state-switch)
+- [Switch Popup Card](https://github.com/DBuit/switch-popup-card)
+- [Thermostat Popup Card](https://github.com/DBuit/thermostat-popup-card)
+- [Vertical Stack in Card](https://github.com/ofekashery/vertical-stack-in-card)
 ### Voice Assistant
 I'm currently utilizing Nabu Casa to leverage Google Assistant via the aforementioned Google Home devices to enable voice controls. I mainly use voice commands to trigger the lights, music, and theater system. I would like to setup voice commands for Winston and Kirby in the near future. 
 ## Devices
@@ -655,21 +678,18 @@ Loft:
         entity: light.bedside
         name: Bedside
         template: 
-          - light
           - icon_bedside
 ## His Light
       - type: "custom:button-card"
         entity: light.jeffreys_lamp
         name: Jeffrey's
         template: 
-          - light
           - icon_bed
 ## Her Light
       - type: "custom:button-card"
         entity: light.tiffanys_lamp
         name: Tiffany's
         template: 
-          - light
           - icon_bed
 ## Bed Track
       - type: "custom:button-card"
