@@ -31,6 +31,7 @@ I routinely stream games via Moonlight from my desktop computer (in the Office) 
 * [Architecture](#architecture)
 * [Integrations](#integrations)
 * [Custom Components](#custom-components) 
+* [Lovelace Resources](#lovelace-resources)
 * [Voice Assistant](#voice-assistant) 
 ### Architecture
 ![My Home Assistant Architecture](www/readme/architecture.png) 
@@ -135,8 +136,8 @@ I have a series of smart plugs which I use to control various appliances. Curren
 | ![Hue Smart Plug](www/readme/switches/hue_plug.jpg) | ![Kasa HS103](www/readme/switches/kasa_plugs.jpg) | ![Kasa Surge](www/readme/switches/kasa_surge.jpg) | ![Lutron Aurora](www/readme/switches/lutron_aurora.jpg) |
 
 My old school analog marquee is controlled by the Hue plug which I opted for due to it's ability to be integrated with my other lights via the Hue ecosystem. Lastly, sometimes it's just quicker and quieter to turn on the lights with a switch, being a renter replacing my wall switches isn't appealing. Luckily I discovered Lutron Aurora dimmers which not only gives me a physical button but also a dimmer which I can map to one or many lights. I'm hoping to figure out a way to map secondary actions (double click, triple click, etc.), but the feasiblity is TBD.
-
-Thanks for reading, please star if your are interested in the project.
+## Custom Icons
+Inspired by [matt8707](https://github.com/matt8707) I created several custom icons which can be found in `www/custom_icons.js`. I leveraged [material design principles](https://material.io/design/iconography/system-icons.html#design-principles) and [Guide to a Vector Drawing Program](http://tavmjong.free.fr/INKSCAPE/MANUAL/html/XML.html) when designing and building the icons. I will be working on pulling in additional icons from various [icon_templates](includes/lovelace/button_card_templates/icon_templates) over the next several weeks.
 ## Lovelace Dashboards
 * [Quick Access Controls](#quick-access-controls)
   * [Room Controls](#room-controls)
@@ -758,3 +759,5 @@ Loft:
 - [Vacuum Docked](includes/automations/vacuum_done.yaml): Notify Smartphones when Winston has returned to dock.
 - [Vacuum Done](includes/automations/vacuum_done.yaml): Notify Smartphones when Winston has completed cleaning.
 - [Volume Home](includes/automations/volume_home.yaml): Turn down volume of Google Home device at 10 pm.
+
+Thanks for reading, please star if your are interested in the project.
