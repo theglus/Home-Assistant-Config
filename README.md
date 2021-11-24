@@ -224,9 +224,7 @@ entities:
   <summary>Code</summary>
   
 ```
-#################################################################
 ## General Controls
-#################################################################
 General:
   type: "custom:mod-card"
   style: |
@@ -240,9 +238,7 @@ General:
     type: grid
     columns: 3
     cards:
-      #----------------------------------------------------------------
-      ## Weather button
-      #----------------------------------------------------------------
+## Weather button
       - type: "custom:button-card"
         custom_fields:
           s2: |
@@ -264,9 +260,7 @@ General:
           - icon_weather
         triggers_update:
           - sun.sun
-      #----------------------------------------------------------------
-      ## Entryway button
-      #----------------------------------------------------------------
+## Entryway button
       - type: "custom:decluttering-card"
         template: declutter_room_button
         variables:
@@ -277,9 +271,7 @@ General:
           - message_off: Door is closed
           - icon_state: mdi:door-open
           - icon_default: custom:room-hallway
-      #----------------------------------------------------------------
-      ## Office button
-      #----------------------------------------------------------------
+## Office button
       - type: "custom:decluttering-card"
         template: declutter_room_button
         variables:
@@ -290,9 +282,7 @@ General:
           - message_off: Printer off
           - icon_state: mdi:printer
           - icon_default: custom:room-office
-      #----------------------------------------------------------------
-      ## Living Room button
-      #----------------------------------------------------------------
+## Living Room button
       - type: "custom:decluttering-card"
         template: declutter_temp_button
         variables:
@@ -304,9 +294,7 @@ General:
           - icon_state: mdi:radiator
           - icon_default: custom:room-living
           - room: Living Room
-      #----------------------------------------------------------------
-      ## Kitchen button
-      #----------------------------------------------------------------
+## Kitchen button
       - type: "custom:decluttering-card"
         template: declutter_temp_button
         variables:
@@ -318,9 +306,7 @@ General:
           - icon_state: custom:room-kitchen
           - icon_default: custom:room-kitchen
           - room: Kitchen
-      #----------------------------------------------------------------
-      ## Loft button
-      #----------------------------------------------------------------
+## Loft button
       - type: "custom:decluttering-card"
         template: declutter_temp_button
         variables:
