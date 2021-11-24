@@ -325,20 +325,18 @@ General:
 
 ![Hallway Controls](www/readme/demo/hallway.png)
 #### Icons
-- [Marquee Icon](includes/lovelace/button_card_templates/icon_templates/icon_marquee.yaml)
-- [Stair Icon](includes/lovelace/button_card_templates/icon_templates/icon_led.yaml)
-- [Lamp Icon](includes/lovelace/button_card_templates/icon_templates/icon_lamp.yaml)
-- [Spotlight Icon](includes/lovelace/button_card_templates/icon_templates/icon_spot.yaml)
+- [Marquee Icon](includes/lovelace/button_card_templates/icon_templates/icon_light/icon_marquee.yaml)
+- [Stair Icon](includes/lovelace/button_card_templates/icon_templates/icon_light/icon_led.yaml)
+- [Lamp Icon](includes/lovelace/button_card_templates/icon_templates/icon_light/icon_lamp.yaml)
+- [Spotlight Icon](includes/lovelace/button_card_templates/icon_templates/icon_light/icon_spot.yaml)
 - [Door Icon](includes/lovelace/button_card_templates/icon_templates/icon_door.yaml)
-- [Smart Clock Icon](includes/lovelace/button_card_templates/icon_templates/icon_smart_clock.yaml)
+- [Smart Clock Icon](includes/lovelace/button_card_templates/icon_templates/icon_media/icon_smart_clock.yaml)
 
 <details>
   <summary>Code</summary>
   
 ```
-#################################################################
 ## Entrway Controls
-#################################################################
 Entryway:
   type: "custom:mod-card"
   style: |
@@ -352,51 +350,39 @@ Entryway:
     type: grid
     columns: 3
     cards:
-      #----------------------------------------------------------------
-      ## Hallway Marquee
-      #----------------------------------------------------------------
+## Hallway Marquee
       - type: "custom:button-card"
         entity: light.hallway_marquee
         template:
           - icon_marquee
-      #----------------------------------------------------------------
-      ## Hallway Runner
-      #----------------------------------------------------------------
+## Hallway Runner
       - type: "custom:button-card"
         entity: light.hallway_runner
         name: Runner
         template: 
           - light_color
           - icon_led
-      #----------------------------------------------------------------
-      ## Potter Lamp
-      #----------------------------------------------------------------
+## Potter Lamp
       - type: "custom:button-card"
         entity: light.potter_lamp
         name: Lamp
         template:
           - light_color
           - icon_lamp
-      #----------------------------------------------------------------
-      ## Stair Light
-      #----------------------------------------------------------------
+## Stair Light
       - type: "custom:button-card"
         entity: light.stair
         name: Lamp
         template:
           - light
           - icon_spot
-      #----------------------------------------------------------------
-      ## Front Door Sensor
-      #----------------------------------------------------------------
+## Front Door Sensor
       - type: "custom:button-card"
         entity: binary_sensor.front_door
         template: 
           - base
           - icon_door
-      #----------------------------------------------------------------
-      ## Hallway Smart Clock
-      #----------------------------------------------------------------
+## Hallway Smart Clock
       - type: custom:button-card
         entity: media_player.smart_clock
         name: Smart Clock
@@ -410,8 +396,8 @@ Entryway:
 
 ![Laundry Controls](www/readme/demo/laundry.png) 
 #### Icons
-- [Washer Icon](includes/lovelace/button_card_templates/icon_templates/icon_washer.yaml)
-- [Dryer Icon](includes/lovelace/button_card_templates/icon_templates/icon_dryer.yaml)
+- [Washer Icon](includes/lovelace/button_card_templates/icon_templates/icon_laundry/icon_washer.yaml)
+- [Dryer Icon](includes/lovelace/button_card_templates/icon_templates/icon_laundry/icon_dryer.yaml)
 <details>
   <summary>Code</summary>
   
