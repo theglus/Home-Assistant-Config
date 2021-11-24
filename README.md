@@ -847,6 +847,7 @@ Loft:
 - [Notify Washer](includes/automations/notify_washer.yaml): Notify smartphones when washer is complete.
 - [On Air](includes/automations/on_air.yaml): Turn Potter light red when webcam turns on.
 - [Peak Usage Alerts](includes/automations/peak_usage_alerts.yaml): Notify Smartphones when AC, Washer, or Dryer is on during peak usage. 
+- [Select Vacuum Speed](includes/automations/select_vacuum_speed.yaml): Adds vacuum.set_fan_speed service calls to Vacuum Speed Helper.
 - [Server Boot Up](includes/automations/server_boot_up.yaml): Notify via Telegram when server has booted up.
 - [Server Reboot](includes/automations/server_reboot.yaml): Telegram notification that alerts of server reboot, restart, or shutdown.
 - [Set Theme](includes/automations/set_theme.yaml): Set theme at Home Assistant start.
