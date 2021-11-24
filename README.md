@@ -360,7 +360,6 @@ Entryway:
         entity: light.hallway_runner
         name: Runner
         template: 
-          - light_color
           - icon_led
 ## Potter Lamp
       - type: "custom:button-card"
@@ -380,14 +379,12 @@ Entryway:
       - type: "custom:button-card"
         entity: binary_sensor.front_door
         template: 
-          - base
           - icon_door
 ## Hallway Smart Clock
       - type: custom:button-card
         entity: media_player.smart_clock
         name: Smart Clock
         template:
-          - base
           - icon_smart_clock
 ```
 </details>
@@ -435,17 +432,15 @@ Laundry:
 
 ![Office Controls](www/readme/demo/office.png) 
 #### Icons
-- [Ceiling Icon](includes/lovelace/button_card_templates/icon_templates/icon_overhead.yaml)
+- [Ceiling Icon](includes/lovelace/button_card_templates/icon_templates/icon_light/icon_recessed.yaml)
 - [Printer Icon](includes/lovelace/button_card_templates/icon_templates/icon_printer.yaml)
-- [Air Circulator Icon](includes/lovelace/button_card_templates/icon_templates/icon_circulator.yaml)
-- [Google Nest Mini Icon](/Users/Glusman/Home-Assistant-Config/includes/lovelace/button_card_templates/icon_templates/icon_nest_mini.yaml)
+- [Air Circulator Icon](includes/lovelace/button_card_templates/icon_templates/icon_climate/icon_circulator.yaml)
+- [Google Nest Mini Icon](/Users/Glusman/Home-Assistant-Config/includes/lovelace/button_card_templates/icon_templates/icon_media/icon_nest_mini.yaml)
 <details>
   <summary>Code</summary>
   
 ```
-#################################################################
 ## Office Controls
-#################################################################
 Office:
   type: "custom:mod-card"
   style: |
@@ -459,41 +454,30 @@ Office:
     type: grid
     columns: 3
     cards:
-      #----------------------------------------------------------------
-      ## Office Overhead Lights
-      #----------------------------------------------------------------
+## Office Overhead Lights
       - type: "custom:button-card"
         entity: light.overhead
         name: Ceiling
         template:
           - light
-          - icon_overhead
-      #----------------------------------------------------------------
-      ## Printer
-      #----------------------------------------------------------------
+          - icon_recessed
+## Printer
       - type: "custom:button-card"
         entity: switch.major_laser_printer
         name: Major Laser
         template: 
-          - base
           - icon_printer
-      #----------------------------------------------------------------
-      ## Air Circulator
-      #----------------------------------------------------------------
+## Air Circulator
       - type: "custom:button-card"
         entity: switch.kettle
         name: Air Circulator
         template:
-          - base
           - icon_circulator
-      #----------------------------------------------------------------
-      ## Office Google Home Mini
-      #----------------------------------------------------------------
+## Office Google Home Mini
       - type: custom:button-card
         entity: media_player.office_speaker
         name: Home Mini
         template:
-          - media 
           - icon_nest_mini
 ```
 </details>
