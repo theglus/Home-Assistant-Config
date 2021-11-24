@@ -486,20 +486,18 @@ Office:
 
 ![Living Room Controls](www/readme/demo/living_room.png)
 #### Icons
-- [Spotlight Icon](includes/lovelace/button_card_templates/icon_templates/icon_spot.yaml)
-- [Garden Lights Icon](includes/lovelace/button_card_templates/icon_templates/icon_garden.yaml)
-- [Lamp Icon](includes/lovelace/button_card_templates/icon_templates/icon_lamp.yaml)
-- [Heater Icon](includes/lovelace/button_card_templates/icon_templates/icon_heater.yaml)
-- [Air Circulator Icon](includes/lovelace/button_card_templates/icon_templates/icon_circulator.yaml) 
-- [AC Icon](includes/lovelace/button_card_templates/icon_templates/icon_ac.yaml)
-- [TV Icon](includes/lovelace/button_card_templates/icon_templates/icon_tv.yaml)
+- [Spotlight Icon](includes/lovelace/button_card_templates/icon_templates/icon_light/icon_spot.yaml)
+- [Garden Lights Icon](includes/lovelace/button_card_templates/icon_templates/icon_light/icon_garden.yaml)
+- [Lamp Icon](includes/lovelace/button_card_templates/icon_templates/icon_light/icon_lamp.yaml)
+- [Heater Icon](includes/lovelace/button_card_templates/icon_templates/icon_climate/icon_heater.yaml)
+- [Air Circulator Icon](includes/lovelace/button_card_templates/icon_templates/icon_climate/icon_circulator.yaml) 
+- [AC Icon](includes/lovelace/button_card_templates/icon_templates/icon_climate/icon_ac.yaml)
+- [TV Icon](includes/lovelace/button_card_templates/icon_templates/icon_media/icon_tv.yaml)
 <details>
   <summary>Code</summary>
   
 ```
-#################################################################
 ## Living Room Controls
-#################################################################
 Living Room:
   type: "custom:mod-card"
   style: |
@@ -513,63 +511,45 @@ Living Room:
     type: grid
     columns: 3
     cards:
-      #----------------------------------------------------------------
-      ## Track Light
-      #----------------------------------------------------------------
+## Track Light
       - type: "custom:button-card"
         entity: light.track
         name: Track
         template:
           - light_color
           - icon_spot
-      #----------------------------------------------------------------
-      ## Garden Light
-      #----------------------------------------------------------------
+## Garden Light
       - type: "custom:button-card"
         entity: light.garden
         name: Garden
         template: 
           - icon_garden
-      #----------------------------------------------------------------
-      ## Yumi Lamp
-      #----------------------------------------------------------------
+## Yumi Lamp
       - type: "custom:button-card"
         entity: light.yumi_lamp
         name: Lamp
         template:
           - light_color
           - icon_lamp
-      #----------------------------------------------------------------
-      ## Heater
-      #----------------------------------------------------------------
+## Heater
       - type: "custom:button-card"
         entity: switch.switchbot
         template:
-          - base
           - icon_heater
-          - loader
-      #----------------------------------------------------------------
-      ## Living Room Air Circulator
-      #----------------------------------------------------------------
+## Living Room Air Circulator
       - type: "custom:button-card"
         entity: switch.air_circulator
         name: Air Circulator
         template:
-          - base
           - icon_circulator
-      #----------------------------------------------------------------
-      ## Ice Bear
-      #----------------------------------------------------------------
+## Ice Bear
       - type: "custom:button-card"
         entity: climate.ice_bear
         name: Air Conditioner
         double_tap_action:
           action: more-info                  
         template:
-          - base
           - icon_ac
-          - circle_climate
-          - loader
         variables:
           circle_input: >
             [[[
@@ -577,17 +557,13 @@ Living Room:
                 null :
                 entity.attributes.temperature;
             ]]]
-      #----------------------------------------------------------------
-      ## Shield
-      #----------------------------------------------------------------
+## Shield
       - type: "custom:button-card"
         entity: media_player.shield_tv
         tap_action:
           action: toggle
         template:
-          - base
           - icon_tv
-          - loader 
 ```
 </details>
 
