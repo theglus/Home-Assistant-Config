@@ -571,18 +571,16 @@ Living Room:
 
 ![Kitchen Controls](www/readme/demo/kitchen.png) 
 #### Icons
-- [Spotlight Icon](includes/lovelace/button_card_templates/icon_templates/icon_spot.yaml)
-- [Nanoleaf Icon](includes/lovelace/button_card_templates/icon_templates/icon_dinopanel.yaml)
-- [Google Nest Mini Icon](/Users/Glusman/Home-Assistant-Config/includes/lovelace/button_card_templates/icon_templates/icon_nest_mini.yaml)
-- [Dyson Icon](includes/lovelace/button_card_templates/icon_templates/icon_dyson.yaml)
+- [Spotlight Icon](includes/lovelace/button_card_templates/icon_templates/icon_light/icon_spot.yaml)
+- [Nanoleaf Icon](includes/lovelace/button_card_templates/icon_templates/icon_light/icon_dinopanel.yaml)
+- [Google Nest Mini Icon](/Users/Glusman/Home-Assistant-Config/includes/lovelace/button_card_templates/icon_templates/icon_media/icon_nest_mini.yaml)
+- [Dyson Icon](includes/lovelace/button_card_templates/icon_templates/icon_media/icon_dyson.yaml)
 
 <details>
   <summary>Code</summary>
   
 ```
-#################################################################
 ## Kitchen Controls
-#################################################################
 Kitchen:
   type: "custom:mod-card"
   style: |
@@ -596,35 +594,25 @@ Kitchen:
     type: grid
     columns: 3
     cards:
-      #----------------------------------------------------------------
-      ## Kitchen Track
-      #----------------------------------------------------------------
+## Kitchen Track
       - type: "custom:button-card"
         entity: light.kitchen
         name: Track
         template:
           - light_color
           - icon_spot
-      #----------------------------------------------------------------
-      ## Nanoleaf Dino Panesl
-      #----------------------------------------------------------------
+## Nanoleaf Dino Panesl
       - type: "custom:button-card"
         entity: light.nanoleaf
         template: 
-          - light_nanoleaf
           - icon_dinopanel
-      #----------------------------------------------------------------
-      ## Kitchen Google Home Mini
-      #----------------------------------------------------------------
+## Kitchen Google Home Mini
       - type: custom:button-card
         entity: media_player.living_room_speaker
         name: Home Mini
         template:
-          - media
           - icon_nest_mini
-      #----------------------------------------------------------------
-      ## Kitchen Dyson
-      #----------------------------------------------------------------
+## Kitchen Dyson
       - type: "custom:button-card"
         entity: fan.kitchen
         name: Dyson
