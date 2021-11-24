@@ -304,7 +304,6 @@ cards:
                   entity: light.hallway_runner
                   name: Runner
                   template:
-                    - light_color
                     - icon_led
                 #----------------------------------------------------------------
                 ## Potter Lamp
@@ -329,9 +328,7 @@ cards:
                 #----------------------------------------------------------------
                 - type: "custom:button-card"
                   entity: binary_sensor.front_door
-                  # TODO: #38 Create icon_door button template
                   template:
-                    - base
                     - icon_door
                 #----------------------------------------------------------------
                 ## Hallway Smart Clock
@@ -341,7 +338,6 @@ cards:
                   entity: media_player.smart_clock
                   name: Smart Clock
                   template:
-                    - base
                     - icon_smart_clock
           #################################################################
           ## Guest Bathroom Controls
@@ -399,10 +395,9 @@ cards:
                 - type: "custom:button-card"
                   entity: light.overhead
                   name: Ceiling
-                  # TODO: #291 Create icon_overhead button template
                   template:
                     - light
-                    - icon_overhead
+                    - icon_recessed
                 #----------------------------------------------------------------
                 ## Printer
                 #----------------------------------------------------------------
@@ -411,7 +406,6 @@ cards:
                   entity: switch.major_laser_printer
                   name: Major Laser
                   template:
-                    - base
                     - icon_printer
                 #----------------------------------------------------------------
                 ## Air Circulator
@@ -420,7 +414,6 @@ cards:
                   entity: switch.kettle
                   name: Air Circulator
                   template:
-                    - base
                     - icon_circulator
                 #----------------------------------------------------------------
                 ## Office Google Home Mini
@@ -430,7 +423,6 @@ cards:
                   entity: media_player.office_speaker
                   name: Home Mini
                   template:
-                    - media
                     - icon_nest_mini
           #################################################################
           ## Living Room Controls
@@ -463,7 +455,6 @@ cards:
                 - type: "custom:button-card"
                   entity: light.garden
                   name: Garden
-                  # TODO:: Create icon_garden button template
                   template:
                     - icon_garden
                 #----------------------------------------------------------------
@@ -490,7 +481,6 @@ cards:
                   entity: switch.air_circulator
                   name: Air Circulator
                   template:
-                    - base
                     - icon_circulator
                 #----------------------------------------------------------------
                 ## Ice Bear
@@ -502,10 +492,7 @@ cards:
                   double_tap_action:
                     action: more-info
                   template:
-                    - base
                     - icon_ac
-                    - circle_climate
-                    - loader
                   variables:
                     circle_input: >
                       [[[
@@ -521,9 +508,7 @@ cards:
                   tap_action:
                     action: toggle
                   template:
-                    - base
                     - icon_tv
-                    - loader
                   # TODO: #263 Create TV controls pop-up
                 #----------------------------------------------------------------
                 ## Dennis
@@ -561,7 +546,6 @@ cards:
                 - type: "custom:button-card"
                   entity: light.nanoleaf
                   template:
-                    - light_nanoleaf
                     - icon_dinopanel
                 #----------------------------------------------------------------
                 ## Recessed Lights
@@ -570,6 +554,7 @@ cards:
                   entity: light.recessed
                   name: Recessed
                   template:
+                    - light_color
                     - icon_recessed
                 #----------------------------------------------------------------
                 ## Kitchen Google Home Mini
@@ -579,7 +564,6 @@ cards:
                   entity: media_player.living_room_speaker
                   name: Home Mini
                   template:
-                    - media
                     - icon_nest_mini
                 #----------------------------------------------------------------
                 ## Mac/iPad Charger
@@ -623,7 +607,6 @@ cards:
                   name: Bedside
                   # TODO: Create icon_bedside button template
                   template:
-                    - light
                     - icon_bedside
                 #----------------------------------------------------------------
                 ## Jeffrey's Lights
@@ -632,7 +615,6 @@ cards:
                   entity: light.jeffreys_lamp
                   name: Jeffrey's
                   template:
-                    - light
                     - icon_bed
                 #----------------------------------------------------------------
                 ## Tiffany's Light
@@ -641,7 +623,6 @@ cards:
                   entity: light.tiffanys_lamp
                   name: Tiffany's
                   template:
-                    - light
                     - icon_bed
                 #----------------------------------------------------------------
                 ## Bed Track
@@ -704,5 +685,4 @@ cards:
                   entity: media_player.loft_bathroom
                   name: Nest Mini
                   template:
-                    - media
                     - icon_nest_mini

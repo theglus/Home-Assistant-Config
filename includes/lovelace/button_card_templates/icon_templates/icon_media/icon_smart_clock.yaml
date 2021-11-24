@@ -2,6 +2,7 @@
 ## Lenovo Smart Clock Icon
 #################################################################
 template:
+  - base
   - volume_speaker
 custom_fields:
   icon: >

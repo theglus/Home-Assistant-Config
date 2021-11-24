@@ -1,9 +1,15 @@
 #################################################################
 ## Bed Light Icon
 #################################################################
+template:
+  - light
 styles:
   custom_fields:
-    icon: [top: 8%, left: 6%, width: 76%, position: absolute]
+    icon: 
+      - top: 8%
+      - left: 6%
+      - width: 76%
+      - position: absolute
 custom_fields:
   icon: >
     <svg viewBox="0 0 50 50">

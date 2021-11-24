@@ -1,7 +1,8 @@
 #################################################################
 ## Door Icon
 #################################################################
-# TODO: #38 Create icon_door button template
+template:
+  - base
 styles:
   custom_fields:
     icon:

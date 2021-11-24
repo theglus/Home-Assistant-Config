@@ -1,12 +1,13 @@
 #################################################################
 ## Recessed Hue Icon
 #################################################################
-template:
-  - light_color
-styles: 
+styles:
   custom_fields:
     icon:
-      [top: 8%, left: 5%, width: 68%, position: absolute]
+      - top: 7%
+      - left: 5%
+      - width: 83%
+      - position: absolute
 custom_fields:
   icon: >
     [[[ const state = entity.state === 'on' ? 'animate' : null;

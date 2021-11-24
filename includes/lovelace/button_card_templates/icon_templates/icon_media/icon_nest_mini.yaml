@@ -3,6 +3,7 @@
 #################################################################
 # TODO: #315 Alarm + timer countdown for Google Home devices.
 template:
+  - media
   - volume_speaker
 styles:
   custom_fields:

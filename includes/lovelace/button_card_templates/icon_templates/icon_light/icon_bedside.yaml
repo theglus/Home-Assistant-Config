@@ -1,9 +1,15 @@
 #################################################################
 ## Bedside Lamp Icon
 #################################################################
+template:
+  - light
 styles:
   custom_fields:
-    icon: [top: 10%, left: 10%, width: 66%, position: absolute]
+    icon:
+      - top: 10%
+      - left: 10%
+      - width: 66%
+      - position: absolute
 custom_fields:
   icon: >
     <svg viewBox="0 0 50 50" shape-rendering="geometricPrecision" text-rendering="geometricPrecision">
