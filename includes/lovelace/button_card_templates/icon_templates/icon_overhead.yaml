@@ -1,11 +1,15 @@
 #################################################################
 ## Overhead Icon
 #################################################################
-# TODO: #291 Create icon_overhead button template
-styles: 
+template:
+  - light
+styles:
   custom_fields:
     icon:
-      [top: 8%, left: 5%, width: 68%, position: absolute]
+      - top: 8%
+      - left: 5%
+      - width: 68%
+      - position: absolute
 custom_fields:
   icon: >
     [[[ const state = entity.state === 'on' ? 'animate' : null;
