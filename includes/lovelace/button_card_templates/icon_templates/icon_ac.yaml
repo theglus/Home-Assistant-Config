@@ -11,12 +11,12 @@ styles:
       - top: 17%
       - left: 15.5%
       - width: 10%
-      - position: absolute]
+      - position: absolute
     icon:
       - top: 8%
       - left: 8%
       - width: 26%
-      - position: absolute]
+      - position: absolute
 custom_fields:
   icon_fan: >
     [[[
