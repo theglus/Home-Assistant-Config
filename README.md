@@ -728,20 +728,18 @@ Kitchen:
 
 ![Loft Controls](www/readme/demo/loft.png) 
 #### Icons
-- [Bedside Icon](includes/lovelace/button_card_templates/icon_templates/icon_bed.yaml)
-- [Table Lamp Icon](includes/lovelace/button_card_templates/icon_templates/icon_bedside.yaml)
-- [Spotlight Icon](includes/lovelace/button_card_templates/icon_templates/icon_spot.yaml)
-- [Lamp Icon](includes/lovelace/button_card_templates/icon_templates/icon_lamp.yaml)
-- [Dyson Icon](includes/lovelace/button_card_templates/icon_templates/icon_dyson.yaml)
-- [Nest Hub Mini Icon](includes/lovelace/button_card_templates/icon_templates/icon_nest_hub.yaml)
+- [Bedside Icon](includes/lovelace/button_card_templates/icon_templates/icon_light/icon_bed.yaml)
+- [Table Lamp Icon](includes/lovelace/button_card_templates/icon_templates/icon_light/icon_bedside.yaml)
+- [Spotlight Icon](includes/lovelace/button_card_templates/icon_templates/icon_light/icon_spot.yaml)
+- [Lamp Icon](includes/lovelace/button_card_templates/icon_templates/icon_light/icon_lamp.yaml)
+- [Dyson Icon](includes/lovelace/button_card_templates/icon_templates/icon_climate/icon_dyson.yaml)
+- [Nest Hub Mini Icon](includes/lovelace/button_card_templates/icon_templates/icon_media/icon_nest_hub.yaml)
 
 <details>
   <summary>Code</summary>
   
 ```
-#################################################################
 ## Loft Controls
-#################################################################
 Loft:
   type: "custom:mod-card"
   style: |
@@ -755,62 +753,48 @@ Loft:
     type: grid
     columns: 3
     cards:
-      #----------------------------------------------------------------
       ## Bedside Lights
-      #----------------------------------------------------------------
       - type: "custom:button-card"
         entity: light.bedside
         name: Bedside
         template: 
           - light
           - icon_bedside
-      #----------------------------------------------------------------
-      ## Jeffrey's Lights
-      #----------------------------------------------------------------
+## His Light
       - type: "custom:button-card"
         entity: light.jeffreys_lamp
         name: Jeffrey's
         template: 
           - light
           - icon_bed
-      #----------------------------------------------------------------
-      ## Tiffany's Light
-      #----------------------------------------------------------------
+## Her Light
       - type: "custom:button-card"
         entity: light.tiffanys_lamp
         name: Tiffany's
         template: 
           - light
           - icon_bed
-      #----------------------------------------------------------------
-      ## Bed Track
-      #----------------------------------------------------------------
+## Bed Track
       - type: "custom:button-card"
         entity: light.loft_bed_light
         name: Ceiling
         template:
           - light
           - icon_spot
-      #----------------------------------------------------------------
-      ## Desk Lights
-      #----------------------------------------------------------------
+## Desk Lights
       - type: "custom:button-card"
         entity: light.loft_desk_lamp
         name: Desk
         template:
           - light
           - icon_lamp
-      #----------------------------------------------------------------
-      ## Kirby
-      #----------------------------------------------------------------
+## Dyson
       - type: "custom:button-card"
         entity: fan.kirby
         name: Dyson
         template:
           - icon_dyson
-      #----------------------------------------------------------------
-      ## Loft Nest Hub
-      #----------------------------------------------------------------
+## Loft Nest Hub
       - type: custom:button-card
         entity: media_player.loft_nest_hub
         name: Nest Hub
