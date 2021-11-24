@@ -1,10 +1,15 @@
 #################################################################
 ## Dino Panel Icon
 #################################################################
+template:
+  - light_nanoleaf
 styles:
   custom_fields:
     icon:
-      [top: 5%, left: 6%, width: 51%, position: absolute]
+      - top: 5%
+      - left: 6%
+      - width: 51%
+      - position: absolute
 custom_fields:
   icon: >
     [[[

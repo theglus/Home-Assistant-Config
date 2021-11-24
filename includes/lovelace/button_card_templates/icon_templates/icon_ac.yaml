@@ -1,10 +1,22 @@
 #################################################################
 ## Air Conditioner
 #################################################################
+template:
+  - base
+  - circle_climate
+  - loader
 styles:
   custom_fields:
-    icon_fan: [top: 17%, left: 15.5%, width: 10%, position: absolute]
-    icon: [top: 8%, left: 8%, width: 26%, position: absolute]
+    icon_fan:
+      - top: 17%
+      - left: 15.5%
+      - width: 10%
+      - position: absolute]
+    icon:
+      - top: 8%
+      - left: 8%
+      - width: 26%
+      - position: absolute]
 custom_fields:
   icon_fan: >
     [[[
