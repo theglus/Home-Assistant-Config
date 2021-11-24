@@ -4,9 +4,9 @@
 styles:
   custom_fields:
     icon:
-      - top: 8%
+      - top: 7%
       - left: 5%
-      - width: 68%
+      - width: 83%
       - position: absolute
 custom_fields:
   icon: >
