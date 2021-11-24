@@ -402,10 +402,7 @@ Entryway:
   <summary>Code</summary>
   
 ```
-#################################################################
 ## Guest Bathroom Controls
-#################################################################
-#249 Create view for downstairs bathroom
 Laundry:
   type: "custom:mod-card"
   style: |
@@ -419,17 +416,13 @@ Laundry:
     type: grid
     columns: 3
     cards:
-      #----------------------------------------------------------------
-      ## Washer
-      #----------------------------------------------------------------
+## Washer
       - type: "custom:button-card"
         entity: sensor.washer
         name: Washer
         template:
           - icon_washer
-      #----------------------------------------------------------------
-      ## Dryer
-      #----------------------------------------------------------------
+## Dryer
       - type: "custom:button-card"
         entity: sensor.dryer
         name: Dryer
