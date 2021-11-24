@@ -136,17 +136,11 @@ The Quick Access Controls are a logical grouping of Lovelace buttons + cards usi
   <summary>Code</summary>
   
 ```
-#################################################################
-#----------------------------------------------------------------
 ## Toggle Nav
-#----------------------------------------------------------------
-#################################################################
 entities:
   - type: "custom:paper-buttons-row"
     buttons:
-      #################################################################
-      ## General Button
-      #################################################################
+## General Button
       - entity: input_select.lighttoggle
         name: false
         icon: "mdi:home-assistant"
@@ -160,9 +154,7 @@ entities:
           service_data:
             entity_id: input_select.lighttoggle
             option: General
-      #################################################################
-      ## Entryway Button
-      #################################################################
+## Entryway Button
       - entity: input_select.lighttoggle
         name: false
         icon: "mdi:coat-rack"
@@ -176,19 +168,13 @@ entities:
           service_data:
             entity_id: input_select.lighttoggle
             option: Entryway
-#################################################################
-#----------------------------------------------------------------
 ## Expanded
-#----------------------------------------------------------------
-#################################################################
 - type: "custom:state-switch"
   entity: input_select.lighttoggle
   default: Entryway
   transition: none
   states:
-  #################################################################
-  ## General Controls
-  #################################################################
+## General Controls
   General:
     type: "custom:mod-card"
     style: |
@@ -205,9 +191,7 @@ entities:
 
     ## <--- Buttons --->
   
-  #################################################################
-  ## Entryway Controls
-  #################################################################
+## Entryway Controls
   General:
     type: "custom:mod-card"
     style: |
