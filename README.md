@@ -459,7 +459,7 @@ Laundry:
 - [Ceiling Icon](includes/lovelace/button_card_templates/icon_templates/icon_light/icon_recessed.yaml)
 - [Printer Icon](includes/lovelace/button_card_templates/icon_templates/icon_printer.yaml)
 - [Air Circulator Icon](includes/lovelace/button_card_templates/icon_templates/icon_climate/icon_circulator.yaml)
-- [Google Nest Mini Icon](/Users/Glusman/Home-Assistant-Config/includes/lovelace/button_card_templates/icon_templates/icon_media/icon_nest_mini.yaml)
+- [Google Nest Mini Icon](includes/lovelace/button_card_templates/icon_templates/icon_media/icon_nest_mini.yaml)
 <details>
   <summary>Code</summary>
   
