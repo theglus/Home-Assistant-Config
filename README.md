@@ -31,6 +31,7 @@ I routinely stream games via Moonlight from my desktop computer (in the Office) 
 * [Architecture](#architecture)
 * [Integrations](#integrations)
 * [Custom Components](#custom-components) 
+* [Lovelace Resources](#lovelace-resources)
 * [Voice Assistant](#voice-assistant) 
 ### Architecture
 ![My Home Assistant Architecture](www/readme/architecture.png) 
@@ -60,6 +61,29 @@ I routinely stream games via Moonlight from my desktop computer (in the Office) 
 - [Google Home](https://github.com/leikoilja/ha-google-home): Creates HA sensors for alarms + timers that have been set on various Google Home devices.
 - [LG ThinQ Sensors](https://github.com/ollo69/ha-smartthinq-sensors): Supports integrating my LG washer + dryer into HA.
 - [Xiaomi Cloud Map Extractor](https://github.com/PiotrMachowski/Home-Assistant-custom-components-Xiaomi-Cloud-Map-Extractor): Harnesses lidar in RoboRock S4 to create a live map of my home.
+### Lovelace Resources
+- [Bar Card](https://github.com/custom-cards/bar-card)
+- [Button Card](https://github.com/custom-cards/button-card)
+- [Card Mod](https://github.com/thomasloven/lovelace-card-mod)
+- [Declutter Card](https://github.com/custom-cards/decluttering-card)
+- [Hue Icon](https://github.com/arallsopp/hass-hue-icons)
+- [Hui Element](https://github.com/thomasloven/lovelace-hui-element)
+- [Layout Card](https://github.com/thomasloven/lovelace-layout-card)
+- [Light Popup Card](https://github.com/DBuit/light-popup-card)
+- [Lovelace Swipe Navigation](https://github.com/maykar/lovelace-swipe-navigation)
+- [Lovelace Xiaomi Vacuum Map card](https://github.com/PiotrMachowski/lovelace-xiaomi-vacuum-map-card)
+- [Media Player Popup Card](https://github.com/DBuit/media_player-popup-card)
+- [Mini Graph Card](https://github.com/kalkih/mini-graph-card)
+- [RGB Light Card](https://github.com/bokub/rgb-light-card)
+- [Paper Button Rows](https://github.com/jcwillox/lovelace-paper-buttons-row)
+- [Sidebar Card](https://github.com/DBuit/sidebar-card)
+- [Simple Thermostat](https://github.com/nervetattoo/simple-thermostat)
+- [Slider Entity Row](https://github.com/thomasloven/lovelace-slider-entity-row)
+- [Stack in Card](https://github.com/custom-cards/stack-in-card)
+- [State Switch](https://github.com/thomasloven/lovelace-state-switch)
+- [Switch Popup Card](https://github.com/DBuit/switch-popup-card)
+- [Thermostat Popup Card](https://github.com/DBuit/thermostat-popup-card)
+- [Vertical Stack in Card](https://github.com/ofekashery/vertical-stack-in-card)
 ### Voice Assistant
 I'm currently utilizing Nabu Casa to leverage Google Assistant via the aforementioned Google Home devices to enable voice controls. I mainly use voice commands to trigger the lights, music, and theater system. I would like to setup voice commands for Winston and Kirby in the near future. 
 ## Devices
@@ -112,8 +136,8 @@ I have a series of smart plugs which I use to control various appliances. Curren
 | ![Hue Smart Plug](www/readme/switches/hue_plug.jpg) | ![Kasa HS103](www/readme/switches/kasa_plugs.jpg) | ![Kasa Surge](www/readme/switches/kasa_surge.jpg) | ![Lutron Aurora](www/readme/switches/lutron_aurora.jpg) |
 
 My old school analog marquee is controlled by the Hue plug which I opted for due to it's ability to be integrated with my other lights via the Hue ecosystem. Lastly, sometimes it's just quicker and quieter to turn on the lights with a switch, being a renter replacing my wall switches isn't appealing. Luckily I discovered Lutron Aurora dimmers which not only gives me a physical button but also a dimmer which I can map to one or many lights. I'm hoping to figure out a way to map secondary actions (double click, triple click, etc.), but the feasiblity is TBD.
-
-Thanks for reading, please star if your are interested in the project.
+## Custom Icons
+Inspired by [matt8707](https://github.com/matt8707), I created several custom icons which can be found in `www/custom_icons.js`. I leveraged [material design principles](https://material.io/design/iconography/system-icons.html#design-principles) and [Guide to a Vector Drawing Program](http://tavmjong.free.fr/INKSCAPE/MANUAL/html/XML.html) when designing and building the icons. I will be working on pulling in additional icons from various [icon_templates](includes/lovelace/button_card_templates/icon_templates) over the next several weeks.
 ## Lovelace Dashboards
 * [Quick Access Controls](#quick-access-controls)
   * [Room Controls](#room-controls)
@@ -136,17 +160,11 @@ The Quick Access Controls are a logical grouping of Lovelace buttons + cards usi
   <summary>Code</summary>
   
 ```
-#################################################################
-#----------------------------------------------------------------
 ## Toggle Nav
-#----------------------------------------------------------------
-#################################################################
 entities:
   - type: "custom:paper-buttons-row"
     buttons:
-      #################################################################
-      ## General Button
-      #################################################################
+## General Button
       - entity: input_select.lighttoggle
         name: false
         icon: "mdi:home-assistant"
@@ -160,9 +178,7 @@ entities:
           service_data:
             entity_id: input_select.lighttoggle
             option: General
-      #################################################################
-      ## Entryway Button
-      #################################################################
+## Entryway Button
       - entity: input_select.lighttoggle
         name: false
         icon: "mdi:coat-rack"
@@ -176,19 +192,13 @@ entities:
           service_data:
             entity_id: input_select.lighttoggle
             option: Entryway
-#################################################################
-#----------------------------------------------------------------
 ## Expanded
-#----------------------------------------------------------------
-#################################################################
 - type: "custom:state-switch"
   entity: input_select.lighttoggle
   default: Entryway
   transition: none
   states:
-  #################################################################
-  ## General Controls
-  #################################################################
+## General Controls
   General:
     type: "custom:mod-card"
     style: |
@@ -205,9 +215,7 @@ entities:
 
     ## <--- Buttons --->
   
-  #################################################################
-  ## Entryway Controls
-  #################################################################
+## Entryway Controls
   General:
     type: "custom:mod-card"
     style: |
@@ -240,9 +248,7 @@ entities:
   <summary>Code</summary>
   
 ```
-#################################################################
 ## General Controls
-#################################################################
 General:
   type: "custom:mod-card"
   style: |
@@ -256,9 +262,7 @@ General:
     type: grid
     columns: 3
     cards:
-      #----------------------------------------------------------------
-      ## Weather button
-      #----------------------------------------------------------------
+## Weather button
       - type: "custom:button-card"
         custom_fields:
           s2: |
@@ -280,9 +284,7 @@ General:
           - icon_weather
         triggers_update:
           - sun.sun
-      #----------------------------------------------------------------
-      ## Entryway button
-      #----------------------------------------------------------------
+## Entryway button
       - type: "custom:decluttering-card"
         template: declutter_room_button
         variables:
@@ -293,9 +295,7 @@ General:
           - message_off: Door is closed
           - icon_state: mdi:door-open
           - icon_default: custom:room-hallway
-      #----------------------------------------------------------------
-      ## Office button
-      #----------------------------------------------------------------
+## Office button
       - type: "custom:decluttering-card"
         template: declutter_room_button
         variables:
@@ -306,9 +306,7 @@ General:
           - message_off: Printer off
           - icon_state: mdi:printer
           - icon_default: custom:room-office
-      #----------------------------------------------------------------
-      ## Living Room button
-      #----------------------------------------------------------------
+## Living Room button
       - type: "custom:decluttering-card"
         template: declutter_temp_button
         variables:
@@ -320,9 +318,7 @@ General:
           - icon_state: mdi:radiator
           - icon_default: custom:room-living
           - room: Living Room
-      #----------------------------------------------------------------
-      ## Kitchen button
-      #----------------------------------------------------------------
+## Kitchen button
       - type: "custom:decluttering-card"
         template: declutter_temp_button
         variables:
@@ -334,9 +330,7 @@ General:
           - icon_state: custom:room-kitchen
           - icon_default: custom:room-kitchen
           - room: Kitchen
-      #----------------------------------------------------------------
-      ## Loft button
-      #----------------------------------------------------------------
+## Loft button
       - type: "custom:decluttering-card"
         template: declutter_temp_button
         variables:
@@ -355,20 +349,18 @@ General:
 
 ![Hallway Controls](www/readme/demo/hallway.png)
 #### Icons
-- [Marquee Icon](includes/lovelace/button_card_templates/icon_templates/icon_marquee.yaml)
-- [Stair Icon](includes/lovelace/button_card_templates/icon_templates/icon_led.yaml)
-- [Lamp Icon](includes/lovelace/button_card_templates/icon_templates/icon_lamp.yaml)
-- [Spotlight Icon](includes/lovelace/button_card_templates/icon_templates/icon_spot.yaml)
+- [Marquee Icon](includes/lovelace/button_card_templates/icon_templates/icon_light/icon_marquee.yaml)
+- [Stair Icon](includes/lovelace/button_card_templates/icon_templates/icon_light/icon_led.yaml)
+- [Lamp Icon](includes/lovelace/button_card_templates/icon_templates/icon_light/icon_lamp.yaml)
+- [Spotlight Icon](includes/lovelace/button_card_templates/icon_templates/icon_light/icon_spot.yaml)
 - [Door Icon](includes/lovelace/button_card_templates/icon_templates/icon_door.yaml)
-- [Smart Clock Icon](includes/lovelace/button_card_templates/icon_templates/icon_smart_clock.yaml)
+- [Smart Clock Icon](includes/lovelace/button_card_templates/icon_templates/icon_media/icon_smart_clock.yaml)
 
 <details>
   <summary>Code</summary>
   
 ```
-#################################################################
 ## Entrway Controls
-#################################################################
 Entryway:
   type: "custom:mod-card"
   style: |
@@ -382,56 +374,41 @@ Entryway:
     type: grid
     columns: 3
     cards:
-      #----------------------------------------------------------------
-      ## Hallway Marquee
-      #----------------------------------------------------------------
+## Hallway Marquee
       - type: "custom:button-card"
         entity: light.hallway_marquee
         template:
           - icon_marquee
-      #----------------------------------------------------------------
-      ## Hallway Runner
-      #----------------------------------------------------------------
+## Hallway Runner
       - type: "custom:button-card"
         entity: light.hallway_runner
         name: Runner
         template: 
-          - light_color
           - icon_led
-      #----------------------------------------------------------------
-      ## Potter Lamp
-      #----------------------------------------------------------------
+## Potter Lamp
       - type: "custom:button-card"
         entity: light.potter_lamp
         name: Lamp
         template:
           - light_color
           - icon_lamp
-      #----------------------------------------------------------------
-      ## Stair Light
-      #----------------------------------------------------------------
+## Stair Light
       - type: "custom:button-card"
         entity: light.stair
         name: Lamp
         template:
           - light
           - icon_spot
-      #----------------------------------------------------------------
-      ## Front Door Sensor
-      #----------------------------------------------------------------
+## Front Door Sensor
       - type: "custom:button-card"
         entity: binary_sensor.front_door
         template: 
-          - base
           - icon_door
-      #----------------------------------------------------------------
-      ## Hallway Smart Clock
-      #----------------------------------------------------------------
+## Hallway Smart Clock
       - type: custom:button-card
         entity: media_player.smart_clock
         name: Smart Clock
         template:
-          - base
           - icon_smart_clock
 ```
 </details>
@@ -440,16 +417,13 @@ Entryway:
 
 ![Laundry Controls](www/readme/demo/laundry.png) 
 #### Icons
-- [Washer Icon](includes/lovelace/button_card_templates/icon_templates/icon_washer.yaml)
-- [Dryer Icon](includes/lovelace/button_card_templates/icon_templates/icon_dryer.yaml)
+- [Washer Icon](includes/lovelace/button_card_templates/icon_templates/icon_laundry/icon_washer.yaml)
+- [Dryer Icon](includes/lovelace/button_card_templates/icon_templates/icon_laundry/icon_dryer.yaml)
 <details>
   <summary>Code</summary>
   
 ```
-#################################################################
 ## Guest Bathroom Controls
-#################################################################
-#249 Create view for downstairs bathroom
 Laundry:
   type: "custom:mod-card"
   style: |
@@ -463,17 +437,13 @@ Laundry:
     type: grid
     columns: 3
     cards:
-      #----------------------------------------------------------------
-      ## Washer
-      #----------------------------------------------------------------
+## Washer
       - type: "custom:button-card"
         entity: sensor.washer
         name: Washer
         template:
           - icon_washer
-      #----------------------------------------------------------------
-      ## Dryer
-      #----------------------------------------------------------------
+## Dryer
       - type: "custom:button-card"
         entity: sensor.dryer
         name: Dryer
@@ -486,17 +456,15 @@ Laundry:
 
 ![Office Controls](www/readme/demo/office.png) 
 #### Icons
-- [Ceiling Icon](includes/lovelace/button_card_templates/icon_templates/icon_overhead.yaml)
+- [Ceiling Icon](includes/lovelace/button_card_templates/icon_templates/icon_light/icon_recessed.yaml)
 - [Printer Icon](includes/lovelace/button_card_templates/icon_templates/icon_printer.yaml)
-- [Air Circulator Icon](includes/lovelace/button_card_templates/icon_templates/icon_circulator.yaml)
-- [Google Nest Mini Icon](/Users/Glusman/Home-Assistant-Config/includes/lovelace/button_card_templates/icon_templates/icon_nest_mini.yaml)
+- [Air Circulator Icon](includes/lovelace/button_card_templates/icon_templates/icon_climate/icon_circulator.yaml)
+- [Google Nest Mini Icon](/Users/Glusman/Home-Assistant-Config/includes/lovelace/button_card_templates/icon_templates/icon_media/icon_nest_mini.yaml)
 <details>
   <summary>Code</summary>
   
 ```
-#################################################################
 ## Office Controls
-#################################################################
 Office:
   type: "custom:mod-card"
   style: |
@@ -510,41 +478,30 @@ Office:
     type: grid
     columns: 3
     cards:
-      #----------------------------------------------------------------
-      ## Office Overhead Lights
-      #----------------------------------------------------------------
+## Office Overhead Lights
       - type: "custom:button-card"
         entity: light.overhead
         name: Ceiling
         template:
           - light
-          - icon_overhead
-      #----------------------------------------------------------------
-      ## Printer
-      #----------------------------------------------------------------
+          - icon_recessed
+## Printer
       - type: "custom:button-card"
         entity: switch.major_laser_printer
         name: Major Laser
         template: 
-          - base
           - icon_printer
-      #----------------------------------------------------------------
-      ## Air Circulator
-      #----------------------------------------------------------------
+## Air Circulator
       - type: "custom:button-card"
         entity: switch.kettle
         name: Air Circulator
         template:
-          - base
           - icon_circulator
-      #----------------------------------------------------------------
-      ## Office Google Home Mini
-      #----------------------------------------------------------------
+## Office Google Home Mini
       - type: custom:button-card
         entity: media_player.office_speaker
         name: Home Mini
         template:
-          - media 
           - icon_nest_mini
 ```
 </details>
@@ -553,20 +510,18 @@ Office:
 
 ![Living Room Controls](www/readme/demo/living_room.png)
 #### Icons
-- [Spotlight Icon](includes/lovelace/button_card_templates/icon_templates/icon_spot.yaml)
-- [Garden Lights Icon](includes/lovelace/button_card_templates/icon_templates/icon_garden.yaml)
-- [Lamp Icon](includes/lovelace/button_card_templates/icon_templates/icon_lamp.yaml)
-- [Heater Icon](includes/lovelace/button_card_templates/icon_templates/icon_heater.yaml)
-- [Air Circulator Icon](includes/lovelace/button_card_templates/icon_templates/icon_circulator.yaml) 
-- [AC Icon](includes/lovelace/button_card_templates/icon_templates/icon_ac.yaml)
-- [TV Icon](includes/lovelace/button_card_templates/icon_templates/icon_tv.yaml)
+- [Spotlight Icon](includes/lovelace/button_card_templates/icon_templates/icon_light/icon_spot.yaml)
+- [Garden Lights Icon](includes/lovelace/button_card_templates/icon_templates/icon_light/icon_garden.yaml)
+- [Lamp Icon](includes/lovelace/button_card_templates/icon_templates/icon_light/icon_lamp.yaml)
+- [Heater Icon](includes/lovelace/button_card_templates/icon_templates/icon_climate/icon_heater.yaml)
+- [Air Circulator Icon](includes/lovelace/button_card_templates/icon_templates/icon_climate/icon_circulator.yaml) 
+- [AC Icon](includes/lovelace/button_card_templates/icon_templates/icon_climate/icon_ac.yaml)
+- [TV Icon](includes/lovelace/button_card_templates/icon_templates/icon_media/icon_tv.yaml)
 <details>
   <summary>Code</summary>
   
 ```
-#################################################################
 ## Living Room Controls
-#################################################################
 Living Room:
   type: "custom:mod-card"
   style: |
@@ -580,63 +535,45 @@ Living Room:
     type: grid
     columns: 3
     cards:
-      #----------------------------------------------------------------
-      ## Track Light
-      #----------------------------------------------------------------
+## Track Light
       - type: "custom:button-card"
         entity: light.track
         name: Track
         template:
           - light_color
           - icon_spot
-      #----------------------------------------------------------------
-      ## Garden Light
-      #----------------------------------------------------------------
+## Garden Light
       - type: "custom:button-card"
         entity: light.garden
         name: Garden
         template: 
           - icon_garden
-      #----------------------------------------------------------------
-      ## Yumi Lamp
-      #----------------------------------------------------------------
+## Yumi Lamp
       - type: "custom:button-card"
         entity: light.yumi_lamp
         name: Lamp
         template:
           - light_color
           - icon_lamp
-      #----------------------------------------------------------------
-      ## Heater
-      #----------------------------------------------------------------
+## Heater
       - type: "custom:button-card"
         entity: switch.switchbot
         template:
-          - base
           - icon_heater
-          - loader
-      #----------------------------------------------------------------
-      ## Living Room Air Circulator
-      #----------------------------------------------------------------
+## Living Room Air Circulator
       - type: "custom:button-card"
         entity: switch.air_circulator
         name: Air Circulator
         template:
-          - base
           - icon_circulator
-      #----------------------------------------------------------------
-      ## Ice Bear
-      #----------------------------------------------------------------
+## Ice Bear
       - type: "custom:button-card"
         entity: climate.ice_bear
         name: Air Conditioner
         double_tap_action:
           action: more-info                  
         template:
-          - base
           - icon_ac
-          - circle_climate
-          - loader
         variables:
           circle_input: >
             [[[
@@ -644,17 +581,13 @@ Living Room:
                 null :
                 entity.attributes.temperature;
             ]]]
-      #----------------------------------------------------------------
-      ## Shield
-      #----------------------------------------------------------------
+## Shield
       - type: "custom:button-card"
         entity: media_player.shield_tv
         tap_action:
           action: toggle
         template:
-          - base
           - icon_tv
-          - loader 
 ```
 </details>
 
@@ -662,18 +595,16 @@ Living Room:
 
 ![Kitchen Controls](www/readme/demo/kitchen.png) 
 #### Icons
-- [Spotlight Icon](includes/lovelace/button_card_templates/icon_templates/icon_spot.yaml)
-- [Nanoleaf Icon](includes/lovelace/button_card_templates/icon_templates/icon_dinopanel.yaml)
-- [Google Nest Mini Icon](/Users/Glusman/Home-Assistant-Config/includes/lovelace/button_card_templates/icon_templates/icon_nest_mini.yaml)
-- [Dyson Icon](includes/lovelace/button_card_templates/icon_templates/icon_dyson.yaml)
+- [Spotlight Icon](includes/lovelace/button_card_templates/icon_templates/icon_light/icon_spot.yaml)
+- [Nanoleaf Icon](includes/lovelace/button_card_templates/icon_templates/icon_light/icon_dinopanel.yaml)
+- [Google Nest Mini Icon](/Users/Glusman/Home-Assistant-Config/includes/lovelace/button_card_templates/icon_templates/icon_media/icon_nest_mini.yaml)
+- [Dyson Icon](includes/lovelace/button_card_templates/icon_templates/icon_media/icon_dyson.yaml)
 
 <details>
   <summary>Code</summary>
   
 ```
-#################################################################
 ## Kitchen Controls
-#################################################################
 Kitchen:
   type: "custom:mod-card"
   style: |
@@ -687,35 +618,25 @@ Kitchen:
     type: grid
     columns: 3
     cards:
-      #----------------------------------------------------------------
-      ## Kitchen Track
-      #----------------------------------------------------------------
+## Kitchen Track
       - type: "custom:button-card"
         entity: light.kitchen
         name: Track
         template:
           - light_color
           - icon_spot
-      #----------------------------------------------------------------
-      ## Nanoleaf Dino Panesl
-      #----------------------------------------------------------------
+## Nanoleaf Dino Panesl
       - type: "custom:button-card"
         entity: light.nanoleaf
         template: 
-          - light_nanoleaf
           - icon_dinopanel
-      #----------------------------------------------------------------
-      ## Kitchen Google Home Mini
-      #----------------------------------------------------------------
+## Kitchen Google Home Mini
       - type: custom:button-card
         entity: media_player.living_room_speaker
         name: Home Mini
         template:
-          - media
           - icon_nest_mini
-      #----------------------------------------------------------------
-      ## Kitchen Dyson
-      #----------------------------------------------------------------
+## Kitchen Dyson
       - type: "custom:button-card"
         entity: fan.kitchen
         name: Dyson
@@ -728,20 +649,18 @@ Kitchen:
 
 ![Loft Controls](www/readme/demo/loft.png) 
 #### Icons
-- [Bedside Icon](includes/lovelace/button_card_templates/icon_templates/icon_bed.yaml)
-- [Table Lamp Icon](includes/lovelace/button_card_templates/icon_templates/icon_bedside.yaml)
-- [Spotlight Icon](includes/lovelace/button_card_templates/icon_templates/icon_spot.yaml)
-- [Lamp Icon](includes/lovelace/button_card_templates/icon_templates/icon_lamp.yaml)
-- [Dyson Icon](includes/lovelace/button_card_templates/icon_templates/icon_dyson.yaml)
-- [Nest Hub Mini Icon](includes/lovelace/button_card_templates/icon_templates/icon_nest_hub.yaml)
+- [Bedside Icon](includes/lovelace/button_card_templates/icon_templates/icon_light/icon_bed.yaml)
+- [Table Lamp Icon](includes/lovelace/button_card_templates/icon_templates/icon_light/icon_bedside.yaml)
+- [Spotlight Icon](includes/lovelace/button_card_templates/icon_templates/icon_light/icon_spot.yaml)
+- [Lamp Icon](includes/lovelace/button_card_templates/icon_templates/icon_light/icon_lamp.yaml)
+- [Dyson Icon](includes/lovelace/button_card_templates/icon_templates/icon_climate/icon_dyson.yaml)
+- [Nest Hub Mini Icon](includes/lovelace/button_card_templates/icon_templates/icon_media/icon_nest_hub.yaml)
 
 <details>
   <summary>Code</summary>
   
 ```
-#################################################################
 ## Loft Controls
-#################################################################
 Loft:
   type: "custom:mod-card"
   style: |
@@ -755,62 +674,45 @@ Loft:
     type: grid
     columns: 3
     cards:
-      #----------------------------------------------------------------
       ## Bedside Lights
-      #----------------------------------------------------------------
       - type: "custom:button-card"
         entity: light.bedside
         name: Bedside
         template: 
-          - light
           - icon_bedside
-      #----------------------------------------------------------------
-      ## Jeffrey's Lights
-      #----------------------------------------------------------------
+## His Light
       - type: "custom:button-card"
         entity: light.jeffreys_lamp
         name: Jeffrey's
         template: 
-          - light
           - icon_bed
-      #----------------------------------------------------------------
-      ## Tiffany's Light
-      #----------------------------------------------------------------
+## Her Light
       - type: "custom:button-card"
         entity: light.tiffanys_lamp
         name: Tiffany's
         template: 
-          - light
           - icon_bed
-      #----------------------------------------------------------------
-      ## Bed Track
-      #----------------------------------------------------------------
+## Bed Track
       - type: "custom:button-card"
         entity: light.loft_bed_light
         name: Ceiling
         template:
           - light
           - icon_spot
-      #----------------------------------------------------------------
-      ## Desk Lights
-      #----------------------------------------------------------------
+## Desk Lights
       - type: "custom:button-card"
         entity: light.loft_desk_lamp
         name: Desk
         template:
           - light
           - icon_lamp
-      #----------------------------------------------------------------
-      ## Kirby
-      #----------------------------------------------------------------
+## Dyson
       - type: "custom:button-card"
         entity: fan.kirby
         name: Dyson
         template:
           - icon_dyson
-      #----------------------------------------------------------------
-      ## Loft Nest Hub
-      #----------------------------------------------------------------
+## Loft Nest Hub
       - type: custom:button-card
         entity: media_player.loft_nest_hub
         name: Nest Hub
@@ -823,11 +725,11 @@ Loft:
 - [x] [Notification Automations + Water Alerts](https://github.com/theglus/Home-Assistant-Config/milestone/26)
 - [x] [Tackle Nanoleaf pop-up + light button bugs](https://github.com/theglus/Home-Assistant-Config/milestone/29)
 - [x] [Create buttons for remaining Google Home devices](https://github.com/theglus/Home-Assistant-Config/milestone/18)
-- [ ] [Granular Google Home Controls](https://github.com/theglus/Home-Assistant-Config/milestone/19)
-- [ ] [Dyson Controls](https://github.com/theglus/Home-Assistant-Config/milestone/27)
+- [x] [Granular Google Home Controls](https://github.com/theglus/Home-Assistant-Config/milestone/19)
+- [x] [Dyson Controls](https://github.com/theglus/Home-Assistant-Config/milestone/27)
 - [ ] [AC climate pop-up](https://github.com/theglus/Home-Assistant-Config/milestone/24)
 - [x] [Laundry Machine Controls](https://github.com/theglus/Home-Assistant-Config/milestone/5)
-- [ ] [Winston Interface + Automations](https://github.com/theglus/Home-Assistant-Config/milestone/20)
+- [x] [Winston Interface + Automations](https://github.com/theglus/Home-Assistant-Config/milestone/20)
 - [ ] [Home Theater Controls](https://github.com/theglus/Home-Assistant-Config/milestone/30)
 - [ ] [Improved Printer + Paper Shredder buttons](https://github.com/theglus/Home-Assistant-Config/milestone/23)
 - [ ] [Animate various light buttons](https://github.com/theglus/Home-Assistant-Config/milestone/7)
@@ -847,6 +749,7 @@ Loft:
 - [Notify Washer](includes/automations/notify_washer.yaml): Notify smartphones when washer is complete.
 - [On Air](includes/automations/on_air.yaml): Turn Potter light red when webcam turns on.
 - [Peak Usage Alerts](includes/automations/peak_usage_alerts.yaml): Notify Smartphones when AC, Washer, or Dryer is on during peak usage. 
+- [Select Vacuum Speed](includes/automations/select_vacuum_speed.yaml): Adds vacuum.set_fan_speed service calls to Vacuum Speed Helper.
 - [Server Boot Up](includes/automations/server_boot_up.yaml): Notify via Telegram when server has booted up.
 - [Server Reboot](includes/automations/server_reboot.yaml): Telegram notification that alerts of server reboot, restart, or shutdown.
 - [Set Theme](includes/automations/set_theme.yaml): Set theme at Home Assistant start.
@@ -856,3 +759,5 @@ Loft:
 - [Vacuum Docked](includes/automations/vacuum_done.yaml): Notify Smartphones when Winston has returned to dock.
 - [Vacuum Done](includes/automations/vacuum_done.yaml): Notify Smartphones when Winston has completed cleaning.
 - [Volume Home](includes/automations/volume_home.yaml): Turn down volume of Google Home device at 10 pm.
+
+Thanks for reading, please star if your are interested in the project.
