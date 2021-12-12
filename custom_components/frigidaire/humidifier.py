@@ -52,7 +52,7 @@ async def async_setup_entry(
         [
             FrigidaireDehumidifier(client, appliance)
             for appliance in appliances
-            if appliance.appliance_class == frigidaire.ApplianceClass.DEHUMIDIFIER
+            if appliance.destination == frigidaire.Destination.DEHUMIDIFIER
         ],
         update_before_add=True,
     )
