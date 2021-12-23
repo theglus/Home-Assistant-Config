@@ -47,7 +47,7 @@ async def async_setup_entry(
         [
             FrigidaireClimate(client, appliance)
             for appliance in appliances
-            if appliance.appliance_class == frigidaire.ApplianceClass.AIR_CONDITIONER
+            if appliance.destination == frigidaire.Destination.AIR_CONDITIONER
         ],
         update_before_add=True,
     )
