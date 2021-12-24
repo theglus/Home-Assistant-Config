@@ -60,10 +60,6 @@ lovelace:
     # https://github.com/custom-cards/button-card
     - url: /hacsfiles/button-card/button-card.js
       type: module
-    # Card Mod
-    # https://github.com/thomasloven/lovelace-card-mod
-    - url: /hacsfiles/lovelace-card-mod/card-mod.js
-      type: module
     # Declutter Card
     # https://github.com/custom-cards/decluttering-card
     - url: /hacsfiles/decluttering-card/decluttering-card.js
