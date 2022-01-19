@@ -13,6 +13,7 @@ from requests.adapters import HTTPAdapter
 DATA_ROOT = "lgedmRoot"
 DEFAULT_COUNTRY = "US"
 DEFAULT_LANGUAGE = "en-US"
+DEFAULT_TIMEOUT = 10  # seconds
 
 # ac devices features
 FEAT_ENERGY_CURRENT = "energy_current"
@@ -104,6 +105,13 @@ def as_list(obj):
         return obj
     else:
         return [obj]
+
+
+def add_end_slash(url: str):
+    """Add final slash to url."""
+    if not url.endswith("/"):
+        return url + "/"
+    return url
 
 
 def gen_uuid():
