@@ -57,7 +57,8 @@ cards:
           ## HA Controls
           #----------------------------------------------------------------
           # TODO: #312 Format Dekstop + HA system control buttons.
-          - type: custom:hui-horizontal-stack-card
+          - type: custom:hui-element
+            card_type: horizontal-stack
             card_mod:
             cards:
               - type: custom:button-card
