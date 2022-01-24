@@ -2,16 +2,20 @@
 SmartThinQ API for most use cases.
 """
 import base64
-import json
 from collections import namedtuple
 from datetime import datetime, timedelta
 import enum
+import json
 import logging
 from numbers import Number
+from requests import exceptions as req_exc
+import time
 from typing import Any, Dict, Optional
+from threading import Lock
 
 from . import EMULATION, wideq_log_level
-from .core_exceptions import MonitorError
+from . import core_exceptions as core_exc
+
 
 BIT_OFF = "OFF"
 BIT_ON = "ON"
@@ -19,8 +23,9 @@ BIT_ON = "ON"
 LABEL_BIT_OFF = "@CP_OFF_EN_W"
 LABEL_BIT_ON = "@CP_ON_EN_W"
 
-DEFAULT_TIMEOUT = 10  # seconds
-DEFAULT_REFRESH_TIMEOUT = 20  # seconds
+MIN_TIME_BETWEEN_CLI_REFRESH = 10  # seconds
+MAX_RETRIES = 3
+MAX_UPDATE_FAIL_ALLOWED = 10
 
 STATE_OPTIONITEM_OFF = "off"
 STATE_OPTIONITEM_ON = "on"
@@ -135,29 +140,219 @@ class Monitor(object):
         task expires, it attempts to start a new one automatically. This
         makes one `Monitor` object suitable for long-term monitoring.
         """
+    _client_lock = Lock()
+    _client_connected = True
+    _critical_error = False
+    _last_client_refresh = datetime.min
+    _not_logged_count = 0
 
-    def __init__(self, session, device_id: str) -> None:
-        self.session = session
-        self.device_id = device_id
+    def __init__(self, client, device_id: str, device_type=PlatformType.THINQ1) -> None:
+        """Initialize monitor class."""
+        self._client = client
+        self._device_id = device_id
+        self._device_type = device_type
+        self._work_id: Optional[str] = None
+        self._disconnected = True
+        self._has_error = False
+
+    def _raise_error(self, msg, *, not_logged=False, exc: Exception = None, exc_info=False):
+        """Log and raise error with different level depending on condition."""
+        if not_logged and Monitor._client_connected:
+            Monitor._client_connected = False
+            self._has_error = True
+            _LOGGER.warning(msg, exc_info=exc_info)
+
+        log_lev = logging.DEBUG
+        if not self._has_error:
+            self._has_error = True
+            if Monitor._client_connected:
+                log_lev = logging.WARNING
+        _LOGGER.log(log_lev, "DeviceID %s: %s", self._device_id, msg, exc_info=exc_info)
+
+        if not Monitor._critical_error and Monitor._not_logged_count >= MAX_UPDATE_FAIL_ALLOWED:
+            Monitor._critical_error = True
+            _LOGGER.error(msg, exc_info=exc_info)
+
+        if Monitor._critical_error:
+            raise core_exc.MonitorUnavailableError(self._device_id, msg) from exc
+        raise core_exc.MonitorRefreshError(self._device_id, msg) from exc
+
+    def _refresh_token(self):
+        """Refresh the devices shared client auth token"""
+        with Monitor._client_lock:
+            self._client.session.refresh_auth()
+
+    def _refresh_client(self):
+        """Refresh the devices shared client"""
+        with Monitor._client_lock:
+            if Monitor._client_connected:
+                return True
+            call_time = datetime.utcnow()
+            difference = (call_time - Monitor._last_client_refresh).total_seconds()
+            if difference <= MIN_TIME_BETWEEN_CLI_REFRESH:
+                return False
+
+            Monitor._last_client_refresh = call_time
+            refresh_gateway = False
+            if Monitor._not_logged_count >= 30:
+                Monitor._not_logged_count = 0
+                refresh_gateway = True
+            Monitor._not_logged_count += 1
+            _LOGGER.debug("ThinQ client not connected. Trying to reconnect...")
+            self._client.refresh(refresh_gateway)
+            _LOGGER.warning("ThinQ client successfully reconnected")
+            Monitor._client_connected = True
+            Monitor._critical_error = False
+            Monitor._not_logged_count = 0
+            return True
+
+    def refresh(self, query_device=False) -> Optional[any]:
+        """Update device state"""
+        _LOGGER.debug("Updating ThinQ device %s", self._device_id)
+
+        state = None
+        for iteration in range(MAX_RETRIES):
+            _LOGGER.debug("Polling...")
+            # Wait one second between iteration
+            if iteration > 0:
+                time.sleep(1)
+
+            try:
+                if not self._restart_monitor():
+                    self._raise_error(
+                        "Connection to ThinQ not available. Client refresh error",
+                        not_logged=True,
+                    )
+                state = self.poll(query_device)
+
+            except core_exc.NotConnectedError:
+                self._disconnected = True
+                self._has_error = False
+                _LOGGER.debug("Device %s not connected. Status not available", self._device_id)
+                raise
+
+            except core_exc.DeviceNotFound:
+                self._raise_error("Device ID is invalid, status update failed")
+
+            except core_exc.NotLoggedInError as exc:
+                # This could be raised by an expired token
+                self._raise_error(
+                    "Connection to ThinQ failed. ThinQ API error",
+                    not_logged=True,
+                    exc=exc,
+                )
+
+            except (core_exc.InvalidCredentialError, core_exc.TokenError) as exc:
+                self._raise_error(
+                    "Connection to ThinQ failed. Invalid Credential or Invalid Token",
+                    not_logged=True,
+                    exc=exc,
+                )
+
+            except (
+                req_exc.ConnectionError,
+                req_exc.ConnectTimeout,
+                req_exc.ReadTimeout,
+            ) as exc:
+                # These are network errors, refresh client is not required
+                self._raise_error(
+                    "Connection to ThinQ failed. Network connection error",
+                    not_logged=False,
+                    exc=exc,
+                )
+
+            except Exception as exc:
+                self._raise_error(
+                    "Unexpected error while updating device status",
+                    not_logged=True,
+                    exc=exc,
+                    exc_info=True,
+                )
+
+            else:
+                if state:
+                    _LOGGER.debug("ThinQ status updated")
+                    # l = dir(state)
+                    # _LOGGER.debug('Status attributes: %s', l)
+                    break
+
+                else:
+                    _LOGGER.debug("No status available yet")
+                    continue
+
+        self._has_error = False
+        return state
+
+    def _restart_monitor(self) -> bool:
+        """Restart the device monitor"""
+
+        if Monitor._client_connected:
+            # try to refresh auth token before it expires
+            self._refresh_token()
+        else:
+            self._disconnected = True
+            if not self._refresh_client():
+                return False
+
+        if not self._disconnected:
+            return True
+
+        self.start()
+        self._disconnected = False
+        return True
 
     def start(self) -> None:
-        self.work_id = self.session.monitor_start(self.device_id)
+        """Start monitor for ThinQ1 device."""
+        if self._device_type != PlatformType.THINQ1:
+            return
+        self._work_id = self._client.session.monitor_start(self._device_id)
 
     def stop(self) -> None:
-        self.session.monitor_stop(self.device_id, self.work_id)
+        """Stop monitor for ThinQ1 device."""
+        if not self._work_id:
+            return
+        work_id = self._work_id
+        self._work_id = None
+        self._client.session.monitor_stop(self._device_id, work_id)
 
-    def poll(self) -> Optional[bytes]:
+    def poll(self, query_device=False) -> Optional[any]:
         """Get the current status data (a bytestring) or None if the
             device is not yet ready.
             """
-        self.work_id = self.session.monitor_start(self.device_id)
+        if self._device_type == PlatformType.THINQ1:
+            return self._poll_v1()
+        return self._poll_v2(query_device)
+
+    def _poll_v1(self) -> Optional[bytes]:
+        """Get the current status data (a bytestring) or None if the
+            device is not yet ready.
+            """
+        if not self._work_id:
+            self.start()
+            if not self._work_id:
+                return None
         try:
-            return self.session.monitor_poll(self.device_id, self.work_id)
-        except MonitorError:
+            return self._client.session.monitor_poll(self._device_id, self._work_id)
+        except core_exc.MonitorError:
             # Try to restart the task.
             self.stop()
-            self.start()
             return None
+
+    def _poll_v2(self, query_device=False) -> Optional[any]:
+        """Get the current status data (a json str) or None if the
+            device is not yet ready.
+            """
+        if self._device_type != PlatformType.THINQ2:
+            return None
+        if query_device:
+            result = self._client.session.get_device_v2_settings(self._device_id)
+            return result.get("snapshot")
+
+        self._client.refresh_devices()
+        device_data = self._client.get_device(self._device_id)
+        if device_data:
+            return device_data.snapshot
+        return None
 
     @staticmethod
     def decode_json(data: bytes) -> Dict[str, Any]:
@@ -177,7 +372,7 @@ class Monitor(object):
         self.start()
         return self
 
-    def __exit__(self, type, value, tb) -> None:
+    def __exit__(self, exc_type, exc_value, exc_traceback) -> None:
         self.stop()
 
 
@@ -521,36 +716,61 @@ class ModelInfo(object):
         return control
 
     @property
-    def binary_monitor_data(self):
-        """Check that type of monitoring is BINARY(BYTE).
-        """
+    def byte_monitor_data(self):
+        """Check that type of monitoring is BINARY(BYTE)."""
         return self._data["Monitoring"]["type"] == "BINARY(BYTE)"
 
-    def decode_monitor_binary(self, data):
-        """Decode binary encoded status data.
-        """
+    @property
+    def hex_monitor_data(self):
+        """Check that type of monitoring is BINARY(HEX)."""
+        return self._data["Monitoring"]["type"] == "BINARY(HEX)"
+
+    def decode_monitor_byte(self, data):
+        """Decode binary byte encoded status data."""
 
         decoded = {}
+        total_bytes = len(data)
         for item in self._data["Monitoring"]["protocol"]:
             key = item["value"]
             value = 0
-            for v in data[item["startByte"]: item["startByte"] + item["length"]]:
-                value = (value << 8) + v
+            start_byte: int = item["startByte"]
+            end_byte: int = start_byte + item["length"]
+            if total_bytes >= end_byte:
+                for v in data[start_byte: end_byte]:
+                    value = (value << 8) + v
             decoded[key] = str(value)
         return decoded
 
-    def decode_monitor_json(self, data):
-        """Decode a bytestring that encodes JSON status data."""
+    def decode_monitor_hex(self, data):
+        """Decode binary hex encoded status data."""
 
+        decoded = {}
+        hex_list = data.decode("utf8").split(",")
+        total_bytes = len(hex_list)
+        for item in self._data["Monitoring"]["protocol"]:
+            key = item["value"]
+            value = 0
+            start_byte: int = item["startByte"]
+            end_byte: int = start_byte + item["length"]
+            if total_bytes >= end_byte:
+                for i in range(start_byte, end_byte):
+                    value = (value << 8) + int(hex_list[i], 16)
+            decoded[key] = str(value)
+        return decoded
+
+    @staticmethod
+    def decode_monitor_json(data):
+        """Decode a bytestring that encodes JSON status data."""
         return json.loads(data.decode("utf8"))
 
     def decode_monitor(self, data):
         """Decode  status data."""
 
-        if self.binary_monitor_data:
-            return self.decode_monitor_binary(data)
-        else:
-            return self.decode_monitor_json(data)
+        if self.byte_monitor_data:
+            return self.decode_monitor_byte(data)
+        if self.hex_monitor_data:
+            return self.decode_monitor_hex(data)
+        return self.decode_monitor_json(data)
 
     @staticmethod
     def _get_current_temp_key(key: str, data):
@@ -595,10 +815,18 @@ class ModelInfo(object):
                         decoded[key] = str(value)
             return decoded
 
+        convert_rule = self._data.get("ConvertingRule", {})
         for data_key, value_key in protocol.items():
-            value = info.get(data_key, "")
-            if value is not None and isinstance(value, Number):
-                value = int(value)
+            value = ""
+            raw_value = info.get(data_key)
+            if raw_value is not None:
+                value = str(raw_value)
+                if isinstance(raw_value, Number):
+                    value = str(int(raw_value))
+                elif value_key in convert_rule:
+                    value_rules = convert_rule[value_key].get("MonitoringConvertingRule", {})
+                    if raw_value in value_rules:
+                        value = value_rules[raw_value]
             decoded[value_key] = str(value)
         return decoded
 
@@ -895,7 +1123,7 @@ class Device(object):
         self._model_lang_pack = None
         self._product_lang_pack = None
         self._should_poll = device.platform_type == PlatformType.THINQ1
-        self._mon = None
+        self._mon = Monitor(client, device.id, device.platform_type)
         self._control_set = 0
         self._last_additional_poll: Optional[datetime] = None
         self._available_features = available_features or {}
@@ -1087,21 +1315,6 @@ class Device(object):
 
         return self._model_info is not None
 
-    def monitor_start(self):
-        """Start monitoring the device's status."""
-        if not self._should_poll:
-            return
-        mon = Monitor(self._client.session, self._device_info.id)
-        mon.start()
-        self._mon = mon
-
-    def monitor_stop(self):
-        """Stop monitoring the device's status."""
-        if not self._mon:
-            return
-        self._mon.stop()
-        self._mon = None
-
     def _pre_update_v2(self):
         """Call additional methods before data update for v2 API.
 
@@ -1121,16 +1334,10 @@ class Device(object):
         if query_device:
             try:
                 self._pre_update_v2()
-            except Exception:
-                pass
-            result = self._client.session.get_device_v2_settings(self._device_info.id)
-            return result.get("snapshot")
+            except Exception as exc:
+                _LOGGER.debug("Error %s calling pre_update function", exc)
 
-        self._client.refresh_devices()
-        device_data = self._client.get_device(self._device_info.id)
-        if device_data:
-            return device_data.snapshot
-        return None
+        return self._mon.refresh(query_device)
 
     def _delete_permission(self):
         """Remove permission acquired in set command."""
@@ -1155,14 +1362,14 @@ class Device(object):
             return
         if poll_interval <= 0:
             return
-        call_time = datetime.now()
+        call_time = datetime.utcnow()
         if self._last_additional_poll is None:
             self._last_additional_poll = (
                 call_time - timedelta(seconds=max(poll_interval - 10, 1))
             )
         difference = (call_time - self._last_additional_poll).total_seconds()
         if difference >= poll_interval:
-            self._last_additional_poll = datetime.now()
+            self._last_additional_poll = call_time
             self._get_device_info()
 
     def device_poll(
@@ -1183,7 +1390,6 @@ class Device(object):
         :param thinq2_query_device: if True query thinq2 devices with dedicated command
             instead using dashboard.
         """
-        res = None
 
         # load device info at first call if not loaded before
         if not self.init_device_info():
@@ -1197,19 +1403,17 @@ class Device(object):
             return self._model_info.decode_snapshot(snapshot, snapshot_key)
 
         # ThinQ V1 - Monitor data must be polled """
-        if not self._mon:
-            # Abort if monitoring has not started yet.
+        data = self._mon.refresh()
+        if not data:
             return None
-        data = self._mon.poll()
-        if data:
-            res = self._model_info.decode_monitor(data)
 
+        res = self._model_info.decode_monitor(data)
         # do additional poll
         if res and thinq1_additional_poll > 0:
             try:
                 self._additional_poll(thinq1_additional_poll)
             except Exception as exc:
-                _LOGGER.warning("Error calling additional poll methods. Error %s", exc)
+                _LOGGER.debug("Error %s calling additional poll methods", exc)
 
         # remove control permission if previously set
         self._delete_permission()
