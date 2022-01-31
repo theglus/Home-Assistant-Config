@@ -1,0 +1,11 @@
+#################################################################
+## Denon QS Theater
+#################################################################
+alias: Denon QS Theater
+sequence:
+  - service: denonavr.get_command
+    data:
+      entity_id: media_player.dennis
+      command: /goform/formiPhoneAppDirect.xml?MSQUICK3
+mode: single
+icon: mdi:theater

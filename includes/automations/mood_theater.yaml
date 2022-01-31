@@ -1,0 +1,14 @@
+#################################################################
+## Theater Mode
+#
+## Theater lights + quick select.
+#################################################################
+alias: Theater Mode
+description: "Theater lights + quick select."
+trigger: []
+condition: []
+action:
+  - scene: scene.theater
+  - service: script.av_quick_3
+    data: {}
+mode: single

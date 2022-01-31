@@ -1,0 +1,11 @@
+#################################################################
+## Denon QS Nighttime
+#################################################################
+alias: Denon QS Nighttime
+sequence:
+  - service: denonavr.get_command
+    data:
+      entity_id: media_player.dennis
+      command: /goform/formiPhoneAppDirect.xml?MSQUICK2
+mode: single
+icon: mdi:ssh

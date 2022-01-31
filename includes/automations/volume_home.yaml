@@ -29,8 +29,9 @@ action:
           - service: media_player.volume_set
             target:
               entity_id:
+                - media_player.bookshelf_speakers
                 - media_player.office_speaker
-                - media_player.living_room_speaker
+                - media_player.kitchen_speaker
                 - media_player.loft_bathroom
             data:
               volume_level: 0.3
@@ -51,8 +52,9 @@ action:
           volume_level: 0.4
         target:
           entity_id:
-            - media_player.living_room_speaker
+            - media_player.bookshelf_speakers
             - media_player.office_speaker
+            - media_player.kitchen_speaker
             - media_player.loft_bathroom
       - service: notify.mobile_app_pixel_5
         data:
