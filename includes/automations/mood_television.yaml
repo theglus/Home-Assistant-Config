@@ -1,0 +1,14 @@
+#################################################################
+## TV Mode
+#
+## TV lights + Nighttime quick select.
+#################################################################
+alias: TV Mode
+description: "TV lights + Nighttime quick select."
+trigger: []
+condition: []
+action:
+  - scene: scene.theater
+  - service: script.av_quick_2
+    data: {}
+mode: single

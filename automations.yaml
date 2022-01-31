@@ -38,3 +38,23 @@
       - service: switch.toggle
         data: {}
         entity_id: switch.switchbot
+- id: '1643608543453'
+  alias: Theater Mode
+  description: ''
+  trigger: []
+  condition: []
+  action:
+  - scene: scene.theater
+  - service: script.av_quick_3
+    data: {}
+  mode: single
+- id: '1643608642387'
+  alias: TV Mode
+  description: ''
+  trigger: []
+  condition: []
+  action:
+  - scene: scene.theater
+  - service: script.av_quick_2
+    data: {}
+  mode: single
