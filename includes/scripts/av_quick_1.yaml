@@ -1,0 +1,11 @@
+#################################################################
+## Denon Quick Select 1
+#################################################################
+alias: Denon Quick Select 1
+sequence:
+  - service: denonavr.get_command
+    data:
+      entity_id: media_player.dennis
+      command: /goform/formiPhoneAppDirect.xml?MSQUICK1
+mode: single
+# icon: mdi:tune-vertical
