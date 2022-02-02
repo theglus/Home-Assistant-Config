@@ -8,7 +8,7 @@ description: "TV lights + Nighttime quick select."
 trigger: []
 condition: []
 action:
-  - scene: scene.theater
+  - scene: scene.television
   - service: script.av_quick_2
     data: {}
 mode: single
