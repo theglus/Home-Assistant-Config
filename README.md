@@ -742,6 +742,8 @@ Loft:
 - [Climate Office Off](includes/automations/climate_office_off.yaml): Turn fan OFF based off of Overhead light group.
 - [Climate Office On](includes/automations/climate_office_on.yaml): Turn fan ON based off of Overhead light group.
 - [Leave Home](includes/automations/leave_home.yaml): Notify smartphones of door status + turn off lights accordingly.
+- [Mood Television](includes/automations/mood_television.yaml): Television scene + Denon Nighttime quick select.
+- [Mood Theater](includes/automations/mood_theater.yaml): Theater scene + Denon Theater quick select.
 - [Notify AQU](includes/automations/notify_aqi.yaml): Notify Smartphones when AQI is >75.
 - [Notify Dryer](includes/automations/notify_dryer.yaml): Notify smartphones when dryer is complete.
 - [Notify Heat Wave](includes/automations/notify_heatwave.yaml): Notify smartphones when tomorrows high is  >75 °F.
