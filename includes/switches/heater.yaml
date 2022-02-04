@@ -1,9 +1,6 @@
 #################################################################
 ## Switches for Heater.
 #################################################################
-# Switchbot for heater
-- platform: switchbot
-  mac: !secret switchbot_mac
 # Heater switch with status
 - platform: template
   switches:
