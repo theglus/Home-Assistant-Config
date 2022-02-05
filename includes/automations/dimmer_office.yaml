@@ -1,0 +1,45 @@
+#################################################################
+## Dimmer Office
+#
+## Trigger office lights with Lutron Aurora switch.
+#################################################################
+alias: Dimmer Office
+description: "Trigger office lights with Lutron Aurora switch."
+trigger:
+  - device_id: 4b768df1171211eba499fb8879397bf0
+    domain: hue
+    platform: device
+    type: short_release
+    subtype: 1
+    unique_id: 4093fdb5-8fda-4e21-9a68-b0beeede00e1
+condition: []
+action:
+  - choose:
+      - conditions:
+          - condition: state
+            entity_id: light.office
+            state: "off"
+            for:
+              hours: 0
+              minutes: 0
+              seconds: 0
+        sequence:
+          - service: switch.turn_off
+            data: {}
+            target:
+              entity_id:
+                - switch.thruple_lamp
+                - switch.thumb_lamp
+      - conditions:
+          - condition: state
+            entity_id: light.office
+            state: "on"
+        sequence:
+          - service: switch.turn_on
+            data: {}
+            target:
+              entity_id:
+                - switch.thruple_lamp
+                - switch.thumb_lamp
+    default: []
+mode: single

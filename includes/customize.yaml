@@ -47,6 +47,9 @@ light.group_hallway:
 # Living Room Light Group
 light.group_living_room:
   icon: "mdi:home-lightbulb-outline"
+# Office Light Group
+light.group_office:
+  icon: "mdi:home-lightbulb-outline"
 #################################################################
 ## PC Sensors
 #################################################################

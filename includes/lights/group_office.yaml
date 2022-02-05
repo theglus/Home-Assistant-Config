@@ -1,11 +1,10 @@
 #################################################################
-## Living Room Light Group
+## Office Light Group
 #################################################################
 platform: group
-name: Group Living Room
+name: Group Office
 entities:
-  - light.center_track
-  - light.garden
-  - light.left_track
-  - light.right_track
-  - light.yumi_lamp
+  - light.overhead_bed
+  - light.overhead_desk
+  - light.thumb_lamp
+  - light.thruple_lamp

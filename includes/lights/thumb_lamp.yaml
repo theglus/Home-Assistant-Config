@@ -1,8 +1,6 @@
 #################################################################
-## Bedside Light Group
+## Thumb Lamp
 #################################################################
-platform: group
-name: Bedside
-entities:
-  - light.jeffreys_lamp
-  - light.tiffanys_lamp
+platform: switch
+name: Thumb Lamp
+entity_id: switch.thumb_lamp

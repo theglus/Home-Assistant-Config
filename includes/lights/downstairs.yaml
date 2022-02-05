@@ -11,3 +11,7 @@ entities:
   - light.potter_lamp
   - light.kitchen
   - light.yumi_lamp
+  - light.recessed
+  - light.garden
+  - light.thruple_lamp
+  - light.thumb_lamp

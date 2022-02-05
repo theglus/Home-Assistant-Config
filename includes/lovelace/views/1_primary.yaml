@@ -411,7 +411,7 @@ cards:
                 ## Air Circulator
                 #----------------------------------------------------------------
                 - type: "custom:button-card"
-                  entity: switch.kettle
+                  entity: switch.mini_air_circulator
                   name: Air Circulator
                   template:
                     - icon_circulator

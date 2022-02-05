@@ -1,8 +1,6 @@
 #################################################################
-## Bedside Light Group
+## Thruple Lamp
 #################################################################
-platform: group
-name: Bedside
-entities:
-  - light.jeffreys_lamp
-  - light.tiffanys_lamp
+platform: switch
+name: Thruple Lamp
+entity_id: switch.thruple_lamp
