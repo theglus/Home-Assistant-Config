@@ -1,8 +1,10 @@
 #################################################################
-## Overhead Light Group
+## Office Light Group
 #################################################################
 platform: group
-name: Overhead
+name: Office
 entities:
   - light.overhead_bed
   - light.overhead_desk
+  - light.thumb_lamp
+  - light.thruple_lamp
