@@ -2,7 +2,7 @@
 ## Office Light Group
 #################################################################
 platform: group
-name: Office
+name: Group Office
 entities:
   - light.overhead_bed
   - light.overhead_desk
