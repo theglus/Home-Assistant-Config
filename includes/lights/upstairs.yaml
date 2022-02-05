@@ -3,7 +3,7 @@
 #################################################################
 platform: group
 name: Upstairs
-entities: 
-  - light.loft 
+entities:
+  - light.loft
   - light.hallway_marquee
   - light.stair
