@@ -13,6 +13,7 @@ trigger:
     to: "on"
 action:
   - type: turn_off
+    device_id: 81424ac53e80a7fdde726394ebea9ca2
     entity_id: switch.major_laser_printer
     domain: switch
 mode: single

@@ -12,6 +12,7 @@ trigger:
     to: "off"
 action:
   - type: turn_off
+    device_id: 81424ac53e80a7fdde726394ebea9ca2
     entity_id: switch.mini_air_circulator
     domain: switch
 mode: single
