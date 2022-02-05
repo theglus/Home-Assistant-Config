@@ -12,7 +12,6 @@ trigger:
     from: "off"
 action:
   - type: turn_on
-    device_id: cc9c28d8ff6a11ea876cbbcc11d5e81d
-    entity_id: switch.kettle
+    entity_id: switch.mini_air_circulator
     domain: switch
 mode: single
