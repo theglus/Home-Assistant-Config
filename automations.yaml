@@ -5,36 +5,24 @@
     path: magic_cube.yaml
     input:
       remote: 55278effdc88ebe7ffa36b52540fa006
-      rotate_clockwise:
-      - type: brightness_increase
-        device_id: 7faeb9e5857511b167cb40d31e810446
-        entity_id: light.downstairs_living_room_yumi_lamp
-        domain: light
-      rotate_counter_clockwise:
-      - type: brightness_decrease
-        device_id: 7faeb9e5857511b167cb40d31e810446
-        entity_id: light.hue_color_lamp_1_2
-        domain: light
-      cube_shake:
-      - service: media_player.media_play_pause
-        data: {}
-        entity_id: media_player.shield
+      rotate_clockwise: []
+      rotate_counter_clockwise: []
+      cube_shake: []
       cube_double_tap_any: []
       double_tap_any_side: false
       six_to_six:
-      - service: script.remote_finder
-        data: {}
-      one_to_five:
-      - type: toggle
-        device_id: 4b703738171211eb953dc57494375806
-        entity_id: light.upstairs_hallway_marquee
-        domain: light
-      one_to_four:
-      - type: toggle
-        device_id: 6b3f010b852f90f27f83b82eb13178a3
-        entity_id: light.dino_panel
-        domain: light
+      - scene: scene.theater
+      one_to_five: []
+      one_to_four: []
       two_to_two:
       - service: switch.toggle
         data: {}
-        entity_id: switch.switchbot
+        target:
+          entity_id: switch.heat
+      three_to_three:
+      - scene: scene.television
+      four_to_four: []
+      one_to_one:
+      - service: script.remote_finder
+        data: {}
+      five_to_five: []
