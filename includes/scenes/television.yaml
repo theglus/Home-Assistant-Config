@@ -1,7 +1,7 @@
 #################################################################
 ## Television
 #
-## Television lights + nightime quick select.
+## Turn lights to TV mode.
 #################################################################
 name: Television
 entities:
