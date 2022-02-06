@@ -4,6 +4,9 @@
 # Hallway
 light.hallway:
   icon: "mdi:coat-rack"
+# Kitchen
+light.kitchen:
+  icon: "mdi:fridge"
 # Living Room
 light.living_room:
   icon: "mdi:sofa"
@@ -46,6 +49,9 @@ light.group_hallway:
   icon: "mdi:home-lightbulb-outline"
 # Living Room Light Group
 light.group_living_room:
+  icon: "mdi:home-lightbulb-outline"
+# Loft Light Group
+light.group_loft:
   icon: "mdi:home-lightbulb-outline"
 # Office Light Group
 light.group_office:
