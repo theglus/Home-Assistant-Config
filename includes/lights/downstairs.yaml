@@ -4,14 +4,18 @@
 platform: group
 name: Downstairs
 entities:
-  - light.overhead
-  - light.track
-  - light.nanoleaf
+  # Hallway
   - light.hallway_runner
   - light.potter_lamp
+  # Kitchen
   - light.kitchen
-  - light.yumi_lamp
+  - light.nanoleaf
   - light.recessed
+  # Living Room
   - light.garden
+  - light.track
+  - light.yumi_lamp
+  # Office
+  - light.overhead
   - light.thruple_lamp
   - light.thumb_lamp
