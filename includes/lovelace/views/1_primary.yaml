@@ -535,7 +535,7 @@ cards:
                 ## Kitchen Track
                 #----------------------------------------------------------------
                 - type: "custom:button-card"
-                  entity: light.kitchen
+                  entity: light.kitchen_track
                   name: Track
                   template:
                     - light_color

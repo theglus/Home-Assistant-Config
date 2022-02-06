@@ -43,7 +43,7 @@ entities:
     - light.center_track
     - light.right_track
     - light.nanoleaf
-    - light.kitchen
+    - light.kitchen_track
     friendly_name: Color
     icon: mdi:looks
     supported_features: 44

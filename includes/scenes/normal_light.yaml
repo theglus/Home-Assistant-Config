@@ -68,7 +68,7 @@ entities:
     icon: mdi:triangle-outline
     supported_features: 55
     state: 'on'
-  light.kitchen:
+  light.kitchen_track:
     min_mireds: 153
     max_mireds: 500
     effect_list:

@@ -5,6 +5,6 @@ platform: group
 name: Group Kitchen
 entities:
   - light.nanoleaf
-  - light.kitchen
+  - light.kitchen_track
   - light.recessed_dining
   - light.recessed_coffee

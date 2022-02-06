@@ -8,7 +8,7 @@ entities:
   - light.hallway_runner
   - light.potter_lamp
   # Kitchen
-  - light.kitchen
+  - light.kitchen_track
   - light.nanoleaf
   - light.recessed
   # Living Room
