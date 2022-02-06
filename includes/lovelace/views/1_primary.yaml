@@ -224,7 +224,7 @@ cards:
                   template: declutter_temp_button
                   variables:
                     - room: Office
-                    - light: light.overhead
+                    - light: light.group_office
                     - hvac: switch.major_laser_printer
                     - sensor_temp: sensor.temperature_office
                     - message_on: Printer on
@@ -266,7 +266,7 @@ cards:
                 - type: "custom:decluttering-card"
                   template: declutter_temp_button
                   variables:
-                    - light: light.loft
+                    - light: light.group_loft
                     - hvac: fan.kirby
                     - sensor_temp: sensor.kirby_temperature
                     - message_on: Dyson is on
@@ -535,7 +535,7 @@ cards:
                 ## Kitchen Track
                 #----------------------------------------------------------------
                 - type: "custom:button-card"
-                  entity: light.kitchen
+                  entity: light.kitchen_track
                   name: Track
                   template:
                     - light_color

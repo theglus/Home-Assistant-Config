@@ -1,10 +1,8 @@
 #################################################################
-## Upstairs Light Group
+## Loft Light Group
 #################################################################
 platform: group
-name: Upstairs
+name: Group Loft
 entities:
   - light.loft
-  - light.hallway_marquee
-  - light.stair
   - light.row_lamp
