@@ -5,267 +5,39 @@
 #################################################################
 name: Television
 entities:
-  light.overhead:
-    min_mireds: 153
-    max_mireds: 454
-    supported_color_modes:
-      - color_temp
-    entity_id:
-      - light.overhead_bed
-      - light.overhead_desk
-    icon: mdi:dome-light
-    friendly_name: Overhead
-    supported_features: 40
+  light.group_office:
     state: "off"
   light.group_kitchen:
-    min_mireds: 153
-    max_mireds: 833
-    effect_list:
-      - Christmas
-      - Meteor Shower
-      - Miami Vice
-      - Northern Lights
-      - Paint Splatter
-      - Red Alert
-      - Romantic
-    supported_color_modes:
-      - color_temp
-      - hs
-      - xy
-    entity_id:
-      - light.nanoleaf
-      - light.kitchen
-      - light.recessed_dining
-      - light.recessed_coffee
-    icon: mdi:home-lightbulb-outline
-    friendly_name: Group Kitchen
-    supported_features: 44
     state: "off"
-  light.loft:
-    min_mireds: 153
-    max_mireds: 454
-    supported_color_modes:
-      - color_temp
-    is_hue_group: true
-    hue_scenes:
-      - Energize
-      - Concentrate
-      - Savanna sunset
-      - Nightlight
-      - Spring blossom
-      - Bright
-      - Tropical twilight
-      - Arctic aurora
-      - Dimmed
-      - Read
-      - Relax
-    hue_type: room
-    lights:
-      - Loft Jeffrey's Light
-      - Loft Bed Light
-      - Loft Tiffany's Light
-      - Loft Desk Light
-    dynamics: false
-    icon: mdi:bed-king
-    friendly_name: Loft
-    supported_features: 40
+  light.group_loft:
     state: "off"
   light.track:
-    min_mireds: 153
-    max_mireds: 500
-    supported_color_modes:
-      - color_temp
-      - xy
-    entity_id:
-      - light.left_track
-      - light.center_track
-      - light.right_track
-    icon: hue:ceiling-buratto-three
-    friendly_name: Track
-    supported_features: 40
     state: "off"
   light.yumi_lamp:
-    min_mireds: 153
-    max_mireds: 500
-    supported_color_modes:
-      - color_temp
-      - xy
-    mode: normal
-    dynamics: none
-    icon: mdi:ceiling-light
-    friendly_name: Yumi Light
-    supported_features: 40
     state: "off"
+  light.hallway_marquee:
+    state: "on"
   light.garden:
-    supported_color_modes: []
-    color_mode: onoff
-    mode: normal
-    dynamics: none
-    icon: mdi:string-lights
-    friendly_name: Garden Lights
-    supported_features: 0
     state: "on"
   light.potter_lamp:
-    min_mireds: 153
-    max_mireds: 500
-    supported_color_modes:
-      - color_temp
-      - xy
-    color_mode: xy
     brightness: 254
-    hs_color:
-      - 296.916
-      - 83.922
     rgb_color:
       - 244
       - 41
       - 255
-    xy_color:
-      - 0.37
-      - 0.153
     mode: normal
-    dynamics: none
-    icon: mdi:lamp
-    friendly_name: Potter Light
-    supported_features: 40
-    state: "on"
-  light.hallway_marquee:
-    supported_color_modes: []
-    color_mode: onoff
-    mode: normal
-    dynamics: none
-    icon: mdi:billboard
-    friendly_name: Marquee
-    supported_features: 0
-    state: "on"
-  air_quality.kirby_air_quality:
-    restored: true
-    friendly_name: Kirby Air Quality
-    supported_features: 0
-    unit_of_measurement: level
-    state: unavailable
-  fan.kirby:
-    speed_list:
-      - "off"
-      - low
-      - medium
-      - high
-      - Auto
-    preset_modes:
-      - Auto
-    oscillating: false
-    speed:
-    percentage: 70
-    percentage_step: 10
-    preset_mode:
-    friendly_name: Kirby
-    supported_features: 11
-    state: "off"
-  switch.kirby_night_mode:
-    icon: mdi:power-sleep
-    friendly_name: Kirby Night Mode
-    state: "off"
-  switch.kirby_continuous_monitoring:
-    icon: mdi:eye
-    friendly_name: Kirby Continuous Monitoring
-    state: "on"
-  switch.kirby_auto_mode:
-    restored: true
-    icon: mdi:fan-auto
-    friendly_name: Kirby Auto Mode
-    supported_features: 0
-    state: unavailable
-  select.kirby_air_quality:
-    options:
-      - "Off"
-      - Good
-      - Default
-      - Sensitive
-      - Very Sensitive
-    friendly_name: Kirby Air Quality
-    state: Very Sensitive
-  air_quality.kitchen_air_quality_2:
-    restored: true
-    friendly_name: Kitchen Air Quality
-    supported_features: 0
-    unit_of_measurement: level
-    state: unavailable
-  switch.kitchen_night_mode_2:
-    icon: mdi:power-sleep
-    friendly_name: Kitchen Night Mode
-    state: "off"
-  switch.kitchen_continuous_monitoring_2:
-    icon: mdi:eye
-    friendly_name: Kitchen Continuous Monitoring
-    state: "on"
-  switch.kitchen_auto_mode_2:
-    restored: true
-    icon: mdi:fan-auto
-    friendly_name: Kitchen Auto Mode
-    supported_features: 0
-    state: unavailable
-  fan.kitchen:
-    speed_list:
-      - "off"
-      - low
-      - medium
-      - high
-      - Auto
-    preset_modes:
-      - Auto
-    oscillating: false
-    speed:
-    percentage: 70
-    percentage_step: 10
-    preset_mode:
-    friendly_name: Kitchen
-    supported_features: 11
-    state: "off"
-  select.kitchen_air_quality:
-    options:
-      - "Off"
-      - Good
-      - Default
-      - Sensitive
-      - Very Sensitive
-    friendly_name: Kitchen Air Quality
-    state: Very Sensitive
-  switch.plug_3:
-    friendly_name: Bar Surge
-    state: "on"
-  switch.paper_shredder:
-    icon: mdi:shredder
-    friendly_name: Paper Shredder
-    state: "off"
-  switch.air_circulator:
-    icon: mdi:power-socket
-    friendly_name: Air Circulator
-    state: "off"
-  switch.tp_link_power_strip_b336_led:
-    icon: mdi:led-on
-    friendly_name: TP-LINK_Power Strip_B336 LED
     state: "on"
   light.hallway_runner:
-    effect_list:
-      - colorloop
-    supported_color_modes:
-      - hs
-      - xy
-    color_mode: xy
     brightness: 254
-    hs_color:
-      - 173.838
-      - 72.549
     rgb_color:
       - 70
       - 255
       - 236
-    xy_color:
-      - 0.169
-      - 0.371
-    is_deconz_group: false
-    icon: mdi:led-strip-variant
-    friendly_name: Runner Light
-    supported_features: 44
     state: "on"
+  fan.kirby:
+    state: "off"
+  fan.kitchen:
+    state: "off"
+  switch.air_circulator:
+    state: "off"
 icon: mdi:television-classic
