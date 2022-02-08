@@ -11,6 +11,8 @@ from homeassistant.components.humidifier import HumidifierEntity
 from homeassistant.components.humidifier.const import (
     DEVICE_CLASS_DEHUMIDIFIER,
     MODE_BOOST,
+    MODE_SLEEP,
+    MODE_AUTO,
     MODE_NORMAL,
     SUPPORT_MODES,
 )
@@ -61,6 +63,8 @@ async def async_setup_entry(
 FRIGIDAIRE_TO_HA_MODE = {
     frigidaire.Mode.DRY: MODE_NORMAL,
     frigidaire.Mode.CONTINUOUS: MODE_BOOST,
+    frigidaire.Mode.QUIET: MODE_SLEEP,
+    frigidaire.Mode.AUTO: MODE_AUTO,
 }
 
 HA_TO_FRIGIDAIRE_MODE = {v: k for k, v in FRIGIDAIRE_TO_HA_MODE.items()}
@@ -105,6 +109,8 @@ class FrigidaireDehumidifier(HumidifierEntity):
         self._attr_modes = [
             MODE_NORMAL,
             MODE_BOOST,
+            MODE_AUTO,
+            MODE_SLEEP,
         ]
 
     @property
