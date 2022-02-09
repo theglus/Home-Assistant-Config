@@ -1,10 +1,7 @@
 - id: "1609214877779"
   alias: Mi Magic Cube
-  description: "Side 1: Remote
-    Side 2: Heat
-    Side 3: TV
-    Side 4: Vacuum
-    Side 5: Dino
+  description:
+    "Side 1: Remote Side 2: Heat Side 3: TV Side 4: Vacuum Side 5: Dino
     Side 6: Theater"
   use_blueprint:
     path: magic_cube.yaml

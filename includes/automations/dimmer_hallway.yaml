@@ -1,0 +1,37 @@
+#################################################################
+## Dimmer Hallway
+#
+## Trigger Runner light with Lutron Aurora switch.
+#################################################################
+alias: Dimmer Hallway
+description: "Trigger Runner light with Lutron Aurora switch."
+trigger:
+  - device_id: b1b9c3c92b1394d3ba0f0625f1408fec
+    domain: hue
+    platform: device
+    type: short_release
+    subtype: 1
+    unique_id: 4d6b6bcd-a7b9-4b12-81d4-9750f7d28f4a
+condition: []
+action:
+  - choose:
+      - conditions:
+          - condition: state
+            entity_id: light.hallway
+            state: "off"
+        sequence:
+          - service: light.turn_off
+            data: {}
+            target:
+              entity_id: light.hallway_runner
+      - conditions:
+          - condition: state
+            entity_id: light.hallway
+            state: "on"
+        sequence:
+          - service: light.turn_on
+            data: {}
+            target:
+              entity_id: light.hallway_runner
+    default: []
+mode: single
