@@ -213,7 +213,7 @@ cards:
               - type: custom:button-card
                 name: "SLEEP"
                 icon: "mdi:power-sleep"
-                entity: switch.wake_on_lan
+                entity: switch.pc_sleep
                 tap_action:
                   action: toggle
                   haptic: light
