@@ -149,3 +149,14 @@
   action:
   - scene: scene.office_available
   mode: single
+- id: '1644337161806'
+  alias: Climate AQI
+  description: 'Turn on Kitchen Dyson when AQI >75. '
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.aqi
+    above: '75'
+  condition: []
+  action:
+  - scene: scene.dyson_aqi
+  mode: single

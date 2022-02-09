@@ -1,0 +1,49 @@
+- id: '1644338460112'
+  name: 'Dyson: AQI'
+  entities:
+    air_quality.kitchen_air_quality_2:
+      restored: true
+      friendly_name: Kitchen Air Quality
+      supported_features: 0
+      unit_of_measurement: level
+      state: unavailable
+    switch.kitchen_night_mode_2:
+      icon: mdi:power-sleep
+      friendly_name: Kitchen Night Mode
+      state: 'off'
+    switch.kitchen_continuous_monitoring_2:
+      icon: mdi:eye
+      friendly_name: Kitchen Continuous Monitoring
+      state: 'on'
+    switch.kitchen_auto_mode_2:
+      restored: true
+      icon: mdi:fan-auto
+      friendly_name: Kitchen Auto Mode
+      supported_features: 0
+      state: unavailable
+    fan.kitchen:
+      speed_list:
+      - 'off'
+      - low
+      - medium
+      - high
+      - Auto
+      preset_modes:
+      - Auto
+      oscillating: true
+      speed:
+      percentage:
+      percentage_step: 10
+      preset_mode: Auto
+      friendly_name: Kitchen
+      supported_features: 11
+      state: 'on'
+    select.kitchen_air_quality:
+      options:
+      - 'Off'
+      - Good
+      - Default
+      - Sensitive
+      - Very Sensitive
+      friendly_name: Kitchen Air Quality
+      state: Very Sensitive
