@@ -209,7 +209,6 @@ cards:
                   action: toggle
                   haptic: light
                 template: icon_name
-              # TODO: #313 Create Sleep command in HASS Workstation Service.
               - type: custom:button-card
                 name: "SLEEP"
                 icon: "mdi:power-sleep"
