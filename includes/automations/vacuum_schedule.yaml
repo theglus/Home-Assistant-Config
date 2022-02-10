@@ -1,0 +1,53 @@
+#################################################################
+## Vacuum Schedule
+#
+## Clean at 10:30 pm.
+#################################################################
+alias: Vacuum Schedule
+description: "Clean at 10:30 pm."
+trigger:
+  - platform: time
+    at: "22:30:00"
+condition: []
+action:
+  - choose:
+      - conditions:
+          - condition: time
+            weekday:
+              - mon
+              - wed
+              - fri
+          - condition: state
+            entity_id: sensor.winston_clean_today
+            state: "False"
+        sequence:
+          - service: vacuum.send_command
+            data:
+              command: app_segment_clean
+              params:
+                - 16
+                - 18
+            target:
+              entity_id: vacuum.winston
+      - conditions:
+          - condition: time
+            weekday:
+              - tue
+              - thu
+          - condition: state
+            entity_id: sensor.winston_clean_today
+            state: "False"
+        sequence:
+          - service: vacuum.send_command
+            data:
+              command: app_segment_clean
+              params:
+                - 16
+                - 17
+                - 18
+                - 19
+                - 20
+            target:
+              entity_id: vacuum.winston
+    default: []
+mode: single

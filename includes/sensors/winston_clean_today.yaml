@@ -1,0 +1,9 @@
+#################################################################
+## Winston Clean Today sensor
+#################################################################
+- platform: template
+  sensors:
+    winston_clean_today:
+      friendly_name: "Winston Clean Today"
+      value_template: "{{ now().strftime('%d') == as_timestamp(states('sensor.winston_last_clean_start')) | timestamp_custom('%d') }}"
+      icon_template: "mdi:calendar-clock"
