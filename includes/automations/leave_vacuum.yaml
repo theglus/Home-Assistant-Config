@@ -1,0 +1,78 @@
+#################################################################
+## Leave Vacuum
+#
+## Notify smartphones of door status + turn off lights + vacuum.
+#################################################################
+alias: Leave Vacuum
+description: Notify smartphones of door status + turn off lights + vacuum.
+trigger:
+  - device_id: 1a4f22d3b5ce47a298a90508301c8c29
+    domain: deconz
+    platform: device
+    type: remote_button_double_press
+    subtype: turn_on
+condition:
+  - condition: state
+    entity_id: binary_sensor.front_door
+    state: "on"
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 1
+action:
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 10
+  - choose:
+      - conditions:
+          - condition: state
+            entity_id: binary_sensor.front_door
+            state: "on"
+            for:
+              hours: 0
+              minutes: 0
+              seconds: 10
+        sequence:
+          - service: notify.smartphones
+            data:
+              message: "The Front door is open. "
+              title: 🚨 Alert
+          - wait_for_trigger:
+              - platform: state
+                entity_id: binary_sensor.front_door
+                from: "on"
+                to: "off"
+                for:
+                  hours: 0
+                  minutes: 0
+                  seconds: 1
+          - scene: scene.lights_off
+          - service: notify.smartphones
+            data:
+              message: "The door is closed and lights are off. "
+              title: 👋 See you later!
+          - device_id: 62c2564944db27e46b6382dbb56205f9
+            domain: vacuum
+            entity_id: vacuum.winston
+            type: clean
+      - conditions:
+          - condition: state
+            entity_id: binary_sensor.front_door
+            state: "off"
+            for:
+              hours: 0
+              minutes: 0
+              seconds: 1
+        sequence:
+          - scene: scene.lights_off
+          - service: notify.smartphones
+            data:
+              message: "The door is closed and lights are off. "
+              title: 👋 See you later!
+          - device_id: 62c2564944db27e46b6382dbb56205f9
+            domain: vacuum
+            entity_id: vacuum.winston
+            type: clean
+    default: []
+mode: single
