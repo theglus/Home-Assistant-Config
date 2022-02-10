@@ -744,6 +744,7 @@ Loft:
 - [Dimmer Hallway](includes/automations/dimmer_hallway.yaml): Trigger runner light with Lutron Aurora switch.
 - [Dimmer Office](includes/automations/dimmer_office.yaml): Trigger office lights with Lutron Aurora switch.
 - [Leave Home](includes/automations/leave_home.yaml): Notify smartphones of door status + turn off lights accordingly.
+- [Leave Vacuum](includes/automations/leave_vacuum.yaml): Notify smartphones of door status + turn off lights + vacuum.
 - [Mood Television](includes/automations/mood_television.yaml): Television scene + Denon Nighttime quick select.
 - [Mood Theater](includes/automations/mood_theater.yaml): Theater scene + Denon Theater quick select.
 - [Notify AQU](includes/automations/notify_aqi.yaml): Notify Smartphones when AQI is >75.
@@ -762,6 +763,7 @@ Loft:
 - [Vacuum Clean](includes/automations/vacuum_clean.yaml): Notify Smartphones when Winston starts cleaning.
 - [Vacuum Docked](includes/automations/vacuum_done.yaml): Notify Smartphones when Winston has returned to dock.
 - [Vacuum Done](includes/automations/vacuum_done.yaml): Notify Smartphones when Winston has completed cleaning.
+- [Vacuum Schedule](includes/automations/vacuum_schedule.yaml): Clean hallway + kitchen @ 10:30 pm M - F & clean bathroom + office + living room @ 10:30 pm T and TH.
 - [Volume Home](includes/automations/volume_home.yaml): Turn down volume of Google Home device at 10 pm.
 
 Thanks for reading, please star if your are interested in the project.
