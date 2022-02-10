@@ -1,8 +1,7 @@
-- id: "1609214877779"
+- id: '1609214877779'
   alias: Mi Magic Cube
-  description:
-    "Side 1: Remote Side 2: Heat Side 3: TV Side 4: Vacuum Side 5: Dino
-    Side 6: Theater"
+  description: 'Side 1: Remote Side 2: Heat Side 3: TV Side 4: Vacuum Side 5: Dino
+    Side 6: Theater'
   use_blueprint:
     path: magic_cube.yaml
     input:
@@ -10,118 +9,161 @@
       rotate_clockwise: []
       rotate_counter_clockwise: []
       cube_shake:
-        - service: media_player.media_play_pause
-          data: {}
-          target:
-            device_id: 1033f409af0f486c7f6923cac5bb320a
+      - service: media_player.media_play_pause
+        data: {}
+        target:
+          device_id: 1033f409af0f486c7f6923cac5bb320a
       cube_double_tap_any: []
       double_tap_any_side: false
       six_to_six:
-        - scene: scene.theater
+      - scene: scene.theater
       one_to_five: []
       one_to_four: []
       two_to_two:
-        - service: switch.toggle
-          data: {}
-          target:
-            entity_id: switch.heat
+      - service: switch.toggle
+        data: {}
+        target:
+          entity_id: switch.heat
       three_to_three:
-        - scene: scene.television
+      - scene: scene.television
       four_to_four:
-        - service: script.clean_empty
-          data: {}
+      - service: script.clean_empty
+        data: {}
       one_to_one:
-        - service: script.remote_finder
-          data: {}
+      - service: script.remote_finder
+        data: {}
       five_to_five:
-        - service: light.turn_on
-          data:
-            effect: Meteor Shower
-          target:
-            entity_id: light.nanoleaf
+      - service: light.turn_on
+        data:
+          effect: Meteor Shower
+        target:
+          entity_id: light.nanoleaf
       four_to_one:
-        - service: vacuum.return_to_base
-          data: {}
-          target:
-            device_id: 62c2564944db27e46b6382dbb56205f9
+      - service: vacuum.return_to_base
+        data: {}
+        target:
+          device_id: 62c2564944db27e46b6382dbb56205f9
       cube_wake: []
       two_to_one: []
       two_to_three: []
       two_to_four: []
       two_to_five: []
       two_to_six:
-        - service: switch.toggle
-          data: {}
-          target:
-            entity_id: switch.heat
+      - service: switch.toggle
+        data: {}
+        target:
+          entity_id: switch.heat
       six_to_one: []
       six_to_two: []
       six_to_three: []
       six_to_four: []
       six_to_five:
-        - scene: scene.theater
+      - scene: scene.theater
       three_to_one: []
       three_to_two: []
       three_to_four: []
       three_to_five: []
       three_to_six:
-        - scene: scene.television
+      - scene: scene.television
       four_to_two: []
       one_to_two: []
       one_to_three:
-        - service: script.remote_finder
-          data: {}
+      - service: script.remote_finder
+        data: {}
       one_to_six: []
       four_to_three: []
       four_to_five: []
       four_to_six:
-        - service: script.clean_empty
-          data: {}
+      - service: script.clean_empty
+        data: {}
       five_to_six: []
       slide_on_three:
-        - service: script.av_quick_2
-          data: {}
+      - service: script.av_quick_2
+        data: {}
       slide_on_six:
-        - service: script.av_quick_3
-          data: {}
-- id: "1644295611390"
+      - service: script.av_quick_3
+        data: {}
+- id: '1644295611390'
   alias: Office Busy
   description: Laptop camera activates scene.meeting.
   trigger:
-    - platform: state
-      entity_id: binary_sensor.carta_camera_in_use
-      from: "off"
-      to: "on"
+  - platform: state
+    entity_id: binary_sensor.carta_camera_in_use
+    from: 'off'
+    to: 'on'
   condition:
-    - condition: state
-      entity_id: sensor.carta_displays
-      state: "2"
+  - condition: state
+    entity_id: sensor.carta_displays
+    state: '2'
   action:
-    - scene: scene.meeting
+  - scene: scene.meeting
   mode: single
-- id: "1644295717660"
+- id: '1644295717660'
   alias: Office Available
   description: Laptop camera activates scene.office_available.
   trigger:
-    - platform: state
-      entity_id: binary_sensor.carta_camera_in_use
-      from: "on"
-      to: "off"
+  - platform: state
+    entity_id: binary_sensor.carta_camera_in_use
+    from: 'on'
+    to: 'off'
   condition:
-    - condition: state
-      entity_id: sensor.carta_displays
-      state: "2"
+  - condition: state
+    entity_id: sensor.carta_displays
+    state: '2'
   action:
-    - scene: scene.office_available
+  - scene: scene.office_available
   mode: single
-- id: "1644337161806"
+- id: '1644337161806'
   alias: Climate AQI
-  description: "Turn on Kitchen Dyson when AQI >75. "
+  description: 'Turn on Kitchen Dyson when AQI >75. '
   trigger:
-    - platform: numeric_state
-      entity_id: sensor.aqi
-      above: "75"
+  - platform: numeric_state
+    entity_id: sensor.aqi
+    above: '75'
   condition: []
   action:
-    - scene: scene.dyson_aqi
+  - scene: scene.dyson_aqi
+  mode: single
+- id: '1644446904428'
+  alias: Vacuum Schedule
+  description: Clean at 10:30 pm.
+  trigger:
+  - platform: time
+    at: '22:30:00'
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: time
+        weekday:
+        - mon
+        - wed
+        - fri
+      sequence:
+      - service: vacuum.send_command
+        data:
+          command: app_segment_clean
+          params:
+          - 16
+          - 18
+        target:
+          entity_id: vacuum.winston
+    - conditions:
+      - condition: time
+        weekday:
+        - tue
+        - thu
+      sequence:
+      - service: vacuum.send_command
+        data:
+          command: app_segment_clean
+          params:
+          - 16
+          - 17
+          - 18
+          - 19
+          - 20
+        target:
+          entity_id: vacuum.winston
+    default: []
   mode: single
