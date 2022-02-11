@@ -84,36 +84,6 @@
       slide_on_six:
         - service: script.av_quick_3
           data: {}
-- id: "1644295611390"
-  alias: Office Busy
-  description: Laptop camera activates scene.meeting.
-  trigger:
-    - platform: state
-      entity_id: binary_sensor.carta_camera_in_use
-      from: "off"
-      to: "on"
-  condition:
-    - condition: state
-      entity_id: sensor.carta_displays
-      state: "2"
-  action:
-    - scene: scene.meeting
-  mode: single
-- id: "1644295717660"
-  alias: Office Available
-  description: Laptop camera activates scene.office_available.
-  trigger:
-    - platform: state
-      entity_id: binary_sensor.carta_camera_in_use
-      from: "on"
-      to: "off"
-  condition:
-    - condition: state
-      entity_id: sensor.carta_displays
-      state: "2"
-  action:
-    - scene: scene.office_available
-  mode: single
 - id: "1644337161806"
   alias: Climate AQI
   description: "Turn on Kitchen Dyson when AQI >75. "

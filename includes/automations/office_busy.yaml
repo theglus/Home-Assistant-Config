@@ -1,0 +1,19 @@
+#################################################################
+## Office: Busy
+#
+## Laptop camera activates scene.meeting.
+#################################################################
+alias: Office Busy
+description: Laptop camera activates scene.meeting.
+trigger:
+  - platform: state
+    entity_id: binary_sensor.work_camera_in_use
+    from: "off"
+    to: "on"
+condition:
+  - condition: state
+    entity_id: sensor.work_displays
+    state: "2"
+action:
+  - scene: scene.meeting
+mode: single
