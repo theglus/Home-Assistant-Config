@@ -8,9 +8,11 @@ entities:
   - light.hallway_runner
   - light.potter_lamp
   # Living Room
-  - light.left_track
   - light.center_track
+  - light.left_track
   - light.right_track
   # Kitchen
-  - light.nanoleaf
   - light.kitchen_track
+  - light.recessed_coffee
+  - light.nanoleaf
+  - light.recessed_dining
