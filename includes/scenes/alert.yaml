@@ -7,83 +7,42 @@ id: "1634534154802"
 name: Alert
 entities:
   light.color:
-    min_mireds: 153
-    max_mireds: 833
-    effect_list:
-    - Christmas
-    - Meteor Shower
-    - Miami Vice
-    - Northern Lights
-    - Paint Splatter
-    - Red Alert
-    - Romantic
-    - colorloop
-    - random
-    supported_color_modes:
-    - color_temp
-    - hs
-    - xy
-    color_mode: hs
-    brightness: 249
-    hs_color:
-      - 10.118
-      - 100
-    rgb_color:
-      - 255
-      - 43
-      - 0
-    xy_color:
-      - 0.689
-      - 0.309
-    effect: Red Alert
-    entity_id:
-    - light.hallway_runner
-    - light.potter_lamp
-    - light.left_track
-    - light.center_track
-    - light.right_track
-    - light.nanoleaf
-    - light.kitchen_track
-    friendly_name: Color
-    icon: mdi:looks
-    supported_features: 44
-    state: 'on'
-  light.garden:
-    supported_color_modes:
-      - onoff
-    color_mode: onoff
-    friendly_name: Garden Lights
-    icon: mdi:string-lights
-    supported_features: 40
-    state: "on"
-  light.hallway_marquee:
-    supported_color_modes:
-      - onoff
-    color_mode: onoff
-    friendly_name: Marquee
-    icon: mdi:billboard
-    supported_features: 40
-    state: "on"
-  light.loft_bed_light:
-    min_mireds: 153
-    max_mireds: 454
     supported_color_modes:
       - color_temp
+      - hs
+      - xy
+    color_mode: xy
+    brightness: 239
+    hs_color:
+      - 5.51
+      - 76.863
+    rgb_color:
+      - 255
+      - 77
+      - 59
+    xy_color:
+      - 0.644778
+      - 0.313889
+    effect: Red Alert
+    entity_id:
+      - light.hallway_runner
+      - light.potter_lamp
+      - light.center_track
+      - light.left_track
+      - light.right_track
+      - light.kitchen_track
+      - light.recessed_coffee
+      - light.nanoleaf
+      - light.recessed_dining
+      - light.yumi_lamp
+    state: "on"
+  light.garden:
+    state: "on"
+  light.hallway_marquee:
+    state: "on"
+  light.group_loft:
     color_mode: color_temp
     brightness: 255
     color_temp: 366
-    hs_color:
-      - 28.327
-      - 64.71
-    rgb_color:
-      - 255
-      - 167
-      - 89
-    xy_color:
-      - 0.524
-      - 0.387
-    friendly_name: Loft Bed Light
-    icon: mdi:spotlight
-    supported_features: 43
     state: "on"
 icon: mdi:alert

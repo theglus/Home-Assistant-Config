@@ -11,6 +11,7 @@ entities:
   - light.center_track
   - light.left_track
   - light.right_track
+  - light.yumi_lamp
   # Kitchen
   - light.kitchen_track
   - light.recessed_coffee
