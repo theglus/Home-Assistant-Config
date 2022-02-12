@@ -5,11 +5,11 @@
   sensors:
     denon_volume:
       value_template: >
-        {% if is_state('media_player.dennis', 'on')  %}
+       {% if is_state('media_player.dennis', 'on')  %}
           {% set n = states.media_player.dennis.attributes.volume_level | float %}
-          {{ '%.1f'%( n*100.0|round(0.0) ) }}
+          {{ '%.1f'%( n*100.0) }}
         {% else %}
           "0"
-        {% endif %}
+        {% endif %} 
       friendly_name: Receiver Volume Level
       icon_template: mdi:volume-medium
