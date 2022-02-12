@@ -1,0 +1,43 @@
+#################################################################
+## Light Common Mood
+#
+## Set the mood in the Living Room + Kitchen.
+#################################################################
+id: "1644692127640"
+name: Lights Common Mood
+entities:
+  light.track:
+    color_mode: xy
+    brightness: 254
+    xy_color:
+      - 0.37
+      - 0.153
+    state: "on"
+  light.recessed:
+    color_mode: xy
+    brightness: 254
+    xy_color:
+      - 0.37
+      - 0.153
+    state: "on"
+  light.kitchen_track:
+    color_mode: xy
+    brightness: 254
+    xy_color:
+      - 0.37
+      - 0.153
+    state: "on"
+  light.yumi_lamp:
+    color_mode: xy
+    brightness: 254
+    xy_color:
+      - 0.37
+      - 0.153
+    state: "on"
+  light.garden:
+    state: "on"
+  light.nanoleaf:
+    brightness: 153
+    effect: Northern Lights
+    state: "on"
+icon: mdi:home-lightbulb-outline

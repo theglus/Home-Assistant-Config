@@ -1,0 +1,36 @@
+#################################################################
+## Lights Common Bright
+#
+## Set Living Room + Kitchen lights to max brightness.
+#################################################################
+id: "1644691943787"
+name: Lights Common Bright
+entities:
+  light.track:
+    color_mode: color_temp
+    brightness: 254
+    color_temp: 370
+    state: "on"
+  light.recessed:
+    color_mode: color_temp
+    brightness: 254
+    color_temp: 370
+    state: "on"
+  light.kitchen_track:
+    color_mode: color_temp
+    brightness: 254
+    color_temp: 370
+    state: "on"
+  light.yumi_lamp:
+    color_mode: color_temp
+    brightness: 254
+    color_temp: 370
+    mode: normal
+    state: "on"
+  light.garden:
+    state: "on"
+  light.nanoleaf:
+    brightness: 153
+    effect: Northern Lights
+    state: "on"
+icon: mdi:home-lightbulb-outline

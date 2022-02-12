@@ -8,20 +8,9 @@ name: "Kirby: Daymode"
 entities:
   fan.kirby:
     oscillating: true
+    preset_mode: Auto
     air_quality_target: very sensitive
-    friendly_name: Kirby
-    supported_features: 3
     state: "on"
   switch.kirby_night_mode:
-    friendly_name: Kirby Night Mode
-    icon: mdi:power-sleep
     state: "off"
-  switch.kirby_continuous_monitoring:
-    friendly_name: Kirby Continuous Monitoring
-    icon: mdi:eye
-    state: "on"
-  switch.kirby_auto_mode:
-    friendly_name: Kirby Auto Mode
-    icon: mdi:fan-auto
-    state: "on"
 icon: mdi:weather-sunset
