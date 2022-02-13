@@ -1,10 +1,10 @@
 #################################################################
 ## Navigation Styles
 #################################################################
-  style:
-    button:
-      - background: "rgba(255,255,255,.1)"
-      - border-radius: 25px
-      - padding: 20px
-    icon:
-      - "--mdc-icon-size": 40px
+style:
+  button:
+    - background: "rgba(255,255,255,.1)"
+    - border-radius: 25px
+    - padding: 20px
+  icon:
+    - "--mdc-icon-size": 40px
