@@ -83,3 +83,8 @@ sensor.vacuum_sidebrush:
   icon: "custom:vacuum-sidebrush"
 sensor.vacuum_last_clean:
   icon: "mdi:calendar-clock"
+#################################################################
+## Misc Sensors
+#################################################################
+sensor.time_online:
+  icon: mdi:progress-clock
