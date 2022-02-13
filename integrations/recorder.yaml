@@ -7,25 +7,26 @@ recorder:
   commit_interval: 1
   include:
     entities:
-      # Devices
-      - device_tracker.keys
-      # Temperature
-      - sensor.temperature_living_room
-      - sensor.temperature_office
-      # Humidity
-      - sensor.humidity_living_room
-      - sensor.humidity_office
-      # Home Assistant Sensors
-      - sensor.memory_use_percent
-      - sensor.time_online
       # Desktop Computer
       - sensor.pc_cpu_load
       - sensor.pc_gpu_load
       - sensor.pc_gpu_temp
+      # Devices
+      - device_tracker.keys
+      # Home Assistant Sensors
+      - sensor.memory_use_percent
+      - sensor.time_online
+      # Humidity
+      - sensor.humidity_living_room
+      - sensor.humidity_office
+      # Sensors
+      - binary_sensor.front_door
+      # Temperature
+      - sensor.temperature_living_room
+      - sensor.temperature_office
     entity_globs:
       - person.jeffrey_*
       - person.tiffany_*
       - sensor.kirby_*
       - sensor.kitchen_*
-      - sensor.mail_*
       - sensor.processor_*
