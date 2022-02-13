@@ -18,9 +18,6 @@ recorder:
       # Home Assistant Sensors
       - sensor.memory_use_percent
       - sensor.time_online
-      # Speedtests
-      - sensor.speedtest_download
-      - sensor.speedtest_upload
       # Desktop Computer
       - sensor.pc_cpu_load
       - sensor.pc_gpu_load
