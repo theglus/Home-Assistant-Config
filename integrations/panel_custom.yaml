@@ -1,0 +1,49 @@
+#################################################################
+## Configures custom buttons for the HA default sidebar
+#################################################################
+panel_custom:
+  - name: ha_entities
+    sidebar_title: Entities
+    sidebar_icon: mdi:one-up
+    js_url: /api/hassio/app/entrypoint.js
+    url_path: "config/entities"
+    embed_iframe: true
+    require_admin: true
+    config:
+      ingress: core_configurator
+  - name: ha_automations
+    sidebar_title: Automations
+    sidebar_icon: mdi:home-automation
+    js_url: /api/hassio/app/entrypoint.js
+    url_path: "config/automation"
+    embed_iframe: true
+    require_admin: true
+    config:
+      ingress: core_configurator
+  - name: ha_supervisor
+    sidebar_title: Supervisor
+    sidebar_icon: mdi:bulldozer
+    js_url: /api/hassio/app/entrypoint.js
+    url_path: "config/hassio"
+    embed_iframe: true
+    require_admin: true
+    config:
+      ingress: core_configurator
+  - name: ha_config_check
+    sidebar_title: Config Check
+    sidebar_icon: mdi:bug-check-outline
+    js_url: /api/hassio/app/entrypoint.js
+    url_path: "config/server_control"
+    embed_iframe: true
+    require_admin: true
+    config:
+      ingress: core_configurator
+  - name: ha_logs
+    sidebar_title: Logs
+    sidebar_icon: mdi:campfire
+    js_url: /api/hassio/app/entrypoint.js
+    url_path: "config/logs"
+    embed_iframe: true
+    require_admin: true
+    config:
+      ingress: core_configurator
