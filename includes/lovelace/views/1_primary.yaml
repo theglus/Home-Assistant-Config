@@ -572,7 +572,6 @@ cards:
                   entity: light.recessed
                   name: Recessed
                   template:
-                    - light_color
                     - icon_recessed
                 #----------------------------------------------------------------
                 ## Kitchen Google Home Mini
@@ -615,7 +614,6 @@ cards:
                 - type: "custom:button-card"
                   entity: light.bedside
                   name: Bedside
-                  # TODO: Create icon_bedside button template
                   template:
                     - icon_bedside
                 #----------------------------------------------------------------
