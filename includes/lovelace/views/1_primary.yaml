@@ -399,6 +399,32 @@ cards:
                     - light
                     - icon_recessed
                 #----------------------------------------------------------------
+                ## Air Circulator
+                #----------------------------------------------------------------
+                - type: "custom:button-card"
+                  entity: switch.mini_air_circulator
+                  name: Air Circulator
+                  template:
+                    - icon_circulator
+                #----------------------------------------------------------------
+                ## Thruple Lamp
+                #----------------------------------------------------------------
+                - type: "custom:button-card"
+                  entity: light.thruple_lamp
+                  name: Lamp
+                  template:
+                    - base
+                    - icon_lamp
+                #----------------------------------------------------------------
+                ## Thumb Lamp
+                #----------------------------------------------------------------
+                - type: "custom:button-card"
+                  entity: light.thumb_lamp
+                  name: Thumb
+                  template:
+                    - base
+                    - icon_lamp
+                #----------------------------------------------------------------
                 ## Printer
                 #----------------------------------------------------------------
                 # TODO: #253 Additional printer controls
@@ -407,14 +433,6 @@ cards:
                   name: Major Laser
                   template:
                     - icon_printer
-                #----------------------------------------------------------------
-                ## Air Circulator
-                #----------------------------------------------------------------
-                - type: "custom:button-card"
-                  entity: switch.mini_air_circulator
-                  name: Air Circulator
-                  template:
-                    - icon_circulator
                 #----------------------------------------------------------------
                 ## Office Google Home Mini
                 #----------------------------------------------------------------
@@ -554,7 +572,6 @@ cards:
                   entity: light.recessed
                   name: Recessed
                   template:
-                    - light_color
                     - icon_recessed
                 #----------------------------------------------------------------
                 ## Kitchen Google Home Mini
@@ -565,14 +582,6 @@ cards:
                   name: Home Mini
                   template:
                     - icon_nest_mini
-                #----------------------------------------------------------------
-                ## Mac/iPad Charger
-                #----------------------------------------------------------------
-                # TODO: #285 Mac charger button
-                #----------------------------------------------------------------
-                ## Paper Shredder
-                #----------------------------------------------------------------
-                # TODO: #266 Paper shredder button
                 #----------------------------------------------------------------
                 ## Kitchen Dyson
                 #----------------------------------------------------------------
@@ -605,7 +614,6 @@ cards:
                 - type: "custom:button-card"
                   entity: light.bedside
                   name: Bedside
-                  # TODO: Create icon_bedside button template
                   template:
                     - icon_bedside
                 #----------------------------------------------------------------
@@ -652,6 +660,15 @@ cards:
                   template:
                     - icon_dyson
                 #----------------------------------------------------------------
+                ## Row Lamp
+                #----------------------------------------------------------------
+                - type: "custom:button-card"
+                  entity: light.row_lamp
+                  name: Row
+                  template:
+                    - base
+                    - icon_lamp
+                #----------------------------------------------------------------
                 ## Loft Nest Hub
                 #----------------------------------------------------------------
                 # TODO: #315 Alarm + timer countdown for Google Home devices.
@@ -663,7 +680,6 @@ cards:
           #################################################################
           ## Loft Bathroom Controls
           #################################################################
-          # #252: Create view for loft bathroom
           Loft Bathroom:
             type: "custom:mod-card"
             style: |

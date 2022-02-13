@@ -1,7 +1,7 @@
 title: ha
 path: ha
 icon: "mdi:home-assistant"
-badges: []
+panel: false
 cards:
   #################################################################
   ## Home Assistant System Controls
@@ -11,8 +11,8 @@ cards:
       - type: entities
         title: Home Assistant
         entities:
-          - entity: sensor.latest_version
-          - entity: binary_sensor.updater
+          - entity: sensor.beta_version
+          - entity: sensor.installed_version
           - entity: sensor.hacs
           - entity: sensor.time_online
           - type: custom:hui-horizontal-stack-card

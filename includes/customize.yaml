@@ -1,4 +1,13 @@
 #################################################################
+## Dimmers
+#################################################################
+# Entryay Dimmer
+automation.dimmer_hallway:
+  icon: hue:"friends-of-hue-aurora-dimmer-switch"
+# Office Dimmer
+automation.dimmer_office:
+  icon: hue:"friends-of-hue-aurora-dimmer-switch"
+#################################################################
 ## Hue Rooms
 #################################################################
 # Hallway
@@ -83,3 +92,8 @@ sensor.vacuum_sidebrush:
   icon: "custom:vacuum-sidebrush"
 sensor.vacuum_last_clean:
   icon: "mdi:calendar-clock"
+#################################################################
+## Misc Sensors
+#################################################################
+sensor.time_online:
+  icon: mdi:progress-clock
