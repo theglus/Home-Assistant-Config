@@ -11,11 +11,20 @@ panel_custom:
     require_admin: true
     config:
       ingress: core_configurator
-  - name: ha_debug
-    sidebar_title: Debug
-    sidebar_icon: mdi:bacteria-outline
+  - name: ha_automations
+    sidebar_title: Automations
+    sidebar_icon: mdi:home-automation
     js_url: /api/hassio/app/entrypoint.js
-    url_path: "hassio/system"
+    url_path: "config/automation"
+    embed_iframe: true
+    require_admin: true
+    config:
+      ingress: core_configurator
+  - name: ha_supervisor
+    sidebar_title: Supervisor
+    sidebar_icon: mdi:bulldozer
+    js_url: /api/hassio/app/entrypoint.js
+    url_path: "config/hassio"
     embed_iframe: true
     require_admin: true
     config:
