@@ -399,15 +399,6 @@ cards:
                     - light
                     - icon_recessed
                 #----------------------------------------------------------------
-                ## Printer
-                #----------------------------------------------------------------
-                # TODO: #253 Additional printer controls
-                - type: "custom:button-card"
-                  entity: switch.major_laser_printer
-                  name: Major Laser
-                  template:
-                    - icon_printer
-                #----------------------------------------------------------------
                 ## Air Circulator
                 #----------------------------------------------------------------
                 - type: "custom:button-card"
@@ -422,16 +413,17 @@ cards:
                   entity: light.thruple_lamp
                   name: Lamp
                   template:
+                    - base
                     - icon_lamp
                 #----------------------------------------------------------------
-                ## Office Google Home Mini
+                ## Thumb Lamp
                 #----------------------------------------------------------------
-                # TODO: #315 Alarm + timer countdown for Google Home devices.
-                - type: custom:button-card
-                  entity: media_player.office_speaker
-                  name: Home Mini
+                - type: "custom:button-card"
+                  entity: light.thumb_lamp
+                  name: Thumb
                   template:
-                    - icon_nest_mini
+                    - base
+                    - icon_lamp
                 #----------------------------------------------------------------
                 ## Printer
                 #----------------------------------------------------------------
@@ -442,13 +434,14 @@ cards:
                   template:
                     - icon_printer
                 #----------------------------------------------------------------
-                ## Thumb Lamp
+                ## Office Google Home Mini
                 #----------------------------------------------------------------
-                - type: "custom:button-card"
-                  entity: light.thumb_lamp
-                  name: Thumb
+                # TODO: #315 Alarm + timer countdown for Google Home devices.
+                - type: custom:button-card
+                  entity: media_player.office_speaker
+                  name: Home Mini
                   template:
-                    - icon_lamp
+                    - icon_nest_mini
           #################################################################
           ## Living Room Controls
           #################################################################
@@ -669,6 +662,15 @@ cards:
                   template:
                     - icon_dyson
                 #----------------------------------------------------------------
+                ## Row Lamp
+                #----------------------------------------------------------------
+                - type: "custom:button-card"
+                  entity: light.row_lamp
+                  name: Row
+                  template:
+                    - base
+                    - icon_lamp
+                #----------------------------------------------------------------
                 ## Loft Nest Hub
                 #----------------------------------------------------------------
                 # TODO: #315 Alarm + timer countdown for Google Home devices.
@@ -677,14 +679,6 @@ cards:
                   name: Nest Hub
                   template:
                     - icon_nest_hub
-                #----------------------------------------------------------------
-                ## Row Lamp
-                #----------------------------------------------------------------
-                - type: "custom:button-card"
-                  entity: light.row_lamp
-                  name: Row
-                  template:
-                    - icon_lamp
           #################################################################
           ## Loft Bathroom Controls
           #################################################################
