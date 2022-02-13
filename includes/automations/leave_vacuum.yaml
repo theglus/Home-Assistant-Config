@@ -56,6 +56,11 @@ action:
             domain: vacuum
             entity_id: vacuum.winston
             type: clean
+          - service: vacuum.set_fan_speed
+            data:
+              fan_speed: Turbo
+            target:
+              entity_id: vacuum.winston
       - conditions:
           - condition: state
             entity_id: binary_sensor.front_door
@@ -74,5 +79,10 @@ action:
             domain: vacuum
             entity_id: vacuum.winston
             type: clean
+          - service: vacuum.set_fan_speed
+            data:
+              fan_speed: Turbo
+            target:
+              entity_id: vacuum.winston
     default: []
 mode: single
