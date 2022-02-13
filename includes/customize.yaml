@@ -1,4 +1,13 @@
 #################################################################
+## Dimmers
+#################################################################
+# Entryay Dimmer
+automation.dimmer_hallway:
+  icon: hue:"friends-of-hue-aurora-dimmer-switch"
+# Office Dimmer
+automation.dimmer_office:
+  icon: hue:"friends-of-hue-aurora-dimmer-switch"
+#################################################################
 ## Hue Rooms
 #################################################################
 # Hallway
