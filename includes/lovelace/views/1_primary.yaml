@@ -416,6 +416,14 @@ cards:
                   template:
                     - icon_circulator
                 #----------------------------------------------------------------
+                ## Thruple Lamp
+                #----------------------------------------------------------------
+                - type: "custom:button-card"
+                  entity: light.thruple_lamp
+                  name: Lamp
+                  template:
+                    - icon_lamp
+                #----------------------------------------------------------------
                 ## Office Google Home Mini
                 #----------------------------------------------------------------
                 # TODO: #315 Alarm + timer countdown for Google Home devices.
@@ -424,6 +432,23 @@ cards:
                   name: Home Mini
                   template:
                     - icon_nest_mini
+                #----------------------------------------------------------------
+                ## Printer
+                #----------------------------------------------------------------
+                # TODO: #253 Additional printer controls
+                - type: "custom:button-card"
+                  entity: switch.major_laser_printer
+                  name: Major Laser
+                  template:
+                    - icon_printer
+                #----------------------------------------------------------------
+                ## Thumb Lamp
+                #----------------------------------------------------------------
+                - type: "custom:button-card"
+                  entity: light.thumb_lamp
+                  name: Thumb
+                  template:
+                    - icon_lamp
           #################################################################
           ## Living Room Controls
           #################################################################
