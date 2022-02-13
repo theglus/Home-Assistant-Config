@@ -32,7 +32,7 @@ cards:
                 icon: "mdi:home-assistant"
                 state_styles:
                   General:
-                  template: nav_button
+                    template: nav_button
                 template: nav_styles
                 tap_action:
                   action: call-service
@@ -48,7 +48,7 @@ cards:
                 icon: "mdi:coat-rack"
                 state_styles:
                   Entrway:
-                  template: nav_button
+                    template: nav_button
                 template: nav_styles
                 tap_action:
                   action: call-service
@@ -65,7 +65,7 @@ cards:
                 icon: "mdi:washing-machine"
                 state_styles:
                   Laundry:
-                  template: nav_button
+                    template: nav_button
                 template: nav_styles
                 tap_action:
                   action: call-service
@@ -81,7 +81,7 @@ cards:
                 icon: "mdi:desk"
                 state_styles:
                   Office:
-                  template: nav_button
+                    template: nav_button
                 template: nav_styles
                 tap_action:
                   action: call-service
@@ -97,7 +97,7 @@ cards:
                 icon: "mdi:sofa"
                 state_styles:
                   Living Room:
-                  template: nav_button
+                    template: nav_button
                 template: nav_styles
                 tap_action:
                   action: call-service
@@ -113,7 +113,7 @@ cards:
                 icon: "mdi:fridge"
                 state_styles:
                   Kitchen:
-                  template: nav_button
+                    template: nav_button
                 template: nav_styles
                 tap_action:
                   action: call-service
@@ -129,7 +129,7 @@ cards:
                 icon: "mdi:bed-king"
                 state_styles:
                   Loft:
-                  template: nav_button
+                    template: nav_button
                 template: nav_styles
                 tap_action:
                   action: call-service
@@ -146,7 +146,7 @@ cards:
                 icon: "mdi:toilet"
                 state_styles:
                   Loft:
-                  template: nav_button
+                    template: nav_button
                 template: nav_styles
                 tap_action:
                   action: call-service
