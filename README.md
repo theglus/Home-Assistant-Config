@@ -739,19 +739,6 @@ Loft:
 ```
 </details>
 
-## Planned Improvements
-- [x] [Notification Automations + Water Alerts](https://github.com/theglus/Home-Assistant-Config/milestone/26)
-- [x] [Tackle Nanoleaf pop-up + light button bugs](https://github.com/theglus/Home-Assistant-Config/milestone/29)
-- [x] [Create buttons for remaining Google Home devices](https://github.com/theglus/Home-Assistant-Config/milestone/18)
-- [x] [Granular Google Home Controls](https://github.com/theglus/Home-Assistant-Config/milestone/19)
-- [x] [Dyson Controls](https://github.com/theglus/Home-Assistant-Config/milestone/27)
-- [ ] [AC climate pop-up](https://github.com/theglus/Home-Assistant-Config/milestone/24)
-- [x] [Laundry Machine Controls](https://github.com/theglus/Home-Assistant-Config/milestone/5)
-- [x] [Winston Interface + Automations](https://github.com/theglus/Home-Assistant-Config/milestone/20)
-- [ ] [Home Theater Controls](https://github.com/theglus/Home-Assistant-Config/milestone/30)
-- [ ] [Improved Printer + Paper Shredder buttons](https://github.com/theglus/Home-Assistant-Config/milestone/23)
-- [ ] [Animate various light buttons](https://github.com/theglus/Home-Assistant-Config/milestone/7)
-- [ ] [GH Cleanup + Documentation](https://github.com/theglus/Home-Assistant-Config/milestone/15)
 ## Automations
 - [Alert Leak](includes/automations/alert_leak.yaml): Alert when water is detected under the sink or dishwasher.
 - [Charge Toothbrushes](includes/automations/charge_toothbrushes.yaml): Start charging toothbrushes at 12 am and stop at 4 am.
