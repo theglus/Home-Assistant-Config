@@ -36,6 +36,9 @@ I routinely stream games via Moonlight from my desktop computer (in the Office) 
 ### Architecture
 ![My Home Assistant Architecture](www/readme/architecture.png) 
 ### Integrations
+<details>
+  <summary>See details</summary>
+ 
 - [Air Visual](https://www.home-assistant.io/integrations/airvisual)
 - [ClimaCell](https://www.home-assistant.io/integrations/climacell)
 - [deCONZ](https://www.home-assistant.io/integrations/deconz)
@@ -51,8 +54,14 @@ I routinely stream games via Moonlight from my desktop computer (in the Office) 
 - [Tile](https://www.home-assistant.io/integrations/tile)
 - [TP-Link Kasa Smart](https://www.home-assistant.io/integrations/tplink)
 - [Xiaomi Miio](https://www.home-assistant.io/integrations/xiaomi_miio)
+ 
+</details>
+
 
 ### Custom Components
+<details>
+  <summary>See details</summary>
+ 
 - [HACS](https://github.com/hacs/integration): Allows for the installation and management of the various custom components.
 - [BrowserMod](https://github.com/thomasloven/hass-browser_mod): Supports various customizations within Home Assistant.
 - [Drivvo Integration](https://github.com/theglus/sensor.drivvo): Utilized to pull in Vespa milage + fuel economy from [Drivvo](https://github.com/theglus/sensor.drivvo).
@@ -61,7 +70,13 @@ I routinely stream games via Moonlight from my desktop computer (in the Office) 
 - [Google Home](https://github.com/leikoilja/ha-google-home): Creates HA sensors for alarms + timers that have been set on various Google Home devices.
 - [LG ThinQ Sensors](https://github.com/ollo69/ha-smartthinq-sensors): Supports integrating my LG washer + dryer into HA.
 - [Xiaomi Cloud Map Extractor](https://github.com/PiotrMachowski/Home-Assistant-custom-components-Xiaomi-Cloud-Map-Extractor): Harnesses lidar in RoboRock S4 to create a live map of my home.
+ 
+</details>
+ 
 ### Lovelace Resources
+<details>
+  <summary>See details</summary>
+ 
 - [Bar Card](https://github.com/custom-cards/bar-card)
 - [Button Card](https://github.com/custom-cards/button-card)
 - [Card Mod](https://github.com/thomasloven/lovelace-card-mod)
@@ -84,6 +99,9 @@ I routinely stream games via Moonlight from my desktop computer (in the Office) 
 - [Switch Popup Card](https://github.com/DBuit/switch-popup-card)
 - [Thermostat Popup Card](https://github.com/DBuit/thermostat-popup-card)
 - [Vertical Stack in Card](https://github.com/ofekashery/vertical-stack-in-card)
+ 
+</details> 
+
 ### Voice Assistant
 I'm currently utilizing Nabu Casa to leverage Google Assistant via the aforementioned Google Home devices to enable voice controls. I mainly use voice commands to trigger the lights, music, and theater system. I would like to setup voice commands for Winston and Kirby in the near future. 
 ## Devices
