@@ -6,74 +6,39 @@
 alias: On Air
 description: "Turn Potter light red when webcam turns on."
 trigger:
-  - type: turned_on
-    platform: device
-    device_id: 0d90cb630ecad3945965440c0dabc6cf
-    entity_id: binary_sensor.lilt_macbook_pro_camera_in_use
-    domain: binary_sensor
-    for:
-      hours: 0
-      minutes: 0
-      seconds: 1
-      milliseconds: 0
-  - type: turned_on
-    platform: device
-    device_id: ec19a58bbc0287067cd031a9b536f33c
-    entity_id: binary_sensor.macintoshbook_air_camera_in_use
-    domain: binary_sensor
-    for:
-      hours: 0
-      minutes: 0
-      seconds: 1
-      milliseconds: 0
-  - type: turned_off
-    platform: device
-    device_id: 0d90cb630ecad3945965440c0dabc6cf
-    entity_id: binary_sensor.lilt_macbook_pro_camera_in_use
-    domain: binary_sensor
-  - type: turned_off
-    platform: device
-    device_id: ec19a58bbc0287067cd031a9b536f33c
-    entity_id: binary_sensor.macintoshbook_air_camera_in_use
-    domain: binary_sensor
-    for:
-      hours: 0
-      minutes: 0
-      seconds: 1
-      milliseconds: 0
-condition: []
+  - platform: state
+    entity_id: binary_sensor.work_camera_in_use
+    from: 'off'
+    to: 'on'
+  - platform: state
+    entity_id: binary_sensor.work_camera_in_use
+    from: 'on'
+    to: 'off'
+condition:
+  - condition: state
+    entity_id: sensor.work_displays
+    state: '2'
 action:
   - choose:
       - conditions:
-          - condition: and
-            conditions:
-              - type: is_on
-                condition: device
-                device_id: 0d90cb630ecad3945965440c0dabc6cf
-                entity_id: binary_sensor.lilt_macbook_pro_camera_in_use
-                domain: binary_sensor
-                for:
-                  hours: 0
-                  minutes: 0
-                  seconds: 1
-                  milliseconds: 0
+          - condition: state
+            entity_id: binary_sensor.work_camera_in_use
+            state: 'on'
+            for:
+              hours: 0
+              minutes: 0
+              seconds: 1
         sequence:
           - scene: scene.meeting
       - conditions:
-          - condition: and
-            conditions:
-              - type: is_on
-                condition: device
-                device_id: ec19a58bbc0287067cd031a9b536f33c
-                entity_id: binary_sensor.macintoshbook_air_camera_in_use
-                domain: binary_sensor
-                for:
-                  hours: 0
-                  minutes: 0
-                  seconds: 1
-                  milliseconds: 0
+          - condition: state
+            entity_id: binary_sensor.work_camera_in_use
+            state: 'off'
+            for:
+              hours: 0
+              minutes: 0
+              seconds: 1
         sequence:
-          - scene: scene.meeting
-    default:
-      - scene: scene.office_available
+          - scene: scene.office_available
+    default: []
 mode: single
