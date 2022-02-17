@@ -7,7 +7,7 @@ Welcome to theglus's Home Assistant setup. I hope you find value in the projects
 * [Lovelace Dashboards](#lovelace-dashboards)
 * [Automations](#automations)
 * [Planned Improvements](#planned-improvements)
-## Hardware
+## 🔩 Hardware
 * [Home Assistant Server](#home-assistant-server)
 * [Network](#network)
 ### Home Assistant Server
@@ -27,7 +27,7 @@ But you can't have a mesh network with just one puck, so in order to eliminate t
 
 I routinely stream games via Moonlight from my desktop computer (in the Office) to the TV (in the Living Room). Initially, I did this over WiFi, but had very little success. Fortunately, there is a coax outlet right under my desk, so using ethernet-over-coax, I am able to hardwire to the network switch in the Living Room.
 
-## Software
+## 💾 Software
 * [Architecture](#architecture)
 * [Integrations](#integrations)
 * [Custom Components](#custom-components) 
@@ -36,6 +36,9 @@ I routinely stream games via Moonlight from my desktop computer (in the Office) 
 ### Architecture
 ![My Home Assistant Architecture](www/readme/architecture.png) 
 ### Integrations
+<details>
+  <summary>See details</summary>
+ 
 - [Air Visual](https://www.home-assistant.io/integrations/airvisual)
 - [ClimaCell](https://www.home-assistant.io/integrations/climacell)
 - [deCONZ](https://www.home-assistant.io/integrations/deconz)
@@ -51,8 +54,14 @@ I routinely stream games via Moonlight from my desktop computer (in the Office) 
 - [Tile](https://www.home-assistant.io/integrations/tile)
 - [TP-Link Kasa Smart](https://www.home-assistant.io/integrations/tplink)
 - [Xiaomi Miio](https://www.home-assistant.io/integrations/xiaomi_miio)
+ 
+</details>
+
 
 ### Custom Components
+<details>
+  <summary>See details</summary>
+ 
 - [HACS](https://github.com/hacs/integration): Allows for the installation and management of the various custom components.
 - [BrowserMod](https://github.com/thomasloven/hass-browser_mod): Supports various customizations within Home Assistant.
 - [Drivvo Integration](https://github.com/theglus/sensor.drivvo): Utilized to pull in Vespa milage + fuel economy from [Drivvo](https://github.com/theglus/sensor.drivvo).
@@ -61,7 +70,13 @@ I routinely stream games via Moonlight from my desktop computer (in the Office) 
 - [Google Home](https://github.com/leikoilja/ha-google-home): Creates HA sensors for alarms + timers that have been set on various Google Home devices.
 - [LG ThinQ Sensors](https://github.com/ollo69/ha-smartthinq-sensors): Supports integrating my LG washer + dryer into HA.
 - [Xiaomi Cloud Map Extractor](https://github.com/PiotrMachowski/Home-Assistant-custom-components-Xiaomi-Cloud-Map-Extractor): Harnesses lidar in RoboRock S4 to create a live map of my home.
+ 
+</details>
+ 
 ### Lovelace Resources
+<details>
+  <summary>See details</summary>
+ 
 - [Bar Card](https://github.com/custom-cards/bar-card)
 - [Button Card](https://github.com/custom-cards/button-card)
 - [Card Mod](https://github.com/thomasloven/lovelace-card-mod)
@@ -84,9 +99,12 @@ I routinely stream games via Moonlight from my desktop computer (in the Office) 
 - [Switch Popup Card](https://github.com/DBuit/switch-popup-card)
 - [Thermostat Popup Card](https://github.com/DBuit/thermostat-popup-card)
 - [Vertical Stack in Card](https://github.com/ofekashery/vertical-stack-in-card)
+ 
+</details> 
+
 ### Voice Assistant
 I'm currently utilizing Nabu Casa to leverage Google Assistant via the aforementioned Google Home devices to enable voice controls. I mainly use voice commands to trigger the lights, music, and theater system. I would like to setup voice commands for Winston and Kirby in the near future. 
-## Devices
+## 🕹 Devices
 * [Audio & Video](#audio--video)
   * [Home Theater](#home-theater)
   * [Multi Room Audio](#multi-room-audio)
@@ -138,7 +156,7 @@ I have a series of smart plugs which I use to control various appliances. Curren
 My old school analog marquee is controlled by the Hue plug which I opted for due to it's ability to be integrated with my other lights via the Hue ecosystem. Lastly, sometimes it's just quicker and quieter to turn on the lights with a switch, being a renter replacing my wall switches isn't appealing. Luckily I discovered Lutron Aurora dimmers which not only gives me a physical button but also a dimmer which I can map to one or many lights. I'm hoping to figure out a way to map secondary actions (double click, triple click, etc.), but the feasiblity is TBD.
 ## Custom Icons
 Inspired by [matt8707](https://github.com/matt8707), I created several custom icons which can be found in `www/custom_icons.js`. I leveraged [material design principles](https://material.io/design/iconography/system-icons.html#design-principles) and [Guide to a Vector Drawing Program](http://tavmjong.free.fr/INKSCAPE/MANUAL/html/XML.html) when designing and building the icons. I will be working on pulling in additional icons from various [icon_templates](includes/lovelace/button_card_templates/icon_templates) over the next several weeks.
-## Lovelace Dashboards
+## 🎛 Lovelace Dashboards
 * [Quick Access Controls](#quick-access-controls)
   * [Room Controls](#room-controls)
   * [Hallway Controls](#hallway-controls)
@@ -721,20 +739,7 @@ Loft:
 ```
 </details>
 
-## Planned Improvements
-- [x] [Notification Automations + Water Alerts](https://github.com/theglus/Home-Assistant-Config/milestone/26)
-- [x] [Tackle Nanoleaf pop-up + light button bugs](https://github.com/theglus/Home-Assistant-Config/milestone/29)
-- [x] [Create buttons for remaining Google Home devices](https://github.com/theglus/Home-Assistant-Config/milestone/18)
-- [x] [Granular Google Home Controls](https://github.com/theglus/Home-Assistant-Config/milestone/19)
-- [x] [Dyson Controls](https://github.com/theglus/Home-Assistant-Config/milestone/27)
-- [ ] [AC climate pop-up](https://github.com/theglus/Home-Assistant-Config/milestone/24)
-- [x] [Laundry Machine Controls](https://github.com/theglus/Home-Assistant-Config/milestone/5)
-- [x] [Winston Interface + Automations](https://github.com/theglus/Home-Assistant-Config/milestone/20)
-- [ ] [Home Theater Controls](https://github.com/theglus/Home-Assistant-Config/milestone/30)
-- [ ] [Improved Printer + Paper Shredder buttons](https://github.com/theglus/Home-Assistant-Config/milestone/23)
-- [ ] [Animate various light buttons](https://github.com/theglus/Home-Assistant-Config/milestone/7)
-- [ ] [GH Cleanup + Documentation](https://github.com/theglus/Home-Assistant-Config/milestone/15)
-## Automations
+## 🤖 Automations
 - [Alert Leak](includes/automations/alert_leak.yaml): Alert when water is detected under the sink or dishwasher.
 - [Charge Toothbrushes](includes/automations/charge_toothbrushes.yaml): Start charging toothbrushes at 12 am and stop at 4 am.
 - [Climate Kirby](includes/automations/climate_kirby.yaml): Trigger [Kirby: Daytime](includes/scenes/kirby_daymode.yaml) @ 8 am + [Kirby: Nighttime](includes/scenes/kirby_nightmode.yaml) @ 9 pm.
@@ -766,4 +771,22 @@ Loft:
 - [Vacuum Schedule](includes/automations/vacuum_schedule.yaml): Clean hallway + kitchen @ 10:30 pm M - F & clean bathroom + office + living room @ 10:30 pm T and TH.
 - [Volume Home](includes/automations/volume_home.yaml): Turn down volume of Google Home device at 10 pm.
 
+# 📢 Shoutouts and Inspirition
+If you like my Lovelace setup be sure to checkout those who influenced me:
+
+**[crixle](https://github.com/crixle/homeassistant-config)**
+ 
+I was racking my brain as to how I could reducing the number of clicks required to control my smart home. A Reddit post with crixle's [Light Control Card](https://github.com/crixle/homeassistant-config#light-control-card) inspired me to create my [Quick Access Controls](#quick-access-controls).
+  
+**[eximo84](https://github.com/eximo84/homeassistant-config-v2)**
+ 
+The [Room Controls](#room-controls) buttons leverage code from eximo84's [Weather](https://github.com/eximo84/homeassistant-config-v2/blob/master/Custom%20Buttons/Weather%20Button.yaml) and [Light](https://github.com/eximo84/homeassistant-config-v2/blob/master/Custom%20Buttons/Light%20Button.yaml) buttons.
+ 
+**[matt8707](https://github.com/matt8707/hass-config)**
+ 
+The original inspiration for overauling my Lovelace dashboard was kicked-off when I stumbled upon [A different take on designing a Lovelace UI](https://community.home-assistant.io/t/a-different-take-on-designing-a-lovelace-ui/162594].
+
+My approach to button templates was heavily influence by Matt's [button_card_templates.yaml](https://github.com/matt8707/hass-config/blob/master/button_card_templates.yaml). His approach to custom icons also inspired me to learn how to create SVGs in Inkspace and SVGator. Matt's work gave me the push to move towards a 100% `yaml` approach to my Lovelace dashboard and greatly increased my all around technical knowledge.
+
+# 👋
 Thanks for reading, please star if your are interested in the project.
