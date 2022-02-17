@@ -36,9 +36,6 @@ I routinely stream games via Moonlight from my desktop computer (in the Office) 
 ### Architecture
 ![My Home Assistant Architecture](www/readme/architecture.png) 
 ### Integrations
-<details>
-  <summary>See details</summary>
- 
 - [Air Visual](https://www.home-assistant.io/integrations/airvisual)
 - [ClimaCell](https://www.home-assistant.io/integrations/climacell)
 - [deCONZ](https://www.home-assistant.io/integrations/deconz)
@@ -54,14 +51,8 @@ I routinely stream games via Moonlight from my desktop computer (in the Office) 
 - [Tile](https://www.home-assistant.io/integrations/tile)
 - [TP-Link Kasa Smart](https://www.home-assistant.io/integrations/tplink)
 - [Xiaomi Miio](https://www.home-assistant.io/integrations/xiaomi_miio)
- 
-</details>
-
 
 ### Custom Components
-<details>
-  <summary>See details</summary>
- 
 - [HACS](https://github.com/hacs/integration): Allows for the installation and management of the various custom components.
 - [BrowserMod](https://github.com/thomasloven/hass-browser_mod): Supports various customizations within Home Assistant.
 - [Drivvo Integration](https://github.com/theglus/sensor.drivvo): Utilized to pull in Vespa milage + fuel economy from [Drivvo](https://github.com/theglus/sensor.drivvo).
@@ -70,13 +61,7 @@ I routinely stream games via Moonlight from my desktop computer (in the Office) 
 - [Google Home](https://github.com/leikoilja/ha-google-home): Creates HA sensors for alarms + timers that have been set on various Google Home devices.
 - [LG ThinQ Sensors](https://github.com/ollo69/ha-smartthinq-sensors): Supports integrating my LG washer + dryer into HA.
 - [Xiaomi Cloud Map Extractor](https://github.com/PiotrMachowski/Home-Assistant-custom-components-Xiaomi-Cloud-Map-Extractor): Harnesses lidar in RoboRock S4 to create a live map of my home.
- 
-</details>
- 
 ### Lovelace Resources
-<details>
-  <summary>See details</summary>
- 
 - [Bar Card](https://github.com/custom-cards/bar-card)
 - [Button Card](https://github.com/custom-cards/button-card)
 - [Card Mod](https://github.com/thomasloven/lovelace-card-mod)
@@ -99,9 +84,6 @@ I routinely stream games via Moonlight from my desktop computer (in the Office) 
 - [Switch Popup Card](https://github.com/DBuit/switch-popup-card)
 - [Thermostat Popup Card](https://github.com/DBuit/thermostat-popup-card)
 - [Vertical Stack in Card](https://github.com/ofekashery/vertical-stack-in-card)
- 
-</details> 
-
 ### Voice Assistant
 I'm currently utilizing Nabu Casa to leverage Google Assistant via the aforementioned Google Home devices to enable voice controls. I mainly use voice commands to trigger the lights, music, and theater system. I would like to setup voice commands for Winston and Kirby in the near future. 
 ## Devices
@@ -739,6 +721,19 @@ Loft:
 ```
 </details>
 
+## Planned Improvements
+- [x] [Notification Automations + Water Alerts](https://github.com/theglus/Home-Assistant-Config/milestone/26)
+- [x] [Tackle Nanoleaf pop-up + light button bugs](https://github.com/theglus/Home-Assistant-Config/milestone/29)
+- [x] [Create buttons for remaining Google Home devices](https://github.com/theglus/Home-Assistant-Config/milestone/18)
+- [x] [Granular Google Home Controls](https://github.com/theglus/Home-Assistant-Config/milestone/19)
+- [x] [Dyson Controls](https://github.com/theglus/Home-Assistant-Config/milestone/27)
+- [ ] [AC climate pop-up](https://github.com/theglus/Home-Assistant-Config/milestone/24)
+- [x] [Laundry Machine Controls](https://github.com/theglus/Home-Assistant-Config/milestone/5)
+- [x] [Winston Interface + Automations](https://github.com/theglus/Home-Assistant-Config/milestone/20)
+- [ ] [Home Theater Controls](https://github.com/theglus/Home-Assistant-Config/milestone/30)
+- [ ] [Improved Printer + Paper Shredder buttons](https://github.com/theglus/Home-Assistant-Config/milestone/23)
+- [ ] [Animate various light buttons](https://github.com/theglus/Home-Assistant-Config/milestone/7)
+- [ ] [GH Cleanup + Documentation](https://github.com/theglus/Home-Assistant-Config/milestone/15)
 ## Automations
 - [Alert Leak](includes/automations/alert_leak.yaml): Alert when water is detected under the sink or dishwasher.
 - [Charge Toothbrushes](includes/automations/charge_toothbrushes.yaml): Start charging toothbrushes at 12 am and stop at 4 am.
@@ -771,4 +766,22 @@ Loft:
 - [Vacuum Schedule](includes/automations/vacuum_schedule.yaml): Clean hallway + kitchen @ 10:30 pm M - F & clean bathroom + office + living room @ 10:30 pm T and TH.
 - [Volume Home](includes/automations/volume_home.yaml): Turn down volume of Google Home device at 10 pm.
 
+# 📢 Shoutouts and Inspirition
+If you like my Lovelace setup be sure to checkout those who influenced me:
+
+**[crixle](https://github.com/crixle/homeassistant-config)**
+ 
+I was racking my brain as to how I could reducing the number of clicks required to control my smart home. A Reddit post with crixle's [Light Control Card](https://github.com/crixle/homeassistant-config#light-control-card) inspired me to create my [Quick Access Controls](#quick-access-controls).
+  
+**[eximo84](https://github.com/eximo84/homeassistant-config-v2)**
+ 
+The [Room Controls](#room-controls) buttons leverage code from eximo84's [Weather](https://github.com/eximo84/homeassistant-config-v2/blob/master/Custom%20Buttons/Weather%20Button.yaml) and [Light](https://github.com/eximo84/homeassistant-config-v2/blob/master/Custom%20Buttons/Light%20Button.yaml) buttons.
+ 
+**[matt8707](https://github.com/matt8707/hass-config)**
+ 
+The original inspiration for overauling my Lovelace dashboard was kicked-off when I stumbled upon [A different take on designing a Lovelace UI](https://community.home-assistant.io/t/a-different-take-on-designing-a-lovelace-ui/162594].
+
+My approach to button templates was heavily influence by Matt's [button_card_templates.yaml](https://github.com/matt8707/hass-config/blob/master/button_card_templates.yaml). His approach to custom icons also inspired me to learn how to create SVGs in Inkspace and SVGator. Matt's work gave me the push to move towards a 100% `yaml` approach to my Lovelace dashboard and greatly increased my all around technical knowledge.
+
+# 👋
 Thanks for reading, please star if your are interested in the project.
