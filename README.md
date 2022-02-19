@@ -760,19 +760,6 @@ Lutton Aurora dimmers have been a game changer in my home automations setup. The
 - [Dimmer Office](includes/automations/dimmer_office.yaml): Trigger office lights with Lutron Aurora switch.
 </details>
 
-### 🎰 Misc
-<details>
-  <summary>Automations</summary>
-
-- [Alert Leak](includes/automations/alert_leak.yaml): Alert when water is detected under the sink or dishwasher.
-- [Mood Television](includes/automations/mood_television.yaml): Television scene + Denon Nighttime quick select.
-- [Mood Theater](includes/automations/mood_theater.yaml): Theater scene + Denon Theater quick select.
-- [On Air](includes/automations/on_air.yaml): Turn Potter light red when webcam turns on.
-- [Peak Usage Alerts](includes/automations/peak_usage_alerts.yaml): Notify Smartphones when AC, Washer, or Dryer is on during peak usage. 
-- [Set Theme](includes/automations/set_theme.yaml): Set theme at Home Assistant start.
-- [Volume Home](includes/automations/volume_home.yaml): Turn down volume of Google Home device at 10 pm.
-</details>
-
 ### 📬  Notifications
 I currently have notifications set to be delivered via one of two channels [Telegram](includes/notifiers/telegram.yaml) or the [Smartphone Group](includes/notifiers/smartphones.yaml). Telegram is used to notify about server boot up to aid with troubleshooting while the Smartphone Group leverages the companion app to surface in-app notifications.
 <details>
@@ -783,6 +770,7 @@ I currently have notifications set to be delivered via one of two channels [Tele
 - [Notify Heat Wave](includes/automations/notify_heatwave.yaml): Notify smartphones when tomorrows high is  >75 °F.
 - [Notify Printer](includes/automations/notification_printer.yaml): Notify Smartphones when Major Laser Printer is ready.
 - [Notify Washer](includes/automations/notify_washer.yaml): Notify smartphones when washer is complete.
+- [Peak Usage Alerts](includes/automations/peak_usage_alerts.yaml): Notify Smartphones when AC, Washer, or Dryer is on during peak usage. 
 - [Server Boot Up](includes/automations/server_boot_up.yaml): Notify via Telegram when server has booted up.
 - [Server Reboot](includes/automations/server_reboot.yaml): Telegram notification that alerts of server reboot, restart, or shutdown.
 </details>
@@ -807,7 +795,8 @@ Vampire drain is a problem, especially when your power company charges different
 - [Shutdown Shredder](includes/automations/shutoff_shredder.yaml): Shutoff plug to paper shredder 2-minutes after device has been switched on.
 </details>
 
-### Vacuum
+### 🧹 Vacuum
+Winston my trusty robot vacuum is scheduled to clean the most trafficed areas of my apartment (hallway + kitchen) Monday - Friday, the remaining rooms (office + living room + bathroom) are cleaned on Tuesdays and Thursdays. Creating these automations allowed me to stop using the [Mi Home App](https://play.google.com/store/apps/details?id=com.xiaomi.smarthome&hl=en_US&gl=US).
 <details>
   <summary>Automations</summary>
 
@@ -816,6 +805,18 @@ Vampire drain is a problem, especially when your power company charges different
 - [Vacuum Docked](includes/automations/vacuum_done.yaml): Notify Smartphones when Winston has returned to dock.
 - [Vacuum Done](includes/automations/vacuum_done.yaml): Notify Smartphones when Winston has completed cleaning.
 - [Vacuum Schedule](includes/automations/vacuum_schedule.yaml): Clean hallway + kitchen @ 10:30 pm M - F & clean bathroom + office + living room @ 10:30 pm T and TH.
+</details>
+
+### 🎰 Various
+<details>
+  <summary>Automations</summary>
+
+- [Alert Leak](includes/automations/alert_leak.yaml): Alert when water is detected under the sink or dishwasher.
+- [Mood Television](includes/automations/mood_television.yaml): Television scene + Denon Nighttime quick select.
+- [Mood Theater](includes/automations/mood_theater.yaml): Theater scene + Denon Theater quick select.
+- [On Air](includes/automations/on_air.yaml): Turn Potter light red when webcam turns on.
+- [Set Theme](includes/automations/set_theme.yaml): Set theme at Home Assistant start.
+- [Volume Home](includes/automations/volume_home.yaml): Turn down volume of Google Home device at 10 pm.
 </details>
 
 # 📢 Shoutouts and Inspirition
