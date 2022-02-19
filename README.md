@@ -740,14 +740,6 @@ Loft:
 </details>
 
 ## 🤖 Automations
-## Misc
-- [Alert Leak](includes/automations/alert_leak.yaml): Alert when water is detected under the sink or dishwasher.
-- [Mood Television](includes/automations/mood_television.yaml): Television scene + Denon Nighttime quick select.
-- [Mood Theater](includes/automations/mood_theater.yaml): Theater scene + Denon Theater quick select.
-- [On Air](includes/automations/on_air.yaml): Turn Potter light red when webcam turns on.
-- [Peak Usage Alerts](includes/automations/peak_usage_alerts.yaml): Notify Smartphones when AC, Washer, or Dryer is on during peak usage. 
-- [Set Theme](includes/automations/set_theme.yaml): Set theme at Home Assistant start.
-- [Volume Home](includes/automations/volume_home.yaml): Turn down volume of Google Home device at 10 pm.
 ### Climate
 - [Climate Kirby](includes/automations/climate_kirby.yaml): Trigger [Kirby: Daytime](includes/scenes/kirby_daymode.yaml) @ 8 am + [Kirby: Nighttime](includes/scenes/kirby_nightmode.yaml) @ 9 pm.
 - [Climate Loft](includes/automations/climate_loft.yaml): Turn on fan when Loft is ≥72° and off when ≤71°.
@@ -756,6 +748,14 @@ Loft:
 ### Dimmer
 - [Dimmer Hallway](includes/automations/dimmer_hallway.yaml): Trigger runner light with Lutron Aurora switch.
 - [Dimmer Office](includes/automations/dimmer_office.yaml): Trigger office lights with Lutron Aurora switch.
+### Misc
+- [Alert Leak](includes/automations/alert_leak.yaml): Alert when water is detected under the sink or dishwasher.
+- [Mood Television](includes/automations/mood_television.yaml): Television scene + Denon Nighttime quick select.
+- [Mood Theater](includes/automations/mood_theater.yaml): Theater scene + Denon Theater quick select.
+- [On Air](includes/automations/on_air.yaml): Turn Potter light red when webcam turns on.
+- [Peak Usage Alerts](includes/automations/peak_usage_alerts.yaml): Notify Smartphones when AC, Washer, or Dryer is on during peak usage. 
+- [Set Theme](includes/automations/set_theme.yaml): Set theme at Home Assistant start.
+- [Volume Home](includes/automations/volume_home.yaml): Turn down volume of Google Home device at 10 pm.
 ### Notifications
 - [Notify AQI](includes/automations/notify_aqi.yaml): Notify Smartphones when AQI is >75.
 - [Notify Dryer](includes/automations/notify_dryer.yaml): Notify smartphones when dryer is complete.
