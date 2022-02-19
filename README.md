@@ -740,36 +740,85 @@ Loft:
 </details>
 
 ## 🤖 Automations
-- [Alert Leak](includes/automations/alert_leak.yaml): Alert when water is detected under the sink or dishwasher.
-- [Charge Toothbrushes](includes/automations/charge_toothbrushes.yaml): Start charging toothbrushes at 12 am and stop at 4 am.
+### 🌡 Climate
+Before Home Assistant, I had several schedules setup for my two air purifiers in the Dyson App. I was able to easily replace those with two automations in HA, eliminating my need to use the proprietary Dyston App. My air circulators which are hooked up to Kasa smart plugs, utilitze two of my favorite automations. One turns on the downstairs fan when the tempurature in the Loft is ≥72° and off when ≤71°, the other turns the office fan on/off based on the state of the lights in the room.
+<details>
+  <summary>Automations</summary>
+
 - [Climate Kirby](includes/automations/climate_kirby.yaml): Trigger [Kirby: Daytime](includes/scenes/kirby_daymode.yaml) @ 8 am + [Kirby: Nighttime](includes/scenes/kirby_nightmode.yaml) @ 9 pm.
 - [Climate Loft](includes/automations/climate_loft.yaml): Turn on fan when Loft is ≥72° and off when ≤71°.
 - [Climate Office Off](includes/automations/climate_office_off.yaml): Turn fan OFF based off of Overhead light group.
 - [Climate Office On](includes/automations/climate_office_on.yaml): Turn fan ON based off of Overhead light group.
+</details>
+
+### 🎚 Dimmer
+Lutton Aurora dimmers have been a game changer in my home automations setup. They are natively supported by Philips Hue and as a renter, they are the perfect solution as to mount onto the existing light switch. Not all my lights are in the Hue ecosystem, so I've created automations to allow the dimmers to control my Sengled LED light strip and various Kasa smart plugs.
+<details>
+  <summary>Automations</summary>
+
 - [Dimmer Hallway](includes/automations/dimmer_hallway.yaml): Trigger runner light with Lutron Aurora switch.
 - [Dimmer Office](includes/automations/dimmer_office.yaml): Trigger office lights with Lutron Aurora switch.
-- [Leave Home](includes/automations/leave_home.yaml): Notify smartphones of door status + turn off lights accordingly.
-- [Leave Vacuum](includes/automations/leave_vacuum.yaml): Notify smartphones of door status + turn off lights + vacuum.
-- [Mood Television](includes/automations/mood_television.yaml): Television scene + Denon Nighttime quick select.
-- [Mood Theater](includes/automations/mood_theater.yaml): Theater scene + Denon Theater quick select.
-- [Notify AQU](includes/automations/notify_aqi.yaml): Notify Smartphones when AQI is >75.
+</details>
+
+### 📬  Notifications
+I currently have notifications set to be delivered via one of two channels [Telegram](includes/notifiers/telegram.yaml) or the [Smartphone Group](includes/notifiers/smartphones.yaml). Telegram is used to notify about server boot up to aid with troubleshooting while the Smartphone Group leverages the companion app to surface in-app notifications.
+<details>
+  <summary>Automations</summary>
+
+- [Notify AQI](includes/automations/notify_aqi.yaml): Notify Smartphones when AQI is >75.
 - [Notify Dryer](includes/automations/notify_dryer.yaml): Notify smartphones when dryer is complete.
 - [Notify Heat Wave](includes/automations/notify_heatwave.yaml): Notify smartphones when tomorrows high is  >75 °F.
 - [Notify Printer](includes/automations/notification_printer.yaml): Notify Smartphones when Major Laser Printer is ready.
 - [Notify Washer](includes/automations/notify_washer.yaml): Notify smartphones when washer is complete.
-- [On Air](includes/automations/on_air.yaml): Turn Potter light red when webcam turns on.
 - [Peak Usage Alerts](includes/automations/peak_usage_alerts.yaml): Notify Smartphones when AC, Washer, or Dryer is on during peak usage. 
-- [Select Vacuum Speed](includes/automations/select_vacuum_speed.yaml): Adds vacuum.set_fan_speed service calls to Vacuum Speed Helper.
 - [Server Boot Up](includes/automations/server_boot_up.yaml): Notify via Telegram when server has booted up.
 - [Server Reboot](includes/automations/server_reboot.yaml): Telegram notification that alerts of server reboot, restart, or shutdown.
-- [Set Theme](includes/automations/set_theme.yaml): Set theme at Home Assistant start.
+</details>
+
+### 🚪 Presence
+I decided to take a unique approach to presence automations and forgo the use of motion sensors, in favor of manual triggers before leaving the apartment. I have an [Aqara Mini Switch](https://www.amazon.com/Aqara-WXKG11LM-Switch-Wireless-Remote/dp/B07D19YXND) next to the door, which triggers automations based on the number of button clicks and status of the front door sensor.
+<details>
+  <summary>Automations</summary>
+
+- [Leave Home](includes/automations/leave_home.yaml): Notify smartphones of door status + turn off lights accordingly.
+- [Leave Vacuum](includes/automations/leave_vacuum.yaml): Notify smartphones of door status + turn off lights + vacuum.
+
+</details>
+
+### 🔌 Shutoff
+Vampire drain is a problem, especially when your power company charges different rates depending on the time of day. There are a lot of devices thats only need to be powered briefly to do their job. My printer + paper shredder are setup to turn-off after a set period of time, limiting their idle power usage to minutes instead of hours or days.
+<details>
+  <summary>Automations</summary>
+
+- [Charge Toothbrushes](includes/automations/charge_toothbrushes.yaml): Start charging toothbrushes at 12 am and stop at 4 am.
 - [Printer Shutoff](includes/automations/shutoff_printer.yaml): Shutoff plug to printer 15-minutes after device has been switched on.
 - [Shutdown Shredder](includes/automations/shutoff_shredder.yaml): Shutoff plug to paper shredder 2-minutes after device has been switched on.
+</details>
+
+### 🧹 Vacuum
+Winston my trusty robot vacuum is scheduled to clean the most trafficed areas of my apartment (hallway + kitchen) Monday - Friday, the remaining rooms (office + living room + bathroom) are cleaned on Tuesdays and Thursdays. Creating these automations allowed me to stop using the [Mi Home App](https://play.google.com/store/apps/details?id=com.xiaomi.smarthome&hl=en_US&gl=US).
+<details>
+  <summary>Automations</summary>
+
+- [Select Vacuum Speed](includes/automations/select_vacuum_speed.yaml): Adds vacuum.set_fan_speed service calls to Vacuum Speed Helper.
 - [Vacuum Clean](includes/automations/vacuum_clean.yaml): Notify Smartphones when Winston starts cleaning.
 - [Vacuum Docked](includes/automations/vacuum_done.yaml): Notify Smartphones when Winston has returned to dock.
 - [Vacuum Done](includes/automations/vacuum_done.yaml): Notify Smartphones when Winston has completed cleaning.
 - [Vacuum Schedule](includes/automations/vacuum_schedule.yaml): Clean hallway + kitchen @ 10:30 pm M - F & clean bathroom + office + living room @ 10:30 pm T and TH.
+</details>
+
+### 🎰 Various
+The remaining automations are super useful, but don't fit into any specific category. This includes alerts for water leaks, scheduled volume controls for Google Home devices, and an `on air` light to indicate when a video call is in progress.
+<details>
+  <summary>Automations</summary>
+
+- [Alert Leak](includes/automations/alert_leak.yaml): Alert when water is detected under the sink or dishwasher.
+- [Mood Television](includes/automations/mood_television.yaml): Television scene + Denon Nighttime quick select.
+- [Mood Theater](includes/automations/mood_theater.yaml): Theater scene + Denon Theater quick select.
+- [On Air](includes/automations/on_air.yaml): Turn Potter light red when webcam turns on.
+- [Set Theme](includes/automations/set_theme.yaml): Set theme at Home Assistant start.
 - [Volume Home](includes/automations/volume_home.yaml): Turn down volume of Google Home device at 10 pm.
+</details>
 
 # 📢 Shoutouts and Inspirition
 If you like my Lovelace setup be sure to checkout those who influenced me:
