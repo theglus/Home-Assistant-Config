@@ -740,7 +740,7 @@ Loft:
 </details>
 
 ## 🤖 Automations
-### Climate
+### 🌡 Climate
 Before Home Assistant, I had several schedules setup for my two air purifiers in the Dyson App. I was able to easily replace those with two automations in HA, eliminating my need to use the proprietary Dyston App. My air circulators which are hooked up to Kasa smart plugs, utilitze two of my favorite automations. One turns on the downstairs fan when the tempurature in the Loft is ≥72° and off when ≤71°, the other turns the office fan on/off based on the state of the lights in the room.
 <details>
   <summary>Automations</summary>
@@ -751,7 +751,8 @@ Before Home Assistant, I had several schedules setup for my two air purifiers in
 - [Climate Office On](includes/automations/climate_office_on.yaml): Turn fan ON based off of Overhead light group.
 </details>
 
-### Dimmer
+### 🎚 Dimmer
+Lutton Aurora dimmers have been a game changer in my home automations setup. They are natively supported by Philips Hue and as a renter, they are the perfect solution as to mount onto the existing light switch. Not all my lights are in the Hue ecosystem, so I've created automations to allow the dimmers to control my Sengled LED light strip and various Kasa smart plugs.
 <details>
   <summary>Automations</summary>
 
