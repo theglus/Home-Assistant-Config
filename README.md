@@ -741,14 +741,28 @@ Loft:
 
 ## 🤖 Automations
 ### Climate
+I created several automations for my Dyston air purifiers in order to elimate my dependance on the Dyson App. My air circulators have also been automated by leveraging several Kasa smart plugs.
+<details>
+  <summary>Automations</summary>
+
 - [Climate Kirby](includes/automations/climate_kirby.yaml): Trigger [Kirby: Daytime](includes/scenes/kirby_daymode.yaml) @ 8 am + [Kirby: Nighttime](includes/scenes/kirby_nightmode.yaml) @ 9 pm.
 - [Climate Loft](includes/automations/climate_loft.yaml): Turn on fan when Loft is ≥72° and off when ≤71°.
 - [Climate Office Off](includes/automations/climate_office_off.yaml): Turn fan OFF based off of Overhead light group.
 - [Climate Office On](includes/automations/climate_office_on.yaml): Turn fan ON based off of Overhead light group.
+</details>
+
 ### Dimmer
+<details>
+  <summary>Automations</summary>
+
 - [Dimmer Hallway](includes/automations/dimmer_hallway.yaml): Trigger runner light with Lutron Aurora switch.
 - [Dimmer Office](includes/automations/dimmer_office.yaml): Trigger office lights with Lutron Aurora switch.
+</details>
+
 ### Misc
+<details>
+  <summary>Automations</summary>
+
 - [Alert Leak](includes/automations/alert_leak.yaml): Alert when water is detected under the sink or dishwasher.
 - [Mood Television](includes/automations/mood_television.yaml): Television scene + Denon Nighttime quick select.
 - [Mood Theater](includes/automations/mood_theater.yaml): Theater scene + Denon Theater quick select.
@@ -756,27 +770,48 @@ Loft:
 - [Peak Usage Alerts](includes/automations/peak_usage_alerts.yaml): Notify Smartphones when AC, Washer, or Dryer is on during peak usage. 
 - [Set Theme](includes/automations/set_theme.yaml): Set theme at Home Assistant start.
 - [Volume Home](includes/automations/volume_home.yaml): Turn down volume of Google Home device at 10 pm.
+</details>
+
 ### Notifications
+<details>
+  <summary>Automations</summary>
+
 - [Notify AQI](includes/automations/notify_aqi.yaml): Notify Smartphones when AQI is >75.
 - [Notify Dryer](includes/automations/notify_dryer.yaml): Notify smartphones when dryer is complete.
 - [Notify Heat Wave](includes/automations/notify_heatwave.yaml): Notify smartphones when tomorrows high is  >75 °F.
 - [Notify Printer](includes/automations/notification_printer.yaml): Notify Smartphones when Major Laser Printer is ready.
 - [Notify Washer](includes/automations/notify_washer.yaml): Notify smartphones when washer is complete.
+</details>
+
 ### Presence
+<details>
+  <summary>Automations</summary>
+
 - [Leave Home](includes/automations/leave_home.yaml): Notify smartphones of door status + turn off lights accordingly.
 - [Leave Vacuum](includes/automations/leave_vacuum.yaml): Notify smartphones of door status + turn off lights + vacuum.
 - [Server Boot Up](includes/automations/server_boot_up.yaml): Notify via Telegram when server has booted up.
 - [Server Reboot](includes/automations/server_reboot.yaml): Telegram notification that alerts of server reboot, restart, or shutdown.
+</details>
+
 ### Shutoff
+<details>
+  <summary>Automations</summary>
+
 - [Charge Toothbrushes](includes/automations/charge_toothbrushes.yaml): Start charging toothbrushes at 12 am and stop at 4 am.
 - [Printer Shutoff](includes/automations/shutoff_printer.yaml): Shutoff plug to printer 15-minutes after device has been switched on.
 - [Shutdown Shredder](includes/automations/shutoff_shredder.yaml): Shutoff plug to paper shredder 2-minutes after device has been switched on.
+</details>
+
 ### Vacuum
+<details>
+  <summary>Automations</summary>
+
 - [Select Vacuum Speed](includes/automations/select_vacuum_speed.yaml): Adds vacuum.set_fan_speed service calls to Vacuum Speed Helper.
 - [Vacuum Clean](includes/automations/vacuum_clean.yaml): Notify Smartphones when Winston starts cleaning.
 - [Vacuum Docked](includes/automations/vacuum_done.yaml): Notify Smartphones when Winston has returned to dock.
 - [Vacuum Done](includes/automations/vacuum_done.yaml): Notify Smartphones when Winston has completed cleaning.
 - [Vacuum Schedule](includes/automations/vacuum_schedule.yaml): Clean hallway + kitchen @ 10:30 pm M - F & clean bathroom + office + living room @ 10:30 pm T and TH.
+</details>
 
 # 📢 Shoutouts and Inspirition
 If you like my Lovelace setup be sure to checkout those who influenced me:
