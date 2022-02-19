@@ -787,7 +787,8 @@ I currently have notifications set to be delivered via one of two channels [Tele
 - [Server Reboot](includes/automations/server_reboot.yaml): Telegram notification that alerts of server reboot, restart, or shutdown.
 </details>
 
-### Presence
+### 🚪 Presence
+I decided to take a unique approach to presence automations and forgo the use of motion sensors, in favor of manual triggers before leaving the apartment. I have an [Aqara Mini Switch](https://www.amazon.com/Aqara-WXKG11LM-Switch-Wireless-Remote/dp/B07D19YXND) next to the door, which triggers automations based on the number of button clicks and status of the front door sensor.
 <details>
   <summary>Automations</summary>
 
@@ -796,7 +797,7 @@ I currently have notifications set to be delivered via one of two channels [Tele
 
 </details>
 
-### Shutoff
+### 🔌 Shutoff
 Vampire drain is a problem, especially when your power company charges different rates depending on the time of day. There are a lot of devices thats only need to be powered briefly to do their job. My printer + paper shredder are setup to turn-off after a set period of time, limiting their idle power usage to minutes instead of hours or days.
 <details>
   <summary>Automations</summary>
