@@ -741,7 +741,7 @@ Loft:
 
 ## 🤖 Automations
 ### Climate
-I created several automations for my Dyston air purifiers in order to elimate my dependance on the Dyson App. My air circulators have also been automated by leveraging several Kasa smart plugs.
+Before Home Assistant, I had several schedules setup for my two air purifiers in the Dyson App. I was able to easily replace those with two automations in HA, eliminating my need to use the proprietary Dyston App. My air circulators which are hooked up to Kasa smart plugs, utilitze two of my favorite automations. One turns on the downstairs fan when the tempurature in the Loft is ≥72° and off when ≤71°, the other turns the office fan on/off based on the state of the lights in the room.
 <details>
   <summary>Automations</summary>
 
