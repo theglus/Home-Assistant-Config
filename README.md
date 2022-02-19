@@ -808,6 +808,7 @@ Winston my trusty robot vacuum is scheduled to clean the most trafficed areas of
 </details>
 
 ### 🎰 Various
+The remaining automations are super useful, but don't fit into any specific category. This includes alerts for water leaks, scheduled volume controls for Google Home devices, and an `on air` light to indicate when a video call is in progress.
 <details>
   <summary>Automations</summary>
 
