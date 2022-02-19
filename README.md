@@ -774,7 +774,7 @@ Lutton Aurora dimmers have been a game changer in my home automations setup. The
 </details>
 
 ### 📬  Notifications
-I currently have notifications set to be delivered via one of two channels [Telegram](includes/notifiers/telegram.yaml) or the [Smartphone Group](includes/notifiers/smartphones.yaml). Telegram is used to notify about server boot up to aid with troubleshooting while the Smartphone Group leverages the companion app to surface in-app notificaotns.
+I currently have notifications set to be delivered via one of two channels [Telegram](includes/notifiers/telegram.yaml) or the [Smartphone Group](includes/notifiers/smartphones.yaml). Telegram is used to notify about server boot up to aid with troubleshooting while the Smartphone Group leverages the companion app to surface in-app notifications.
 <details>
   <summary>Automations</summary>
 
@@ -797,6 +797,7 @@ I currently have notifications set to be delivered via one of two channels [Tele
 </details>
 
 ### Shutoff
+Vampire drain is a problem, especially when your power company charges different rates depending on the time of day. There are a lot of devices thats only need to be powered briefly to do their job. My printer + paper shredder are setup to turn-off after a set period of time, limiting their idle power usage to minutes instead of hours or days.
 <details>
   <summary>Automations</summary>
 
