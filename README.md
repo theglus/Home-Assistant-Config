@@ -760,7 +760,7 @@ Lutton Aurora dimmers have been a game changer in my home automations setup. The
 - [Dimmer Office](includes/automations/dimmer_office.yaml): Trigger office lights with Lutron Aurora switch.
 </details>
 
-### Misc
+### 🎰 Misc
 <details>
   <summary>Automations</summary>
 
@@ -773,7 +773,8 @@ Lutton Aurora dimmers have been a game changer in my home automations setup. The
 - [Volume Home](includes/automations/volume_home.yaml): Turn down volume of Google Home device at 10 pm.
 </details>
 
-### Notifications
+### 📬  Notifications
+I currently have notifications set to be delivered via one of two channels [Telegram](includes/notifiers/telegram.yaml) or the [Smartphone Group](includes/notifiers/smartphones.yaml). Telegram is used to notify about server boot up to aid with troubleshooting while the Smartphone Group leverages the companion app to surface in-app notificaotns.
 <details>
   <summary>Automations</summary>
 
@@ -782,6 +783,8 @@ Lutton Aurora dimmers have been a game changer in my home automations setup. The
 - [Notify Heat Wave](includes/automations/notify_heatwave.yaml): Notify smartphones when tomorrows high is  >75 °F.
 - [Notify Printer](includes/automations/notification_printer.yaml): Notify Smartphones when Major Laser Printer is ready.
 - [Notify Washer](includes/automations/notify_washer.yaml): Notify smartphones when washer is complete.
+- [Server Boot Up](includes/automations/server_boot_up.yaml): Notify via Telegram when server has booted up.
+- [Server Reboot](includes/automations/server_reboot.yaml): Telegram notification that alerts of server reboot, restart, or shutdown.
 </details>
 
 ### Presence
@@ -790,8 +793,7 @@ Lutton Aurora dimmers have been a game changer in my home automations setup. The
 
 - [Leave Home](includes/automations/leave_home.yaml): Notify smartphones of door status + turn off lights accordingly.
 - [Leave Vacuum](includes/automations/leave_vacuum.yaml): Notify smartphones of door status + turn off lights + vacuum.
-- [Server Boot Up](includes/automations/server_boot_up.yaml): Notify via Telegram when server has booted up.
-- [Server Reboot](includes/automations/server_reboot.yaml): Telegram notification that alerts of server reboot, restart, or shutdown.
+
 </details>
 
 ### Shutoff
