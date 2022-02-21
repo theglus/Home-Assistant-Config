@@ -23,13 +23,7 @@ async def system_health_info(hass):
 
     data = {
         "GitHub API": system_health.async_check_can_reach_url(hass, BASE_API_URL, GITHUB_STATUS),
-        "GitHub Content": system_health.async_check_can_reach_url(
-            hass, "https://raw.githubusercontent.com/hacs/integration/main/hacs.json"
-        ),
-        "GitHub Web": system_health.async_check_can_reach_url(
-            hass, "https://github.com/", GITHUB_STATUS
-        ),
-        "GitHub API Calls Remaining": response.data.resources.core.remaining,
+        "Github API Calls Remaining": response.data.resources.core.remaining,
         "Installed Version": hacs.version,
         "Stage": hacs.stage,
         "Available Repositories": len(hacs.repositories.list_all),

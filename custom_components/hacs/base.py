@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import asyncio
 from dataclasses import asdict, dataclass, field
+from datetime import timedelta
 import gzip
 import json
 import logging
@@ -25,6 +26,7 @@ from aiogithubapi.objects.repository import AIOGitHubAPIRepository
 from aiohttp.client import ClientSession, ClientTimeout
 from awesomeversion import AwesomeVersion
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers.event import async_call_later
 from homeassistant.loader import Integration
 
 from .const import TV
@@ -37,17 +39,16 @@ from .enums import (
     LovelaceMode,
 )
 from .exceptions import (
-    AddonRepositoryException,
     HacsException,
     HacsExpectedException,
     HacsRepositoryArchivedException,
     HacsRepositoryExistException,
-    HomeAssistantCoreRepositoryException,
 )
 from .repositories import RERPOSITORY_CLASSES
 from .utils.decode import decode_content
 from .utils.logger import get_hacs_logger
 from .utils.queue_manager import QueueManager
+from .utils.store import async_load_from_store, async_save_to_store
 
 if TYPE_CHECKING:
     from .repositories.base import HacsRepository
@@ -149,7 +150,6 @@ class HacsCommon:
     categories: set[str] = field(default_factory=set)
     renamed_repositories: dict[str, str] = field(default_factory=dict)
     archived_repositories: list[str] = field(default_factory=list)
-    ignored_repositories: list[str] = field(default_factory=list)
     skip: list[str] = field(default_factory=list)
 
 
@@ -494,12 +494,10 @@ class HacsBase:
                 raise HacsExpectedException(f"Skipping {repository_full_name}")
 
         if repository_full_name == "home-assistant/core":
-            raise HomeAssistantCoreRepositoryException()
-
-        if repository_full_name == "home-assistant/addons" or repository_full_name.startswith(
-            "hassio-addons/"
-        ):
-            raise AddonRepositoryException()
+            raise HacsExpectedException(
+                "You can not add homeassistant/core, to use core integrations "
+                "check the Home Assistant documentation for how to add them."
+            )
 
         if category not in RERPOSITORY_CLASSES:
             raise HacsException(f"{category} is not a valid repository category.")
@@ -593,18 +591,10 @@ class HacsBase:
                 raise HacsException(
                     f"Got status code {request.status} when trying to download {url}"
                 )
-            except asyncio.TimeoutError:
-                self.log.error(
-                    "A timeout of 60! seconds was encountered while downloading %s, "
-                    "check the network on the host running Home Assistant",
-                    url,
-                )
-                return None
             except BaseException as exception:  # lgtm [py/catch-base-exception] pylint: disable=broad-except
                 self.log.debug("Download failed - %s", exception)
                 tries_left -= 1
                 await asyncio.sleep(1)
                 continue
 
-        self.log.error("Download from %s failed", url)
         return None
