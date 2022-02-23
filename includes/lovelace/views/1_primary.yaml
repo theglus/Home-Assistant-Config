@@ -407,6 +407,15 @@ cards:
                   template:
                     - icon_circulator
                 #----------------------------------------------------------------
+                ## Pinkie Lamp
+                #----------------------------------------------------------------
+                - type: "custom:button-card"
+                  entity: light.pinkie_lamp
+                  name: Pinkie
+                  template:
+                    - light
+                    - icon_lamp
+                #----------------------------------------------------------------
                 ## Thruple Lamp
                 #----------------------------------------------------------------
                 - type: "custom:button-card"
