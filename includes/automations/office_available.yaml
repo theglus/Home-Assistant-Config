@@ -1,0 +1,19 @@
+#################################################################
+## Office: Available
+#
+## Laptop camera activates scene.office_available.
+#################################################################
+alias: Office Available
+description: "Laptop camera activates scene.office_available."
+trigger:
+  - platform: state
+    entity_id: binary_sensor.work_camera_in_use
+    from: "on"
+    to: "off"
+condition:
+  - condition: state
+    entity_id: sensor.work_displays
+    state: "2"
+action:
+  - scene: scene.office_available
+mode: single
