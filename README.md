@@ -815,7 +815,8 @@ The remaining automations are super useful, but don't fit into any specific cate
 - [Alert Leak](includes/automations/alert_leak.yaml): Alert when water is detected under the sink or dishwasher.
 - [Mood Television](includes/automations/mood_television.yaml): Television scene + Denon Nighttime quick select.
 - [Mood Theater](includes/automations/mood_theater.yaml): Theater scene + Denon Theater quick select.
-- [On Air](includes/automations/on_air.yaml): Turn Potter light red when webcam turns on.
+- [Office Available](includes/automations/office_available.yaml): Turn Potter light magenta when webcam turns off.
+- [Office Busy](includes/automations/office_busy.yaml): Turn Potter light red when webcam turns on.
 - [Set Theme](includes/automations/set_theme.yaml): Set theme at Home Assistant start.
 - [Volume Home](includes/automations/volume_home.yaml): Turn down volume of Google Home device at 10 pm.
 </details>
