@@ -4,13 +4,17 @@
 template:
   - base
   - circle_laundry
+tap_action:
+  action: failure
+double_tap_action:
+  action: more-info
 styles:
   custom_fields:
-    icon: 
-    - top: 7%
-    - left: 4%
-    - width: 78%
-    - position: absolute
+    icon:
+      - top: 7%
+      - left: 4%
+      - width: 78%
+      - position: absolute
 custom_fields:
   icon: >
     [[[

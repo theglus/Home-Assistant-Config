@@ -1,0 +1,85 @@
+#################################################################
+## Notify Dryer Warning
+#
+## otify smartphones when dryer temp is too high.
+#################################################################
+alias: Notify Dryer Warning
+description: "Notify smartphones when dryer temp is too high."
+trigger:
+  - platform: state
+    entity_id: sensor.dryer
+    attribute: run_state
+    to: Drying
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 5
+condition:
+  - condition: or
+    conditions:
+      - condition: not
+        conditions:
+          - condition: state
+            entity_id: sensor.dryer
+            attribute: temp_control
+            for:
+              hours: 0
+              minutes: 0
+              seconds: 5
+            state: Low
+      - condition: not
+        conditions:
+          - condition: state
+            entity_id: sensor.dryer
+            state: Ultra Low
+            attribute: temp_control
+            for:
+              hours: 0
+              minutes: 0
+              seconds: 5
+action:
+  - choose:
+      - conditions:
+          - condition: state
+            entity_id: sensor.dryer
+            state: Medium
+            attribute: temp_control
+            for:
+              hours: 0
+              minutes: 0
+              seconds: 5
+        sequence:
+          - service: notify.smartphones
+            data:
+              title: 🌡 LAUNDRY ALERT!
+              message: Dryer temp is MEDIUM.
+      - conditions:
+          - condition: state
+            entity_id: sensor.dryer
+            state: Mid High
+            attribute: temp_control
+            for:
+              hours: 0
+              minutes: 0
+              seconds: 5
+        sequence:
+          - service: notify.smartphones
+            data:
+              title: 🌡 LAUNDRY ALERT!
+              message: Dryer temp is MID HIGH.
+      - conditions:
+          - condition: state
+            entity_id: sensor.dryer
+            state: High
+            attribute: temp_control
+            for:
+              hours: 0
+              minutes: 0
+              seconds: 5
+        sequence:
+          - service: notify.smartphones
+            data:
+              title: 🌡 LAUNDRY ALERT!
+              message: Dryer temp is HIGH.
+    default: []
+mode: single
