@@ -17,5 +17,6 @@ entities:
   - light.yumi_lamp
   # Office
   - light.overhead
+  - light.pinkie_lamp
   - light.thruple_lamp
   - light.thumb_lamp
