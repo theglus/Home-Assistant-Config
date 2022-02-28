@@ -6,5 +6,6 @@ name: Group Office
 entities:
   - light.overhead_bed
   - light.overhead_desk
+  - light.pinkie_lamp
   - light.thumb_lamp
   - light.thruple_lamp
