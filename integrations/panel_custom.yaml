@@ -24,7 +24,7 @@ panel_custom:
     sidebar_title: Supervisor
     sidebar_icon: mdi:bulldozer
     js_url: /api/hassio/app/entrypoint.js
-    url_path: "config/hassio"
+    url_path: "hassio/dashboard"
     embed_iframe: true
     require_admin: true
     config:
