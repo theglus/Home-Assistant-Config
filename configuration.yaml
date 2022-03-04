@@ -19,6 +19,10 @@ lovelace:
     # https://github.com/custom-cards/button-card
     - url: /hacsfiles/button-card/button-card.js
       type: module
+    # Custom Sidebar
+    # https://github.com/Villhellm/custom-sidebar
+    - url: /hacsfiles/custom-sidebar/custom-sidebar.js
+      type: module
     # Declutter Card
     # https://github.com/custom-cards/decluttering-card
     - url: /hacsfiles/decluttering-card/decluttering-card.js
