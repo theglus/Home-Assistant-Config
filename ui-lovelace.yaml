@@ -1,5 +1,5 @@
 background: var(--background-image)
-kiosk_mode: 
+kiosk_mode:
   hide_header: true
 sidebar:
   hideTopMenu: true
@@ -27,7 +27,7 @@ sidebar:
       navigation_path: "/lovelace/ha"
       name: "System"
       icon: "mdi:home-assistant"
-      active: tru
+      active: true
   template: |
     <li>The air quality in Dogpatch is {{states('sensor.u_s_air_pollution_level')}} with an AQI of {{states('sensor.aqi')}}.</li>
   style: |
