@@ -86,7 +86,7 @@
           data: {}
 - id: "1644337161806"
   alias: Climate AQI
-  description: "Turn on Kitchen Dyson when AQI >75."
+  description: Turn on Kitchen Dyson when AQI >75.
   trigger:
     - platform: numeric_state
       entity_id: sensor.aqi
@@ -94,34 +94,4 @@
   condition: []
   action:
     - scene: scene.dyson_aqi
-  mode: single
-- id: "1644793444239"
-  alias: Warning
-  description: ""
-  trigger:
-    - platform: state
-      entity_id: sensor.dryer
-      attribute: run_state
-      for:
-        hours: 0
-        minutes: 0
-        seconds: 5
-      from: Standby
-      to: Drying
-  condition:
-    - condition: or
-      conditions:
-        - condition: state
-          entity_id: sensor.dryer
-          attribute: temp_control
-          state: Medium
-        - condition: state
-          entity_id: sensor.dryer
-          attribute: temp_control
-          state: Medium High
-  action:
-    - service: notify.telegram
-      data:
-        title: alert
-        message: laundry
   mode: single
