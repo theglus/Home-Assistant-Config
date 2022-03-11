@@ -1,0 +1,49 @@
+#################################################################
+## Music Mode
+#
+## Turn Nanoleaf to music mode when Denon HEOS is playing.
+#################################################################
+alias: Music Lights
+description: "Turn Nanoleaf to music mode when Denon HEOS is playing."
+trigger:
+  - platform: state
+    entity_id: media_player.denon_heos
+    to: playing
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  - platform: state
+    entity_id: media_player.denon_heos
+    to: paused
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 1
+condition: []
+action:
+  - choose:
+      - conditions:
+          - condition: state
+            entity_id: media_player.dennis
+            state: "on"
+          - condition: state
+            entity_id: media_player.denon_heos
+            state: playing
+            for:
+              hours: 0
+              minutes: 0
+              seconds: 1
+        sequence:
+          - service: light.turn_on
+            data:
+              effect: Meteor Shower
+            target:
+              entity_id: light.nanoleaf
+    default:
+      - service: light.turn_on
+        data:
+          effect: Northern Lights
+        target:
+          entity_id: light.nanoleaf
+mode: single
