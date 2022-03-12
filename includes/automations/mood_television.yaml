@@ -3,7 +3,7 @@
 #
 ## TV lights + Nighttime quick select.
 #################################################################
-alias: TV Mode
+alias: Mode TV
 description: "TV lights + Nighttime quick select."
 trigger: []
 condition: []
