@@ -3,7 +3,7 @@
 #
 ## Theater lights + quick select.
 #################################################################
-alias: Theater Mode
+alias: Mode Theater
 description: "Theater lights + quick select."
 trigger: []
 condition: []
