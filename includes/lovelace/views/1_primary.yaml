@@ -442,6 +442,14 @@ cards:
                   template:
                     - base
                     - icon_lamp
+                #----------------------------------------------------------------
+                ## Bookshelf Speakers
+                #----------------------------------------------------------------
+                - type: custom:button-card
+                  entity: media_player.bookshelf_speakers
+                  name: Bookshelf Speakers
+                  template:
+                    - icon_monitors
           #################################################################
           ## Living Room Controls
           #################################################################
