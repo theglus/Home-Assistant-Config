@@ -658,7 +658,7 @@ cards:
                   entity: media_player.upstairs_speakers
                   name: Upstairs Speakers
                   template:
-                    - icon_nest_mini
+                    - icon_monitors
                 #----------------------------------------------------------------
                 ## Row Lamp
                 #----------------------------------------------------------------
