@@ -442,15 +442,6 @@ cards:
                   template:
                     - base
                     - icon_lamp
-                #----------------------------------------------------------------
-                ## Office Google Home Mini
-                #----------------------------------------------------------------
-                # TODO: #315 Alarm + timer countdown for Google Home devices.
-                - type: custom:button-card
-                  entity: media_player.office_speaker
-                  name: Home Mini
-                  template:
-                    - icon_nest_mini
           #################################################################
           ## Living Room Controls
           #################################################################
@@ -584,15 +575,6 @@ cards:
                     - light_color
                     - icon_recessed
                 #----------------------------------------------------------------
-                ## Kitchen Google Home Mini
-                #----------------------------------------------------------------
-                # TODO: #315 Alarm + timer countdown for Google Home devices.
-                - type: custom:button-card
-                  entity: media_player.living_room_speaker
-                  name: Home Mini
-                  template:
-                    - icon_nest_mini
-                #----------------------------------------------------------------
                 ## Kitchen Dyson
                 #----------------------------------------------------------------
                 # TODO: #318 Create fan pop-up
@@ -669,6 +651,14 @@ cards:
                   name: Dyson
                   template:
                     - icon_dyson
+                #----------------------------------------------------------------
+                ## Upstairs Speakers
+                #----------------------------------------------------------------
+                - type: custom:button-card
+                  entity: media_player.upstairs_speakers
+                  name: Upstairs Speakers
+                  template:
+                    - icon_nest_mini
                 #----------------------------------------------------------------
                 ## Row Lamp
                 #----------------------------------------------------------------
