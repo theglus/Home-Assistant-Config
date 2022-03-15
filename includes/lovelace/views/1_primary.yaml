@@ -413,8 +413,7 @@ cards:
                   entity: light.pinkie_lamp
                   name: Pinkie
                   template:
-                    - light
-                    - icon_lamp
+                    - icon_pinkie
                 #----------------------------------------------------------------
                 ## Thumb Lamp
                 #----------------------------------------------------------------
