@@ -1,0 +1,44 @@
+#################################################################
+## Pinkie Icon
+#################################################################
+template:
+  - light
+styles:
+  custom_fields:
+    icon:
+      - width: 98%
+      - margin-top: -15%
+      - margin-left: -23%
+custom_fields:
+  icon: >
+    [[[
+      const state = (variables.state === 'on' && variables.timeout < 2000) ? 'on' : null;
+      return `
+        <svg viewBox="0 0 24 24">
+          <style>
+            @keyframes on {
+              0% {
+                transform: scale(0.85);
+              }
+              20% {
+                transform: scale(1.1);
+              }
+              40% {
+                transform: scale(0.95);
+              }
+              60% {
+                transform: scale(1.03);
+              }
+              80% {
+                transform: scale(0.97);
+              }
+            }
+            .on {
+              animation: on 0.8s;
+              transform-origin: center;
+            }
+          </style>
+          <path class="${state}" fill="${variables.light_color}" d="M5.342 3.871c2.023-1.456 6.653-2.166 8.15-1.756l5.073 8.249c.004.037.187.305.164.522-.022.207-.165.409-.371.515-1.097.562-3.172 1.141-3.967 1.393v8.445c-2.115 1.017-6.417.884-7.87.358l-.172-6.659c-.804.042-1.115-.539-1.075-1.075z"/>
+        </svg>
+      `;
+    ]]]
