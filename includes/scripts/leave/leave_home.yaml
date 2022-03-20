@@ -1,0 +1,15 @@
+#################################################################
+## Leave Home
+#################################################################
+leave_home:
+  alias: Leave Home
+  sequence:
+    - service: scene.turn_on
+      target:
+        entity_id: scene.lights_off
+    - service: notify.smartphones
+      data:
+        message: "The door is closed and lights are off. "
+        title: 👋 See you later!
+  mode: singlegit
+  icon: mdi:hand-wave
