@@ -11,5 +11,5 @@ leave_home:
       data:
         message: "The door is closed and lights are off. "
         title: 👋 See you later!
-  mode: singlegit
+  mode: single
   icon: mdi:hand-wave

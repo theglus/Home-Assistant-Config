@@ -1,0 +1,19 @@
+#################################################################
+## Leave Vacuum
+#################################################################
+leave_vacuum:
+  alias: Leave Vacuum
+  sequence:
+    - service: script.leave_home
+      data: {}
+    - device_id: 62c2564944db27e46b6382dbb56205f9
+      domain: vacuum
+      entity_id: vacuum.winston
+      type: clean
+    - service: vacuum.set_fan_speed
+      data:
+        fan_speed: Turbo
+      target:
+        entity_id: vacuum.winston
+  mode: single
+  icon: mdi:vacuum-outline
