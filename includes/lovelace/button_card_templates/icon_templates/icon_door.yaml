@@ -3,6 +3,14 @@
 #################################################################
 template:
   - base
+tap_action:
+  action: call-service
+  service: script.leave_home
+hold_action:
+  action: failure
+double_tap_action:
+  action: call-service
+  service: script.leave_vacuum
 styles:
   custom_fields:
     icon:

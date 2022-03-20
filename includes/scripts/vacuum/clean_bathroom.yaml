@@ -1,11 +1,12 @@
 #################################################################
 ## Vacuum Bathroom
 #################################################################
-alias: Clean Bathroom
-sequence:
-  - service: vacuum.send_command
-    data:
-      entity_id: vacuum.winston
-      command: app_segment_clean
-      params: [20]
-icon: 'mdi:shower'
+clean_bathroom:
+  alias: Clean Bathroom
+  sequence:
+    - service: vacuum.send_command
+      data:
+        entity_id: vacuum.winston
+        command: app_segment_clean
+        params: [20]
+  icon: "mdi:shower"

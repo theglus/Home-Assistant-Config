@@ -3,73 +3,67 @@
 #
 ## Notify smartphones of door status + turn off lights accordingly.
 #################################################################
-alias: 'Leave Home'
-description: 'Notify smartphones of door status + turn off lights accordingly.'
+alias: "Leave Home"
+description: "Notify smartphones of door status + turn off lights accordingly."
 trigger:
-- device_id: 1a4f22d3b5ce47a298a90508301c8c29
-  domain: deconz
-  platform: device
-  type: remote_button_short_press
-  subtype: turn_on
+  - device_id: 1a4f22d3b5ce47a298a90508301c8c29
+    domain: deconz
+    platform: device
+    type: remote_button_short_press
+    subtype: turn_on
 condition:
-- condition: state
-  entity_id: binary_sensor.front_door
-  state: 'on'
-  for:
-    hours: 0
-    minutes: 0
-    seconds: 1
-    milliseconds: 0
+  - condition: state
+    entity_id: binary_sensor.front_door
+    state: "on"
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 0
 action:
-- delay:
-    hours: 0
-    minutes: 0
-    seconds: 10
-    milliseconds: 0
-- choose:
-  - conditions:
-    - condition: state
-      entity_id: binary_sensor.front_door
-      state: 'on'
-      for:
-        hours: 0
-        minutes: 0
-        seconds: 10
-        milliseconds: 0
-    sequence:
-    - service: notify.smartphones
-      data:
-        message: 'The Front door is open. '
-        title: 🚨 Alert
-    - wait_for_trigger:
-      - platform: state
-        entity_id: binary_sensor.front_door
-        from: 'on'
-        to: 'off'
-        for:
-          hours: 0
-          minutes: 0
-          seconds: 1
-          milliseconds: 0
-    - scene: scene.lights_off
-    - service: notify.smartphones
-      data:
-        message: 'The door is closed and lights are off. '
-        title: 👋 See you later!
-  - conditions:
-    - condition: state
-      entity_id: binary_sensor.front_door
-      state: 'off'
-      for:
-        hours: 0
-        minutes: 0
-        seconds: 1
-        milliseconds: 0
-    sequence:
-    - scene: scene.lights_off
-    - service: notify.smartphones
-      data:
-        message: 'The door is closed and lights are off. '
-        title: 👋 See you later!
-  default: []
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 10
+      milliseconds: 0
+  - choose:
+      - conditions:
+          - condition: state
+            entity_id: binary_sensor.front_door
+            state: "on"
+            for:
+              hours: 0
+              minutes: 0
+              seconds: 10
+              milliseconds: 0
+        sequence:
+          - service: notify.smartphones
+            data:
+              message: "The Front door is open."
+              title: 🚨 Alert
+          - wait_for_trigger:
+              - platform: state
+                entity_id: binary_sensor.front_door
+                from: "on"
+                to: "off"
+                for:
+                  hours: 0
+                  minutes: 0
+                  seconds: 1
+                  milliseconds: 0
+          - service: script.leave_home
+            data: {}
+      - conditions:
+          - condition: state
+            entity_id: binary_sensor.front_door
+            state: "off"
+            for:
+              hours: 0
+              minutes: 0
+              seconds: 1
+              milliseconds: 0
+        sequence:
+          - service: script.leave_home
+            data: {}
+    default: []
 mode: single

@@ -1,11 +1,12 @@
 #################################################################
 ## Set Denon Sound Mode to Multi-Channel Stereo
 #################################################################
-alias: Sound Mode Stereo
-sequence:
-  - service: media_player.select_sound_mode
-    data:
-      sound_mode: "MCH STEREO"
-      entity_id: media_player.dennis
-mode: single
-icon: mdi:surround-sound-2-0
+sound_mode_stereo:
+  alias: Sound Mode Stereo
+  sequence:
+    - service: media_player.select_sound_mode
+      data:
+        sound_mode: "MCH STEREO"
+        entity_id: media_player.dennis
+  mode: single
+  icon: mdi:surround-sound-2-0
