@@ -1,11 +1,12 @@
 #################################################################
 ## Enable Denon Eco mode
 #################################################################
-alias: ECO Mode On
-sequence:
-  - service: denonavr.get_command
-    data:
-      entity_id: media_player.dennis
-      command: /goform/formiPhoneAppDirect.xml?ECOON
-mode: single
-icon: mdi:leaf  
+eco_on:
+  alias: ECO Mode On
+  sequence:
+    - service: denonavr.get_command
+      data:
+        entity_id: media_player.dennis
+        command: /goform/formiPhoneAppDirect.xml?ECOON
+  mode: single
+  icon: mdi:leaf

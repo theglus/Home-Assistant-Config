@@ -1,11 +1,12 @@
 #################################################################
 ## Denon QS Info
 #################################################################
-alias: Denon Info
-sequence:
-  - service: denonavr.get_command
-    data:
-      entity_id: media_player.dennis
-      command: /goform/formiPhoneAppDirect.xml?MNINF
-mode: single
-icon: mdi:information
+av_info:
+  alias: Denon Info
+  sequence:
+    - service: denonavr.get_command
+      data:
+        entity_id: media_player.dennis
+        command: /goform/formiPhoneAppDirect.xml?MNINF
+  mode: single
+  icon: mdi:information

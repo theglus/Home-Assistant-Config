@@ -1,11 +1,12 @@
 #################################################################
 ## Vacuum Hallway
 #################################################################
-alias: Clean Hallway
-sequence:
-  - service: vacuum.send_command
-    data:
-      entity_id: vacuum.winston
-      command: app_segment_clean
-      params: [16]
-icon: 'mdi:door'
+clean_hallway:
+  alias: Clean Hallway
+  sequence:
+    - service: vacuum.send_command
+      data:
+        entity_id: vacuum.winston
+        command: app_segment_clean
+        params: [16]
+  icon: "mdi:door"

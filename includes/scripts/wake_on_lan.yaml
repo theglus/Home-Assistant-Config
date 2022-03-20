@@ -1,9 +1,10 @@
 #################################################################
 ## Wake Desktop PC via LAN
 #################################################################
-alias: Wake on LAN
-sequence:
-  - service: wake_on_lan.send_magic_packet
-    data:
-      mac: !secret pc_mac
-icon: mdi:weather-sunset-up
+wake_on_lan:
+  alias: Wake on LAN
+  sequence:
+    - service: wake_on_lan.send_magic_packet
+      data:
+        mac: !secret pc_mac
+  icon: mdi:weather-sunset-up

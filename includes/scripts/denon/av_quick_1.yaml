@@ -1,11 +1,12 @@
 #################################################################
 ## Denon QS Watch
 #################################################################
-alias: Denon QS Watch
-sequence:
-  - service: denonavr.get_command
-    data:
-      entity_id: media_player.dennis
-      command: /goform/formiPhoneAppDirect.xml?MSQUICK1
-mode: single
-icon: mdi:floppy
+av_quick_1:
+  alias: Denon QS Watch
+  sequence:
+    - service: denonavr.get_command
+      data:
+        entity_id: media_player.dennis
+        command: /goform/formiPhoneAppDirect.xml?MSQUICK1
+  mode: single
+  icon: mdi:floppy
