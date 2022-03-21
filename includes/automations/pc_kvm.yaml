@@ -1,7 +1,7 @@
 #################################################################
 ## PC KVM
 #
-## Toggle KVM when Desktop PC wakes or shutdowns.
+## Toggle KVM when Desktop PC wakes or shutsdowns.
 #################################################################
 alias: PC KVM
 description: "Toggle KVM when Desktop PC wakes or shutdowns."
