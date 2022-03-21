@@ -1,0 +1,23 @@
+#################################################################
+## PC KVM
+#
+## Toggle KVM when Desktop PC wakes or shutsdowns.
+#################################################################
+alias: PC KVM
+description: "Toggle KVM when Desktop PC wakes or shutdowns."
+trigger:
+  - platform: state
+    entity_id: switch.pc_shutdown
+    from: "off"
+    to: "on"
+  - platform: state
+    entity_id: script.wake_on_lan
+    from: "off"
+    to: "on"
+condition: []
+action:
+  - type: toggle
+    device_id: d5f5e7264a317ab07d93a2c3502c5979
+    entity_id: switch.switchbot_pc
+    domain: switch
+mode: single
