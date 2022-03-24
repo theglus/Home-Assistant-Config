@@ -1,0 +1,16 @@
+#################################################################
+## Shutdown PC + Toggle KVM switchbot.
+#################################################################
+pc_shutdown:
+  alias: PC Shutdown
+  sequence:
+    - service: switch.turn_on
+      data: {}
+      target:
+        entity_id: switch.pc_shutdown
+    - service: switch.turn_off
+      data: {}
+      target:
+        entity_id: switch.switchbot_pc
+  mode: single
+  icon: mdi:monitor-off

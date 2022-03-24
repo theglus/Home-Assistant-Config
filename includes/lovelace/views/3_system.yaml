@@ -204,7 +204,7 @@ cards:
               - type: custom:button-card
                 name: "WAKE"
                 icon: "mdi:monitor"
-                entity: script.wake_on_lan
+                entity: script.pc_wake
                 tap_action:
                   action: toggle
                   haptic: light
@@ -220,7 +220,7 @@ cards:
               - type: custom:button-card
                 name: "SHUTDWN"
                 icon: "mdi:power"
-                entity: switch.pc_shutdown
+                entity: script.pc_shutdown
                 tap_action:
                   action: toggle
                   haptic: light

@@ -1,0 +1,14 @@
+#################################################################
+## Wake PC + Toggle KVM switchbot.
+#################################################################
+pc_wake:
+  alias: PC Wake
+  sequence:
+    - service: switch.turn_on
+      data: {}
+      target:
+        entity_id: switch.switchbot_pc
+    - service: script.wake_on_lan
+      data: {}
+  mode: single
+  icon: mdi:monitor-dashboard
