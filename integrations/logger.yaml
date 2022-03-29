@@ -14,3 +14,5 @@ logger:
     homeassistant.helpers.entity: error
     # Custom integration for xiaomi_cloud_map_extractor 
     homeassistant.loader: error 
+    homeassistant.components.camera: critical
+    homeassistant.setup: critical
