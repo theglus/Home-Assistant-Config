@@ -78,6 +78,18 @@ sensor.pc_gpu_load:
 sensor.pc_gpu_temp:
   icon: "mdi:thermometer"
 #################################################################
+## Presence Sensors
+#################################################################
+# Cube Keys Beacon
+sensor.beacon_cube_keys:
+  icon: "mdi:car-connected"
+# Pixel 5 Beacon
+sensor.beacon_pixel_5:
+  icon: "mdi:cellphone-wireless"
+# Tiffy Keys Beacon
+sensor.beacon_tiffy_keys:
+  icon: "mdi:key-wireless"
+#################################################################
 ## Vacuum Sensors
 #################################################################
 camera.xiaomi_cloud_map_extractor:
