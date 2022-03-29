@@ -27,6 +27,7 @@ recorder:
     entity_globs:
       - person.jeffrey_*
       - person.tiffany_*
+      - sensor.beacon_*
       - sensor.kirby_*
       - sensor.kitchen_*
       - sensor.processor_*
