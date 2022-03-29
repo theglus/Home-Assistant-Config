@@ -3,8 +3,8 @@ title: Home
 panel: false
 icon: "mdi:home"
 badges:
-  - entity: person.jeffrey_glusman
-  - entity: person.tiffany_conaway
+  - entity: !secret person_primary
+  - entity: !secret person_secondary
   - entity: camera.security
 cards:
   - type: vertical-stack
