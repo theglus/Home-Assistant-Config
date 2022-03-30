@@ -29,6 +29,11 @@ action:
                 - 18
             target:
               entity_id: vacuum.winston
+          - service: vacuum.set_fan_speed
+            data:
+              fan_speed: silent
+            target:
+              entity_id: vacuum.winston
       - conditions:
           - condition: time
             weekday:
@@ -47,6 +52,11 @@ action:
                 - 18
                 - 19
                 - 20
+            target:
+              entity_id: vacuum.winston
+          - service: vacuum.set_fan_speed
+            data:
+              fan_speed: silent
             target:
               entity_id: vacuum.winston
     default: []
