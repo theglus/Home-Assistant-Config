@@ -18,6 +18,9 @@ logger:
     homeassistant:
       # ValueError: Invalid datetime: sensor.pc_last_boot provides state '2021-11-14 22:11:20', which is missing timezone information
       - "Error doing job: Task exception was never retrieved"
+    homeassistant.setup:
+      # Setup of X is taking over 10 seconds.
+      - "is taking over 10 seconds."
     homeassistant.components.sensor:
       # ValueError: Invalid datetime: sensor.pc_last_active provides state '2021-11-14 22:22:37', which is missing timezone information
       - "Error adding entities for domain sensor with platform mqtt"
