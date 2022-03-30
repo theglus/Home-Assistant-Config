@@ -21,37 +21,21 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry, asyn
 
     coordinator = hass.data[DOMAIN]
 
-    async_add_entities(
-        PreFilter(coordinator, idx) for idx, ent in enumerate(coordinator.data)
-    )
+    sensors = []
 
-    async_add_entities(
-        MAX2Filter(coordinator, idx) for idx, ent in enumerate(coordinator.data)
-    )
+    for idx, ent in enumerate(coordinator.data):
+        if not coordinator.data[idx].new_model:
+            sensors.append(AirQualityIndex(coordinator, idx))
+        sensors.append(PreFilter(coordinator, idx))
+        sensors.append(MAX2Filter(coordinator, idx))
+        sensors.append(TimerRemaining(coordinator, idx))
+        sensors.append(ParticulateMatter25(coordinator, idx))
+        sensors.append(ParticulateMatter10(coordinator, idx))
+        sensors.append(CarbonDioxide(coordinator, idx))
+        sensors.append(VolatileOrganicCompounds(coordinator, idx))
 
-    async_add_entities(
-        TimerRemaining(coordinator, idx) for idx, ent in enumerate(coordinator.data)
-    )
+    async_add_entities(sensors)
 
-    async_add_entities(
-        AirQualityIndex(coordinator, idx) for idx, ent in enumerate(coordinator.data)
-    )
-
-    async_add_entities(
-        ParticulateMatter25(coordinator, idx) for idx, ent in enumerate(coordinator.data)
-    )
-
-    async_add_entities(
-        ParticulateMatter10(coordinator, idx) for idx, ent in enumerate(coordinator.data)
-    )
-
-    async_add_entities(
-        CarbonDioxide(coordinator, idx) for idx, ent in enumerate(coordinator.data)
-    )
-
-    async_add_entities(
-        VolatileOrganicCompounds(coordinator, idx) for idx, ent in enumerate(coordinator.data)
-    )
 
 class PreFilter(CoordinatorEntity, SensorEntity):
     """Representation of a Coway Airmega Pre Filter Percentage Remaining."""
