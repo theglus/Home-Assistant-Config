@@ -1,10 +1,11 @@
 #################################################################
-## Climate: Kirby
+## Climate: Purifier
 #
-## Trigger 'Kirby: Daytime' @ 8 am + 'Kirby: Nighttime' @ 9 pm.
+# Trigger 'Kirby + Airmax: Daymode' @ 8 am + 'Kirby + Airmax:
+# Nighttime' @ 9 pm."
 #################################################################
-alias: "Climate: Kirby"
-description: "Trigger 'Kirby: Daytime' @ 8 am + 'Kirby: Nighttime' @ 9 pm."
+alias: "Climate: Purifier"
+description: "Trigger 'Kirby + Airmax: Daymode' @ 8 am + 'Kirby + Airmax: Nighttime' @ 9 pm."
 trigger:
   - platform: time
     at: "08:15:00"
@@ -21,6 +22,8 @@ action:
                 before: "08:15:00"
         sequence:
           - scene: scene.kirby_nightmode
+          - service: script.airmax_nightmode
     default:
       - scene: scene.kirby_daymode
+      - service: script.airmax_daymode
 mode: single
