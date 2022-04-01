@@ -1,10 +1,10 @@
 #################################################################
-## Climate: AQI
+## Climate: Purifier
 #
 # Trigger 'Kirby + Airmax: Daymode' @ 8 am + 'Kirby + Airmax:
 # Nighttime' @ 9 pm."
 #################################################################
-alias: "Climate: AQI"
+alias: "Climate: Purifier"
 description: "Trigger 'Kirby + Airmax: Daymode' @ 8 am + 'Kirby + Airmax: Nighttime' @ 9 pm."
 trigger:
   - platform: time
