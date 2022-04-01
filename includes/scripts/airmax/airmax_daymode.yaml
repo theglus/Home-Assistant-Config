@@ -1,0 +1,17 @@
+#################################################################
+## Airmax: Turn on Auto + enables lights.
+#################################################################
+airmega_daymode:
+  alias: "Airmega: Daymode"
+  sequence:
+    - service: fan.set_preset_mode
+      data:
+        preset_mode: Auto
+      target:
+        entity_id: fan.airmega
+    - service: switch.turn_on
+      data: {}
+      target:
+        entity_id: switch.airmega_light
+  mode: single
+  icon: mdi:weather-sunset-up
