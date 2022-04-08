@@ -2,15 +2,15 @@
 ## Climate: Purifier
 #
 # Trigger 'Kirby + Airmax: Daymode' @ 8 am + 'Kirby + Airmax:
-# Nighttime' @ 9 pm."
+# Nighttime' @ 11 pm."
 #################################################################
 alias: "Climate: Purifier"
-description: "Trigger 'Kirby + Airmax: Daymode' @ 8 am + 'Kirby + Airmax: Nighttime' @ 9 pm."
+description: "Trigger 'Kirby + Airmax: Daymode' @ 8 am + 'Kirby + Airmax: Nighttime' @ 11 pm."
 trigger:
   - platform: time
     at: "08:15:00"
   - platform: time
-    at: "21:00:00"
+    at: "23:00:00"
 condition: []
 action:
   - choose:
@@ -18,7 +18,7 @@ action:
           - condition: and
             conditions:
               - condition: time
-                after: "21:00:00"
+                after: "23:00:00"
                 before: "08:15:00"
         sequence:
           - scene: scene.kirby_nightmode
