@@ -7,7 +7,7 @@ alias: Vacuum Schedule
 description: "Clean at 10:30 pm."
 trigger:
   - platform: time
-    at: "22:30:00"
+    at: "23:00:00"
 condition: []
 action:
   - choose:
@@ -31,7 +31,7 @@ action:
               entity_id: vacuum.winston
           - service: vacuum.set_fan_speed
             data:
-              fan_speed: silent
+              fan_speed: Silent
             target:
               entity_id: vacuum.winston
       - conditions:
@@ -56,7 +56,7 @@ action:
               entity_id: vacuum.winston
           - service: vacuum.set_fan_speed
             data:
-              fan_speed: silent
+              fan_speed: Silent
             target:
               entity_id: vacuum.winston
     default: []
