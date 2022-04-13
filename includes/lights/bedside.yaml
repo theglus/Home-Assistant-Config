@@ -1,8 +1,0 @@
-#################################################################
-## Bedside Light Group
-#################################################################
-platform: group
-name: Bedside
-entities:
-  - light.jeffreys_lamp
-  - light.tiffanys_lamp
