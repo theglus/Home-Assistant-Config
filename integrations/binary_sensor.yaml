@@ -17,13 +17,6 @@ binary_sensor:
     payload_off: offline
     device_class: connectivity
   - platform: mqtt
-    name: Loft Mqtt Room
-    state_topic: !secret presense_loft_state_topic # use the MQTT topic for the room
-    json_attributes_topic: !secret presense_loft_telemetry
-    payload_on: online
-    payload_off: offline
-    device_class: connectivity
-  - platform: mqtt
     name: Office Mqtt Room
     state_topic: !secret presense_office_state_topic # use the MQTT topic for the room
     json_attributes_topic: !secret presense_office_telemetry
