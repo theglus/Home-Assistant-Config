@@ -89,6 +89,9 @@ sensor.beacon_pixel_5:
 # Tiffy Keys Beacon
 sensor.beacon_tiffy_keys:
   icon: "mdi:key-wireless"
+# Invisalign Case Beacon
+sensor.beacon_invisalign_case:
+  icon: "mdi:toothbrush-paste"
 #################################################################
 ## Vacuum Sensors
 #################################################################
