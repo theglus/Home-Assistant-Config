@@ -1,0 +1,27 @@
+#################################################################
+## Notify Bus Work
+#
+## Trigger Telegram notification to learn next bus to work.
+#################################################################
+alias: Nofify Bus Work
+description: "Trigger Telegram notification to learn next bus to work."
+trigger:
+  - platform: event
+    event_type: telegram_command
+    event_data:
+      command: /work
+  - platform: event
+    event_type: telegram_callback
+    event_data:
+      command: /work
+condition: []
+action:
+  - service: telegram_bot.send_message
+    data:
+      title: 🚌 Next bus to work
+      message:
+        '{{states[''sensor.muni_inbound''].attributes.upcoming + " minutes
+        away."}}'
+      inline_keyboard:
+        - Update status:/work
+mode: single

@@ -1,0 +1,27 @@
+#################################################################
+## Notify Bus Home
+#
+## Trigger Telegram notification to learn next bus home.
+#################################################################
+alias: Nofify Bus Home
+description: "Trigger Telegram notification to learn next bus home."
+trigger:
+  - platform: event
+    event_type: telegram_command
+    event_data:
+      command: /home
+  - platform: event
+    event_type: telegram_callback
+    event_data:
+      command: /home
+condition: []
+action:
+  - service: telegram_bot.send_message
+    data:
+      title: 🚌 Next bus home
+      message:
+        '{{states[''sensor.muni_outbound''].attributes.upcoming + " minutes
+        away."}}'
+      inline_keyboard:
+        - Update status:/home
+mode: single
