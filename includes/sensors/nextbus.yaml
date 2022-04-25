@@ -1,0 +1,13 @@
+#################################################################
+## Nextbus Sensors
+#################################################################
+- platform: nextbus
+  name: !secret name_inbound
+  agency: !secret agency
+  route: !secret route
+  stop: !secret stop_inbound
+- platform: nextbus
+  name: !secret name_outbound
+  agency: !secret agency
+  route: !secret route
+  stop: !secret stop_outbound
