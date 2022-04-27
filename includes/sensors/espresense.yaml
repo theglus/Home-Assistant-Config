@@ -8,13 +8,6 @@
   state_topic: !secret beacon_cube_keys_state_topic
   timeout: 60
   away_timeout: 120 # number of seconds after which the enitity will get status not_home
-# Pixel 5 Beacon
-- platform: mqtt_room
-  device_id: !secret beacon_pixel_id
-  name: "Beacon Pixel 5"
-  state_topic: !secret beacon_pixel_state_topic
-  timeout: 60
-  away_timeout: 120 # number of seconds after which the enitity will get status not_home
 # Tiffy Keys Beacon
 - platform: mqtt_room
   device_id: !secret beacon_tiffy_keys_id
