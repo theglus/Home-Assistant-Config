@@ -18,7 +18,7 @@
 # Invisalign Case Beacon
 - platform: mqtt_room
   device_id: !secret beacon_invisalign_case
-  name: "Beacon Invisalign Case "
+  name: "Beacon Invisalign"
   state_topic: !secret beacon_invisalign_case_state_topic
   timeout: 60
   away_timeout: 120 # number of seconds after which the enitity will get status not_home
