@@ -1,0 +1,25 @@
+#################################################################
+## Tracker Primary
+#
+## Device tracker using Invisalign Tile.
+#################################################################
+alias: Tracker Primary
+description: "Device tracker using Invisalign Tile."
+trigger:
+  - platform: state
+    entity_id:
+      - sensor.beacon_invisalign
+      - device_tracker.tile_invisalign
+  - platform: homeassistant
+    event: start
+condition: []
+action:
+  - service: device_tracker.see
+    data:
+      dev_id: him
+      location_name: "{{iif(is_state('sensor.beacon_invisalign', 'not_home'),
+        states('device_tracker.tile_invisalign'), states('sensor.beacon_invisalign'))}}"
+      gps:
+        - "{{ state_attr('device_tracker.tile_invisalign', 'latitude') }}"
+        - "{{ state_attr('device_tracker.tile_invisalign', 'longitude') }}"
+mode: queued

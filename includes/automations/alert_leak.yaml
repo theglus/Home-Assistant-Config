@@ -36,7 +36,11 @@ trigger:
       minutes: 0
       seconds: 1
       milliseconds: 0
-condition: []
+condition:
+  - condition: state
+    entity_id: update.deconz_update
+    attribute: in_progress
+    state: 'false'
 action:
   - scene: scene.alert
   - choose:
