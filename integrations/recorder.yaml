@@ -3,8 +3,8 @@
 #################################################################
 recorder:
   auto_purge: true
-  purge_keep_days: 5
-  commit_interval: 1
+  purge_keep_days: 3
+  commit_interval: 60
   include:
     entities:
       # Desktop Computer
@@ -17,17 +17,19 @@ recorder:
       - sensor.memory_use_percent
       - sensor.time_online
       # Humidity
-      - sensor.humidity_living_room
-      - sensor.humidity_office
+  #   - sensor.humidity_living_room
+  #   - sensor.humidity_office
+  #   - sensor.kirby_humidity
+  #   - sensor.kitchen_humidity
       # Sensors
       - binary_sensor.front_door
       # Temperature
       - sensor.temperature_living_room
       - sensor.temperature_office
+      - sensor.kirby_temperature
+      - sensor.kitchen_temperature
     entity_globs:
       - person.jeffrey_*
       - person.tiffany_*
       - sensor.beacon_*
-      - sensor.kirby_*
-      - sensor.kitchen_*
       - sensor.processor_*
