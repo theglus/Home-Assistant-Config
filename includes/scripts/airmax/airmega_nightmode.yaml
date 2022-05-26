@@ -1,0 +1,17 @@
+#################################################################
+## Airmega: Turn on Sleep + disable lights.
+#################################################################
+airmega_nightmode:
+  alias: "Airmega: Nightmode"
+  sequence:
+    - service: fan.set_preset_mode
+      data:
+        preset_mode: Night
+      target:
+        entity_id: fan.airmega
+    - service: switch.turn_off
+      data: {}
+      target:
+        entity_id: switch.airmega_light
+  mode: single
+  icon: mdi:weather-night

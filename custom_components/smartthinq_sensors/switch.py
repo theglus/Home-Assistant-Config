@@ -5,7 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import timedelta
 import logging
-from typing import Any, Callable, Tuple
+from typing import Any, Awaitable, Callable, Tuple
 
 from .wideq import (
     FEAT_ECOFRIENDLY,
@@ -21,12 +21,20 @@ from homeassistant.components.switch import (
     SwitchEntity,
     SwitchEntityDescription,
 )
+from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import STATE_OFF, STATE_ON
+from homeassistant.core import HomeAssistant
+from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from . import LGEDevice
 from .const import DOMAIN, LGE_DEVICES
-from .device_helpers import STATE_LOOKUP, LGEBaseDevice, get_entity_name
+from .device_helpers import (
+    STATE_LOOKUP,
+    LGEBaseDevice,
+    get_entity_name,
+    get_multiple_devices_types,
+)
 
 # general sensor attributes
 ATTR_POWER_OFF = "power_off"
@@ -41,8 +49,8 @@ class ThinQSwitchEntityDescription(SwitchEntityDescription):
     """A class that describes ThinQ switch entities."""
 
     available_fn: Callable[[Any], bool] | None = None
-    turn_off_fn: Callable[[Any], None] | None = None
-    turn_on_fn: Callable[[Any], None] | None = None
+    turn_off_fn: Callable[[Any], Awaitable[None]] | None = None
+    turn_on_fn: Callable[[Any], Awaitable[None]] | None = None
     value_fn: Callable[[Any], bool] | None = None
 
 
@@ -105,40 +113,36 @@ AC_DUCT_SWITCH = ThinQSwitchEntityDescription(
 )
 
 
-def _switch_exist(lge_device: LGEDevice, switch_desc: ThinQSwitchEntityDescription):
+def _switch_exist(lge_device: LGEDevice, switch_desc: ThinQSwitchEntityDescription) -> bool:
     """Check if a switch exist for device."""
     if switch_desc.value_fn is not None:
         return True
 
     feature = switch_desc.key
-    for feat_name in lge_device.available_features.keys():
-        if feat_name == feature:
-            return True
+    if feature in lge_device.available_features:
+        return True
 
     return False
 
 
-async def async_setup_entry(hass, config_entry, async_add_entities):
+async def async_setup_entry(
+    hass: HomeAssistant, entry: ConfigEntry, async_add_entities: AddEntitiesCallback
+) -> None:
     """Set up the LGE switch."""
-    _LOGGER.info("Starting LGE ThinQ switch...")
-
-    lge_switch = []
     entry_config = hass.data[DOMAIN]
     lge_devices = entry_config.get(LGE_DEVICES)
     if not lge_devices:
         return
 
-    # add wash devices
-    wash_devices = []
-    for dev_type, devices in lge_devices.items():
-        if dev_type in WM_DEVICE_TYPES:
-            wash_devices.extend(devices)
+    _LOGGER.debug("Starting LGE ThinQ switch setup...")
+    lge_switch = []
 
+    # add WM devices
     lge_switch.extend(
         [
             LGESwitch(lge_device, switch_desc)
             for switch_desc in WASH_DEV_SWITCH
-            for lge_device in wash_devices
+            for lge_device in get_multiple_devices_types(lge_devices, WM_DEVICE_TYPES)
             if _switch_exist(lge_device, switch_desc)
         ]
     )
@@ -234,19 +238,19 @@ class LGESwitch(CoordinatorEntity, SwitchEntity):
             is_avail = self.entity_description.available_fn(self._wrap_device)
         return self._api.available and is_avail
 
-    def turn_off(self, **kwargs):
+    async def async_turn_off(self, **kwargs):
         """Turn the entity off."""
         if self.entity_description.turn_off_fn is None:
             raise NotImplementedError()
         if self.is_on:
-            self.entity_description.turn_off_fn(self._wrap_device)
+            await self.entity_description.turn_off_fn(self._wrap_device)
 
-    def turn_on(self, **kwargs):
+    async def async_turn_on(self, **kwargs):
         """Turn the entity on."""
         if self.entity_description.turn_on_fn is None:
             raise NotImplementedError()
         if not self.is_on:
-            self.entity_description.turn_on_fn(self._wrap_device)
+            await self.entity_description.turn_on_fn(self._wrap_device)
 
     def _get_switch_state(self):
         """Get current switch state"""

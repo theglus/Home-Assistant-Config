@@ -3,7 +3,14 @@ import enum
 import logging
 from typing import Optional
 
-from .const import FEAT_LOWER_FILTER_LIFE, FEAT_UPPER_FILTER_LIFE
+from .const import (
+    FEAT_LOWER_FILTER_LIFE,
+    FEAT_PM1,
+    FEAT_PM10,
+    FEAT_PM25,
+    FEAT_UPPER_FILTER_LIFE,
+    STATE_OPTIONITEM_NONE,
+)
 from .device import Device, DeviceStatus
 
 LABEL_UPPER_FILTER_SUPPORT = "@SUPPORT_D_PLUS_TOP"
@@ -13,8 +20,8 @@ AIR_PURIFIER_CTRL_BASIC = ["Control", "basicCtrl"]
 
 AIR_PURIFIER_STATE_OPERATION = ["Operation", "airState.operation"]
 AIR_PURIFIER_STATE_PM1 = ["SensorPM1", "airState.quality.PM1"]
-AIR_PURIFIER_STATE_PM2 = ["SensorPM2", "airState.quality.PM2"]
 AIR_PURIFIER_STATE_PM10 = ["SensorPM10", "airState.quality.PM10"]
+AIR_PURIFIER_STATE_PM25 = ["SensorPM2", "airState.quality.PM2"]
 AIR_PURIFIER_STATE_FILTERMNG_USE_TIME = [
     "FilterUse", "airState.filterMngStates.useTime"
 ]
@@ -49,13 +56,13 @@ class AirPurifierDevice(Device):
         super().__init__(client, device, AirPurifierStatus(self, None))
         self._supported_operation = None
 
-    def power(self, turn_on):
+    async def power(self, turn_on):
         """Turn on or off the device (according to a boolean)."""
 
         op = AirPurifierOp.ON if turn_on else AirPurifierOp.OFF
         keys = self._get_cmd_keys(CMD_STATE_OPERATION)
         op_value = self.model_info.enum_value(keys[2], op.value)
-        self.set(keys[0], keys[1], key=keys[2], value=op_value)
+        await self.set(keys[0], keys[1], key=keys[2], value=op_value)
         if self._status:
             self._status.update_status(keys[2], op_value)
 
@@ -63,10 +70,10 @@ class AirPurifierDevice(Device):
         self._status = AirPurifierStatus(self, None)
         return self._status
 
-    def poll(self) -> Optional["AirPurifierStatus"]:
+    async def poll(self) -> Optional["AirPurifierStatus"]:
         """Poll the device's current state."""
 
-        res = self.device_poll()
+        res = await self.device_poll()
         if not res:
             return None
 
@@ -101,15 +108,24 @@ class AirPurifierStatus(DeviceStatus):
 
     @property
     def pm1(self):
-        return self.lookup_range(AIR_PURIFIER_STATE_PM1)
-
-    @property
-    def pm25(self):
-        return self.lookup_range(AIR_PURIFIER_STATE_PM2)
+        value = self.lookup_range(AIR_PURIFIER_STATE_PM1)
+        if value is None:
+            return None
+        return self._update_feature(FEAT_PM1, value, False)
 
     @property
     def pm10(self):
-        return self.lookup_range(AIR_PURIFIER_STATE_PM10)
+        value = self.lookup_range(AIR_PURIFIER_STATE_PM10)
+        if value is None:
+            return None
+        return self._update_feature(FEAT_PM10, value, False)
+
+    @property
+    def pm25(self):
+        value = self.lookup_range(AIR_PURIFIER_STATE_PM25)
+        if value is None:
+            return None
+        return self._update_feature(FEAT_PM25, value, False)
 
     def _get_lower_filter_life(self):
         max_time = self.to_int_or_none(
@@ -147,7 +163,7 @@ class AirPurifierStatus(DeviceStatus):
 
     @property
     def upper_filter_life(self):
-        # Check the upper filter is exist
+        # Check the upper filter is exists
         support_key = SUPPORT_AIR_PURIFIER_MFILTER[1 if self.is_info_v2 else 0]
         if self._device.model_info.enum_value(support_key, LABEL_UPPER_FILTER_SUPPORT) is None:
             return None
@@ -158,6 +174,9 @@ class AirPurifierStatus(DeviceStatus):
 
     def _update_features(self):
         _ = [
+            self.pm1,
+            self.pm10,
+            self.pm25,
             self.lower_filter_life,
             self.upper_filter_life,
         ]
