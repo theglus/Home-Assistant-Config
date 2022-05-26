@@ -1,7 +1,7 @@
 #################################################################
-## Airmax: Turn on Sleep + disable lights.
+## Airmega: Turn on Sleep + disable lights.
 #################################################################
-airmax_nightmode:
+airmega_nightmode:
   alias: "Airmega: Nightmode"
   sequence:
     - service: fan.set_preset_mode

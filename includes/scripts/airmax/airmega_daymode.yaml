@@ -1,5 +1,5 @@
 #################################################################
-## Airmax: Turn on Auto + enables lights.
+## Airmega: Turn on Auto + enables lights.
 #################################################################
 airmega_daymode:
   alias: "Airmega: Daymode"
