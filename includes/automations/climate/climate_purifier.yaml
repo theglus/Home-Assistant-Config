@@ -24,6 +24,9 @@ action:
           - scene: scene.kirby_nightmode
           - service: script.airmax_nightmode
     default:
-      - scene: scene.kirby_daymode
+      - service: fan.turn_off
+        target:
+          entity_id:
+            - fan.kirby
       - service: script.airmax_daymode
 mode: single
