@@ -22,6 +22,10 @@ action:
                 before: "08:15:00"
         sequence:
           - scene: scene.kirby_nightmode
+          - service: fan.turn_off
+            target:
+              entity_id:
+                - fan.kitchen
           - service: script.airmax_nightmode
     default:
       - service: fan.turn_off
