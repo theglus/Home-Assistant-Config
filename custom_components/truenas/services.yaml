@@ -1,0 +1,88 @@
+---
+cloudsync_run:
+  name: Cloudsync Run
+  description: Start a Clousync Job
+  target:
+    entity:
+      domain: sensor
+      integration: truenas
+
+dataset_snapshot:
+  name: Dataset Snapshot
+  description: Create a Dataset Snapshot
+  target:
+    entity:
+      domain: sensor
+      integration: truenas
+
+service_start:
+  name: Service Start
+  description: Start a Service
+  target:
+    entity:
+      domain: binary_sensor
+      integration: truenas
+
+service_stop:
+  name: Service Stop
+  description: Stop a Service
+  target:
+    entity:
+      domain: binary_sensor
+      integration: truenas
+
+service_restart:
+  name: Service Restart
+  description: Restart a Service
+  target:
+    entity:
+      domain: binary_sensor
+      integration: truenas
+
+service_reload:
+  name: Service Reload
+  description: Reload a Service
+  target:
+    entity:
+      domain: binary_sensor
+      integration: truenas
+
+jail_start:
+  name: Jail Start
+  description: Start a Jail
+  target:
+    entity:
+      domain: binary_sensor
+      integration: truenas
+
+jail_stop:
+  name: Jail Stop
+  description: Stop a Jail
+  target:
+    entity:
+      domain: binary_sensor
+      integration: truenas
+
+jail_restart:
+  name: Jail Restart
+  description: Restart a Jail
+  target:
+    entity:
+      domain: binary_sensor
+      integration: truenas
+      
+vm_start:
+  name: VM Start
+  description: Start a VM
+  target:
+    entity:
+      domain: binary_sensor
+      integration: truenas
+
+vm_stop:
+  name: VM Stop
+  description: Stop a VM
+  target:
+    entity:
+      domain: binary_sensor
+      integration: truenas
