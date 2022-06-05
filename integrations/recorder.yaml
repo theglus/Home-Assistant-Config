@@ -16,11 +16,6 @@ recorder:
       # Home Assistant Sensors
       - sensor.memory_use_percent
       - sensor.time_online
-      # Humidity
-  #   - sensor.humidity_living_room
-  #   - sensor.humidity_office
-  #   - sensor.kirby_humidity
-  #   - sensor.kitchen_humidity
       # Sensors
       - binary_sensor.front_door
       # Temperature
@@ -28,6 +23,12 @@ recorder:
       - sensor.temperature_office
       - sensor.kirby_temperature
       - sensor.kitchen_temperature
+      # TrueNAS Sensors
+      - sensor.truenas_arc_size
+      - sensor.truenas_cpu_usage
+      - sensor.truenas_sda
+      - sensor.truenas_sdb
+      - sensor.truenas_temperature
     entity_globs:
       - person.jeffrey_*
       - person.tiffany_*
