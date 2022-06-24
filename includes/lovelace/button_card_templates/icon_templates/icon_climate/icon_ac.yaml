@@ -8,14 +8,15 @@ template:
 styles:
   custom_fields:
     icon_fan:
-      - margin-top: 5.5%
-      - margin-left: 5.5%
+      - top: 17%
+      - left: 18%
       - width: 10%
       - position: absolute
     icon:
-      - margin-top: -15%
-      - margin-left: -23%
-      - width: 100%
+      - top: 6%
+      - left: 3%
+      - width: 40%
+      - position: absolute
 custom_fields:
   icon_fan: >
     [[[
