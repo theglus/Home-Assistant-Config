@@ -31,6 +31,7 @@ class TrueNASControllerData(object):
         self.host = config_entry.data[CONF_HOST]
 
         self.data = {
+            "interface": {},
             "disk": {},
             "pool": {},
             "dataset": {},
@@ -107,7 +108,7 @@ class TrueNASControllerData(object):
         """Update TrueNAS data"""
         try:
             await asyncio_wait_for(self.lock.acquire(), timeout=10)
-        except:
+        except Exception:
             return
 
         await self.hass.async_add_executor_job(self.get_systeminfo)
@@ -174,9 +175,11 @@ class TrueNASControllerData(object):
             self.data["system_info"]["version"].startswith("TrueNAS-SCALE-")
         )
 
-        self._is_virtual = self.data["system_info"]["system_product"] in [
+        self._is_virtual = self.data["system_info"]["system_manufacturer"] in [
+            "QEMU",
+            "VMware, Inc.",
+        ] or self.data["system_info"]["system_product"] in [
             "VirtualBox",
-            "VMware Virtual Platform",
         ]
 
         if self.data["system_info"]["uptime_seconds"] > 0:
@@ -187,6 +190,42 @@ class TrueNASControllerData(object):
             self.data["system_info"]["uptimeEpoch"] = str(
                 as_local(utc_from_timestamp(uptime_tm)).isoformat()
             )
+
+        self.data["interface"] = parse_api(
+            data=self.data["interface"],
+            source=self.api.query("interface"),
+            key="id",
+            vals=[
+                {"name": "id", "default": "unknown"},
+                {"name": "name", "default": "unknown"},
+                {"name": "description", "default": "unknown"},
+                {"name": "mtu", "default": "unknown"},
+                {
+                    "name": "link_state",
+                    "source": "state/link_state",
+                    "default": "unknown",
+                },
+                {
+                    "name": "active_media_type",
+                    "source": "state/active_media_type",
+                    "default": "unknown",
+                },
+                {
+                    "name": "active_media_subtype",
+                    "source": "state/active_media_subtype",
+                    "default": "unknown",
+                },
+                {
+                    "name": "link_address",
+                    "source": "state/link_address",
+                    "default": "unknown",
+                },
+            ],
+            ensure_vals=[
+                {"name": "rx", "default": 0},
+                {"name": "tx", "default": 0},
+            ],
+        )
 
     # ---------------------------
     #   get_systemstats
@@ -208,6 +247,9 @@ class TrueNASControllerData(object):
             },
         }
 
+        for uid, vals in self.data["interface"].items():
+            tmp_params["graphs"].append({"name": "interface", "identifier": uid})
+
         if self._is_virtual:
             tmp_params["graphs"].remove({"name": "cputemp"})
 
@@ -228,7 +270,7 @@ class TrueNASControllerData(object):
             if tmp_graph[i]["name"] == "cputemp":
                 if "aggregations" in tmp_graph[i]:
                     self.data["system_info"]["cpu_temperature"] = round(
-                        max(tmp_graph[i]["aggregations"]["mean"]), 1
+                        max(list(filter(None, tmp_graph[i]["aggregations"]["mean"]))), 1
                     )
                 else:
                     self.data["system_info"]["cpu_temperature"] = 0.0
@@ -247,6 +289,27 @@ class TrueNASControllerData(object):
                     + self.data["system_info"]["cpu_user"],
                     2,
                 )
+
+            # Interface
+            if tmp_graph[i]["name"] == "interface":
+                tmp_etc = tmp_graph[i]["identifier"]
+                if tmp_etc in self.data["interface"]:
+                    # 12->13 API change
+                    tmp_graph[i]["legend"] = [
+                        tmp.replace("if_octets_", "") for tmp in tmp_graph[i]["legend"]
+                    ]
+                    tmp_arr = ("rx", "tx")
+                    if "aggregations" in tmp_graph[i]:
+                        for e in range(len(tmp_graph[i]["legend"])):
+                            tmp_var = tmp_graph[i]["legend"][e]
+                            if tmp_var in tmp_arr:
+                                tmp_val = tmp_graph[i]["aggregations"]["mean"][e] or 0.0
+                                self.data["interface"][tmp_etc][tmp_var] = round(
+                                    (tmp_val / 1024), 2
+                                )
+                    else:
+                        for tmp_load in tmp_arr:
+                            self.data["interface"][tmp_etc][tmp_load] = 0.0
 
             # arcsize
             if tmp_graph[i]["name"] == "arcsize":
@@ -336,11 +399,13 @@ class TrueNASControllerData(object):
                     "name": "scrub_start",
                     "source": "scan/start_time/$date",
                     "default": 0,
+                    "convert": "utc_from_timestamp",
                 },
                 {
                     "name": "scrub_end",
                     "source": "scan/end_time/$date",
                     "default": 0,
+                    "convert": "utc_from_timestamp",
                 },
                 {
                     "name": "scrub_secs_left",
