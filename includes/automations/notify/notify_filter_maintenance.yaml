@@ -1,0 +1,51 @@
+#################################################################
+## Notify Filter Maintenance
+#
+## Notify smartphones when air filters need cleaning.
+#################################################################
+alias: Notify Air Filters
+description: Notify smartphones when air filters need cleaning.
+trigger:
+  - platform: time
+    at: "09:00:00"
+condition: []
+action:
+  - choose:
+      - conditions:
+          - condition: numeric_state
+            entity_id: sensor.airmega_pre_filter
+            below: "5"
+        sequence:
+          - service: notify.smartphones
+            data:
+              title: 🧽 Filter Maintenance
+              message: Clean Airmega's pre-filter.
+      - conditions:
+          - condition: numeric_state
+            entity_id: sensor.airmega_max2_filter
+            below: "5"
+        sequence:
+          - service: notify.smartphones
+            data:
+              title: "🛒 Airmega Filter "
+              message: Buy MAX2 filter replacement set.
+      - conditions:
+          - condition: numeric_state
+            entity_id: sensor.kitchen_filter_life_2
+            below: "225"
+        sequence:
+          - service: notify.smartphones
+            data:
+              title: 🛒 Kitchen Filter
+              message: Buy TP02 filter for Kitchen Dyson.
+      - conditions:
+          - condition: numeric_state
+            entity_id: sensor.kirby_filter_life
+            below: "225"
+        sequence:
+          - service: notify.smartphones
+            data:
+              title: 🛒 Loft Filter
+              message: Buy TP02 filter for Loft Dyson.
+    default: []
+mode: single
