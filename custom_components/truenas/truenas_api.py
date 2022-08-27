@@ -73,6 +73,7 @@ class TrueNASAPI(object):
                     params=params,
                     verify=self._ssl_verify,
                 )
+
             elif method == "post":
                 response = requests_post(
                     f"{self._url}{service}",
@@ -86,21 +87,26 @@ class TrueNASAPI(object):
                 _LOGGER.debug("TrueNAS %s query response: %s", self._host, data)
             else:
                 error = True
-        except:
+        except Exception:
             error = True
 
         if error:
             try:
                 errorcode = response.status_code
-            except:
-                errorcode = "no_respose"
+            except Exception:
+                errorcode = "no_response"
 
             _LOGGER.warning(
-                "TrueNAS %s unable to fetch data (%s)", self._host, errorcode
+                'TrueNAS %s unable to fetch data "%s" (%s)',
+                self._host,
+                service,
+                errorcode,
             )
 
+            if errorcode != 500 and service != "reporting/get_data":
+                self._connected = False
+
             self._error = errorcode
-            self._connected = False
             self.lock.release()
             return None
 
@@ -109,3 +115,7 @@ class TrueNASAPI(object):
         self.lock.release()
 
         return data
+
+    @property
+    def error(self):
+        return self._error

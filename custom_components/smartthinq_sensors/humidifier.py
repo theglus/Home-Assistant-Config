@@ -1,7 +1,6 @@
 """Platform for LGE humidifier integration."""
 from __future__ import annotations
 
-from datetime import timedelta
 import logging
 import voluptuous as vol
 
@@ -15,20 +14,19 @@ from homeassistant.components.humidifier.const import (
     HumidifierEntityFeature,
 )
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.core import HomeAssistant
+from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers import config_validation as cv
+from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity_platform import AddEntitiesCallback, current_platform
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from . import LGEDevice
-from .const import DOMAIN, LGE_DEVICES
+from .const import DOMAIN, LGE_DEVICES, LGE_DISCOVERY_NEW
 
 ATTR_CURRENT_HUMIDITY = "current_humidity"
 ATTR_FAN_MODE = "fan_mode"
 ATTR_FAN_MODES = "fan_modes"
 SERVICE_SET_FAN_MODE = "set_fan_mode"
-
-SCAN_INTERVAL = timedelta(seconds=120)
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -38,28 +36,40 @@ async def async_setup_entry(
 ) -> None:
     """Set up LGE device humidifier based on config_entry."""
     entry_config = hass.data[DOMAIN]
-    lge_devices = entry_config.get(LGE_DEVICES)
-    if not lge_devices:
-        return
+    lge_cfg_devices = entry_config.get(LGE_DEVICES)
 
     _LOGGER.debug("Starting LGE ThinQ humidifier setup...")
-    lge_humidifier = []
 
-    # DeHumidifier devices
-    lge_humidifier.extend(
-        [
-            LGEDeHumidifier(lge_device)
-            for lge_device in lge_devices.get(DeviceType.DEHUMIDIFIER, [])
-        ]
+    @callback
+    def _async_discover_device(lge_devices: dict) -> None:
+        """Add entities for a discovered ThinQ device."""
+
+        if not lge_devices:
+            return
+
+        lge_humidifier = []
+
+        # DeHumidifier devices
+        lge_humidifier.extend(
+            [
+                LGEDeHumidifier(lge_device)
+                for lge_device in lge_devices.get(DeviceType.DEHUMIDIFIER, [])
+            ]
+        )
+
+        async_add_entities(lge_humidifier)
+
+    _async_discover_device(lge_cfg_devices)
+
+    entry.async_on_unload(
+        async_dispatcher_connect(hass, LGE_DISCOVERY_NEW, _async_discover_device)
     )
-
-    async_add_entities(lge_humidifier)
 
     # register services
     platform = current_platform.get()
     platform.async_register_entity_service(
         SERVICE_SET_FAN_MODE,
-        {vol.Required(ATTR_FAN_MODE): cv.string},
+        vol.Schema({vol.Required(ATTR_FAN_MODE): cv.string}),
         "async_set_fan_mode",
     )
 
@@ -72,24 +82,6 @@ class LGEBaseHumidifier(CoordinatorEntity, HumidifierEntity):
         super().__init__(api.coordinator)
         self._api = api
         self._attr_device_info = api.device_info
-
-    @property
-    def should_poll(self) -> bool:
-        """Return True if entity has to be polled for state.
-
-        We overwrite coordinator property default setting because we need
-        to poll to avoid the effect that after changing a climate settings
-        it is immediately set to prev state. The async_update method here
-        do nothing because the real update is performed by coordinator.
-        """
-        return True
-
-    async def async_update(self) -> None:
-        """Update the entity.
-
-        This is a fake update, real update is done by coordinator.
-        """
-        return
 
     @property
     def available(self) -> bool:
@@ -144,6 +136,7 @@ class LGEDeHumidifier(LGEBaseHumidifier):
         if mode not in self.available_modes:
             raise ValueError(f"Invalid mode [{mode}]")
         await self._device.set_op_mode(mode)
+        self._api.async_set_updated()
 
     @property
     def target_humidity(self) -> int | None:
@@ -155,14 +148,17 @@ class LGEDeHumidifier(LGEBaseHumidifier):
         humidity_step = self._device.target_humidity_step or 1
         target_humidity = humidity + (humidity % humidity_step)
         await self._device.set_target_humidity(target_humidity)
+        self._api.async_set_updated()
 
     async def async_turn_on(self, **kwargs) -> None:
         """Turn the entity on."""
         await self._device.power(True)
+        self._api.async_set_updated()
 
     async def async_turn_off(self, **kwargs) -> None:
         """Turn the entity off."""
         await self._device.power(False)
+        self._api.async_set_updated()
 
     @property
     def min_humidity(self) -> int:
@@ -185,3 +181,4 @@ class LGEDeHumidifier(LGEBaseHumidifier):
         if fan_mode not in self._device.fan_speeds:
             raise ValueError(f"Invalid fan mode [{fan_mode}]")
         await self._device.set_fan_speed(fan_mode)
+        self._api.async_set_updated()

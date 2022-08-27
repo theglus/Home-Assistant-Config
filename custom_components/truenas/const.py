@@ -4,6 +4,7 @@ from homeassistant.const import Platform
 PLATFORMS = [
     Platform.SENSOR,
     Platform.BINARY_SENSOR,
+    Platform.UPDATE,
 ]
 
 DOMAIN = "truenas"
@@ -35,6 +36,12 @@ SCHEMA_SERVICE_CLOUDSYNC_RUN = {}
 
 SERVICE_DATASET_SNAPSHOT = "dataset_snapshot"
 SCHEMA_SERVICE_DATASET_SNAPSHOT = {}
+
+SERVICE_SYSTEM_REBOOT = "system_reboot"
+SCHEMA_SERVICE_SYSTEM_REBOOT = {}
+
+SERVICE_SYSTEM_SHUTDOWN = "system_shutdown"
+SCHEMA_SERVICE_SYSTEM_SHUTDOWN = {}
 
 SERVICE_SERVICE_START = "service_start"
 SCHEMA_SERVICE_SERVICE_START = {}

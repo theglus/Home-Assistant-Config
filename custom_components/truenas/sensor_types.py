@@ -13,6 +13,10 @@ from .const import (
     SCHEMA_SERVICE_CLOUDSYNC_RUN,
     SERVICE_DATASET_SNAPSHOT,
     SCHEMA_SERVICE_DATASET_SNAPSHOT,
+    SERVICE_SYSTEM_REBOOT,
+    SCHEMA_SERVICE_SYSTEM_REBOOT,
+    SERVICE_SYSTEM_SHUTDOWN,
+    SCHEMA_SERVICE_SYSTEM_SHUTDOWN,
 )
 
 DEVICE_ATTRIBUTES_NETWORK = [
@@ -77,6 +81,14 @@ DEVICE_ATTRIBUTES_CPU = [
     "cpu_user",
     "cpu_nice",
     "cpu_idle",
+]
+
+DEVICE_ATTRIBUTES_MEMORY = [
+    "memory-used_value",
+    "memory-free_value",
+    "memory-cached_value",
+    "memory-buffered_value",
+    "memory-total_value",
 ]
 
 DEVICE_ATTRIBUTES_CLOUDSYNC = [
@@ -151,6 +163,7 @@ SENSOR_TYPES = {
         data_name="",
         data_uid="",
         data_reference="",
+        func="TrueNASUptimeSensor",
     ),
     "system_cpu_temperature": TrueNASSensorEntityDescription(
         key="system_cpu_temperature",
@@ -169,7 +182,7 @@ SENSOR_TYPES = {
     ),
     "system_load_shortterm": TrueNASSensorEntityDescription(
         key="system_load_shortterm",
-        name="CPU Load Shortterm",
+        name="CPU load shortterm",
         icon="mdi:gauge",
         native_unit_of_measurement=None,
         device_class=None,
@@ -184,7 +197,7 @@ SENSOR_TYPES = {
     ),
     "system_load_midterm": TrueNASSensorEntityDescription(
         key="system_load_midterm",
-        name="CPU Load Midterm",
+        name="CPU load midterm",
         icon="mdi:gauge",
         native_unit_of_measurement=None,
         device_class=None,
@@ -199,7 +212,7 @@ SENSOR_TYPES = {
     ),
     "system_load_longterm": TrueNASSensorEntityDescription(
         key="system_load_longterm",
-        name="CPU Load Longterm",
+        name="CPU load longterm",
         icon="mdi:gauge",
         native_unit_of_measurement=None,
         device_class=None,
@@ -214,7 +227,7 @@ SENSOR_TYPES = {
     ),
     "system_cpu_usage": TrueNASSensorEntityDescription(
         key="system_cpu_usage",
-        name="CPU Usage",
+        name="CPU usage",
         icon="mdi:cpu-64-bit",
         native_unit_of_measurement=PERCENTAGE,
         device_class=None,
@@ -228,9 +241,25 @@ SENSOR_TYPES = {
         data_reference="",
         data_attributes_list=DEVICE_ATTRIBUTES_CPU,
     ),
+    "system_memory_usage": TrueNASSensorEntityDescription(
+        key="system_memory_usage",
+        name="Memory usage",
+        icon="mdi:memory",
+        native_unit_of_measurement=PERCENTAGE,
+        device_class=None,
+        state_class=SensorStateClass.MEASUREMENT,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        ha_group="System",
+        data_path="system_info",
+        data_attribute="memory-usage_percent",
+        data_name="",
+        data_uid="",
+        data_reference="",
+        data_attributes_list=DEVICE_ATTRIBUTES_MEMORY,
+    ),
     "system_cache_size-arc_value": TrueNASSensorEntityDescription(
         key="system_cache_size-arc_value",
-        name="ARC Size",
+        name="ARC size",
         icon="mdi:memory",
         native_unit_of_measurement=DATA_GIBIBYTES,
         device_class=None,
@@ -245,7 +274,7 @@ SENSOR_TYPES = {
     ),
     "system_cache_size-L2_value": TrueNASSensorEntityDescription(
         key="system_cache_size-L2_value",
-        name="L2ARC Size",
+        name="L2ARC size",
         icon="mdi:memory",
         native_unit_of_measurement=DATA_GIBIBYTES,
         device_class=None,
@@ -260,7 +289,7 @@ SENSOR_TYPES = {
     ),
     "system_cache_ratio-arc_value": TrueNASSensorEntityDescription(
         key="system_cache_ratio-arc_value",
-        name="ARC Ratio",
+        name="ARC ratio",
         icon="mdi:aspect-ratio",
         native_unit_of_measurement=None,
         device_class=None,
@@ -275,7 +304,7 @@ SENSOR_TYPES = {
     ),
     "system_cache_ratio-L2_value": TrueNASSensorEntityDescription(
         key="system_cache_ratio-L2_value",
-        name="L2ARC Ratio",
+        name="L2ARC ratio",
         icon="mdi:aspect-ratio",
         native_unit_of_measurement=None,
         device_class=None,
@@ -423,4 +452,6 @@ SENSOR_TYPES = {
 SENSOR_SERVICES = [
     [SERVICE_CLOUDSYNC_RUN, SCHEMA_SERVICE_CLOUDSYNC_RUN, "start"],
     [SERVICE_DATASET_SNAPSHOT, SCHEMA_SERVICE_DATASET_SNAPSHOT, "snapshot"],
+    [SERVICE_SYSTEM_REBOOT, SCHEMA_SERVICE_SYSTEM_REBOOT, "restart"],
+    [SERVICE_SYSTEM_SHUTDOWN, SCHEMA_SERVICE_SYSTEM_SHUTDOWN, "stop"],
 ]
