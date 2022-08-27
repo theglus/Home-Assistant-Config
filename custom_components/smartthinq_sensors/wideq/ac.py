@@ -8,7 +8,9 @@ from .const import (
     FEAT_HUMIDITY,
     FEAT_HOT_WATER_TEMP,
     FEAT_IN_WATER_TEMP,
+    FEAT_LIGHTING_DISPLAY,
     FEAT_OUT_WATER_TEMP,
+    FEAT_MODE_JET,
     UNIT_TEMP_CELSIUS,
     UNIT_TEMP_FAHRENHEIT,
 )
@@ -28,6 +30,8 @@ CTRL_MISC = ["Control", "miscCtrl"]
 # CTRL_WIND_MODE = "wModeCtrl"
 
 DUCT_ZONE_V1 = "DuctZone"
+DUCT_ZONE_V1_TYPE = "DuctZoneType"
+STATE_FILTER_V1 = "Filter"
 STATE_POWER_V1 = "InOutInstantPower"
 
 SUPPORT_OPERATION_MODE = ["SupportOpMode", "support.airState.opMode"]
@@ -48,7 +52,9 @@ STATE_WDIR_HSWING = ["WDirLeftRight", "airState.wDir.leftRight"]
 STATE_WDIR_VSWING = ["WDirUpDown", "airState.wDir.upDown"]
 STATE_POWER = [STATE_POWER_V1, "airState.energy.onCurrent"]
 STATE_HUMIDITY = ["SensorHumidity", "airState.humidity.current"]
-STATE_DUCT_ZONE = ["DuctZoneType", "airState.ductZone.state"]
+STATE_DUCT_ZONE = ["ZoneControl", "airState.ductZone.state"]
+STATE_MODE_JET = ["Jet", "airState.wMode.jet"]
+STATE_LIGHTING_DISPLAY = ["DisplayControl", "airState.lightingState.displayControl"]
 
 CMD_STATE_OPERATION = [CTRL_BASIC, "Set", STATE_OPERATION]
 CMD_STATE_OP_MODE = [CTRL_BASIC, "Set", STATE_OPERATION_MODE]
@@ -59,6 +65,8 @@ CMD_STATE_WDIR_VSTEP = [CTRL_WIND_DIRECTION, "Set", STATE_WDIR_VSTEP]
 CMD_STATE_WDIR_HSWING = [CTRL_WIND_DIRECTION, "Set", STATE_WDIR_HSWING]
 CMD_STATE_WDIR_VSWING = [CTRL_WIND_DIRECTION, "Set", STATE_WDIR_VSWING]
 CMD_STATE_DUCT_ZONES = [CTRL_MISC, "Set", [DUCT_ZONE_V1, "airState.ductZone.control"]]
+CMD_STATE_MODE_JET = [CTRL_BASIC, "Set", STATE_MODE_JET]
+CMD_STATE_LIGHTING_DISPLAY = [CTRL_BASIC, "Set", STATE_LIGHTING_DISPLAY]
 
 CMD_ENABLE_EVENT_V2 = ["allEventEnable", "Set", "airState.mon.timeout"]
 
@@ -77,6 +85,13 @@ TEMP_STEP_WHOLE = 1.0
 TEMP_STEP_HALF = 0.5
 
 ADD_FEAT_POLL_INTERVAL = 300  # 5 minutes
+
+LIGHTING_DISPLAY_OFF = "0"
+LIGHTING_DISPLAY_ON = "1"
+
+MODE_JET_OFF = "@OFF"
+MODE_JET_COOL = "@COOL_JET"
+MODE_JET_HEAT = "@HEAT_JET"
 
 ZONE_OFF = "0"
 ZONE_ON = "1"
@@ -200,6 +215,9 @@ class AirConditionerDevice(Device):
 
         self._current_power = 0
         self._current_power_supported = True
+
+        self._filter_status = None
+        self._filter_status_supported = True
 
         self._f2c_map = None
         self._c2f_map = None
@@ -381,16 +399,21 @@ class AirConditionerDevice(Device):
         # first check if duct is supported
         if not self._status:
             return {}
-        duct_state = self._status.duct_zones_state
+
+        duct_state = -1
+        # duct zone type is available only for some ThinQ1 devices
+        if not self._status.duct_zones_type:
+            duct_state = self._status.duct_zones_state
         if not duct_state:
             return {}
 
         # get real duct zones states
         """
-        For ThinQ2 we transform the value in the status in binary
-        and than we create the result. We always have 8 duct zone.
+        For device that provide duct_state in payload we transform 
+        the value in the status in binary and than we create the result. 
+        We always have 8 duct zone.
         """
-        if not self._should_poll:
+        if duct_state > 0:
             bin_arr = [x for x in reversed(f"{duct_state:08b}")]
             return {
                 str(v+1): {ZONE_ST_CUR: k} for v, k in enumerate(bin_arr)
@@ -557,6 +580,11 @@ class AirConditionerDevice(Device):
             return None
         return self.conv_temp_unit(temp_range[1])
 
+    @property
+    def is_mode_jet_available(self):
+        """Return if JET mode is available."""
+        return self._status.is_mode_jet_available
+
     async def power(self, turn_on):
         """Turn on or off the device (according to a boolean)."""
 
@@ -629,8 +657,30 @@ class AirConditionerDevice(Device):
         keys = self._get_cmd_keys(CMD_STATE_TARGET_TEMP)
         await self.set(keys[0], keys[1], key=keys[2], value=conv_temp)
 
+    async def set_mode_jet(self, status):
+        """Set the mode jet."""
+        if not self.is_mode_jet_available:
+            raise ValueError("Invalid device status for jet mode")
+
+        keys = self._get_cmd_keys(CMD_STATE_MODE_JET)
+        if status:
+            if self._status.operation_mode == ACMode.HEAT.name:
+                jet_key = MODE_JET_HEAT
+            else:
+                jet_key = MODE_JET_COOL
+        else:
+            jet_key = MODE_JET_OFF
+        jet = self.model_info.enum_value(keys[2], jet_key)
+        await self.set(keys[0], keys[1], key=keys[2], value=jet)
+
+    async def set_lighting_display(self, status):
+        """Set the lighting display."""
+        keys = self._get_cmd_keys(CMD_STATE_LIGHTING_DISPLAY)
+        lighting = LIGHTING_DISPLAY_ON if status else LIGHTING_DISPLAY_OFF
+        await self.set(keys[0], keys[1], key=keys[2], value=lighting)
+
     async def get_power(self):
-        """Get the instant power usage in watts of the whole unit"""
+        """Get the instant power usage in watts of the whole unit."""
         if not self._current_power_supported:
             return 0
 
@@ -641,6 +691,18 @@ class AirConditionerDevice(Device):
             # Device does not support whole unit instant power usage
             self._current_power_supported = False
             return 0
+
+    async def get_filter_state(self):
+        """Get information about the filter."""
+        if not self._filter_status_supported:
+            return None
+
+        try:
+            return await self._get_config(STATE_FILTER_V1)
+        except (ValueError, InvalidRequestError):
+            # Device does not support filter status
+            self._filter_status_supported = False
+            return None
 
     async def set(self, ctrl_key, command, *, key=None, value=None, data=None, ctrl_path=None):
         """Set a device's control for `key` to `value`."""
@@ -711,9 +773,10 @@ class AirConditionerStatus(DeviceStatus):
     def _get_operation(self):
         if self._operation is None:
             key = self._get_state_key(STATE_OPERATION)
-            self._operation = self.lookup_enum(key, True)
-            if self._operation is None:
+            operation = self.lookup_enum(key, True)
+            if not operation:
                 return None
+            self._operation = operation
         try:
             return ACOp(self._operation)
         except ValueError:
@@ -869,6 +932,35 @@ class AirConditionerStatus(DeviceStatus):
         key = self._get_state_key(STATE_DUCT_ZONE)
         return self.to_int_or_none(self._data.get(key))
 
+    @property
+    def duct_zones_type(self):
+        if self.is_info_v2:
+            return None
+        return self.to_int_or_none(self._data.get(DUCT_ZONE_V1_TYPE))
+
+    @property
+    def mode_jet(self):
+        key = self._get_state_key(STATE_MODE_JET)
+        if (value := self.lookup_enum(key, True)) is None:
+            return None
+        status = value in (MODE_JET_COOL, MODE_JET_HEAT)
+        return self._update_feature(FEAT_MODE_JET, status, False)
+
+    @property
+    def is_mode_jet_available(self):
+        if not self.is_on:
+            return False
+        if (curr_op_mode := self.operation_mode) is None:
+            return False
+        return curr_op_mode in (ACMode.COOL.name, ACMode.DRY.name, ACMode.HEAT.name)
+
+    @property
+    def lighting_display(self):
+        key = self._get_state_key(STATE_LIGHTING_DISPLAY)
+        if (value := self.to_int_or_none(self._data.get(key))) is None:
+            return None
+        return self._update_feature(FEAT_LIGHTING_DISPLAY, str(value) == LIGHTING_DISPLAY_ON, False)
+
     def _update_features(self):
         _ = [
             self.hot_water_current_temp,
@@ -876,4 +968,6 @@ class AirConditionerStatus(DeviceStatus):
             self.out_water_current_temp,
             self.energy_current,
             self.humidity,
+            self.mode_jet,
+            self.lighting_display,
         ]

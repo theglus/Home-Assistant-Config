@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import timedelta
 import logging
 from typing import Any, Awaitable, Callable, Tuple
 
@@ -12,6 +11,8 @@ from .wideq import (
     FEAT_EXPRESSFRIDGE,
     FEAT_EXPRESSMODE,
     FEAT_ICEPLUS,
+    FEAT_LIGHTING_DISPLAY,
+    FEAT_MODE_JET,
     WM_DEVICE_TYPES,
     DeviceType,
 )
@@ -23,12 +24,13 @@ from homeassistant.components.switch import (
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import STATE_OFF, STATE_ON
-from homeassistant.core import HomeAssistant
+from homeassistant.core import HomeAssistant, callback
+from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from . import LGEDevice
-from .const import DOMAIN, LGE_DEVICES
+from .const import DOMAIN, LGE_DEVICES, LGE_DISCOVERY_NEW
 from .device_helpers import (
     STATE_LOOKUP,
     LGEBaseDevice,
@@ -38,8 +40,6 @@ from .device_helpers import (
 
 # general sensor attributes
 ATTR_POWER_OFF = "power_off"
-
-SCAN_INTERVAL = timedelta(seconds=120)
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -97,6 +97,23 @@ REFRIGERATOR_SWITCH: Tuple[ThinQSwitchEntityDescription, ...] = (
         available_fn=lambda x: x.device.set_values_allowed,
     ),
 )
+AC_SWITCH: Tuple[ThinQSwitchEntityDescription, ...] = (
+    ThinQSwitchEntityDescription(
+        key=FEAT_MODE_JET,
+        name="Jet mode",
+        icon="mdi:turbine",
+        turn_off_fn=lambda x: x.device.set_mode_jet(False),
+        turn_on_fn=lambda x: x.device.set_mode_jet(True),
+        available_fn=lambda x: x.device.is_mode_jet_available,
+    ),
+    ThinQSwitchEntityDescription(
+        key=FEAT_LIGHTING_DISPLAY,
+        name="Display light",
+        icon="mdi:wall-sconce-round",
+        turn_off_fn=lambda x: x.device.set_lighting_display(False),
+        turn_on_fn=lambda x: x.device.set_lighting_display(True),
+    ),
+)
 
 AC_DUCT_SWITCH = ThinQSwitchEntityDescription(
     key="duct-zone",
@@ -121,43 +138,65 @@ async def async_setup_entry(
 ) -> None:
     """Set up the LGE switch."""
     entry_config = hass.data[DOMAIN]
-    lge_devices = entry_config.get(LGE_DEVICES)
-    if not lge_devices:
-        return
+    lge_cfg_devices = entry_config.get(LGE_DEVICES)
 
     _LOGGER.debug("Starting LGE ThinQ switch setup...")
-    lge_switch = []
 
-    # add WM devices
-    lge_switch.extend(
-        [
-            LGESwitch(lge_device, switch_desc)
-            for switch_desc in WASH_DEV_SWITCH
-            for lge_device in get_multiple_devices_types(lge_devices, WM_DEVICE_TYPES)
-            if _switch_exist(lge_device, switch_desc)
-        ]
+    @callback
+    def _async_discover_device(lge_devices: dict) -> None:
+        """Add entities for a discovered ThinQ device."""
+
+        if not lge_devices:
+            return
+
+        lge_switch = []
+
+        # add WM devices
+        lge_switch.extend(
+            [
+                LGESwitch(lge_device, switch_desc)
+                for switch_desc in WASH_DEV_SWITCH
+                for lge_device in get_multiple_devices_types(lge_devices, WM_DEVICE_TYPES)
+                if _switch_exist(lge_device, switch_desc)
+            ]
+        )
+
+        # add refrigerators
+        lge_switch.extend(
+            [
+                LGESwitch(lge_device, switch_desc)
+                for switch_desc in REFRIGERATOR_SWITCH
+                for lge_device in lge_devices.get(DeviceType.REFRIGERATOR, [])
+                if _switch_exist(lge_device, switch_desc)
+            ]
+        )
+
+        # add AC switch
+        lge_switch.extend(
+            [
+                LGESwitch(lge_device, switch_desc)
+                for switch_desc in AC_SWITCH
+                for lge_device in lge_devices.get(DeviceType.AC, [])
+                if _switch_exist(lge_device, switch_desc)
+            ]
+        )
+
+        # add AC duct zone switch
+        lge_switch.extend(
+            [
+                LGEDuctSwitch(lge_device, duct_zone)
+                for lge_device in lge_devices.get(DeviceType.AC, [])
+                for duct_zone in lge_device.device.duct_zones
+            ]
+        )
+
+        async_add_entities(lge_switch)
+
+    _async_discover_device(lge_cfg_devices)
+
+    entry.async_on_unload(
+        async_dispatcher_connect(hass, LGE_DISCOVERY_NEW, _async_discover_device)
     )
-
-    # add refrigerators
-    lge_switch.extend(
-        [
-            LGESwitch(lge_device, switch_desc)
-            for switch_desc in REFRIGERATOR_SWITCH
-            for lge_device in lge_devices.get(DeviceType.REFRIGERATOR, [])
-            if _switch_exist(lge_device, switch_desc)
-        ]
-    )
-
-    # add AC duct zone switch
-    lge_switch.extend(
-        [
-            LGEDuctSwitch(lge_device, duct_zone)
-            for lge_device in lge_devices.get(DeviceType.AC, [])
-            for duct_zone in lge_device.device.duct_zones
-        ]
-    )
-
-    async_add_entities(lge_switch)
 
 
 class LGESwitch(CoordinatorEntity, SwitchEntity):
@@ -179,24 +218,6 @@ class LGESwitch(CoordinatorEntity, SwitchEntity):
         self._attr_unique_id = f"{api.unique_id}-{description.key}-switch"
         self._attr_device_class = SwitchDeviceClass.SWITCH
         self._attr_device_info = api.device_info
-
-    @property
-    def should_poll(self) -> bool:
-        """Return True if entity has to be polled for state.
-
-        We overwrite coordinator property default setting because we need
-        to poll to avoid the effect that after changing switch state
-        it is immediately set to prev state. The async_update method here
-        do nothing because the real update is performed by coordinator.
-        """
-        return True
-
-    async def async_update(self) -> None:
-        """Update the entity.
-
-        This is a fake update, real update is done by coordinator.
-        """
-        return
 
     @property
     def is_on(self):
@@ -225,6 +246,7 @@ class LGESwitch(CoordinatorEntity, SwitchEntity):
             raise NotImplementedError()
         if self.is_on:
             await self.entity_description.turn_off_fn(self._wrap_device)
+            self._api.async_set_updated()
 
     async def async_turn_on(self, **kwargs):
         """Turn the entity on."""
@@ -232,6 +254,7 @@ class LGESwitch(CoordinatorEntity, SwitchEntity):
             raise NotImplementedError()
         if not self.is_on:
             await self.entity_description.turn_on_fn(self._wrap_device)
+            self._api.async_set_updated()
 
     def _get_switch_state(self):
         """Get current switch state"""
