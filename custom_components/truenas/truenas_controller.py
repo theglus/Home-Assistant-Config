@@ -1,6 +1,7 @@
 """TrueNAS Controller"""
 from asyncio import wait_for as asyncio_wait_for, Lock as Asyncio_lock
 from datetime import datetime, timedelta
+from logging import getLogger
 from homeassistant.const import (
     CONF_HOST,
     CONF_NAME,
@@ -11,10 +12,14 @@ from homeassistant.const import (
 from homeassistant.core import callback
 from homeassistant.helpers.dispatcher import async_dispatcher_send
 from homeassistant.helpers.event import async_track_time_interval
+from homeassistant.helpers import entity_registry as er, device_registry as dr
+from homeassistant.helpers.entity_registry import async_entries_for_config_entry
 from .const import DOMAIN
 from .apiparser import parse_api, utc_from_timestamp
 from .truenas_api import TrueNASAPI
 from .helper import as_local, b2gib
+
+_LOGGER = getLogger(__name__)
 
 
 # ---------------------------
@@ -54,6 +59,9 @@ class TrueNASControllerData(object):
             config_entry.data[CONF_SSL],
             config_entry.data[CONF_VERIFY_SSL],
         )
+
+        self._systemstats_errored = []
+        self.datasets_hass_device_id = None
 
         self._force_update_callback = None
         self._is_scale = False
@@ -168,8 +176,81 @@ class TrueNASControllerData(object):
                 {"name": "cache_size-L2_value", "default": 0.0},
                 {"name": "cache_ratio-arc_value", "default": 0},
                 {"name": "cache_ratio-L2_value", "default": 0},
+                {"name": "memory-used_value", "default": 0.0},
+                {"name": "memory-free_value", "default": 0.0},
+                {"name": "memory-cached_value", "default": 0.0},
+                {"name": "memory-buffered_value", "default": 0.0},
+                {"name": "memory-total_value", "default": 0.0},
+                {"name": "memory-usage_percent", "default": 0},
+                {"name": "update_available", "type": "bool", "default": False},
+                {"name": "update_progress", "default": 0},
+                {"name": "update_jobid", "default": 0},
+                {"name": "update_state", "default": "unknown"},
             ],
         )
+        if not self.api.connected():
+            return
+
+        self.data["system_info"] = parse_api(
+            data=self.data["system_info"],
+            source=self.api.query("update/check_available", method="post"),
+            vals=[
+                {
+                    "name": "update_status",
+                    "source": "status",
+                    "default": "unknown",
+                },
+                {
+                    "name": "update_version",
+                    "source": "version",
+                    "default": "unknown",
+                },
+            ],
+        )
+
+        if not self.api.connected():
+            return
+
+        self.data["system_info"]["update_available"] = (
+            self.data["system_info"]["update_status"] == "AVAILABLE"
+        )
+
+        if not self.data["system_info"]["update_available"]:
+            self.data["system_info"]["update_version"] = self.data["system_info"][
+                "version"
+            ]
+
+        if self.data["system_info"]["update_jobid"]:
+            self.data["system_info"] = parse_api(
+                data=self.data["system_info"],
+                source=self.api.query(
+                    "core/get_jobs",
+                    method="get",
+                    params={"id": self.data["system_info"]["update_jobid"]},
+                ),
+                vals=[
+                    {
+                        "name": "update_progress",
+                        "source": "progress/percent",
+                        "default": 0,
+                    },
+                    {
+                        "name": "update_state",
+                        "source": "state",
+                        "default": "unknown",
+                    },
+                ],
+            )
+            if not self.api.connected():
+                return
+
+            if (
+                self.data["system_info"]["update_state"] != "RUNNING"
+                or not self.data["system_info"]["update_available"]
+            ):
+                self.data["system_info"]["update_progress"] = 0
+                self.data["system_info"]["update_jobid"] = 0
+                self.data["system_info"]["update_state"] = "unknown"
 
         self._is_scale = bool(
             self.data["system_info"]["version"].startswith("TrueNAS-SCALE-")
@@ -239,6 +320,7 @@ class TrueNASControllerData(object):
                 {"name": "cpu"},
                 {"name": "arcsize"},
                 {"name": "arcratio"},
+                {"name": "memory"},
             ],
             "reporting_query": {
                 "start": "now-90s",
@@ -253,6 +335,13 @@ class TrueNASControllerData(object):
         if self._is_virtual:
             tmp_params["graphs"].remove({"name": "cputemp"})
 
+        for tmp in tmp_params["graphs"]:
+            if tmp["name"] in self._systemstats_errored:
+                tmp_params["graphs"].remove(tmp)
+
+        if not tmp_params["graphs"]:
+            return
+
         tmp_graph = self.api.query(
             "reporting/get_data",
             method="post",
@@ -260,6 +349,32 @@ class TrueNASControllerData(object):
         )
 
         if not isinstance(tmp_graph, list):
+            if self.api.error == 500:
+                for tmp in tmp_params["graphs"]:
+                    tmp2 = self.api.query(
+                        "reporting/get_data",
+                        method="post",
+                        params={
+                            "graphs": [
+                                tmp,
+                            ],
+                            "reporting_query": {
+                                "start": "now-90s",
+                                "end": "now-30s",
+                                "aggregate": True,
+                            },
+                        },
+                    )
+                    if not isinstance(tmp2, list) and self.api.error == 500:
+                        self._systemstats_errored.append(tmp["name"])
+
+                _LOGGER.warning(
+                    "TrueNAS %s fetching following graphs failed, check your NAS: %s",
+                    self.host,
+                    self._systemstats_errored,
+                )
+                self.get_systemstats()
+
             return
 
         for i in range(len(tmp_graph)):
@@ -311,10 +426,36 @@ class TrueNASControllerData(object):
                         for tmp_load in tmp_arr:
                             self.data["interface"][tmp_etc][tmp_load] = 0.0
 
+            # arcratio
+            if tmp_graph[i]["name"] == "memory":
+                tmp_arr = (
+                    "memory-used_value",
+                    "memory-free_value",
+                    "memory-cached_value",
+                    "memory-buffered_value",
+                )
+                self._systemstats_process(tmp_arr, tmp_graph[i], "memory")
+                self.data["system_info"]["memory-total_value"] = round(
+                    self.data["system_info"]["memory-used_value"]
+                    + self.data["system_info"]["memory-free_value"]
+                    + self.data["system_info"]["cache_size-arc_value"],
+                    2,
+                )
+                if self.data["system_info"]["memory-total_value"] > 0:
+                    self.data["system_info"]["memory-usage_percent"] = round(
+                        100
+                        * (
+                            float(self.data["system_info"]["memory-total_value"])
+                            - float(self.data["system_info"]["memory-free_value"])
+                        )
+                        / float(self.data["system_info"]["memory-total_value"]),
+                        0,
+                    )
+
             # arcsize
             if tmp_graph[i]["name"] == "arcsize":
                 tmp_arr = ("cache_size-arc_value", "cache_size-L2_value")
-                self._systemstats_process(tmp_arr, tmp_graph[i], "arcsize")
+                self._systemstats_process(tmp_arr, tmp_graph[i], "memory")
 
             # arcratio
             if tmp_graph[i]["name"] == "arcratio":
@@ -330,7 +471,7 @@ class TrueNASControllerData(object):
                 tmp_var = graph["legend"][e]
                 if tmp_var in arr:
                     tmp_val = graph["aggregations"]["mean"][e] or 0.0
-                    if t == "arcsize":
+                    if t == "memory":
                         self.data["system_info"][tmp_var] = b2gib(tmp_val)
                     elif t == "cpu":
                         self.data["system_info"][f"cpu_{tmp_var}"] = round(tmp_val, 2)
@@ -481,7 +622,7 @@ class TrueNASControllerData(object):
             if vals["path"] in tmp_dataset:
                 self.data["pool"][uid]["available_gib"] = tmp_dataset[vals["path"]]
 
-            if vals["name"] == "boot-pool":
+            if vals["name"] in ["boot-pool", "freenas-boot"]:
                 self.data["pool"][uid]["available_gib"] = b2gib(
                     vals["root_dataset_available"]
                 )
@@ -493,7 +634,7 @@ class TrueNASControllerData(object):
     def get_dataset(self):
         """Get datasets from TrueNAS"""
         self.data["dataset"] = parse_api(
-            data=self.data["dataset"],
+            data={},
             source=self.api.query("pool/dataset"),
             key="id",
             vals=[
@@ -563,6 +704,40 @@ class TrueNASControllerData(object):
         for uid, vals in self.data["dataset"].items():
             self.data["dataset"][uid]["used_gb"] = b2gib(vals["used"])
 
+        if len(self.data["dataset"]) == 0:
+            return
+
+        entities_to_be_removed = []
+        if not self.datasets_hass_device_id:
+            device_registry = dr.async_get(self.hass)
+            for device in device_registry.devices.values():
+                if (
+                    self.config_entry.entry_id in device.config_entries
+                    and device.name.endswith(" Datasets")
+                ):
+                    self.datasets_hass_device_id = device.id
+                    _LOGGER.debug(f"datasets device: {device.name}")
+
+            if not self.datasets_hass_device_id:
+                return
+
+        _LOGGER.debug(f"datasets_hass_device_id: {self.datasets_hass_device_id}")
+        entity_registry = er.async_get(self.hass)
+        entity_entries = async_entries_for_config_entry(
+            entity_registry, self.config_entry.entry_id
+        )
+        for entity in entity_entries:
+            if (
+                entity.device_id == self.datasets_hass_device_id
+                and entity.unique_id.removeprefix(f"{self.name.lower()}-dataset-")
+                not in map(str.lower, self.data["dataset"].keys())
+            ):
+                _LOGGER.debug(f"dataset to be removed: {entity.unique_id}")
+                entities_to_be_removed.append(entity.entity_id)
+
+        for entity_id in entities_to_be_removed:
+            entity_registry.async_remove(entity_id)
+
     # ---------------------------
     #   get_disk
     # ---------------------------
@@ -597,9 +772,11 @@ class TrueNASControllerData(object):
             method="post",
             params={"names": []},
         )
-        for uid in self.data["disk"]:
-            if uid in temps:
-                self.data["disk"][uid]["temperature"] = temps[uid]
+
+        if temps:
+            for uid in self.data["disk"]:
+                if uid in temps:
+                    self.data["disk"][uid]["temperature"] = temps[uid]
 
     # ---------------------------
     #   get_jail
