@@ -12,54 +12,56 @@ hold_action:
 double_tap_action:
   action: fire-dom-event
   browser_mod:
-    command: popup
-    title: "[[[ return entity.attributes.friendly_name ]]]"
-    card:
-      type: entities
-      entities:
-        - type: custom:light-popup-card
-          entity: "[[[ return entity.entity_id ]]]"
-          icon: none
-          displayType: slider
-          fullscreen: false
-          brightnessWidth: 130px
-          brightnessHeight: 300px
-          borderRadius: 1.7em
-          sliderColor: "#c7c7c7"
-          sliderTrackColor: rgba(25, 25, 25, 0.9)
-        - type: custom:hui-element
-          card_type: horizontal-stack
-          card_mod:
-            style: |
-              #root { 
-                justify-content: center; 
-                margin-top: 2em;
-              }
-          cards:
-            # Northern Lights
-            - type: custom:button-card
-              icon: "mdi:lightbulb-variant-outline"
-              styles:
-                card:
-                  [background: "linear-gradient(0.45turn, #04e287, #025385)"]
-              tap_action:
-                haptic: success
-                action: call-service
-                service: light.turn_on
-                service_data:
-                  entity_id: "[[[ return entity.entity_id ]]]"
-                  effect: Northern Lights
-              template: color_action
-            # Meteor Shower
-            - type: custom:button-card
-              icon: "mdi:music"
-              styles:
-                card: [background: "linear-gradient(.35turn, #69a6f9, #fa57c1)"]
-              tap_action:
-                haptic: success
-                action: call-service
-                service: light.turn_on
-                service_data:
-                  entity_id: "[[[ return entity.entity_id ]]]"
-                  effect: Meteor Shower
-              template: color_action
+    service: browser_mod.popup
+    data:
+      title: "[[[ return entity.attributes.friendly_name ]]]"
+      content:
+        type: entities
+        entities:
+          - type: custom:light-popup-card
+            entity: "[[[ return entity.entity_id ]]]"
+            icon: none
+            displayType: slider
+            fullscreen: false
+            brightnessWidth: 130px
+            brightnessHeight: 300px
+            borderRadius: 1.7em
+            sliderColor: "#c7c7c7"
+            sliderTrackColor: rgba(25, 25, 25, 0.9)
+          - type: custom:hui-element
+            card_type: horizontal-stack
+            card_mod:
+              style: |
+                #root { 
+                  justify-content: center; 
+                  margin-top: 2em;
+                }
+            cards:
+              # Northern Lights
+              - type: custom:button-card
+                icon: "mdi:lightbulb-variant-outline"
+                styles:
+                  card:
+                    [background: "linear-gradient(0.45turn, #04e287, #025385)"]
+                tap_action:
+                  haptic: success
+                  action: call-service
+                  service: light.turn_on
+                  service_data:
+                    entity_id: "[[[ return entity.entity_id ]]]"
+                    effect: Northern Lights
+                template: color_action
+              # Meteor Shower
+              - type: custom:button-card
+                icon: "mdi:music"
+                styles:
+                  card:
+                    [background: "linear-gradient(.35turn, #69a6f9, #fa57c1)"]
+                tap_action:
+                  haptic: success
+                  action: call-service
+                  service: light.turn_on
+                  service_data:
+                    entity_id: "[[[ return entity.entity_id ]]]"
+                    effect: Meteor Shower
+                template: color_action

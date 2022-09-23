@@ -2,56 +2,57 @@
 ## Temperature Mini Graph Button
 #################################################################
 card:
-    type: "custom:button-card"
-    entity: '[[light]]'
-    custom_fields:
-      s2: |
-        [[[
-          var sensor_state = (states['[[hvac]]'].state);
-          if (sensor_state == "on") return "[[message_on]]";
-          else return "[[message_off]]" 
-        ]]]
-    icon: |
-      [[[ 
-        var sensor_state = (states['[[hvac]]'].state);
-        if (sensor_state == "on") 
-          return "[[icon_state]]"; 
-        else 
-          return "[[icon_default]]" 
-      ]]]
-    label: |
+  type: "custom:button-card"
+  entity: "[[light]]"
+  custom_fields:
+    s2: |
       [[[
-        return states['[[sensor_temp]]'].state + '°F'
+        var sensor_state = (states['[[hvac]]'].state);
+        if (sensor_state == "on") return "[[message_on]]";
+        else return "[[message_off]]" 
       ]]]
-    name: '[[room]]'
-    double_tap_action:
-      action: fire-dom-event
-      browser_mod:
-        command: popup
-        title: '[[room]]'
+  icon: |
+    [[[ 
+      var sensor_state = (states['[[hvac]]'].state);
+      if (sensor_state == "on") 
+        return "[[icon_state]]"; 
+      else 
+        return "[[icon_default]]" 
+    ]]]
+  label: |
+    [[[
+      return states['[[sensor_temp]]'].state + '°F'
+    ]]]
+  name: "[[room]]"
+  double_tap_action:
+    action: fire-dom-event
+    browser_mod:
+      service: browser_mod.popup
+      data:
+        title: "[[room]]"
         style:
           hui-grid-card$: |
             #root {
               grid-gap: 0 !important;
             }
-        card:
+        content:
           type: grid
           columns: 1
           square: false
           cards:
             - type: custom:mini-graph-card
               entities:
-              - '[[sensor_temp]]'
+                - "[[sensor_temp]]"
               color_thresholds:
-              - value: 0
-                color: '#6aa84f'
-              - value: 68
-                color: '#f1c232'
-              - value: 72
-                color: '#e69138'
-              - value: 75
-                color: '#cc0000'                                                       
-              name: Temperature                           
+                - value: 0
+                  color: "#6aa84f"
+                - value: 68
+                  color: "#f1c232"
+                - value: 72
+                  color: "#e69138"
+                - value: 75
+                  color: "#cc0000"
+              name: Temperature
               line_width: 5
               points_per_hour: 2
               align_icon: left
@@ -61,11 +62,11 @@ card:
               show:
                 icon: true
               tap_action:
-                action: more-info 
-    template:
-      - room_layout
-      - room_states
-      - room_states_on
-      - room
-    triggers_update:
-      - '[[hvac]]'
+                action: more-info
+  template:
+    - room_layout
+    - room_states
+    - room_states_on
+    - room
+  triggers_update:
+    - "[[hvac]]"
