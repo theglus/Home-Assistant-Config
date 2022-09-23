@@ -177,6 +177,21 @@ class FrigidaireDehumidifier(HumidifierEntity):
                 self._details.for_code(
                     frigidaire.HaclCode.AC_CLEAN_FILTER_ALERT
                 ).number_value
+            ),   
+            "bin_full": bool(
+                self._details.for_code(
+                    frigidaire.HaclCode.BIN_FULL_ALERT
+                ).number_value
+            ),
+            "compressor_running": bool(
+                self._details.for_code(
+                    frigidaire.HaclCode.COMPRESSOR_STATE
+                ).number_value
+            ),
+            "fan_running": bool(
+                self._details.for_code(
+                    frigidaire.HaclCode.AC_FAN_SPEED_STATE
+                ).number_value
             ),
             "fan_mode": FRIGIDAIRE_TO_HA_FAN_MODE[fan_speed],
         }
