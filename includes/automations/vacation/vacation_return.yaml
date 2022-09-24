@@ -1,0 +1,34 @@
+#################################################################
+## Vacation Return
+#
+## Sending /return from Telegram returns Farnsworth to his default state.
+#################################################################
+alias: Vacation Return
+description: Sending /return from Telegram returns Farnsworth to his default state.
+trigger:
+  - platform: event
+    event_type: telegram_command
+    event_data:
+      command: /return
+condition: []
+action:
+  - service: automation.turn_on
+    data: {}
+    target:
+      entity_id:
+        - automation.charge_toothbrushes
+        - automation.climate_aqi
+        - automation.climate_loft
+        - automation.climate_purifier
+        - automation.vacuum_schedule
+  - service: light.turn_on
+    data: {}
+    target:
+      entity_id: light.group_hallway
+  - service: notify.telegram
+    data:
+      title: "\U0001F3E1 Vacation: End"
+      message:
+        Welcome home! I've taken the liberty of returning Farnsworth to his
+        default state.
+mode: single
