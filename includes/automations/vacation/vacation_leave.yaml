@@ -1,0 +1,42 @@
+#################################################################
+## Vacation Leave
+#
+## Sending /leave from Telegram disables some automations and turned off the fans to conserve power.
+#################################################################
+alias: Vacation Leave
+description: Sending /leave from Telegram disables some automations and turned off the fans to conserve power.
+trigger:
+  - platform: event
+    event_type: telegram_command
+    event_data:
+      command: /leave
+condition: []
+action:
+  - service: automation.turn_off
+    data: {}
+    target:
+      entity_id:
+        - automation.charge_toothbrushes
+        - automation.climate_aqi
+        - automation.climate_loft
+        - automation.climate_purifier
+        - automation.vacuum_schedule
+  - service: fan.turn_off
+    data: {}
+    target:
+      entity_id:
+        - fan.kirby
+        - fan.kitchen
+  - service: switch.turn_off
+    data: {}
+    target:
+      entity_id: switch.air_circulator
+  - service: script.leave_vacuum
+    data: {}
+  - service: notify.telegram
+    data:
+      title: "\U0001F3DD Vacation: Start"
+      message:
+        Since you'll be out of town, I've taken the liberty of disabling some
+        automations and turned off the fans to conserve power.
+mode: single
