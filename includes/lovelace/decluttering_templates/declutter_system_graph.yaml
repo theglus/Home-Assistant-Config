@@ -19,39 +19,40 @@ card:
   line_width: 8
   font_size: 75
   tap_action:
-    action: call-service
+    action: fire-dom-event
     haptic: light
-    service: browser_mod.popup
-    service_data:
-      title: "[[name]]"
-      style:
-        hui-grid-card$: |
-          #root {
-            grid-gap: 0 !important;
-          }
-      card:
-        type: grid
-        columns: 1
-        square: false
-        cards:
-          - type: "custom:mini-graph-card"
-            entities:
-              - "[[sensor]]"
-            color_thresholds:
-              - value: "[[green]]"
-                color: "#6aa84f"
-              - value: "[[yellow]]"
-                color: "#f1c232"
-              - value: "[[orange]]"
-                color: "#e69138"
-              - value: "[[red]]"
-                color: "#cc0000"
-            name: Temperature
-            line_width: 5
-            points_per_hour: 2
-            align_icon: left
-            align_state: right
-            align_header: left
-            hours_to_show: 24
-            show:
-              icon: true
+    browser_mod:
+      service: browser_mod.popup
+      data:
+        title: "[[name]]"
+        style:
+          hui-grid-card$: |
+            #root {
+              grid-gap: 0 !important;
+            }
+        content:
+          type: grid
+          columns: 1
+          square: false
+          cards:
+            - type: "custom:mini-graph-card"
+              entities:
+                - "[[sensor]]"
+              color_thresholds:
+                - value: "[[green]]"
+                  color: "#6aa84f"
+                - value: "[[yellow]]"
+                  color: "#f1c232"
+                - value: "[[orange]]"
+                  color: "#e69138"
+                - value: "[[red]]"
+                  color: "#cc0000"
+              name: Temperature
+              line_width: 5
+              points_per_hour: 2
+              align_icon: left
+              align_state: right
+              align_header: left
+              hours_to_show: 24
+              show:
+                icon: true

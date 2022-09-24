@@ -5,52 +5,84 @@ reload:
   alias: "Reload"
   icon: mdi:reload-alert
   sequence:
-    - service: browser_mod.toast
+    - service: browser_mod.notification
       data:
         duration: 1000
         message: 1. Reloading Automations...
+      target:
+        device_id:
+          - !secret browsermod_mbp
+          - !secret browsermod_pixel
     - service: automation.reload
       data: {}
-    - service: browser_mod.toast
+    - service: browser_mod.notification
       data:
         duration: 1000
         message: 2. Reloading Core Config...
+      target:
+        device_id:
+          - !secret browsermod_mbp
+          - !secret browsermod_pixel
     - service: homeassistant.reload_core_config
       data: {}
-    - service: browser_mod.toast
+    - service: browser_mod.notification
       data:
         duration: 1000
         message: 3. Reloading Frontend Themes...
+      target:
+        device_id:
+          - !secret browsermod_mbp
+          - !secret browsermod_pixel
     - service: frontend.reload_themes
       data: {}
-    - service: browser_mod.toast
+    - service: browser_mod.notification
       data:
         duration: 1000
         message: 4. Reloading Groups...
+      target:
+        device_id:
+          - !secret browsermod_mbp
+          - !secret browsermod_pixel
     - service: group.reload
       data: {}
-    - service: browser_mod.toast
+    - service: browser_mod.notification
       data:
         duration: 1000
         message: 5. Reloading Lovelace Resources...
+      target:
+        device_id:
+          - !secret browsermod_mbp
+          - !secret browsermod_pixel
     - service: lovelace.reload_resources
       data: {}
-    - service: browser_mod.toast
+    - service: browser_mod.notification
       data:
         duration: 1000
         message: 6. Reloading Scenes...
+      target:
+        device_id:
+          - !secret browsermod_mbp
+          - !secret browsermod_pixel
     - service: scene.reload
       data: {}
-    - service: browser_mod.toast
+    - service: browser_mod.notification
       data:
         duration: 1000
         message: 7. Reloading Templates...
+      target:
+        device_id:
+          - !secret browsermod_mbp
+          - !secret browsermod_pixel
     - service: template.reload
       data: {}
-    - service: browser_mod.toast
+    - service: browser_mod.notification
       data:
         duration: 1000
         message: 8. Reloading Vacuum Extractor...
+      target:
+        device_id:
+          - !secret browsermod_mbp
+          - !secret browsermod_pixel
     - service: xiaomi_cloud_map_extractor.reload
       data: {}
   mode: single

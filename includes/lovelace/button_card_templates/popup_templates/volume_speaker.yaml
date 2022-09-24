@@ -1,20 +1,21 @@
 #################################################################
 ## Smart Speaker Volume Pop-up
 #################################################################
-  template:
-    - base
-    - circle
-  variables:
-    circle_input: >
-      [[[ return entity === undefined || (entity.attributes.volume_level / 0.01); ]]]
-  hold_action:
-    action: failure
-  double_tap_action:
-    action: fire-dom-event
-    browser_mod:
-      command: popup
+template:
+  - base
+  - circle
+variables:
+  circle_input: >
+    [[[ return entity === undefined || (entity.attributes.volume_level / 0.01); ]]]
+hold_action:
+  action: failure
+double_tap_action:
+  action: fire-dom-event
+  browser_mod:
+    service: browser_mod.popup
+    data:
       title: "[[[ return entity.attributes.friendly_name ]]]"
-      card:
+      content:
         type: entities
         entities:
           - type: custom:media_player-popup-card
