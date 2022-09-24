@@ -138,12 +138,17 @@
       entity_id:
       - fan.kirby
       - fan.kitchen
+  - service: switch.turn_off
+    data: {}
+    target:
+      entity_id: switch.air_circulator
   - service: script.leave_vacuum
     data: {}
   - service: notify.telegram
     data:
-      title: "\U0001F3DD Vacation Mode Enabled"
-      message: Automations have been disabled and fans powered down.
+      title: "\U0001F3DD Vacation: Start"
+      message: Since you'll be out of town, I've taken the liberty of disabling some
+        automations and turned off the fans to conserve power.
   mode: single
 - id: '1663962285032'
   alias: Vacation Return
@@ -164,8 +169,13 @@
       - automation.climate_loft
       - automation.climate_purifier
       - automation.vacuum_schedule
+  - service: light.turn_on
+    data: {}
+    target:
+      entity_id: light.group_hallway
   - service: notify.telegram
     data:
-      title: "\U0001F3DD Vacation Mode Disabled"
-      message: Farnsworth has been returned to his default state. Welcome home!
+      title: "\U0001F3E1 Vacation: End"
+      message: Welcome home! I've taken the liberty of returning Farnsworth to his
+        default state.
   mode: single
