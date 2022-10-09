@@ -1,6 +1,4 @@
 background: var(--background-image)
-kiosk_mode:
-  hide_header: true
 sidebar:
   hideTopMenu: true
   digitalClock: true
