@@ -27,6 +27,10 @@ lovelace:
     # https://github.com/custom-cards/decluttering-card
     - url: /hacsfiles/decluttering-card/decluttering-card.js
       type: module
+    # Home Assistant Swipe Navigation
+    # https://github.com/zanna-37/hass-swipe-navigation
+    - url: /hacsfiles/hass-swipe-navigation/swipe-navigation.js
+      type: module
     # Hue Icon
     # https://github.com/arallsopp/hass-hue-icons
     - url: /hacsfiles/hass-hue-icons/hass-hue-icons.js
@@ -42,10 +46,6 @@ lovelace:
     # Light Popup Card
     # https://github.com/DBuit/light-popup-card
     - url: /hacsfiles/light-popup-card/light-popup-card.js
-      type: module
-    # Lovelace Swipe Navigation
-    # https://github.com/maykar/lovelace-swipe-navigation
-    - url: /hacsfiles/lovelace-swipe-navigation/swipe-navigation.js
       type: module
     # Lovelace Xiaomi Vacuum Map card
     # https://github.com/PiotrMachowski/lovelace-xiaomi-vacuum-map-card
