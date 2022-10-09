@@ -1,5 +1,5 @@
 #################################################################
-## This handles the loading of my binary sensors.
+## This handles the loading of my MQTT binary sensors.
 #################################################################
 mqtt:
   binary_sensor:
