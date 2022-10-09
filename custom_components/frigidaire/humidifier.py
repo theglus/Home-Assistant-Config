@@ -84,7 +84,8 @@ class FrigidaireDehumidifier(HumidifierEntity):
         """Build FrigidaireClimate.
 
         client: the client used to contact the frigidaire API
-        appliance: the basic information about the frigidaire appliance, used to contact the API
+        appliance: the basic information about the frigidaire appliance, used to contact
+            the API
         """
 
         self._client: frigidaire.Frigidaire = client
@@ -165,11 +166,12 @@ class FrigidaireDehumidifier(HumidifierEntity):
 
     @property
     def extra_state_attributes(self) -> Mapping[str, Any] | None:
+        """Add extra state attributes specific to Frigidaire dehumidifiers"""
         fan_speed = self._details.for_code(
             frigidaire.HaclCode.AC_FAN_SPEED_SETTING
         ).number_value
 
-        return {
+        attrib = {
             "current_humidity": self._details.for_code(
                 frigidaire.HaclCode.AMBIENT_HUMIDITY
             ).number_value,
@@ -177,24 +179,24 @@ class FrigidaireDehumidifier(HumidifierEntity):
                 self._details.for_code(
                     frigidaire.HaclCode.AC_CLEAN_FILTER_ALERT
                 ).number_value
-            ),   
-            "bin_full": bool(
-                self._details.for_code(
-                    frigidaire.HaclCode.BIN_FULL_ALERT
-                ).number_value
-            ),
-            "compressor_running": bool(
-                self._details.for_code(
-                    frigidaire.HaclCode.COMPRESSOR_STATE
-                ).number_value
-            ),
-            "fan_running": bool(
-                self._details.for_code(
-                    frigidaire.HaclCode.AC_FAN_SPEED_STATE
-                ).number_value
             ),
             "fan_mode": FRIGIDAIRE_TO_HA_FAN_MODE[fan_speed],
         }
+
+        # The following attributes only exist on some models of dehumidifier
+        if (bin_full := self._details.for_code(frigidaire.HaclCode.BIN_FULL_ALERT)
+                ) is not None:
+            attrib["bin_full"] = bool(bin_full.number_value)
+
+        if (comp_run := self._details.for_code(frigidaire.HaclCode.COMPRESSOR_STATE)
+                ) is not None:
+            attrib["compressor_running"] = bool(comp_run.number_value)
+
+        if (fan_run := self._details.for_code(frigidaire.HaclCode.AC_FAN_SPEED_STATE)
+                ) is not None:
+            attrib["fan_running"] = bool(fan_run.number_value)
+
+        return attrib
 
     @property
     def min_humidity(self):
