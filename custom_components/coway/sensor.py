@@ -1,469 +1,423 @@
-""" Coway Airmega Purifier Air Quality Sensors"""
+"""Sensor platform for Coway integration."""
+from __future__ import annotations
+
 from datetime import time
-import logging
+from typing import Any
+
+from cowayaio.purifier_model import CowayPurifier
+
+from homeassistant.components.sensor import (
+    SensorDeviceClass,
+    SensorEntity,
+    SensorStateClass,
+)
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.core import HomeAssistant
-from homeassistant.helpers.update_coordinator import CoordinatorEntity
-from homeassistant.components.sensor import SensorEntity, STATE_CLASS_MEASUREMENT, SensorDeviceClass
-from .const import DOMAIN
-from homeassistant.const import (
+from homeassistant.const import(
     CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
-    CONCENTRATION_PARTS_PER_MILLION,
     PERCENTAGE,
 )
-_LOGGER = logging.getLogger(__name__)
+from homeassistant.core import HomeAssistant
+from homeassistant.helpers.entity_platform import AddEntitiesCallback
+from homeassistant.helpers.update_coordinator import CoordinatorEntity
+
+from .const import DOMAIN
+from .coordinator import CowayDataUpdateCoordinator
 
 
-async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry, async_add_entities):
-    """Set up Coway Air Quality sensors."""
+async def async_setup_entry(
+    hass: HomeAssistant, entry: ConfigEntry, async_add_entities: AddEntitiesCallback
+) -> None:
+    """Set Up Coway Sensor Entities."""
 
-    _LOGGER.info("Setting up config entry for the Coway Airmega sensor platform")
-
-    coordinator = hass.data[DOMAIN]
+    coordinator: CowayDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
 
     sensors = []
 
-    for idx, ent in enumerate(coordinator.data):
-        if not coordinator.data[idx].new_model:
-            sensors.append(AirQualityIndex(coordinator, idx))
-        sensors.append(PreFilter(coordinator, idx))
-        sensors.append(MAX2Filter(coordinator, idx))
-        sensors.append(TimerRemaining(coordinator, idx))
-        sensors.append(ParticulateMatter25(coordinator, idx))
-        sensors.append(ParticulateMatter10(coordinator, idx))
-        sensors.append(CarbonDioxide(coordinator, idx))
-        sensors.append(VolatileOrganicCompounds(coordinator, idx))
+    for purifier_id, purifier_data in coordinator.data.purifiers.items():
+            if purifier_data.mcu_version is None:
+                sensors.append(AirQualityIndex(coordinator, purifier_id))
+            sensors.extend((
+                PreFilter(coordinator, purifier_id),
+                MAX2Filter(coordinator, purifier_id),
+                ParticulateMatter10(coordinator, purifier_id),
+                TimerRemaining(coordinator, purifier_id),
+            ))
 
     async_add_entities(sensors)
 
 
-class PreFilter(CoordinatorEntity, SensorEntity):
-    """Representation of a Coway Airmega Pre Filter Percentage Remaining."""
+class AirQualityIndex(CoordinatorEntity, SensorEntity):
+    """Representation of AQI as reported by purifier."""
 
-    def __init__(self, coordinator, idx):
+    def __init__(self, coordinator, purifier_id):
         super().__init__(coordinator)
-        self._device = idx
-
+        self.purifier_id = purifier_id
 
     @property
-    def device_info(self):
+    def purifier_data(self) -> CowayPurifier:
+        """Handle coordinator purifier data."""
+
+        return self.coordinator.data.purifiers[self.purifier_id]
+
+    @property
+    def device_info(self) -> dict[str, Any]:
         """Return device registry information for this entity."""
+
         return {
-            "identifiers": {(DOMAIN, self.coordinator.data[self._device].device_id)},
-            "name": self.coordinator.data[self._device].name,
+            "identifiers": {(DOMAIN, self.purifier_data.device_attr['device_id'])},
+            "name": self.purifier_data.device_attr['name'],
             "manufacturer": "Coway",
-            "model": self.coordinator.data[self._device].product_name_full,
+            "model": self.purifier_data.device_attr['model'],
         }
 
     @property
-    def unique_id(self):
-        """Return the ID of this purifier."""
-        return self.coordinator.data[self._device].device_id + '_pre_filter'
+    def unique_id(self) -> str:
+        """Sets unique ID for this entity."""
+
+        return self.purifier_data.device_attr['device_id'] + '_aqi'
 
     @property
-    def name(self):
-        """Return the name of the purifier if any."""
-        return self.coordinator.data[self._device].name + ' Pre Filter'
+    def name(self) -> str:
+        """Return name of the entity."""
+
+        return "AQI"
 
     @property
-    def native_value(self):
-        """Returns Pre Filter Percentage"""
-        return self.coordinator.data[self._device].filters[0]["life_level_pct"]
+    def has_entity_name(self) -> bool:
+        """Indicate that entity has name defined."""
+
+        return True
 
     @property
-    def native_unit_of_measurement(self):
-        return PERCENTAGE
+    def native_value(self) -> float:
+        """Return current AQI measurement."""
+
+        return round(float(self.purifier_data.air_quality_index), 1)
 
     @property
-    def state_class(self):
-        return STATE_CLASS_MEASUREMENT
+    def device_class(self) -> SensorDeviceClass:
+        """Return entity device class."""
+
+        return SensorDeviceClass.AQI
+
+    @property
+    def state_class(self) -> SensorStateClass:
+        """Return state class type."""
+
+        return SensorStateClass.MEASUREMENT
 
     @property
     def icon(self):
+        """Set icon for entity."""
+
         return 'mdi:air-filter'
 
     @property
-    def available(self):
-        """Return true if purifier is available."""
-        if hasattr(self.coordinator.data[self._device], 'device_connected_to_servers'):
-            return self.coordinator.data[self._device].device_connected_to_servers
+    def available(self) -> bool:
+        """Return true if purifier is connected to Coway servers."""
+
+        if self.purifier_data.network_status:
+            return True
         else:
             return False
+
+
+class PreFilter(CoordinatorEntity, SensorEntity):
+    """Representation of pre-filter percentage remaining."""
+
+    def __init__(self, coordinator, purifier_id):
+        super().__init__(coordinator)
+        self.purifier_id = purifier_id
+
+    @property
+    def purifier_data(self) -> CowayPurifier:
+        """Handle coordinator purifier data."""
+
+        return self.coordinator.data.purifiers[self.purifier_id]
+
+    @property
+    def device_info(self) -> dict[str, Any]:
+        """Return device registry information for this entity."""
+
+        return {
+            "identifiers": {(DOMAIN, self.purifier_data.device_attr['device_id'])},
+            "name": self.purifier_data.device_attr['name'],
+            "manufacturer": "Coway",
+            "model": self.purifier_data.device_attr['model'],
+        }
+
+    @property
+    def unique_id(self) -> str:
+        """Sets unique ID for this entity."""
+
+        return self.purifier_data.device_attr['device_id'] + '_pre_filter'
+
+    @property
+    def name(self) -> str:
+        """Return name of the entity."""
+
+        return "Pre filter"
+
+    @property
+    def has_entity_name(self) -> bool:
+        """Indicate that entity has name defined."""
+
+        return True
+
+    @property
+    def native_value(self) -> int:
+        """Return current pre-filter percentage."""
+
+        return self.purifier_data.pre_filter_pct
+
+    @property
+    def native_unit_of_measurement(self) -> str:
+        """Return unit of measurement."""
+
+        return PERCENTAGE
+
+    @property
+    def state_class(self) -> SensorStateClass:
+        """Return state class type."""
+
+        return SensorStateClass.MEASUREMENT
+
+    @property
+    def icon(self):
+        """Set icon for entity."""
+
+        return 'mdi:air-filter'
+
+    @property
+    def available(self) -> bool:
+        """Return true if purifier is connected to Coway servers."""
+
+        if self.purifier_data.network_status:
+            return True
+        else:
+            return False
+
 
 class MAX2Filter(CoordinatorEntity, SensorEntity):
-    """Representation of a Coway Airmega MAX2 Filter Percentage Remaining."""
+    """Representation of MAX2 filter percentage remaining."""
 
-    def __init__(self, coordinator, idx):
+    def __init__(self, coordinator, purifier_id):
         super().__init__(coordinator)
-        self._device = idx
-
+        self.purifier_id = purifier_id
 
     @property
-    def device_info(self):
+    def purifier_data(self) -> CowayPurifier:
+        """Handle coordinator purifier data."""
+
+        return self.coordinator.data.purifiers[self.purifier_id]
+
+    @property
+    def device_info(self) -> dict[str, Any]:
         """Return device registry information for this entity."""
+
         return {
-            "identifiers": {(DOMAIN, self.coordinator.data[self._device].device_id)},
-            "name": self.coordinator.data[self._device].name,
+            "identifiers": {(DOMAIN, self.purifier_data.device_attr['device_id'])},
+            "name": self.purifier_data.device_attr['name'],
             "manufacturer": "Coway",
-            "model": self.coordinator.data[self._device].product_name_full,
+            "model": self.purifier_data.device_attr['model'],
         }
 
     @property
-    def unique_id(self):
-        """Return the ID of this purifier."""
-        return self.coordinator.data[self._device].device_id + '_max_filter'
+    def unique_id(self) -> str:
+        """Sets unique ID for this entity."""
+
+        return self.purifier_data.device_attr['device_id'] + '_max_filter'
 
     @property
-    def name(self):
-        """Return the name of the purifier if any."""
-        return self.coordinator.data[self._device].name + ' MAX2 Filter'
+    def name(self) -> str:
+        """Return name of the entity."""
+
+        return "MAX2 filter"
 
     @property
-    def native_value(self):
-        """Returns MAX2 Filter Percentage"""
-        return self.coordinator.data[self._device].filters[1]["life_level_pct"]
+    def has_entity_name(self) -> bool:
+        """Indicate that entity has name defined."""
+
+        return True
 
     @property
-    def native_unit_of_measurement(self):
+    def native_value(self) -> int:
+        """Return current MAX2 filter percentage."""
+
+        return self.purifier_data.max2_pct
+
+    @property
+    def native_unit_of_measurement(self) -> str:
+        """Return unit of measurement."""
+
         return PERCENTAGE
 
     @property
-    def state_class(self):
-        return STATE_CLASS_MEASUREMENT
+    def state_class(self) -> SensorStateClass:
+        """Return state class type."""
+
+        return SensorStateClass.MEASUREMENT
 
     @property
     def icon(self):
+        """Set icon for entity."""
+
         return 'mdi:air-filter'
 
     @property
-    def available(self):
-        """Return true if purifier is available."""
-        if hasattr(self.coordinator.data[self._device], 'device_connected_to_servers'):
-            return self.coordinator.data[self._device].device_connected_to_servers
+    def available(self) -> bool:
+        """Return true if purifier is connected to Coway servers."""
+
+        if self.purifier_data.network_status:
+            return True
         else:
             return False
 
-class TimerRemaining(CoordinatorEntity, SensorEntity):
-    """Representation of a Coway Airmega MAX2 Filter Percentage Remaining."""
 
-    def __init__(self, coordinator, idx):
+class ParticulateMatter10(CoordinatorEntity, SensorEntity):
+    """Representation of PM10 measurement."""
+
+    def __init__(self, coordinator, purifier_id):
         super().__init__(coordinator)
-        self._device = idx
-
+        self.purifier_id = purifier_id
 
     @property
-    def device_info(self):
+    def purifier_data(self) -> CowayPurifier:
+        """Handle coordinator purifier data."""
+
+        return self.coordinator.data.purifiers[self.purifier_id]
+
+    @property
+    def device_info(self) -> dict[str, Any]:
         """Return device registry information for this entity."""
+
         return {
-            "identifiers": {(DOMAIN, self.coordinator.data[self._device].device_id)},
-            "name": self.coordinator.data[self._device].name,
+            "identifiers": {(DOMAIN, self.purifier_data.device_attr['device_id'])},
+            "name": self.purifier_data.device_attr['name'],
             "manufacturer": "Coway",
-            "model": self.coordinator.data[self._device].product_name_full,
+            "model": self.purifier_data.device_attr['model'],
         }
 
     @property
-    def unique_id(self):
-        """Return the ID of this purifier."""
-        return self.coordinator.data[self._device].device_id + '_timer_remaining'
+    def unique_id(self) -> str:
+        """Sets unique ID for this entity."""
+
+        return self.purifier_data.device_attr['device_id'] + '_particulate_matter_1_0'
 
     @property
-    def name(self):
-        """Return the name of the purifier if any."""
-        return self.coordinator.data[self._device].name + ' Timer Remaining'
+    def name(self) -> str:
+        """Return name of the entity."""
+
+        return "Particulate matter 10"
+
+    @property
+    def has_entity_name(self) -> bool:
+        """Indicate that entity has name defined."""
+
+        return True
+
+    @property
+    def native_value(self) -> int:
+        """Return current PM10 measurement."""
+
+        return self.purifier_data.particulate_matter_10
+
+    @property
+    def native_unit_of_measurement(self) -> str:
+        """Return unit of measurement."""
+
+        return CONCENTRATION_MICROGRAMS_PER_CUBIC_METER
+
+    @property
+    def device_class(self) -> SensorDeviceClass:
+        """Return entity device class."""
+
+        return SensorDeviceClass.PM10
+
+    @property
+    def state_class(self) -> SensorStateClass:
+        """Return state class type."""
+
+        return SensorStateClass.MEASUREMENT
+
+    @property
+    def icon(self):
+        """Set icon for entity."""
+
+        return 'mdi:air-filter'
+
+    @property
+    def available(self) -> bool:
+        """Return true if purifier is connected to Coway servers."""
+
+        if self.purifier_data.network_status:
+            return True
+        else:
+            return False
+
+
+class TimerRemaining(CoordinatorEntity, SensorEntity):
+    """Representation of time left on timer."""
+
+    def __init__(self, coordinator, purifier_id):
+        super().__init__(coordinator)
+        self.purifier_id = purifier_id
+
+    @property
+    def purifier_data(self) -> CowayPurifier:
+        """Handle coordinator purifier data."""
+
+        return self.coordinator.data.purifiers[self.purifier_id]
+
+    @property
+    def device_info(self) -> dict[str, Any]:
+        """Return device registry information for this entity."""
+
+        return {
+            "identifiers": {(DOMAIN, self.purifier_data.device_attr['device_id'])},
+            "name": self.purifier_data.device_attr['name'],
+            "manufacturer": "Coway",
+            "model": self.purifier_data.device_attr['model'],
+        }
+
+    @property
+    def unique_id(self) -> str:
+        """Sets unique ID for this entity."""
+
+        return self.purifier_data.device_attr['device_id'] + '_timer_remaining'
+
+    @property
+    def name(self) -> str:
+        """Return name of the entity."""
+
+        return "Timer remaining"
+
+    @property
+    def has_entity_name(self) -> bool:
+        """Indicate that entity has name defined."""
+
+        return True
 
     @property
     def native_value(self):
-        """Returns time left on timer"""
-        total_time = round((float(self.coordinator.data[self._device].timer_remaining) / 60), 2)
+        """Return time remaining on timer."""
+
+        total_time = round((float(self.purifier_data.timer_remaining) / 60), 2)
         hours, minutes = int(total_time), round(((total_time - int(total_time)) * 60))
         timer_remaining = time(hour = hours, minute = minutes)
         return timer_remaining.isoformat(timespec = "minutes")
 
     @property
     def icon(self):
+        """Set icon for entity."""
+
         return 'mdi:timer'
 
     @property
-    def available(self):
-        """Return true if purifier is available."""
-        if hasattr(self.coordinator.data[self._device], 'device_connected_to_servers'):
-            return self.coordinator.data[self._device].device_connected_to_servers
-        else:
-            return False
+    def available(self) -> bool:
+        """Return true if purifier is connected to Coway servers."""
 
-class AirQualityIndex(CoordinatorEntity, SensorEntity):
-    """Representation of a Coway Airmega Air Quality Index."""
-
-    def __init__(self, coordinator, idx):
-        super().__init__(coordinator)
-        self._device = idx
-
-
-    @property
-    def device_info(self):
-        """Return device registry information for this entity."""
-        return {
-            "identifiers": {(DOMAIN, self.coordinator.data[self._device].device_id)},
-            "name": self.coordinator.data[self._device].name,
-            "manufacturer": "Coway",
-            "model": self.coordinator.data[self._device].product_name_full,
-        }
-
-    @property
-    def unique_id(self):
-        """Return the ID of this purifier."""
-        return self.coordinator.data[self._device].device_id + '_aqi'
-
-    @property
-    def name(self):
-        """Return the name of the purifier if any."""
-        return self.coordinator.data[self._device].name + ' AQI'
-
-    @property
-    def native_value(self):
-        """Return AQI Measurement"""
-        return round(float(self.coordinator.data[self._device].quality["air_quality_index"]), 1)
-
-    @property
-    def device_class(self) -> SensorDeviceClass:
-        return SensorDeviceClass.AQI
-
-    @property
-    def state_class(self):
-        return STATE_CLASS_MEASUREMENT
-
-    @property
-    def icon(self):
-        return 'mdi:air-filter'
-
-    @property
-    def available(self):
-        """Return true if purifier is available."""
-        if hasattr(self.coordinator.data[self._device], 'device_connected_to_servers'):
-            return self.coordinator.data[self._device].device_connected_to_servers
-        else:
-            return False
-
-
-class ParticulateMatter25(CoordinatorEntity, SensorEntity):
-    """Representation of a Coway Airmega Particulate Matter 2.5"""
-
-    def __init__(self, coordinator, idx):
-        super().__init__(coordinator)
-        self._device = idx
-
-    @property
-    def device_info(self):
-        """Return device registry information for this entity."""
-        return {
-            "identifiers": {(DOMAIN, self.coordinator.data[self._device].device_id)},
-            "name": self.coordinator.data[self._device].name,
-            "manufacturer": "Coway",
-            "model": self.coordinator.data[self._device].product_name_full,
-        }
-
-    @property
-    def unique_id(self):
-        """Return the ID of this purifier."""
-        return self.coordinator.data[self._device].device_id + '_particulate_matter_2_5'
-
-    @property
-    def name(self):
-        """Return the name of the sensor."""
-        return self.coordinator.data[self._device].name + ' Particulate Matter 2.5'
-
-    @property
-    def native_value(self):
-        """Return the particulate matter 2.5 level."""
-        return self.coordinator.data[self._device].quality["particulate_matter_2_5"]
-
-    @property
-    def state_class(self):
-        return STATE_CLASS_MEASUREMENT
-
-    @property
-    def device_class(self) -> SensorDeviceClass:
-        return SensorDeviceClass.PM25
-
-    @property
-    def unit_of_measurement(self):
-        return CONCENTRATION_MICROGRAMS_PER_CUBIC_METER
-
-    @property
-    def icon(self):
-        return 'mdi:air-filter'
-
-    @property
-    def available(self):
-        """Return true if purifier is available."""
-        if hasattr(self.coordinator.data[self._device], 'device_connected_to_servers'):
-            return self.coordinator.data[self._device].device_connected_to_servers
-        else:
-            return False
-
-
-class ParticulateMatter10(CoordinatorEntity, SensorEntity):
-    """Representation of a Coway Airmega Particulate Matter 1.0"""
-
-    def __init__(self, coordinator, idx):
-        super().__init__(coordinator)
-        self._device = idx
-
-    @property
-    def device_info(self):
-        """Return device registry information for this entity."""
-        return {
-            "identifiers": {(DOMAIN, self.coordinator.data[self._device].device_id)},
-            "name": self.coordinator.data[self._device].name,
-            "manufacturer": "Coway",
-            "model": self.coordinator.data[self._device].product_name_full,
-        }
-
-    @property
-    def unique_id(self):
-        """Return the ID of this purifier."""
-        return self.coordinator.data[self._device].device_id + '_particulate_matter_1_0'
-
-    @property
-    def name(self):
-        """Return the name of the sensor."""
-        return self.coordinator.data[self._device].name + ' Particulate Matter 10'
-
-    @property
-    def native_value(self):
-        """Return the particulate matter 1.0 level."""
-        return self.coordinator.data[self._device].quality["particulate_matter_10"]
-
-    @property
-    def state_class(self):
-        return STATE_CLASS_MEASUREMENT
-
-    @property
-    def device_class(self) -> SensorDeviceClass:
-        return SensorDeviceClass.PM10
-
-    @property
-    def unit_of_measurement(self):
-        return CONCENTRATION_MICROGRAMS_PER_CUBIC_METER
-
-    @property
-    def icon(self):
-        return 'mdi:air-filter'
-
-    @property
-    def available(self):
-        """Return true if purifier is available."""
-        if hasattr(self.coordinator.data[self._device], 'device_connected_to_servers'):
-            return self.coordinator.data[self._device].device_connected_to_servers
-        else:
-            return False
-
-
-class CarbonDioxide(CoordinatorEntity, SensorEntity):
-    """Representation of a Coway Airmega Carbon Dioxide Sensor"""
-
-    def __init__(self, coordinator, idx):
-        super().__init__(coordinator)
-        self._device = idx
-
-    @property
-    def device_info(self):
-        """Return device registry information for this entity."""
-        return {
-            "identifiers": {(DOMAIN, self.coordinator.data[self._device].device_id)},
-            "name": self.coordinator.data[self._device].name,
-            "manufacturer": "Coway",
-            "model": self.coordinator.data[self._device].product_name_full,
-        }
-
-    @property
-    def unique_id(self):
-        """Return the ID of this purifier."""
-        return self.coordinator.data[self._device].device_id + '_carbon_dioxide'
-
-    @property
-    def name(self):
-        """Return the name of the sensor."""
-        return self.coordinator.data[self._device].name + ' Carbon Dioxide'
-
-    @property
-    def native_value(self):
-        """Return the CO2 (carbon dioxide) level."""
-        return self.coordinator.data[self._device].quality["carbon_dioxide"]
-
-    @property
-    def state_class(self):
-        return STATE_CLASS_MEASUREMENT
-
-    @property
-    def device_class(self) -> SensorDeviceClass:
-        return SensorDeviceClass.CO2
-
-    @property
-    def unit_of_measurement(self):
-        return CONCENTRATION_PARTS_PER_MILLION
-
-    @property
-    def icon(self):
-        return 'mdi:molecule-co2'
-
-    @property
-    def available(self):
-        """Return true if purifier is available."""
-        if hasattr(self.coordinator.data[self._device], 'device_connected_to_servers'):
-            return self.coordinator.data[self._device].device_connected_to_servers
-        else:
-            return False
-
-
-class VolatileOrganicCompounds(CoordinatorEntity, SensorEntity):
-    """Representation of a Coway Airmega VOC Sensor"""
-
-    def __init__(self, coordinator, idx):
-        super().__init__(coordinator)
-        self._device = idx
-
-    @property
-    def device_info(self):
-        """Return device registry information for this entity."""
-        return {
-            "identifiers": {(DOMAIN, self.coordinator.data[self._device].device_id)},
-            "name": self.coordinator.data[self._device].name,
-            "manufacturer": "Coway",
-            "model": self.coordinator.data[self._device].product_name_full,
-        }
-
-    @property
-    def unique_id(self):
-        """Return the ID of this purifier."""
-        return self.coordinator.data[self._device].device_id + '_voc'
-
-    @property
-    def name(self):
-        """Return the name of the sensor."""
-        return self.coordinator.data[self._device].name + ' VOC'
-
-    @property
-    def native_value(self):
-        """Return the VOC (Volatile Organic Compounds) level."""
-        return self.coordinator.data[self._device].quality["volatile_organic_compounds"]
-
-    @property
-    def state_class(self):
-        return STATE_CLASS_MEASUREMENT
-
-    @property
-    def device_class(self) -> SensorDeviceClass:
-        return SensorDeviceClass.VOLATILE_ORGANIC_COMPOUNDS
-
-    @property
-    def icon(self):
-        return 'mdi:air-filter'
-
-    @property
-    def available(self):
-        """Return true if purifier is available."""
-        if hasattr(self.coordinator.data[self._device], 'device_connected_to_servers'):
-            return self.coordinator.data[self._device].device_connected_to_servers
+        if self.purifier_data.network_status:
+            return True
         else:
             return False

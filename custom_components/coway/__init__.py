@@ -1,72 +1,52 @@
-"""Support for Coway IOCare"""
-from datetime import timedelta
-import asyncio
-import logging
-from iocare import IOCareApi
+"""Coway Component."""
+from __future__ import annotations
 
-from homeassistant.helpers.update_coordinator import (
-    DataUpdateCoordinator,
-    UpdateFailed,
-)
 from homeassistant.config_entries import ConfigEntry
+from homeassistant.const import CONF_USERNAME, CONF_PASSWORD
 from homeassistant.core import HomeAssistant
-from homeassistant.const import EVENT_HOMEASSISTANT_STOP
-from homeassistant.exceptions import ConfigEntryNotReady
-from homeassistant.const import (
-    CONF_PASSWORD,
-    CONF_USERNAME
-)
-from .const import DOMAIN, PLATFORMS
 
-
-_LOGGER = logging.getLogger(__name__)
-
-
-def setup(hass, config):
-    """Setup of the component"""
-    return True
+from .const import DOMAIN, LOGGER, PLATFORMS
+from .coordinator import CowayDataUpdateCoordinator
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    """Set up IOCare integration from a config entry."""
-    username = entry.data.get(CONF_USERNAME)
-    password = entry.data.get(CONF_PASSWORD)
+    """Set up Coway from a config entry."""
 
-    _LOGGER.info("Initializing the IOCare API")
-
-    iocare = await hass.async_add_executor_job(IOCareApi, username, password)
-
-    _LOGGER.info("Connected to API")
-
-
-    async def async_update_data():
-        """ Fetch data from IOCare API """
-        try:
-            iocare_update_data = await hass.async_add_executor_job(iocare.poll_devices_update)
-            return iocare_update_data
-        except Exception as e:
-            raise UpdateFailed(f"Error occured while fetching data from IOCare servers: {e}")
-
-
-    coordinator = DataUpdateCoordinator(
-        hass,
-        _LOGGER,
-        name ="iocare_coordinator",
-        update_method = async_update_data,
-        update_interval = timedelta(seconds=30),
-        )
-
+    coordinator = CowayDataUpdateCoordinator(hass, entry)
     await coordinator.async_config_entry_first_refresh()
+    hass.data.setdefault(DOMAIN, {})[entry.entry_id] = coordinator
 
-    hass.data[DOMAIN] = coordinator
-
-    hass.config_entries.async_setup_platforms(entry, PLATFORMS)
+    await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
 
     return True
 
+
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    """Unload a Coway config entry."""
-    unload_ok = await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
-    if unload_ok:
-        hass.data.pop(DOMAIN)
+    """Unload Coway config entry."""
+
+    if unload_ok := await hass.config_entries.async_unload_platforms(entry, PLATFORMS):
+        del hass.data[DOMAIN][entry.entry_id]
+        if not hass.data[DOMAIN]:
+            del hass.data[DOMAIN]
     return unload_ok
+
+
+async def async_migrate_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
+    """Migrate old entry."""
+
+    if entry.version == 1:
+        username = entry.data[CONF_USERNAME]
+        password = entry.data[CONF_PASSWORD]
+
+        LOGGER.debug(f'Migrating Coway config entry unique id to {username}')
+        entry.version = 2
+
+        hass.config_entries.async_update_entry(
+            entry,
+            data={
+                CONF_USERNAME: username,
+                CONF_PASSWORD: password,
+            },
+            unique_id=username,
+        )
+    return True

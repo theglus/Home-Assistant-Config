@@ -1,105 +1,129 @@
-""" Setting Up Coway Select Entities """
+"""Select platform for Coway integration."""
+from __future__ import annotations
 
-import logging
+from typing import Any
+
+from cowayaio.purifier_model import CowayPurifier
+
+from homeassistant.components.select import SelectEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
-from homeassistant.components.select import SelectEntity
 
 from .const import (
     DOMAIN,
-    IOCARE_TIMER_OFF,
-    IOCARE_TIMER_1H,
-    IOCARE_TIMER_2H,
-    IOCARE_TIMER_4H,
-    IOCARE_TIMER_8H
+    IOCARE_TIMERS,
+    IOCARE_TIMERS_TO_HASS,
+    LOGGER,
 )
+from .coordinator import CowayDataUpdateCoordinator
 
-IOCARE_TIMERS = ["OFF", "1 Hour", "2 Hours", "4 Hours", "8 Hours"]
-
-IOCARE_TIMERS_TO_HASS = {
-    IOCARE_TIMER_OFF: "OFF",
-    IOCARE_TIMER_1H: "1 Hour",
-    IOCARE_TIMER_2H: "2 Hours",
-    IOCARE_TIMER_4H: "4 Hours",
-    IOCARE_TIMER_8H: "8 Hours"
-}
 
 HASS_TIMER_TO_IOCARE = {v: k for (k, v) in IOCARE_TIMERS_TO_HASS.items()}
 
 
-_LOGGER = logging.getLogger(__name__)
+async def async_setup_entry(
+    hass: HomeAssistant, entry: ConfigEntry, async_add_entities: AddEntitiesCallback
+) -> None:
+    """Set Up Coway Select Entities."""
 
+    coordinator: CowayDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
 
-async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry, async_add_entities):
-    """Set up Coway Air Purifier select entity."""
+    selects = []
 
-    coordinator = hass.data[DOMAIN]
+    for purifier_id, purifier_data in coordinator.data.purifiers.items():
+            selects.extend((
+                Timer(coordinator, purifier_id),
+            ))
 
-    async_add_entities(
-        CowayTimer(coordinator, idx) for idx, ent in enumerate(coordinator.data)
-    )
+    async_add_entities(selects)
 
-######### Timer Select Entities #########
+class Timer(CoordinatorEntity, SelectEntity):
+    """Representation of purifier timer."""
 
-class CowayTimer(CoordinatorEntity, SelectEntity):
-    """Representation of a Coway Airmega air purifier select entity."""
-
-    def __init__(self, coordinator, idx):
+    def __init__(self, coordinator, purifier_id):
         super().__init__(coordinator)
-        self._device = idx
+        self.purifier_id = purifier_id
 
     @property
-    def device_info(self):
+    def purifier_data(self) -> CowayPurifier:
+        """Handle coordinator purifier data."""
+
+        return self.coordinator.data.purifiers[self.purifier_id]
+
+    @property
+    def device_info(self) -> dict[str, Any]:
         """Return device registry information for this entity."""
+
         return {
-            "identifiers": {(DOMAIN, self.coordinator.data[self._device].device_id)},
-            "name": self.coordinator.data[self._device].name,
+            "identifiers": {(DOMAIN, self.purifier_data.device_attr['device_id'])},
+            "name": self.purifier_data.device_attr['name'],
             "manufacturer": "Coway",
-            "model": self.coordinator.data[self._device].product_name_full,
+            "model": self.purifier_data.device_attr['model'],
         }
 
     @property
-    def unique_id(self):
-        """Return the ID of this purifier."""
-        return self.coordinator.data[self._device].device_id
+    def unique_id(self) -> str:
+        """Sets unique ID for this entity."""
+
+        return self.purifier_data.device_attr['device_id'] + '_timer'
 
     @property
-    def name(self):
-        """Return the name of the purifier if any."""
-        return self.coordinator.data[self._device].name + " Current Timer"
+    def name(self) -> str:
+        """Return name of the entity."""
+
+        return "Current timer"
 
     @property
-    def icon(self):
-        """Set icon"""
+    def has_entity_name(self) -> bool:
+        """Indicate that entity has name defined."""
+
+        return True
+
+    @property
+    def icon(self) -> str:
+        """Set icon."""
+
         if self.current_option is "OFF":
             return 'mdi:timer-off'
         else:
             return 'mdi:timer'
 
     @property
-    def current_option(self):
-        """Returns Currently Active Timer"""
-        try:
-            return IOCARE_TIMERS_TO_HASS.get(self.coordinator.data[self._device].timer)
-        except AttributeError:
-            _LOGGER.warning(f'Coway IoCare: Unable to get info for {self.coordinator.data[self._device].name}. Make sure purifier is connected to WiFi.')
+    def current_option(self) -> str:
+        """Returns currently active timer."""
+
+        return IOCARE_TIMERS_TO_HASS.get(self.purifier_data.timer)
 
     @property
-    def options(self):
+    def options(self) -> list:
+        """Return list of all the available timers."""
+
         return IOCARE_TIMERS
 
-    async def async_select_option(self, option) -> None:
+    @property
+    def available(self) -> bool:
+        """Return true if purifier is connected to Coway servers."""
+
+        if self.purifier_data.network_status:
+            return True
+        else:
+            return False
+
+    async def async_select_option(self, option: str) -> None:
         """Change the selected option."""
-        await self.hass.async_add_executor_job(self.coordinator.data[self._device].set_timer, HASS_TIMER_TO_IOCARE.get(option))
-        self.coordinator.data[self._device].timer = HASS_TIMER_TO_IOCARE.get(option)
+
+        if self.purifier_data.is_on:
+            time = HASS_TIMER_TO_IOCARE.get(option)
+            await self.coordinator.client.async_set_timer(self.purifier_data.device_attr, time)
+            self.purifier_data.timer = time
+            self.purifier_data.timer_remaining = time
+        else:
+            LOGGER.error(f'Setting a timer for {self.purifier_data.device_attr["name"]} can only be done when the purifier is On.')
+            self.purifier_data.timer = '0'
+            self.purifier_data.timer_remaining = '0'
+
         self.async_write_ha_state()
         await self.coordinator.async_request_refresh()
 
-    @property
-    def available(self):
-        """Return true if purifier is available."""
-        if hasattr(self.coordinator.data[self._device], 'device_connected_to_servers'):
-            return self.coordinator.data[self._device].device_connected_to_servers
-        else:
-            return False

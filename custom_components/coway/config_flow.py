@@ -1,78 +1,112 @@
-"""Config flow of our component"""
-import logging
+"""Config Flow for Coway integration."""
+from __future__ import annotations
+
+from collections.abc import Mapping
+from typing import Any
+
+from cowayaio.exceptions import AuthError
 import voluptuous as vol
-from iocare.iocareapi import IOCareApi
+
 from homeassistant import config_entries
-from homeassistant.core import callback
-from homeassistant.const import (
-    CONF_PASSWORD,
-    CONF_USERNAME
+from homeassistant.const import CONF_USERNAME, CONF_PASSWORD
+from homeassistant.data_entry_flow import FlowResult
+import homeassistant.helpers.config_validation as cv
+
+from .const import DEFAULT_NAME, DOMAIN
+from .util import async_validate_api, NoPurifiersError
+
+
+DATA_SCHEMA = vol.Schema(
+    {
+        vol.Required(CONF_USERNAME): cv.string,
+        vol.Required(CONF_PASSWORD): cv.string,
+    }
 )
-from .const import DOMAIN
-_LOGGER = logging.getLogger(__name__)
-
-class IoCareConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
-    """Handle our config flow."""
-
-    VERSION = 1
-    CONNECTION_CLASS = config_entries.CONN_CLASS_CLOUD_POLL
-
-    def __init__(self):
-        """Initialize IoCare configuration flow"""
-        self.schema = vol.Schema({
-            vol.Required(CONF_USERNAME): str,
-            vol.Required(CONF_PASSWORD): str
-        })
-
-        self._username = None
-        self._password = None
-
-    async def async_step_user(self, user_input=None):
-        """Handle a flow start."""
-
-        if self._async_current_entries():
-            return self.async_abort(reason="already_configured")
-
-        if not user_input:
-            return self._show_form()
-
-        self._username = user_input[CONF_USERNAME]
-        self._password = user_input[CONF_PASSWORD]
-
-        return await self._async_iocare_login()
 
 
-    async def _async_iocare_login(self):
+class CowayConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
+    """Handle a config flow for Coway integration."""
 
-        errors = {}
+    VERSION = 2
 
-        try:
-            client = await self.hass.async_add_executor_job(IOCareApi, self._username, self._password)
-            await self.hass.async_add_executor_job(client.check_access_token)
+    entry: config_entries.ConfigEntry | None
 
-        except Exception:
-            _LOGGER.error("Unable to connect to IoCare: Failed to Log In")
-            errors = {"base": "auth_error"}
+    async def async_step_reauth(self, entry_data: Mapping[str, Any]) -> FlowResult:
+        """Handle re-authentication with Coway."""
 
-        if errors:
-            return self._show_form(errors=errors)
+        self.entry = self.hass.config_entries.async_get_entry(self.context["entry_id"])
+        return await self.async_step_reauth_confirm()
 
-        return await self._async_create_entry()
+    async def async_step_reauth_confirm(
+            self, user_input: dict[str, Any] | None = None
+    ) -> FlowResult:
+        """Confirm re-authentication with Coway."""
 
-    async def _async_create_entry(self):
-        """Create the config entry."""
-        config_data = {
-            CONF_USERNAME: self._username,
-            CONF_PASSWORD: self._password,
-        }
+        errors: dict[str, str] = {}
 
-        return self.async_create_entry(title='Coway IoCare', data=config_data)
+        if user_input:
+            username = user_input[CONF_USERNAME]
+            password = user_input[CONF_PASSWORD]
+            try:
+                await async_validate_api(username, password)
+            except AuthError:
+                errors["base"] = "invalid_auth"
+            except ConnectionError:
+                errors["base"] = "cannot_connect"
+            except NoPurifiersError:
+                errors["base"] = "no_purifiers"
+            else:
+                assert self.entry is not None
 
-    @callback
-    def _show_form(self, errors=None):
-        """Show the form to the user."""
+                self.hass.config_entries.async_update_entry(
+                    self.entry,
+                    data={
+                        **self.entry.data,
+                        CONF_USERNAME: username,
+                        CONF_PASSWORD: password,
+                    },
+                )
+                await self.hass.config_entries.async_reload(self.entry.entry_id)
+                return self.async_abort(reason="reauth_successful")
+
+        return self.async_show_form(
+            step_id="reauth_confirm",
+            data_schema=DATA_SCHEMA,
+            errors=errors,
+        )
+
+    async def async_step_user(
+            self, user_input: dict[str, Any] | None = None
+    ) -> FlowResult:
+        """Handle the initial step."""
+
+        errors: dict[str, str] = {}
+
+        if user_input:
+            username = user_input[CONF_USERNAME]
+            password = user_input[CONF_PASSWORD]
+            try:
+                await async_validate_api(username, password)
+            except AuthError:
+                errors["base"] = "invalid_auth"
+            except ConnectionError:
+                errors["base"] = "cannot_connect"
+            except NoPurifiersError:
+                errors["base"] = "no_purifiers"
+            else:
+                await self.async_set_unique_id(username)
+                self._abort_if_unique_id_configured()
+
+                return self.async_create_entry(
+                    title=DEFAULT_NAME,
+                    data={
+                        CONF_USERNAME: username,
+                        CONF_PASSWORD: password,
+                    },
+                )
+
         return self.async_show_form(
             step_id="user",
-            data_schema=self.schema,
-            errors=errors if errors else {},
+            data_schema=DATA_SCHEMA,
+            errors=errors,
         )
