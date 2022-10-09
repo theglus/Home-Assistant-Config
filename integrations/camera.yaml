@@ -10,31 +10,31 @@ camera:
     password: !secret winston_password
     country: us
     colors:
-      color_robo: [224,224,224]
-      color_charger: [27,117,27]
-      color_path: [30,80,113]
-      color_goto_path: [30,80,113]
-      color_map_wall_v2: [30,30,30]
-      color_obstacle: [30,30,30]
-      color_virtual_walls: [255,0,0,60]
-      color_no_go_zones_outline: [255,0,0,60]
-      color_no_go_zones: [255,0,0,28]
-      color_scan: [0,0,0,0]
-      color_map_inside: [0,0,0,0]
-      color_map_outside: [0,0,0,0]
-      color_grey_wall: [0,0,0,0]
-      color_map_wall: [30,30,30]
+      color_robo: [224, 224, 224]
+      color_charger: [27, 117, 27]
+      color_path: [30, 80, 113]
+      color_goto_path: [30, 80, 113]
+      color_map_wall_v2: [30, 30, 30]
+      color_obstacle: [30, 30, 30]
+      color_virtual_walls: [255, 0, 0, 60]
+      color_no_go_zones_outline: [255, 0, 0, 60]
+      color_no_go_zones: [255, 0, 0, 28]
+      color_scan: [0, 0, 0, 0]
+      color_map_inside: [0, 0, 0, 0]
+      color_map_outside: [0, 0, 0, 0]
+      color_grey_wall: [0, 0, 0, 0]
+      color_map_wall: [30, 30, 30]
     room_colors:
       # Hallway
-      16: [42,46,48]
+      16: [42, 46, 48]
       # Living Room
-      17: [42,46,48]
+      17: [42, 46, 48]
       # Kitchen
-      18: [42,46,48]
+      18: [42, 46, 48]
       # Office
-      19: [42,46,48]
+      19: [42, 46, 48]
       # Bathroom
-      20: [42,46,48]
+      20: [42, 46, 48]
     draw:
       - all
     map_transformation:
@@ -56,6 +56,3 @@ camera:
     scan_interval:
       seconds: 5
     auto_update: true
-  - platform: generic
-    name: Security
-    still_image_url: !secret fkb_cam
