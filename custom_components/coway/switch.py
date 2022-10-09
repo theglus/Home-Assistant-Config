@@ -1,84 +1,125 @@
-"""Support for IOCare switches."""
+"""Switch platform for Coway integration."""
+from __future__ import annotations
 
-import logging
+from typing import Any
+
+from cowayaio.purifier_model import CowayPurifier
+
+from homeassistant.components.switch import SwitchEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers.update_coordinator import (
-    CoordinatorEntity,
-    DataUpdateCoordinator,
-    UpdateFailed,
-)
-from homeassistant.components.switch import SwitchEntity
-from .const import DOMAIN
-_LOGGER = logging.getLogger(__name__)
+from homeassistant.helpers.entity_platform import AddEntitiesCallback
+from homeassistant.helpers.update_coordinator import CoordinatorEntity
+
+from .const import DOMAIN, LOGGER
+from .coordinator import CowayDataUpdateCoordinator
 
 
-async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry, async_add_entities):
-    """Set up Coway Air Purifier devices."""
+async def async_setup_entry(
+    hass: HomeAssistant, entry: ConfigEntry, async_add_entities: AddEntitiesCallback
+) -> None:
+    """Set Up Coway Switch Entities."""
 
-    coordinator = hass.data[DOMAIN]
+    coordinator: CowayDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
 
-    async_add_entities(
-        IOCareSwitch(coordinator, idx) for idx, ent in enumerate(coordinator.data)
-    )
+    switches = []
+
+    for purifier_id, purifier_data in coordinator.data.purifiers.items():
+            switches.extend((
+                PurifierLight(coordinator, purifier_id),
+            ))
+
+    async_add_entities(switches)
 
 
-class IOCareSwitch(CoordinatorEntity, SwitchEntity):
-    """Representation of a Coway Airmega air purifier switch."""
+class PurifierLight(CoordinatorEntity, SwitchEntity):
+    """Representation of purifier light switch."""
 
-    def __init__(self, coordinator, idx):
+    def __init__(self, coordinator, purifier_id):
         super().__init__(coordinator)
-        self._device = idx
-
+        self.purifier_id = purifier_id
 
     @property
-    def device_info(self):
+    def purifier_data(self) -> CowayPurifier:
+        """Handle coordinator purifier data."""
+
+        return self.coordinator.data.purifiers[self.purifier_id]
+
+    @property
+    def device_info(self) -> dict[str, Any]:
         """Return device registry information for this entity."""
+
         return {
-            "identifiers": {(DOMAIN, self.coordinator.data[self._device].device_id)},
-            "name": self.coordinator.data[self._device].name,
+            "identifiers": {(DOMAIN, self.purifier_data.device_attr['device_id'])},
+            "name": self.purifier_data.device_attr['name'],
             "manufacturer": "Coway",
-            "model": self.coordinator.data[self._device].product_name_full,
+            "model": self.purifier_data.device_attr['model'],
         }
 
     @property
-    def unique_id(self):
-        """Return the ID of this purifier."""
-        return self.coordinator.data[self._device].device_id
+    def unique_id(self) -> str:
+        """Sets unique ID for this entity."""
+
+        return self.purifier_data.device_attr['device_id'] + '_light'
 
     @property
-    def name(self):
-        """Return the name of the purifier + Light if any."""
-        return self.coordinator.data[self._device].name + " Light"
+    def name(self) -> str:
+        """Return name of the entity."""
+
+        return "Light"
 
     @property
-    def icon(self):
-        """Set purifier switch icon to lightbulb"""
+    def has_entity_name(self) -> bool:
+        """Indicate that entity has name defined."""
+
+        return True
+
+    @property
+    def icon(self) -> str:
+        """Set purifier switch icon to lightbulb."""
+
         return 'mdi:lightbulb'
 
     @property
-    def is_on(self):
-        """Return true if switch is on."""
-        return self.coordinator.data[self._device].is_light_on
+    def is_on(self) -> bool:
+        """Return true if light AND purifier are on."""
 
-    async def async_turn_on(self, **kwargs):
+        if self.purifier_data.is_on and self.purifier_data.light_on:
+            return True
+        else:
+            return False
+
+    async def async_turn_on(self, **kwargs) -> None:
         """Turn the switch on."""
-        await self.hass.async_add_executor_job(self.coordinator.data[self._device].set_light, True)
-        self.coordinator.data[self._device].is_light_on = True
+
+        if self.purifier_data.is_on:
+            await self.coordinator.client.async_set_light(self.purifier_data.device_attr, True)
+            self.purifier_data.light_on = True
+        else:
+            LOGGER.error(f'{self.purifier_data.device_attr["name"]} light can only be controlled when the purifier is On.')
+            self.purifier_data.light_on = False
+
         self.async_write_ha_state()
         await self.coordinator.async_request_refresh()
 
-    async def async_turn_off(self, **kwargs):
-        """Turn the device off."""
-        await self.hass.async_add_executor_job(self.coordinator.data[self._device].set_light, False)
-        self.coordinator.data[self._device].is_light_on = False
+    async def async_turn_off(self, **kwargs) -> None:
+        """Turn the switch off."""
+
+        if self.purifier_data.is_on:
+            await self.coordinator.client.async_set_light(self.purifier_data.device_attr, False)
+            self.purifier_data.light_on = False
+        else:
+            LOGGER.error(f'{self.purifier_data.device_attr["name"]} light can only be controlled when the purifier is On.')
+            self.purifier_data.light_on = False
+
         self.async_write_ha_state()
         await self.coordinator.async_request_refresh()
 
     @property
-    def available(self):
-        """Return true if purifier is available."""
-        if hasattr(self.coordinator.data[self._device], 'device_connected_to_servers'):
-            return self.coordinator.data[self._device].device_connected_to_servers
+    def available(self) -> bool:
+        """Return true if purifier is connected to Coway servers."""
+
+        if self.purifier_data.network_status:
+            return True
         else:
             return False
