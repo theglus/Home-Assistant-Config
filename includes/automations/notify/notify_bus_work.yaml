@@ -3,7 +3,7 @@
 #
 ## Trigger Telegram notification to learn next bus to work.
 #################################################################
-alias: Nofify Bus Work
+alias: Notify Bus Work
 description: "Trigger Telegram notification to learn next bus to work."
 trigger:
   - platform: event

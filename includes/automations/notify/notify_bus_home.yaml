@@ -3,7 +3,7 @@
 #
 ## Trigger Telegram notification to learn next bus home.
 #################################################################
-alias: Nofify Bus Home
+alias: Notify Bus Home
 description: "Trigger Telegram notification to learn next bus home."
 trigger:
   - platform: event
