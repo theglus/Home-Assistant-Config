@@ -7,17 +7,15 @@ alias: Volume
 description: "Turn down volume of Google Home device at 10 pm."
 trigger:
   - platform: time
-    at: "09:00:00"
+    at: input_datetime.volume_morning
   - platform: time
-    at: "22:00:00"
+    at: input_datetime.volume_night
 action:
   - choose:
       - conditions:
-          - condition: and
-            conditions:
-              - condition: time
-                after: "22:00:00"
-                before: "09:00:00"
+          - condition: state
+            entity_id: binary_sensor.volume_schedule
+            state: "on"
         sequence:
           - service: media_player.volume_set
             target:
