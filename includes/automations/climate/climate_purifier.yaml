@@ -8,18 +8,15 @@ alias: "Climate: Purifier"
 description: "Trigger 'Kirby + Airmega: Daymode' @ 8 am + 'Kirby + Airmega: Nighttime' @ 11 pm."
 trigger:
   - platform: time
-    at: "08:15:00"
+    at: input_datetime.purifier_morning
   - platform: time
-    at: "23:00:00"
-condition: []
+    at: input_datetime.purifier_night
 action:
   - choose:
       - conditions:
-          - condition: and
-            conditions:
-              - condition: time
-                after: "23:00:00"
-                before: "08:15:00"
+          - condition: state
+            entity_id: binary_sensor.purifier_schedule
+            state: "on"
         sequence:
           - scene: scene.kirby_nightmode
           - service: fan.turn_off
