@@ -6,9 +6,8 @@
 alias: Vacuum Schedule
 description: "Clean at 11:00 pm."
 trigger:
-  - platform: state
-    entity_id: binary_sensor.clean_schedule
-    to: "on"
+  - platform: time
+    at: input_datetime.clean_schedule
 condition: []
 action:
   - choose:
