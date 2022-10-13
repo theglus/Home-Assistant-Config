@@ -1,22 +1,21 @@
 #################################################################
 ## Vacuum Schedule
 #
-## Clean at 10:30 pm.
+## Clean at 11:00 pm.
 #################################################################
 alias: Vacuum Schedule
-description: "Clean at 10:30 pm."
+description: "Clean at 11:00 pm."
 trigger:
-  - platform: time
-    at: "23:00:00"
+  - platform: state
+    entity_id: binary_sensor.clean_schedule
+    to: "on"
 condition: []
 action:
   - choose:
       - conditions:
-          - condition: time
-            weekday:
-              - mon
-              - wed
-              - fri
+          - condition: state
+            entity_id: schedule.clean_partial
+            state: "on"
           - condition: state
             entity_id: sensor.winston_clean_today
             state: "False"
@@ -35,10 +34,9 @@ action:
             target:
               entity_id: vacuum.winston
       - conditions:
-          - condition: time
-            weekday:
-              - tue
-              - thu
+          - condition: state
+            entity_id: schedule.clean_apt
+            state: "on"
           - condition: state
             entity_id: sensor.winston_clean_today
             state: "False"
