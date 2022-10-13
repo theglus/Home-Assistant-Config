@@ -9,8 +9,6 @@ trigger:
   - platform: state
     entity_id: climate.ice_bear
     for:
-      hours: 0
-      minutes: 0
       seconds: 30
       milliseconds: 0
     to: cool
@@ -20,42 +18,34 @@ trigger:
     entity_id: climate.ice_bear
     to: auto
     for:
-      hours: 0
-      minutes: 0
       seconds: 30
       milliseconds: 0
   - platform: state
     entity_id: sensor.dryer
     to: "on"
     for:
-      hours: 0
-      minutes: 0
       seconds: 30
       milliseconds: 0
   - platform: state
     to: "on"
     entity_id: sensor.washer
     for:
-      hours: 0
-      minutes: 0
       seconds: 30
       milliseconds: 0
+condition:
+  - condition: state
+    entity_id: binary_sensor.peak_usage
+    state: "on"
 action:
   - choose:
       - conditions:
-          - condition: and
-            conditions:
-              - condition: state
-                entity_id: climate.ice_bear
-                for:
-                  hours: 0
-                  minutes: 0
-                  seconds: 30
-                  milliseconds: 0
-                state: cool
-              - condition: time
-                after: "16:00:00"
-                before: "21:00:00"
+          - condition: state
+            entity_id: climate.ice_bear
+            for:
+              hours: 0
+              minutes: 0
+              seconds: 30
+            state: cool
         sequence:
           - service: notify.smartphones
             data:
@@ -71,48 +61,32 @@ action:
                   hours: 0
                   minutes: 0
                   seconds: 30
-                  milliseconds: 0
-              - condition: time
-                after: "16:00:00"
-                before: "21:00:00"
         sequence:
           - service: notify.smartphones
             data:
               message: Ice Bear is in ECO mode.
               title: ⚡Peak Usage Alert
       - conditions:
-          - condition: and
-            conditions:
-              - condition: state
-                entity_id: sensor.washer
-                state: "on"
-                for:
-                  hours: 0
-                  minutes: 0
-                  seconds: 30
-                  milliseconds: 0
-              - condition: time
-                after: "16:00:00"
-                before: "21:00:00"
+          - condition: state
+            entity_id: sensor.washer
+            state: "on"
+            for:
+              hours: 0
+              minutes: 0
+              seconds: 30
         sequence:
           - service: notify.smartphones
             data:
               title: ⚡Peak Usage Alert
               message: Washer is on.
       - conditions:
-          - condition: and
-            conditions:
-              - condition: state
-                entity_id: sensor.dryer
-                state: "on"
-                for:
-                  hours: 0
-                  minutes: 0
-                  seconds: 30
-                  milliseconds: 0
-              - condition: time
-                after: "16:00:00"
-                before: "21:00:00"
+          - condition: state
+            entity_id: sensor.dryer
+            state: "on"
+            for:
+              hours: 0
+              minutes: 0
+              seconds: 30
         sequence:
           - service: notify.smartphones
             data:
