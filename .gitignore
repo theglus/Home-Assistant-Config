@@ -33,7 +33,6 @@ tts/
 
 # Add-ons
 custom_components/mail_and_packages/
-esphome
 image/
 images/
 
