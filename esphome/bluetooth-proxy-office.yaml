@@ -1,0 +1,17 @@
+substitutions:
+  name: "bluetooth-proxy-office"
+packages:
+  esphome.bluetooth-proxy: github://esphome/bluetooth-proxies/esp32-generic.yaml@main
+esphome:
+  name: bluetooth-proxy-office
+  name_add_mac_suffix: false
+button:
+  - platform: shutdown 
+    name: "Office BT Proxy Shutdown"
+# sensor:
+#  - platform: esp32_hall
+#    name: :"Office Hall Sensor"
+#    update_interval: 60s
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
