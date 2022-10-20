@@ -48,16 +48,6 @@ sensor.beacon_invisalign_case:
 #################################################################
 camera.xiaomi_cloud_map_extractor:
   icon: "mdi:map-search-outline"
-sensor.vacuum_filter:
-  icon: "custom:vacuum-filter"
-sensor.vacuum_mainbrush:
-  icon: "custom:vacuum-mainbrush"
-sensor.vacuum_sensors:
-  icon: "custom:vacuum-sensors"
-sensor.vacuum_sidebrush:
-  icon: "custom:vacuum-sidebrush"
-sensor.vacuum_last_clean:
-  icon: "mdi:calendar-clock"
 #################################################################
 ## Misc Sensors
 #################################################################

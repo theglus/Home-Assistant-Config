@@ -4,6 +4,7 @@
 - platform: template
   sensors:
     winston_clean_today:
+      unique_id: fc7cf187-cd11-4846-bb50-cbde3719d962
       friendly_name: "Winston Clean Today"
       value_template: "{{ now().strftime('%d') == as_timestamp(states('sensor.winston_last_clean_start')) | timestamp_custom('%d') }}"
       icon_template: "mdi:calendar-clock"
