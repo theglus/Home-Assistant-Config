@@ -3,6 +3,7 @@
 #
 ## Trigger Runner light with Lutron Aurora switch.
 #################################################################
+id: 21db1f72-5b8c-4015-98e2-bfcc11963689
 alias: Dimmer Hallway
 description: "Trigger Runner light with Lutron Aurora switch."
 trigger:
