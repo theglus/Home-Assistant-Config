@@ -3,6 +3,7 @@
 #
 ## Turn lights to TV mode.
 #################################################################
+id: 26449e463c344
 name: Television
 entities:
   light.group_office:

@@ -3,6 +3,7 @@
 #
 ## Turn lights to Theater mode.
 #################################################################
+id: c83cd8d991264
 name: Theater
 entities:
   light.group_office:
