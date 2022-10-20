@@ -1,13 +1,4 @@
 #################################################################
-## Dimmers
-#################################################################
-# Entryay Dimmer
-automation.dimmer_hallway:
-  icon: hue:"friends-of-hue-aurora-dimmer-switch"
-# Office Dimmer
-automation.dimmer_office:
-  icon: hue:"friends-of-hue-aurora-dimmer-switch"
-#################################################################
 ## Hue Rooms
 #################################################################
 # Hallway
@@ -25,46 +16,6 @@ light.loft:
 # Office
 light.office:
   icon: "mdi:desk"
-#################################################################
-## Light Groups
-#################################################################
-# Downstairs Lights
-light.color:
-  icon: "mdi:looks"
-light.downstairs:
-  icon: "mdi:home-floor-g"
-# Upstairs Lights
-light.upstairs:
-  icon: "mdi:home-roof"
-# Entryway Lights
-light.entryway:
-  icon: "mdi:coat-rack"
-# Loft Bedside Lights
-light.bedside:
-  icon: "mdi:desk-lamp"
-# Overhead Office Lights
-light.overhead:
-  icon: "mdi:dome-light"
-# Track Lights
-light.track:
-  icon: "hue:ceiling-buratto-three"
-light.recessed:
-  icon: "hue:recessed-ceiling"
-# Kitchen Light Group
-light.group_kitchen:
-  icon: "mdi:home-lightbulb-outline"
-# Hallway Light Group
-light.group_hallway:
-  icon: "mdi:home-lightbulb-outline"
-# Living Room Light Group
-light.group_living_room:
-  icon: "mdi:home-lightbulb-outline"
-# Loft Light Group
-light.group_loft:
-  icon: "mdi:home-lightbulb-outline"
-# Office Light Group
-light.group_office:
-  icon: "mdi:home-lightbulb-outline"
 #################################################################
 ## PC Sensors
 #################################################################
