@@ -3,14 +3,15 @@
 #
 ## Notify Smartphones when washer is complete.
 #################################################################
+id: 1f617fc8-fb8d-4145-bf88-f5fed64b64cc
 alias: Notify Washer
 description: Notify smartphones when washer is complete.
 trigger:
   - platform: state
     entity_id: sensor.washer
     attribute: run_completed
-    from: 'off'
-    to: 'on'
+    from: "off"
+    to: "on"
 condition: []
 action:
   - service: notify.smartphones

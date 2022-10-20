@@ -3,6 +3,7 @@
 #
 ## Notify Smartphones when Major Laser Printer is ready.
 #################################################################
+id: b8231205-ebc7-4c83-9583-b55fa1df0767
 alias: Notify Printer
 description: Notify Smartphones when Major Laser Printer is ready.
 trigger:

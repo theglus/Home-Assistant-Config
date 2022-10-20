@@ -3,6 +3,7 @@
 #
 ## Notify smartphones when Winston needs maintenance.
 #################################################################
+id: 247fa055-972a-4ab9-9dd6-f9a7613c3bfa
 alias: Notify Vacuum Maintenance
 description: "Notify smartphones when Winston needs maintenance."
 trigger:

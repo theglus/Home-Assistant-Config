@@ -3,6 +3,7 @@
 #
 ## Notify smartphones when tomorrows high is  >75 °F.
 #################################################################
+id: cc68ebb7-5c43-4760-848a-4af98e36eaf3
 alias: "Notify Heat Wave"
 description: Notify smartphones when tomorrows high is  >75 °F.
 trigger:

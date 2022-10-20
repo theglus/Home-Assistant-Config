@@ -3,6 +3,7 @@
 #
 ## otify smartphones when dryer temp is too high.
 #################################################################
+id: da11b45e-67fd-4c69-b8be-8b8eaafee092
 alias: Notify Dryer Warning
 description: "Notify smartphones when dryer temp is too high."
 trigger:

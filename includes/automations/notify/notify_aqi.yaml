@@ -3,6 +3,7 @@
 #
 ## Notify Smartphones when AQI is >75.
 #################################################################
+id: 660d855c-ccb2-44fe-988c-05b382d21f2c
 alias: Notify AQI
 description: Notify Smartphones when AQI is >75.
 trigger:

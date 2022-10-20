@@ -3,6 +3,7 @@
 #
 ## Telegram notification that alerts of server reboot, restart, or shutdown.
 #################################################################
+id: 8dc12e7e-72e3-41a7-a51a-3b1a9fa57a2a
 alias: Server Reboot
 description: Telegram notification that alerts of server reboot, restart, or shutdown.
 trigger:

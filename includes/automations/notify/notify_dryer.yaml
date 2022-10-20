@@ -3,14 +3,15 @@
 #
 ## Notify Smartphones when dryer is complete.
 #################################################################
+id: 775b0432-1a67-4281-a29c-f589c29f2dde
 alias: Notify Dryer
 description: Notify smartphones when dryer is complete.
 trigger:
   - platform: state
     entity_id: sensor.dryer
     attribute: run_completed
-    from: 'off'
-    to: 'on'
+    from: "off"
+    to: "on"
 condition: []
 action:
   - service: notify.smartphones
