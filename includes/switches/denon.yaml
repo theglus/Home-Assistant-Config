@@ -1,19 +1,19 @@
 #################################################################
 ## Denon switches.
 #################################################################
-# Denon ECO Switch
 - platform: template
   switches:
+    # Denon ECO Switch
     eco:
+      unique_id: 0f5e0fec-5013-49ca-a627-58e14165a6b1
       friendly_name: "ECO Mode"
       turn_on:
         service: script.eco_on
       turn_off:
         service: script.eco_off
-# Denon Menu Switch
-- platform: template
-  switches:
+    # Denon Menu Switch
     denon_menu:
+      unique_id: 62acdfb3-0b2d-4641-a850-b265a479468f
       friendly_name: "Denon Menu"
       turn_on:
         service: script.av_menu_on
