@@ -3,6 +3,7 @@
 #
 ## Device tracker using Invisalign Tile.
 #################################################################
+id: cb632b64-6152-465f-9286-49fee70cc20e
 alias: Tracker Primary
 description: "Device tracker using Invisalign Tile."
 trigger:
