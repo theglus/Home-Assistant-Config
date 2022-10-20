@@ -3,6 +3,7 @@
 #################################################################
 - platform: powercalc
   entity_id: fan.kirby
+  unique_id: 08459630-24bf-4c32-8cbe-bcb8ce852e43
   linear:
     calibrate:
       - 10 -> 3.55
@@ -18,6 +19,7 @@
   standby_power: 3.30
 - platform: powercalc
   entity_id: fan.kitchen
+  unique_id: eee91b1b-141f-4abe-95d7-abdb0d66a31a
   linear:
     calibrate:
       - 10 -> 5.35
