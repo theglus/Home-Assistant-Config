@@ -5,6 +5,7 @@
 - platform: template
   switches:
     heat:
+      unique_id: 8b0b1a49-4c2d-4b8f-86cd-af9569b6a1c4
       friendly_name: "Heat"
       turn_on:
         service: switch.turn_on
