@@ -3,6 +3,7 @@
 #
 ## Notify Smartphones when Winston has returned to dock.
 #################################################################
+id: 22f41f7d-7af9-4de3-874e-e8717bda1d7d
 alias: Vacuum Docked
 description: Notify Smartphones when Winston has returned to dock.
 trigger:

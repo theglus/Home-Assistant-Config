@@ -3,6 +3,7 @@
 #
 ## Clean at 11:00 pm.
 #################################################################
+id: 5e467d17-36b7-43ed-91af-264f783dfbba
 alias: Vacuum Schedule
 description: "Clean at 11:00 pm."
 trigger:
