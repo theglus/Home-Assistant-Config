@@ -3,6 +3,7 @@
 #
 ## Notify smartphones of door status + turn off lights + vacuum.
 #################################################################
+id: 1e36ec73-e53e-484c-8c13-3391a45e0512
 alias: Leave Vacuum
 description: Notify smartphones of door status + turn off lights + vacuum.
 trigger:

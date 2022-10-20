@@ -3,6 +3,7 @@
 #
 ## Notify smartphones of door status + turn off lights accordingly.
 #################################################################
+id: bcb081eb-100c-44ec-aa9f-2adfeb9d878e
 alias: "Leave Home"
 description: "Notify smartphones of door status + turn off lights accordingly."
 trigger:
