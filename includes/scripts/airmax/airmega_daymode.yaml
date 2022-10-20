@@ -2,7 +2,6 @@
 ## Airmega: Turn on Auto + enables lights.
 #################################################################
 airmega_daymode:
-  id: 35f4a4ef-b04e-48fe-b2b4-ac3afc2b5996
   alias: "Airmega: Daymode"
   sequence:
     - service: fan.set_preset_mode

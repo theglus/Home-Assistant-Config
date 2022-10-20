@@ -2,7 +2,6 @@
 ## Airmega: Turn on Sleep + disable lights.
 #################################################################
 airmega_nightmode:
-  id: 0ae27da2-c0d0-4abd-ad33-0bde4e469052
   alias: "Airmega: Nightmode"
   sequence:
     - service: fan.set_preset_mode
