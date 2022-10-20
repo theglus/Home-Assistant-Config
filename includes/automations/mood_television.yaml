@@ -3,6 +3,7 @@
 #
 ## TV lights + Nighttime quick select.
 #################################################################
+id: e8e15b43-b47c-4f44-844e-df92e0b6d868
 alias: Mode TV
 description: "TV lights + Nighttime quick select."
 trigger: []

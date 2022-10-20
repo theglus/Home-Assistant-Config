@@ -3,6 +3,7 @@
 #
 ## Laptop camera activates scene.office_available.
 #################################################################
+id: d5524295-2a70-43bb-93cc-fec9bbe749bd
 alias: Office Available
 description: "Laptop camera activates scene.office_available."
 trigger:

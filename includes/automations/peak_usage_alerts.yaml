@@ -3,6 +3,7 @@
 #
 ## Notify Smartphones when AC, Washer, or Dryer is on during peak usage.
 #################################################################
+id: 3b332e5e-c742-46ff-a002-d0f2fb23aeda
 alias: "Peak Usage Alerts"
 description: "Notify Smartphones when AC, Washer, or Dryer is on during peak usage."
 trigger:
