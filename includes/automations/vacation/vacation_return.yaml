@@ -3,6 +3,7 @@
 #
 ## Sending /return from Telegram returns Farnsworth to his default state.
 #################################################################
+id: b46a69af-fe57-4257-b3f6-014c35f3f8e5
 alias: Vacation Return
 description: Sending /return from Telegram returns Farnsworth to his default state.
 trigger:
