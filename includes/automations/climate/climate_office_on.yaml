@@ -3,6 +3,7 @@
 #
 ## Turn fan ON based off of Overhead light group.
 #################################################################
+id: 84df1600-04d0-4857-9ba7-c3de3c46107b
 alias: "Climate: Office On"
 description: "Turn fan ON based on of Overhead light group."
 trigger:

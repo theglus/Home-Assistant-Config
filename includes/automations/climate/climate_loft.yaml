@@ -3,6 +3,7 @@
 #
 ## Turn on fan when Loft is ≥72° and off when ≤71°.
 #################################################################
+id: 39e8f061-3095-43cd-9ca9-e1308ab872c1
 alias: "Climate: Loft"
 description: "Turn on fan when Loft is ≥72° and off when ≤71°."
 trigger:
