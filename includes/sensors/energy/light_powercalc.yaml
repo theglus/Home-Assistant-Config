@@ -1,0 +1,73 @@
+#################################################################
+## Powercalc Sensors
+#################################################################
+- platform: powercalc
+  create_group: All Lights
+  unique_id: 3b8e71d8-045c-4675-bb5e-7b1b0c85928b
+  entities:
+    - create_group: Office Lights
+      unique_id: a2971118-b7a6-4753-a909-0f704f93c3c3
+      entities:
+        - entity_id: light.overhead_bed
+          manufacturer: signify
+          model: LCB001
+        - entity_id: light.overhead_desk
+          manufacturer: signify
+          model: LCB001
+        - entity_id: light.pinkie_lamp
+          manufacturer: signify
+          model: LTW001
+        - entity_id: light.thruple_lamp
+          fixed:
+            power: 5.50
+    - create_group: Kitchen Lights
+      unique_id: b09820e4-3cae-47d1-b2db-df786a5f90fd
+      entities:
+        - entity_id: light.kitchen_track
+        - entity_id: light.recessed_coffee
+        - entity_id: light.recessed_dining
+        - entity_id: light.nanoleaf
+          unique_id: 88651700-4be5-4dd5-a58c-fe6f599d48dd
+          linear:
+            min_power: 0
+            max``power: 44
+    - create_group: Hallway Lights
+      unique_id: 0c4d905f-f50d-4ce4-9e88-fba5a9b64eee
+      entities:
+        - entity_id: light.potter_lamp
+        - entity_id: light.stair
+          manufacturer: signify
+          model: LCB001
+        - entity_id: light.hallway_marquee
+          name: Hallway Marquee
+          manufacturer: signify
+          model: LOM002
+          fixed:
+            power: 67.80
+    - create_group: Living Room Lights
+      unique_id: 62651cc1-9a08-439a-93d1-681b6dae5f65
+      entities:
+        - entity_id: light.center_track
+        - entity_id: light.left_track
+        - entity_id: light.right_track
+        - entity_id: light.yumi_lamp
+        - entity_id: light.garden
+          name: Garden
+          manufacturer: signify
+          model: LOM002
+          fixed:
+            power: 33.60
+    - create_group: Loft Lights
+      unique_id: 1605236e-1355-42a8-84b4-0a0e20191281
+      entities:
+        - entity_id: light.loft_bed_light
+          manufacturer: signify
+          model: LCB001
+        - entity_id: light.loft_desk_lamp
+          manufacturer: signify
+          model: LTW001
+        - entity_id: light.jeffreys_lamp
+          manufacturer: signify
+          model: LTW001
+        - entity_id: light.row_lamp
+          power_sensor_id: sensor.row_lamp_current_consumption
