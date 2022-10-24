@@ -30,7 +30,7 @@
           unique_id: 88651700-4be5-4dd5-a58c-fe6f599d48dd
           linear:
             min_power: 0
-            max``power: 44
+            max_power: 44
     - create_group: Hallway Lights
       unique_id: 0c4d905f-f50d-4ce4-9e88-fba5a9b64eee
       entities:
