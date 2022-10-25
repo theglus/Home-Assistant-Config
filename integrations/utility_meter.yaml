@@ -1,0 +1,20 @@
+#################################################################
+## This handles the loading of my utility meters.
+#################################################################
+utility_meter:
+  daily_energy:
+    source: sensor.grid_energy
+    name: Daily Energy
+    unique_id: 4f05eb7e-7a1d-4bde-a771-6f667bb1f84a
+    cycle: daily
+    tariffs:
+      - peak
+      - offpeak
+  monthly_energy:
+    source: sensor.grid_energy
+    name: Monthly Energy
+    unique_id: baec3c21-7f88-4d1d-bd59-ecebbefaf192
+    cron: "0 0 3 * *"
+    tariffs:
+      - peak
+      - offpeak
