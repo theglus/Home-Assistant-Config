@@ -17,7 +17,7 @@
           manufacturer: signify
           model: LOM002
           fixed:
-            power: 25.2`
+            power: 25.20
         - entity_id: light.hallway_runner
           power_sensor_id: sensor.hallway_runner_power
     - create_group: Office Lights
