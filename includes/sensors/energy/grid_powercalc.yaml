@@ -6,4 +6,10 @@
   name: Grid
   entity_id: sensor.dummy
   fixed:
-    power: "{{(states('sensor.all_lights_power')|float + states('sensor.air_purifiers_power')|float + states('sensor.laundry_power')|float + states('sensor.dishwasher_plug_power')|float + states('sensor.workstation_plug_energy')|float)|round(3)}}"
+    power: "{{(states('sensor.all_lights_power')|float + states('sensor.air_purifiers_power')|float + states('sensor.laundry_power')|float + states('sensor.dishwasher_plug_power')|float + states('sensor.workstation_plug_power')|float + states('sensor.refrigerator_power')|float)|round(3)}}"
+- platform: powercalc
+  unique_id: 949d6f61-8e74-457a-b3f6-775b28dc94b0
+  name: Refrigerator
+  entity_id: sensor.dummy
+  fixed:
+    power: 100.00
