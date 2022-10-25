@@ -8,10 +8,11 @@ alias: "Leave Home"
 description: "Notify smartphones of door status + turn off lights accordingly."
 trigger:
   - device_id: 1a4f22d3b5ce47a298a90508301c8c29
-    domain: deconz
+    alias: Short press Door Button.
+    domain: zha
     platform: device
     type: remote_button_short_press
-    subtype: turn_on
+    subtype: remote_button_short_press
 condition:
   - condition: state
     entity_id: binary_sensor.front_door

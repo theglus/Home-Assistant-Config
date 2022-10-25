@@ -34,6 +34,8 @@ recorder:
       - person.tiffany_*
       - sensor.beacon_*
       - sensor.processor_*
-      - sensor.*_energy
       - sensor.*_power
+      - sensor.*_energy*
+      - sensor.daily_energy_*
+      - sensor.monthly_energy_*
       - sensor.*_energy_cost

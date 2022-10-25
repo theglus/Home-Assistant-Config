@@ -1,0 +1,7 @@
+#################################################################
+## Powercalc Sensors
+#################################################################
+- platform: powercalc
+  entity_id: switch.workstation_plug
+  fixed:
+    power: "{{(states('sensor.workstation_plug_power_gross')|float - states('sensor.pinkie_lamp_power')|float)|round(3)}}"
