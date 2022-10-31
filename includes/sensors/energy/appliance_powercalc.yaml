@@ -1,0 +1,20 @@
+#################################################################
+## Appliance Powercalc Sensors
+#################################################################
+# Appliance
+- platform: powercalc
+  create_group: Appliance
+  unique_id: 843c602a-9167-401c-a33e-149ae8a18598
+  entities:
+    # Refrigerator
+    - entity_id: sensor.dummy
+      unique_id: 949d6f61-8e74-457a-b3f6-775b28dc94b0
+      name: Refrigerator
+      fixed:
+        power: 100.00
+    # Paper Shredder
+    - entity_id: switch.paper_shredder
+      unique_id: dfaac16f-f941-40e5-8e9d-5d95fede6de4
+      name: Paper Shredder
+      fixed:
+        power: 175.00
