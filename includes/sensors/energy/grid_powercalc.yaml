@@ -6,4 +6,11 @@
   name: Grid
   entity_id: sensor.dummy
   fixed:
-    power: "{{(states('sensor.all_lights_power')|float + states('sensor.air_purifiers_power')|float + states('sensor.laundry_power')|float + states('sensor.dishwasher_plug_power')|float + states('sensor.workstation_plug_power')|float + states('sensor.refrigerator_power')|float + states('sensor.media_hub_power')|float)|round(3)}}"
+    power: "{{(states('sensor.all_lights_power')|
+      float + states('sensor.air_purifiers_power')|
+      float + states('sensor.appliance_power')|
+      float + states('sensor.dishwasher_plug_power')|
+      float + states('sensor.fan_power')|
+      float + states('sensor.laundry_power')|
+      float + states('sensor.workstation_plug_power')|
+      float)|round(3)}}"
