@@ -1,7 +1,7 @@
 #################################################################
 ## Purifiers Powercalc Sensors
 #################################################################
-# Loft Dyson
+# Air Purifiers
 - platform: powercalc
   create_group: Air Purifiers
   unique_id: 5a881c10-bb04-4f84-b262-64a1903f46a7
