@@ -3,6 +3,9 @@ title: Home
 panel: false
 icon: "mdi:home"
 badges:
+  - entity: sensor.grid_power
+    name: ⚡️
+    label: false
   - entity: !secret person_primary
   - entity: !secret person_secondary
   - entity: camera.security
