@@ -1,0 +1,51 @@
+#################################################################
+## Purifiers Powercalc Sensors
+#################################################################
+# Air Purifiers
+- platform: powercalc
+  create_group: Air Purifiers
+  unique_id: 5a881c10-bb04-4f84-b262-64a1903f46a7
+  entities:
+    - entity_id: fan.kirby
+      unique_id: 08459630-24bf-4c32-8cbe-bcb8ce852e43
+      name: Dyson Kirby
+      linear:
+        calibrate:
+          - 10 -> 3.55
+          - 20 -> 4.25
+          - 30 -> 5.50
+          - 40 -> 7.35
+          - 50 -> 10.20
+          - 60 -> 16.00
+          - 70 -> 20.00
+          - 80 -> 30.20
+          - 90 -> 41.50
+          - 100 -> 54.00
+      standby_power: 3.30
+    # Kitchen Dyson
+    - entity_id: fan.kitchen
+      unique_id: eee91b1b-141f-4abe-95d7-abdb0d66a31a
+      name: Dyson Kitchen
+      linear:
+        calibrate:
+          - 10 -> 5.35
+          - 20 -> 6.05
+          - 30 -> 7.30
+          - 40 -> 9.25
+          - 50 -> 12.00
+          - 60 -> 17.90
+          - 70 -> 21.80
+          - 80 -> 32.10
+          - 90 -> 43.40
+          - 100 -> 55.80
+      standby_power: 3.30
+    # Airmega
+    - entity_id: fan.airmega
+      unique_id: bd765aa9-bf75-452b-b034-1e35c5ade61c
+      name: Airmega
+      linear:
+        calibrate:
+          - 0 -> 6.05
+          - 33 -> 8.36
+          - 66 -> 26.20
+          - 100 -> 61.60

@@ -3,14 +3,16 @@
 #
 ## Notify smartphones of door status + turn off lights + vacuum.
 #################################################################
+id: 1e36ec73-e53e-484c-8c13-3391a45e0512
 alias: Leave Vacuum
 description: Notify smartphones of door status + turn off lights + vacuum.
 trigger:
   - device_id: 1a4f22d3b5ce47a298a90508301c8c29
-    domain: deconz
+    alias: Double press Door Button.
+    domain: zha
     platform: device
     type: remote_button_double_press
-    subtype: turn_on
+    subtype: remote_button_double_press
 condition:
   - condition: state
     entity_id: binary_sensor.front_door

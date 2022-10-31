@@ -3,6 +3,7 @@
 #
 ## Trigger office lights with Lutron Aurora switch.
 #################################################################
+id: bf8b10f7-d2a3-4b25-95cf-ed6ebe302dca
 alias: Dimmer Office
 description: "Trigger office lights with Lutron Aurora switch."
 trigger:

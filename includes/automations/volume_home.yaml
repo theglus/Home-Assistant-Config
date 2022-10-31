@@ -3,6 +3,7 @@
 #
 ## Turn down volume of Google Home device at 10 pm.
 #################################################################
+id: 7011e9f1-4eb8-42c4-8253-ab40ada9e48c
 alias: Volume
 description: "Turn down volume of Google Home device at 10 pm."
 trigger:

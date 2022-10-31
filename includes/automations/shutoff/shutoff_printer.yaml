@@ -3,6 +3,7 @@
 #
 ## Shutoff plug to printer 15-minutes after device has been switched on.
 #################################################################
+id: d5d65d5d-6880-4ca8-8474-2b14dd6a4f06
 alias: Shutoff Printer
 description: Shutoff plug to printer 15-minutes after device has been switched on.
 trigger:

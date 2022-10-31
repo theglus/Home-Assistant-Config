@@ -3,6 +3,7 @@
 #
 ## Trigger Telegram notification to learn next bus home.
 #################################################################
+id: 9a4bce9a-8b0f-45df-8b8a-00b83ddaf30e
 alias: Notify Bus Home
 description: "Trigger Telegram notification to learn next bus home."
 trigger:

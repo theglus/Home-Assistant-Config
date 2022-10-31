@@ -3,6 +3,7 @@
 #
 ## Theater lights + quick select.
 #################################################################
+id: f0c874ac-ec8b-411c-aea5-9d00bfe9f88e
 alias: Mode Theater
 description: "Theater lights + quick select."
 trigger: []

@@ -3,6 +3,7 @@
 #
 ## Notify smartphones when air filters need cleaning.
 #################################################################
+id: a0b1a4f2-22b0-4b90-8d29-05e5be626465
 alias: Notify Air Filters
 description: Notify smartphones when air filters need cleaning.
 trigger:

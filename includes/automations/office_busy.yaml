@@ -3,6 +3,7 @@
 #
 ## Laptop camera activates scene.meeting.
 #################################################################
+id: b07f489e-ecd0-44e4-b3f8-8b4e23cdf54f
 alias: Office Busy
 description: Laptop camera activates scene.meeting.
 trigger:

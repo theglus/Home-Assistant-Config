@@ -3,6 +3,7 @@
 #
 ## Start charging toothbrushes at 12 am and stop at 4 am.
 #################################################################
+id: bc7993d2-4fbd-4bc3-ab50-88cbe1b64d05
 alias: Charge toothbrushes
 description: "Start charging toothbrushes at 12 am and stop at 4 am. "
 trigger:

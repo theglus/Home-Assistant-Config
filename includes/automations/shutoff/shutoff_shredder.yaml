@@ -3,6 +3,7 @@
 #
 ## Shutoff plug to paper shredder 2-minutes after device has been switched on.
 #################################################################
+id: 36a89bf0-c131-4f9c-90d6-971e9c321ef1
 alias: Shutoff Shredder
 description:
   Shutoff plug to paper shredder 2-minutes after device has been switched

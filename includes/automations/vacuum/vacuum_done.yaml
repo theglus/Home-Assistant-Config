@@ -3,6 +3,7 @@
 #
 ## Notify Smartphones when Winston has completed cleaning.
 #################################################################
+id: ed69a1d1-16be-45f2-9860-fb0f6d1b3e70
 alias: Vacuum Done
 description: Notify Smartphones when Winston has completed cleaning.
 trigger:

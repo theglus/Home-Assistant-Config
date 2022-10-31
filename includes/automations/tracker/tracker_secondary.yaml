@@ -3,6 +3,7 @@
 #
 ## Device tracker using Key Tile.
 #################################################################
+id: 531a7b42-9901-480d-bfa1-79969ae41289
 alias: Tracker Secondary
 description: "Device tracker using Key Tile."
 trigger:

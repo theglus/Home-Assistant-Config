@@ -3,6 +3,7 @@
 #
 ## Sending /leave from Telegram disables some automations and turned off the fans to conserve power.
 #################################################################
+id: 6f97e0eb-c10d-4644-9693-098186835d99
 alias: Vacation Leave
 description: Sending /leave from Telegram disables some automations and turned off the fans to conserve power.
 trigger:

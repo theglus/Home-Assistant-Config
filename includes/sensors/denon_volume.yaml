@@ -4,12 +4,13 @@
 - platform: template
   sensors:
     denon_volume:
+      unique_id: 7e487060-c7ad-4672-bb04-0b6b3a69ec86
       value_template: >
-       {% if is_state('media_player.dennis', 'on')  %}
-          {% set n = states.media_player.dennis.attributes.volume_level | float %}
-          {{ '%.1f'%( n*100.0) }}
-        {% else %}
-          "0"
-        {% endif %} 
+        {% if is_state('media_player.dennis', 'on')  %}
+           {% set n = states.media_player.dennis.attributes.volume_level | float %}
+           {{ '%.1f'%( n*100.0) }}
+         {% else %}
+           "0"
+         {% endif %}
       friendly_name: Receiver Volume Level
       icon_template: mdi:volume-medium

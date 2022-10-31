@@ -3,6 +3,7 @@
 #
 ## Notify via Telegram when server has booted up.
 #################################################################
+id: 215a59f4-e97a-4832-8034-e3936ed67418
 alias: Server Boot Up
 description: Telegram notification when server has booted up.
 trigger:

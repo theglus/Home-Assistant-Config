@@ -3,6 +3,7 @@
 #
 ## Turn Nanoleaf to music mode when Denon HEOS is playing.
 #################################################################
+id: bbda2edb-590c-4219-a4c8-566b297081db
 alias: Mode Music
 description: "Turn Nanoleaf to music mode when Denon HEOS is playing."
 trigger:

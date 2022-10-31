@@ -3,6 +3,7 @@
 #
 ## Adds vacuum.set_fan_speed service calls to Vacuum Speed Helper.
 #################################################################
+id: a6cc6c1f-ea00-428a-b4ad-baa9fc6a84ae
 alias: Select Vacuum Speed
 description: "Adds vacuum.set_fan_speed service calls to Vacuum Speed Helper."
 trigger:

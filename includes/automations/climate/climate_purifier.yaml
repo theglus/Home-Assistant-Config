@@ -4,6 +4,7 @@
 # Trigger 'Kirby + Airmega: Daymode' @ 8 am + 'Kirby + Airmega:
 # Nighttime' @ 11 pm."
 #################################################################
+id: 37f5667d-fb63-4234-8693-99e02a6faef6
 alias: "Climate: Purifier"
 description: "Trigger 'Kirby + Airmega: Daymode' @ 8 am + 'Kirby + Airmega: Nighttime' @ 11 pm."
 trigger:

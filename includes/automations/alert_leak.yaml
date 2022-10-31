@@ -3,6 +3,7 @@
 #
 ## Alert when water is detected under the sink or dishwasher.
 #################################################################
+id: 3bac88ea-1657-445c-801e-32ba1f7b44f1
 alias: Alert Leak
 description: Alert when water is detected under the sink or dishwasher.
 trigger:
@@ -40,7 +41,7 @@ condition:
   - condition: state
     entity_id: update.deconz_update
     attribute: in_progress
-    state: 'false'
+    state: "false"
 action:
   - scene: scene.alert
   - choose:
@@ -49,29 +50,29 @@ action:
             conditions:
               - condition: state
                 entity_id: binary_sensor.sink
-                state: 'on'
+                state: "on"
         sequence:
           - service: notify.smartphones
             data:
               message: Leak in under sink!
-              title: '🚨 WATER ALERT:'
+              title: "🚨 WATER ALERT:"
       - conditions:
           - condition: and
             conditions:
               - condition: state
                 entity_id: binary_sensor.dishwasher
-                state: 'on'
+                state: "on"
         sequence:
           - service: notify.smartphones
             data:
               message: Dishwasher is leaking!
-              title: '🚨 WATER ALERT:'
+              title: "🚨 WATER ALERT:"
       - conditions:
           - condition: and
             conditions:
               - condition: state
                 entity_id: binary_sensor.sink
-                state: 'off'
+                state: "off"
                 for:
                   hours: 0
                   minutes: 0
@@ -84,7 +85,7 @@ action:
             conditions:
               - condition: state
                 entity_id: binary_sensor.dishwasher
-                state: 'off'
+                state: "off"
                 for:
                   hours: 0
                   minutes: 0

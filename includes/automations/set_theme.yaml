@@ -3,6 +3,7 @@
 #
 ## Set theme at Home Assistant start.
 #################################################################
+id: bd4312bf-00cc-4261-a692-9a4aeacdd37b
 alias: 'Set theme at startup'
 trigger:
   - platform: homeassistant

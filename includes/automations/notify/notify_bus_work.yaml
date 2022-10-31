@@ -3,6 +3,7 @@
 #
 ## Trigger Telegram notification to learn next bus to work.
 #################################################################
+id: ba50a1d2-e7cd-407d-83ab-d9588ef344f9
 alias: Notify Bus Work
 description: "Trigger Telegram notification to learn next bus to work."
 trigger:
