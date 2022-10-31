@@ -11,6 +11,14 @@ default_config:
 powercalc:
 
 prometheus:
+  namespace: hass
+  filter:
+    include_entity_globs:
+      - sensor.*_power
+      - sensor.*_energy*
+      - sensor.daily_energy_*
+      - sensor.monthly_energy_*
+      - sensor.*_energy_cost
 #################################################################
 ## Lovelace Resources
 #################################################################
