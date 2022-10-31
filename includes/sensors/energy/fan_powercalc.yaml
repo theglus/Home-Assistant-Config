@@ -1,0 +1,20 @@
+#################################################################
+## Air Circulator Powercalc Sensors
+#################################################################
+# Air Circulaors
+- platform: powercalc
+  create_group: Fan
+  unique_id: adf0994d-51b4-4ce1-87e2-f7420dcf5cce
+  entities:
+    # Air Circulator
+    - entity_id: switch.air_circulator
+      unique_id: c8055a52-0c3a-41a3-a125-13f2b7d470c6
+      name: Air Circulator
+      fixed:
+        power: 41.00
+    # Mini Air Circulator (High = 30.50)
+    - entity_id: switch.mini_air_circulator
+      unique_id: 16e1f700-08a5-4a5f-852a-2028d78a5ae4
+      name: Mini Air Circulator
+      fixed:
+        power: 14.80
