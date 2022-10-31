@@ -142,3 +142,39 @@
     data:
       option: '{{ tariff }}'
   mode: single
+- id: '1666754176988'
+  alias: Eco Mode
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - media_player.dennis
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 5
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: binary_sensor.peak_usage
+        state: 'on'
+      sequence:
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 5
+          milliseconds: 0
+      - service: script.eco_on
+        data: {}
+    default:
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 5
+        milliseconds: 0
+    - service: script.eco_off
+      data: {}
+  mode: single
