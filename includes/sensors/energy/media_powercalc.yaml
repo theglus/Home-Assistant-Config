@@ -11,35 +11,44 @@
       fixed:
         power: 4.15
         states_power:
-          media_content_id|Amazon: 7.50
-          media_content_id|HBO: 15.50
-          media_content_id|Hulu: 15.50
-          media_content_id|Netflix: 15.50
+          app_id|com.disney.disneyplus: 6.75
+          app_id|com.hbo.hbonow: 15.50
+          app_id|com.hulu.livingroomplus: 15.50
+          app_id|com.netflix.ninja: 15.50
+          app_id|com.plexapp.android: 5.75
+          app_id|com.amazon.amazonvideo.livingroom: 7.50
+          app_id"|com.google.android.youtube.tv: 12.50
       standby_power: 3.55
-    # Kitchen Dyson
-    # - entity_id: fan.kitchen
-    #   unique_id: eee91b1b-141f-4abe-95d7-abdb0d66a31a
-    #   name: Dyson Kitchen
-    #   linear:
-    #     calibrate:
-    #       - 10 -> 5.35
-    #       - 20 -> 6.05
-    #       - 30 -> 7.30
-    #       - 40 -> 9.25
-    #       - 50 -> 12.00
-    #       - 60 -> 17.90
-    #       - 70 -> 21.80
-    #       - 80 -> 32.10
-    #       - 90 -> 43.40
-    #       - 100 -> 55.80
-    #   standby_power: 3.30
-    # # Airmega
-    # - entity_id: fan.airmega
-    #   unique_id: bd765aa9-bf75-452b-b034-1e35c5ade61c
-    #   name: Airmega
-    #   linear:
-    #     calibrate:
-    #       - 0 -> 6.05
-    #       - 33 -> 8.36
-    #       - 66 -> 26.20
-    #       - 100 -> 61.60
+    # Television
+    - entity_id: media_player.sony_bravia_tv
+      unique_id: 992e685e-cc2a-48b0-bec7-4812d72e7e39
+      fixed:
+        power: 85.50
+      standby_power: 13.50
+    # Denon Receiver
+    - entity_id: media_player.dennis
+      power_sensor_id: sensor.dennis_plug_power
+    # Coax Extender
+    - entity_id: sensor.dummy
+      unique_id: 57b5132b-8cb0-440f-a66b-bdd20a6481ea
+      name: Coax Extender
+      fixed:
+        power: 1.85
+    # Hue Bridge
+    - entity_id: sensor.dummy
+      unique_id: a478557e-e08a-428c-8c25-f771dc81372a
+      name: Hue Bridge
+      fixed:
+        power: 1.30
+    # Raspberry Pi
+    - entity_id: sensor.dummy
+      unique_id: bcb0dce8-0d8b-4f5a-aec8-8b00d36b5f96
+      name: Raspberry Pi
+      fixed:
+        power: 2.85
+    # Switch
+    - entity_id: sensor.dummy
+      unique_id: 8b14886a-ccf7-4f67-ae12-5bb872a20625
+      name: Switch
+      fixed:
+        power: 2.30
