@@ -6,43 +6,96 @@
 id: "1634534154802"
 name: Alert
 entities:
-  light.color:
+  light.garden:
+    supported_color_modes: []
+    color_mode: onoff
+    mode: normal
+    dynamics: none
+    icon: mdi:string-lights
+    friendly_name: Garden Lights
+    supported_features: 0
+    state: "on"
+  light.hallway_marquee:
+    supported_color_modes: []
+    color_mode: onoff
+    mode: normal
+    dynamics: none
+    icon: mdi:billboard
+    friendly_name: Marquee
+    supported_features: 0
+    state: "on"
+  light.alert:
+    min_mireds: 153
+    max_mireds: 500
+    effect_list:
+      - None
+      - candle
+      - fire
     supported_color_modes:
       - color_temp
-      - hs
       - xy
     color_mode: xy
-    brightness: 239
+    brightness: 254
     hs_color:
-      - 5.51
-      - 76.863
+      - 2.105
+      - 89.412
     rgb_color:
       - 255
-      - 77
-      - 59
+      - 35
+      - 27
     xy_color:
-      - 0.644778
-      - 0.313889
-    effect: Red Alert
+      - 0.688403
+      - 0.302091
+    effect: None
     entity_id:
       - light.hallway_runner
       - light.potter_lamp
-      - light.center_track
-      - light.left_track
-      - light.right_track
-      - light.kitchen_track
-      - light.recessed_coffee
-      - light.nanoleaf
-      - light.recessed_dining
+      - light.track
       - light.yumi_lamp
+      - light.recessed
+    icon: mdi:lightbulb-group
+    friendly_name: Alert
+    supported_features: 44
     state: "on"
-  light.garden:
-    state: "on"
-  light.hallway_marquee:
-    state: "on"
-  light.group_loft:
-    color_mode: color_temp
-    brightness: 255
-    color_temp: 366
+  light.nanoleaf:
+    min_mireds: 154
+    max_mireds: 833
+    effect_list:
+      - Christmas
+      - Halloween
+      - Meteor Shower
+      - Miami Vice
+      - Nanoleaf rainbow
+      - Northern Lights
+      - Paint Splatter
+      - Pride
+      - Pride Classic
+      - Pride Rainbow
+      - Red Alert
+      - Romantic
+    supported_color_modes:
+      - color_temp
+      - hs
+    color_mode: hs
+    brightness: 254
+    hs_color:
+      - 0
+      - 0
+    rgb_color:
+      - 255
+      - 255
+      - 255
+    xy_color:
+      - 0.323
+      - 0.329
+    effect: Red Alert
+    icon: mdi:triangle-outline
+    friendly_name: Dino Panels
+    supported_features: 36
     state: "on"
 icon: mdi:alert
+metadata:
+  light.alert:
+    entity_only: true
+  light.nanoleaf:
+    entity_only: true
