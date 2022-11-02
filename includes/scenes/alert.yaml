@@ -93,9 +93,37 @@ entities:
     friendly_name: Dino Panels
     supported_features: 36
     state: "on"
+  light.group_loft:
+    min_mireds: 153
+    max_mireds: 454
+    supported_color_modes:
+      - color_temp
+      - onoff
+    entity_id:
+      - light.loft
+      - light.row_lamp
+    icon: mdi:home-lightbulb-outline
+    friendly_name: Group Loft
+    supported_features: 40
+    color_mode: color_temp
+    brightness: 255
+    color_temp: 366
+    hs_color:
+      - 28.327
+      - 64.71
+    rgb_color:
+      - 255
+      - 167
+      - 89
+    xy_color:
+      - 0.524
+      - 0.387
+    state: "on"
 icon: mdi:alert
 metadata:
   light.alert:
     entity_only: true
   light.nanoleaf:
+    entity_only: true
+  light.group_loft:
     entity_only: true
