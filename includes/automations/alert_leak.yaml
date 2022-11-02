@@ -10,48 +10,82 @@ trigger:
   - type: moist
     platform: device
     device_id: 6bd7ff509b62f7b1c7fbd08263ceb018
-    entity_id: binary_sensor.sink
+    entity_id: binary_sensor.kitchen_water
     domain: binary_sensor
+    alias: Kitchen water sensor moist.
   - type: moist
     platform: device
     device_id: b70266b2d103e0961f82ba09130a1551
-    entity_id: binary_sensor.dishwasher
+    entity_id: binary_sensor.dishwasher_water
     domain: binary_sensor
+    alias: Dishwasher water sensor moist.
   - type: not_moist
     platform: device
     device_id: 6bd7ff509b62f7b1c7fbd08263ceb018
-    entity_id: binary_sensor.sink
+    entity_id: binary_sensor.kitchen_water
     domain: binary_sensor
     for:
       hours: 0
       minutes: 0
       seconds: 1
-      milliseconds: 0
+    alias: Kitchen water sensor dry.
   - type: not_moist
     platform: device
     device_id: b70266b2d103e0961f82ba09130a1551
-    entity_id: binary_sensor.dishwasher
+    entity_id: binary_sensor.dishwasher_water
     domain: binary_sensor
     for:
       hours: 0
       minutes: 0
       seconds: 1
-      milliseconds: 0
+    alias: Dishwasher water sensor dry.
 condition:
-  - condition: state
-    entity_id: update.deconz_update
-    attribute: in_progress
-    state: "false"
+  - condition: not
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.kitchen_water
+        state: unavailable
+      - condition: state
+        entity_id: binary_sensor.dishwasher_water
+        state: unavailable
+    alias: Ensure none of the 2 conditions are true.
 action:
-  - scene: scene.alert
   - choose:
       - conditions:
           - condition: and
             conditions:
               - condition: state
-                entity_id: binary_sensor.sink
+                entity_id: binary_sensor.kitchen_water
                 state: "on"
         sequence:
+          - service: scene.create
+            data:
+              scene_id: scene_lights_before
+              snapshot_entities:
+                - light.bedside
+                - light.garden
+                - light.hallway_marquee
+                - light.hallway_runner
+                - light.jeffreys_lamp
+                - light.kitchen_track
+                - light.loft_bed_light
+                - light.loft_bed_light
+                - light.loft_desk_lamp
+                - light.nanoleaf
+                - light.overhead
+                - light.pinkie_lamp
+                - light.potter_lamp
+                - light.recessed
+                - light.row_lamp
+                - light.stair
+                - light.thruple_lamp
+                - light.thumb_lamp
+                - light.tiffanys_lamp
+                - light.track
+                - light.yumi_lamp
+          - service: scene.turn_on
+            target:
+              entity_id: scene.alert
           - service: notify.smartphones
             data:
               message: Leak in under sink!
@@ -60,9 +94,37 @@ action:
           - condition: and
             conditions:
               - condition: state
-                entity_id: binary_sensor.dishwasher
+                entity_id: binary_sensor.dishwasher_water
                 state: "on"
         sequence:
+          - service: scene.create
+            data:
+              scene_id: scene_lights_before
+              snapshot_entities:
+                - light.bedside
+                - light.garden
+                - light.hallway_marquee
+                - light.hallway_runner
+                - light.jeffreys_lamp
+                - light.kitchen_track
+                - light.loft_bed_light
+                - light.loft_bed_light
+                - light.loft_desk_lamp
+                - light.nanoleaf
+                - light.overhead
+                - light.pinkie_lamp
+                - light.potter_lamp
+                - light.recessed
+                - light.row_lamp
+                - light.stair
+                - light.thruple_lamp
+                - light.thumb_lamp
+                - light.tiffanys_lamp
+                - light.track
+                - light.yumi_lamp
+          - service: scene.turn_on
+            target:
+              entity_id: scene.alert
           - service: notify.smartphones
             data:
               message: Dishwasher is leaking!
@@ -71,7 +133,7 @@ action:
           - condition: and
             conditions:
               - condition: state
-                entity_id: binary_sensor.sink
+                entity_id: binary_sensor.kitchen_water
                 state: "off"
                 for:
                   hours: 0
@@ -79,12 +141,15 @@ action:
                   seconds: 5
                   milliseconds: 0
         sequence:
-          - scene: scene.normal_lights
+          - service: scene.turn_on
+            data: {}
+            target:
+              entity_id: scene.scene_lights_before
       - conditions:
           - condition: and
             conditions:
               - condition: state
-                entity_id: binary_sensor.dishwasher
+                entity_id: binary_sensor.dishwasher_water
                 state: "off"
                 for:
                   hours: 0
@@ -92,6 +157,9 @@ action:
                   seconds: 5
                   milliseconds: 0
         sequence:
-          - scene: scene.normal_lights
+          - service: scene.turn_on
+            data: {}
+            target:
+              entity_id: scene.scene_lights_before
     default: []
 mode: single

@@ -47,3 +47,12 @@ panel_custom:
     require_admin: true
     config:
       ingress: core_configurator
+  - name: zha
+    sidebar_title: ZHA
+    sidebar_icon: mdi:zigbee
+    js_url: /api/hassio/app/entrypoint.js
+    url_path: "config/zha/visualization?config_entry=3760d8e8bbaaf60d055fe4745ded7a73"
+    embed_iframe: true
+    require_admin: true
+    config:
+      ingress: core_configurator
