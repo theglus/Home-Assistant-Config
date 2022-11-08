@@ -33,6 +33,7 @@ from homeassistant.helpers.restore_state import RestoreEntity
 from ..const import (
     ATTR_ENTITIES,
     ATTR_IS_GROUP,
+    CONF_DISABLE_EXTENDED_ATTRIBUTES,
     CONF_ENERGY_SENSOR_PRECISION,
     CONF_ENERGY_SENSOR_UNIT_PREFIX,
     CONF_GROUP,
@@ -168,6 +169,12 @@ async def update_associated_group_entry(
         return None
 
     group_entry_id = config_entry.data.get(CONF_GROUP)
+    if not group_entry_id:
+        _LOGGER.error(
+            f"Cannot add/remove power sensor to group {group_entry_id}. It does not exist."
+        )
+        return None
+
     group_entry = hass.config_entries.async_get_entry(group_entry_id)
     member_sensors = group_entry.data.get(CONF_GROUP_MEMBER_SENSORS) or []
 
@@ -306,10 +313,11 @@ class GroupedSensor(BaseEntity, RestoreEntity, SensorEntity):
     ):
         self._attr_name = name
         self._entities = entities
-        self._attr_extra_state_attributes = {
-            ATTR_ENTITIES: self._entities,
-            ATTR_IS_GROUP: True,
-        }
+        if not sensor_config.get(CONF_DISABLE_EXTENDED_ATTRIBUTES):
+            self._attr_extra_state_attributes = {
+                ATTR_ENTITIES: self._entities,
+                ATTR_IS_GROUP: True,
+            }
         self._rounding_digits = rounding_digits
         self._sensor_config = sensor_config
         if unique_id:
@@ -350,7 +358,7 @@ class GroupedSensor(BaseEntity, RestoreEntity, SensorEntity):
     @callback
     def on_state_change(self, event) -> None:
         """Triggered when one of the group entities changes state"""
-        if self.hass.state != CoreState.running:
+        if self.hass.state != CoreState.running:  # pragma: no cover
             return
 
         all_states = [self.hass.states.get(entity_id) for entity_id in self._entities]

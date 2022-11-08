@@ -60,6 +60,8 @@ from .const import (
     CONF_VALUE,
     CONF_VALUE_TEMPLATE,
     CONF_WLED,
+    DISCOVERY_POWER_PROFILE,
+    DISCOVERY_SOURCE_ENTITY,
     DOMAIN,
     ENERGY_INTEGRATION_METHOD_LEFT,
     ENERGY_INTEGRATION_METHODS,
@@ -161,7 +163,7 @@ SCHEMA_POWER_LINEAR = vol.Schema(
     }
 )
 
-SCHEMA_POWER_LUT_AUTODISCOVERED = vol.Schema(
+SCHEMA_POWER_AUTODISCOVERED = vol.Schema(
     {vol.Optional(CONF_CONFIRM_AUTODISCOVERED_MODEL, default=True): bool}
 )
 
@@ -215,27 +217,34 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     ) -> FlowResult:
         """Handle integration discovery."""
 
+        _LOGGER.debug("Starting discovery flow: %s", discovery_info)
+
         self.skip_advanced_step = (
             True  # We don't want to ask advanced option when discovered
         )
-        self.sensor_config.update(discovery_info)
+
         self.selected_sensor_type = SensorType.VIRTUAL_POWER
         self.name = discovery_info[CONF_NAME]
         unique_id = discovery_info[CONF_UNIQUE_ID]
         await self.async_set_unique_id(unique_id)
         self._abort_if_unique_id_configured()
 
+        sensor_config = discovery_info.copy()
+
         self.source_entity_id = discovery_info[CONF_ENTITY_ID]
-        self.source_entity = await create_source_entity(
-            self.source_entity_id, self.hass
-        )
+        self.source_entity = discovery_info[DISCOVERY_SOURCE_ENTITY]
+        self.power_profile = discovery_info[DISCOVERY_POWER_PROFILE]
+
+        del sensor_config[DISCOVERY_SOURCE_ENTITY]
+        del sensor_config[DISCOVERY_POWER_PROFILE]
+        self.sensor_config.update(sensor_config)
 
         self.context["title_placeholders"] = {
             "name": self.sensor_config.get(CONF_NAME),
             "manufacturer": self.sensor_config.get(CONF_MANUFACTURER),
             "model": self.sensor_config.get(CONF_MODEL),
         }
-        return await self.async_step_lut()
+        return await self.async_step_library()
 
     async def async_step_user(self, user_input=None) -> FlowResult:
         """Handle the initial step."""
@@ -273,7 +282,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 return await self.async_step_wled()
 
             if user_input.get(CONF_MODE) == CalculationStrategy.LUT:
-                return await self.async_step_lut()
+                return await self.async_step_library()
 
         return self.async_show_form(
             step_id="virtual_power",
@@ -371,8 +380,11 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             errors=errors,
         )
 
-    async def async_step_lut(self, user_input: dict[str, str] = None) -> FlowResult:
-        """Try to autodiscover manufacturer/model first. Ask the user to confirm this or forward to manual configuration"""
+    async def async_step_library(self, user_input: dict[str, str] = None) -> FlowResult:
+        """
+        Try to autodiscover manufacturer/model first.
+        Ask the user to confirm this or forward to manual library selection
+        """
         if user_input is not None:
             if user_input.get(CONF_CONFIRM_AUTODISCOVERED_MODEL) and self.power_profile:
                 self.sensor_config.update(
@@ -383,9 +395,9 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 )
                 return await self.async_step_power_advanced()
 
-            return await self.async_step_lut_manufacturer()
+            return await self.async_step_manufacturer()
 
-        if self.source_entity.entity_entry:
+        if self.source_entity.entity_entry and self.power_profile is None:
             try:
                 self.power_profile = await get_power_profile(
                     self.hass, {}, self.source_entity.entity_entry
@@ -394,18 +406,18 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 self.power_profile = None
         if self.power_profile:
             return self.async_show_form(
-                step_id="lut",
+                step_id="library",
                 description_placeholders={
                     "manufacturer": self.power_profile.manufacturer,
                     "model": self.power_profile.model,
                 },
-                data_schema=SCHEMA_POWER_LUT_AUTODISCOVERED,
+                data_schema=SCHEMA_POWER_AUTODISCOVERED,
                 errors={},
             )
 
-        return await self.async_step_lut_manufacturer()
+        return await self.async_step_manufacturer()
 
-    async def async_step_lut_manufacturer(
+    async def async_step_manufacturer(
         self, user_input: dict[str, str] = None
     ) -> FlowResult:
         """Ask the user to select the manufacturer"""
@@ -413,18 +425,16 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             self.sensor_config.update(
                 {CONF_MANUFACTURER: user_input.get(CONF_MANUFACTURER)}
             )
-            return await self.async_step_lut_model()
+            return await self.async_step_model()
 
-        schema = _create_lut_schema_manufacturer(self.hass)
+        schema = _create_schema_manufacturer(self.hass)
         return self.async_show_form(
-            step_id="lut_manufacturer",
+            step_id="manufacturer",
             data_schema=schema,
             errors={},
         )
 
-    async def async_step_lut_model(
-        self, user_input: dict[str, str] = None
-    ) -> FlowResult:
+    async def async_step_model(self, user_input: dict[str, str] = None) -> FlowResult:
         errors: dict[str, str] = {}
         if user_input is not None:
             self.sensor_config.update({CONF_MODEL: user_input.get(CONF_MODEL)})
@@ -437,14 +447,14 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             )
             sub_profiles = profile.get_sub_profiles()
             if sub_profiles:
-                return await self.async_step_lut_subprofile()
+                return await self.async_step_sub_profile()
             errors = await self.validate_strategy_config()
             if not errors:
                 return await self.async_step_power_advanced()
 
         return self.async_show_form(
-            step_id="lut_model",
-            data_schema=_create_lut_schema_model(
+            step_id="model",
+            data_schema=_create_schema_model(
                 self.hass, self.sensor_config.get(CONF_MANUFACTURER)
             ),
             description_placeholders={
@@ -453,7 +463,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             errors=errors,
         )
 
-    async def async_step_lut_subprofile(
+    async def async_step_sub_profile(
         self, user_input: dict[str, str] = None
     ) -> FlowResult:
         errors: dict[str, str] = {}
@@ -470,8 +480,8 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             self.sensor_config.get(CONF_MODEL),
         )
         return self.async_show_form(
-            step_id="lut_subprofile",
-            data_schema=await _create_lut_schema_subprofile(self.hass, model_info),
+            step_id="sub_profile",
+            data_schema=await _create_schema_sub_profile(self.hass, model_info),
             errors=errors,
         )
 
@@ -662,12 +672,11 @@ def _create_virtual_power_schema(hass: HomeAssistant) -> vol.Schema:
 def _create_group_options_schema(hass: HomeAssistant) -> vol.Schema:
     """Create config schema for groups"""
     member_sensors = [
-        selector.SelectOptionDict(
-            value=config_entry.entry_id, label=config_entry.data.get(CONF_NAME)
-        )
+        selector.SelectOptionDict(value=config_entry.entry_id, label=config_entry.title)
         for config_entry in hass.config_entries.async_entries(DOMAIN)
         if config_entry.data.get(CONF_SENSOR_TYPE) == SensorType.VIRTUAL_POWER
         and config_entry.unique_id is not None
+        and config_entry.title is not None
     ]
     member_sensor_selector = selector.SelectSelector(
         selector.SelectSelectorConfig(
@@ -751,8 +760,8 @@ def _create_linear_schema(source_entity_id: str) -> vol.Schema:
     )
 
 
-def _create_lut_schema_manufacturer(hass: HomeAssistant) -> vol.Schema:
-    """Create LUT schema"""
+def _create_schema_manufacturer(hass: HomeAssistant) -> vol.Schema:
+    """Create manufacturer schema"""
     library = ProfileLibrary(hass)
     manufacturers = [
         selector.SelectOptionDict(value=manufacturer, label=manufacturer)
@@ -769,8 +778,8 @@ def _create_lut_schema_manufacturer(hass: HomeAssistant) -> vol.Schema:
     )
 
 
-def _create_lut_schema_model(hass: HomeAssistant, manufacturer: str) -> vol.Schema:
-    """Create LUT schema"""
+def _create_schema_model(hass: HomeAssistant, manufacturer: str) -> vol.Schema:
+    """Create model schema"""
     library = ProfileLibrary(hass)
     models = [
         selector.SelectOptionDict(value=model, label=model)
@@ -787,10 +796,10 @@ def _create_lut_schema_model(hass: HomeAssistant, manufacturer: str) -> vol.Sche
     )
 
 
-async def _create_lut_schema_subprofile(
+async def _create_schema_sub_profile(
     hass: HomeAssistant, model_info: ModelInfo
 ) -> vol.Schema:
-    """Create LUT schema"""
+    """Create sub profile schema"""
     library = ProfileLibrary(hass)
     profile = await library.get_profile(model_info)
     sub_profiles = [
