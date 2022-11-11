@@ -171,6 +171,15 @@
           entity_id:
           - switch.coffee_station_plug
           - switch.workstation_plug
+      - delay:
+          hours: 0
+          minutes: 1
+          seconds: 0
+          milliseconds: 0
+      - service: switch.toggle
+        data: {}
+        target:
+          entity_id: switch.switchbot_pc
     - conditions:
       - condition: trigger
         id: fixed-time-12am
