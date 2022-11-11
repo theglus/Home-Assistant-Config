@@ -40,6 +40,7 @@ from ..const import (
     ATTR_SOURCE_ENTITY,
     CONF_CALCULATION_ENABLED_CONDITION,
     CONF_DELAY,
+    CONF_DISABLE_EXTENDED_ATTRIBUTES,
     CONF_DISABLE_STANDBY_POWER,
     CONF_FIXED,
     CONF_FORCE_UPDATE_FREQUENCY,
@@ -55,6 +56,7 @@ from ..const import (
     CONF_POWER_SENSOR_PRECISION,
     CONF_SLEEP_POWER,
     CONF_STANDBY_POWER,
+    CONF_UNAVAILABLE_POWER,
     CONF_WLED,
     DATA_CALCULATOR_FACTORY,
     DISCOVERY_POWER_PROFILE,
@@ -313,14 +315,20 @@ class VirtualPowerSensor(SensorEntity, BaseEntity, PowerSensor):
         self._sleep_power_timer: CALLBACK_TYPE | None = None
         if entity_category:
             self._attr_entity_category = EntityCategory(entity_category)
-        self._attr_extra_state_attributes = {
-            ATTR_CALCULATION_MODE: calculation_strategy,
-            ATTR_INTEGRATION: DOMAIN,
-            ATTR_SOURCE_ENTITY: source_entity.entity_id,
-            ATTR_SOURCE_DOMAIN: source_entity.domain,
-        }
+        if not sensor_config.get(CONF_DISABLE_EXTENDED_ATTRIBUTES):
+            self._attr_extra_state_attributes = {
+                ATTR_CALCULATION_MODE: calculation_strategy,
+                ATTR_INTEGRATION: DOMAIN,
+                ATTR_SOURCE_ENTITY: source_entity.entity_id,
+                ATTR_SOURCE_DOMAIN: source_entity.domain,
+            }
         self._power_profile = power_profile
         self._sub_profile_selector: SubProfileSelector | None = None
+        if (
+            not self._ignore_unavailable_state
+            and self._sensor_config.get(CONF_UNAVAILABLE_POWER) is not None
+        ):
+            self._ignore_unavailable_state = True
 
     async def async_added_to_hass(self):
         """Register callbacks."""
@@ -448,6 +456,10 @@ class VirtualPowerSensor(SensorEntity, BaseEntity, PowerSensor):
         if state.entity_id != self._source_entity.entity_id:
             entity_state = self.hass.states.get(self._source_entity.entity_id)
 
+        unavailable_power = self._sensor_config.get(CONF_UNAVAILABLE_POWER)
+        if entity_state.state == STATE_UNAVAILABLE and unavailable_power is not None:
+            return Decimal(unavailable_power)
+
         is_calculation_enabled = await self.is_calculation_enabled()
         if entity_state.state in OFF_STATES or not is_calculation_enabled:
             return await self.calculate_standby_power(entity_state)
@@ -542,6 +554,8 @@ class VirtualPowerSensor(SensorEntity, BaseEntity, PowerSensor):
 
     def set_energy_sensor_attribute(self, entity_id: str):
         """Set the energy sensor on the state attributes"""
+        if self._sensor_config.get(CONF_DISABLE_EXTENDED_ATTRIBUTES):
+            return
         self._attr_extra_state_attributes.update(
             {ATTR_ENERGY_SENSOR_ENTITY_ID: entity_id}
         )

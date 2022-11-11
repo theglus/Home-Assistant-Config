@@ -1,88 +1,3 @@
-- id: '1609214877779'
-  alias: Mi Magic Cube
-  description: 'Side 1: Remote Side 2: Heat Side 3: TV Side 4: Vacuum Side 5: Dino
-    Side 6: Theater'
-  use_blueprint:
-    path: magic_cube.yaml
-    input:
-      remote: 55278effdc88ebe7ffa36b52540fa006
-      rotate_clockwise: []
-      rotate_counter_clockwise: []
-      cube_shake:
-      - service: media_player.media_play_pause
-        data: {}
-        target:
-          device_id: 1033f409af0f486c7f6923cac5bb320a
-      cube_double_tap_any: []
-      double_tap_any_side: false
-      six_to_six:
-      - scene: scene.theater
-      one_to_five: []
-      one_to_four: []
-      two_to_two:
-      - service: switch.toggle
-        data: {}
-        target:
-          entity_id: switch.heat
-      three_to_three:
-      - scene: scene.television
-      four_to_four:
-      - service: script.clean_empty
-        data: {}
-      one_to_one:
-      - service: script.remote_finder
-        data: {}
-      five_to_five:
-      - service: light.turn_on
-        data:
-          effect: Meteor Shower
-        target:
-          entity_id: light.nanoleaf
-      four_to_one:
-      - service: vacuum.return_to_base
-        data: {}
-        target:
-          device_id: 62c2564944db27e46b6382dbb56205f9
-      cube_wake: []
-      two_to_one: []
-      two_to_three: []
-      two_to_four: []
-      two_to_five: []
-      two_to_six:
-      - service: switch.toggle
-        data: {}
-        target:
-          entity_id: switch.heat
-      six_to_one: []
-      six_to_two: []
-      six_to_three: []
-      six_to_four: []
-      six_to_five:
-      - scene: scene.theater
-      three_to_one: []
-      three_to_two: []
-      three_to_four: []
-      three_to_five: []
-      three_to_six:
-      - scene: scene.television
-      four_to_two: []
-      one_to_two: []
-      one_to_three:
-      - service: script.remote_finder
-        data: {}
-      one_to_six: []
-      four_to_three: []
-      four_to_five: []
-      four_to_six:
-      - service: script.clean_empty
-        data: {}
-      five_to_six: []
-      slide_on_three:
-      - service: script.av_quick_2
-        data: {}
-      slide_on_six:
-      - service: script.av_quick_3
-        data: {}
 - id: '1644337161806'
   alias: Climate AQI
   description: Turn on Kitchen Dyson when AQI >75.
@@ -177,4 +92,102 @@
         milliseconds: 0
     - service: script.eco_off
       data: {}
+  mode: single
+- id: '1667587688860'
+  alias: Aqara Magic Cube
+  description: ''
+  use_blueprint:
+    path: EdwardTFN/aqara-cube-zha-simplified-face-based-device-control.yaml
+    input:
+      last_face_input: input_number.magic_cube
+      cube: 55278effdc88ebe7ffa36b52540fa006
+      face_1_knock:
+      - service: script.turn_on
+        data: {}
+        target:
+          entity_id: script.remote_finder
+      face_1_rotate_counter_clockwise:
+      - service: media_player.volume_down
+        data: {}
+        target:
+          entity_id: media_player.dennis
+      face_1_rotate_clockwise:
+      - service: media_player.volume_up
+        data: {}
+        target:
+          entity_id: media_player.dennis
+      face_2_knock: []
+      face_2_rotate_counter_clockwise:
+      - service: media_player.media_pause
+        data: {}
+        target:
+          entity_id: media_player.shield_tv
+      face_2_rotate_clockwise:
+      - service: media_player.media_play
+        data: {}
+        target:
+          entity_id: media_player.shield_tv
+      face_4_knock:
+      - service: light.toggle
+        data: {}
+        target:
+          entity_id: light.tv
+      face_4_rotate_counter_clockwise: []
+      face_6_knock:
+      - service: switch.toggle
+        data: {}
+        target:
+          entity_id: switch.heat
+      face_5_knock:
+      - service: script.turn_on
+        data: {}
+        target:
+          entity_id: script.clean_empty
+      face_5_rotate_counter_clockwise:
+      - service: vacuum.return_to_base
+        data: {}
+        target:
+          entity_id: vacuum.winston
+- id: '1667808317967'
+  alias: Energy Office
+  description: ''
+  trigger:
+  - platform: time
+    at: 07:00:00
+    id: fixed-time-7am
+  - platform: time
+    at: 00:00:00
+    id: fixed-time-12am
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: fixed-time-7am
+      sequence:
+      - service: switch.turn_on
+        data: {}
+        target:
+          entity_id:
+          - switch.coffee_station_plug
+          - switch.workstation_plug
+      - delay:
+          hours: 0
+          minutes: 1
+          seconds: 0
+          milliseconds: 0
+      - service: switch.toggle
+        data: {}
+        target:
+          entity_id: switch.switchbot_pc
+    - conditions:
+      - condition: trigger
+        id: fixed-time-12am
+      sequence:
+      - service: switch.turn_off
+        data: {}
+        target:
+          entity_id:
+          - switch.coffee_station_plug
+          - switch.workstation_plug
   mode: single

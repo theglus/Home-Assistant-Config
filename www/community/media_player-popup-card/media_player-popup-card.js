@@ -2381,109 +2381,45 @@ LitElement['finalized'] = true;
  */
 LitElement.render = render$1;
 
-function hass() {
-  if(document.querySelector('hc-main'))
-    return document.querySelector('hc-main').hass;
-
-  if(document.querySelector('home-assistant'))
-    return document.querySelector('home-assistant').hass;
-
-  return undefined;
-}
-async function load_lovelace() {
-  if(customElements.get("hui-view")) return true;
-
-  await customElements.whenDefined("partial-panel-resolver");
-  const ppr = document.createElement("partial-panel-resolver");
-  ppr.hass = {panels: [{
-    url_path: "tmp",
-    "component_name": "lovelace",
-  }]};
-  ppr._updateRoutes();
-  await ppr.routerOptions.routes.tmp.load();
-  if(!customElements.get("ha-panel-lovelace")) return false;
-  const p = document.createElement("ha-panel-lovelace");
-  p.hass = hass();
-  if(p.hass === undefined) {
-    await new Promise(resolve => {
-      window.addEventListener('connection-status', (ev) => {
-        console.log(ev);
-        resolve();
-      }, {once: true});
-    });
-    p.hass = hass();
+function lovelace_view() {
+  var root = document.querySelector("hc-main");
+  if(root) {
+    root = root && root.shadowRoot;
+    root = root && root.querySelector("hc-lovelace");
+    root = root && root.shadowRoot;
+    root = root && root.querySelector("hui-view") || root.querySelector("hui-panel-view");
+    return root;
   }
-  p.panel = {config: {mode: null}};
-  p._fetchConfig();
-  return true;
+
+  root = document.querySelector("home-assistant");
+  root = root && root.shadowRoot;
+  root = root && root.querySelector("home-assistant-main");
+  root = root && root.shadowRoot;
+  root = root && root.querySelector("app-drawer-layout partial-panel-resolver");
+  root = root && root.shadowRoot || root;
+  root = root && root.querySelector("ha-panel-lovelace");
+  root = root && root.shadowRoot;
+  root = root && root.querySelector("hui-root");
+  root = root && root.shadowRoot;
+  root = root && root.querySelector("ha-app-layout");
+  root = root && root.querySelector("#view");
+  root = root && root.firstElementChild;
+  return root;
 }
 
-async function _selectTree(root, path, all=false) {
-  let el = root;
-  if(typeof(path) === "string") {
-    path = path.split(/(\$| )/);
-  }
-  for(const [i, p] of path.entries()) {
-    if(!p.trim().length) continue;
-    if(!el) return null;
-    if(el.localName && el.localName.includes("-"))
-      await customElements.whenDefined(el.localName);
-    if(el.updateComplete)
-      await el.updateComplete;
-    if(p === "$")
-      if(all && i == path.length-1)
-        el = [el.shadowRoot];
-      else
-        el = el.shadowRoot;
-    else
-      if(all && i == path.length-1)
-        el = el.querySelectorAll(p);
-      else
-        el = el.querySelector(p);
-  }
-  return el;
-}
-
-async function selectTree(root, path, all=false, timeout=10000) {
-  return Promise.race([
-    _selectTree(root, path, all),
-    new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), timeout))
-  ]).catch((err) => {
-    if(!err.message || err.message !== "timeout")
-      throw(err);
-    return null;
+function fireEvent(ev, detail, entity=null) {
+  ev = new Event(ev, {
+    bubbles: true,
+    cancelable: false,
+    composed: true,
   });
-}
-
-let helpers = window.cardHelpers;
-const helperPromise = new Promise(async (resolve, reject) => {
-  if(helpers) resolve();
-
-  const updateHelpers = async () => {
-    helpers = await window.loadCardHelpers();
-    window.cardHelpers = helpers;
-    resolve();
-  };
-
-  if(window.loadCardHelpers) {
-    updateHelpers();
+  ev.detail = detail || {};
+  if(entity) {
+    entity.dispatchEvent(ev);
   } else {
-    // If loadCardHelpers didn't exist, force load lovelace and try once more.
-    window.addEventListener("load", async () => {
-      load_lovelace();
-      if(window.loadCardHelpers) {
-        updateHelpers();
-      }
-    });
+    var root = lovelace_view();
+    if (root) root.dispatchEvent(ev);
   }
-});
-
-async function closePopUp() {
-  const root = document.querySelector("home-assistant") || document.querySelector("hc-root");
-  const el = await selectTree(root, "$ card-tools-popup");
-
-  if(el)
-    el.closeDialog();
 }
 
 /**
@@ -2982,7 +2918,15 @@ class MediaPlayerPopupCard extends LitElement {
     }
     _close(event) {
         if (event && (event.target.className.includes('popup-inner') || event.target.className.includes('settings-inner'))) {
-            closePopUp();
+            const action = {
+                browser_mod: {
+                    service: "browser_mod.close_popup",
+                    data: {
+                        browser_id: 'THIS'
+                    }
+                }
+            };
+            fireEvent("ll-custom", action);
         }
     }
     _createRange(amount) {
