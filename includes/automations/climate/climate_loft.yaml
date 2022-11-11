@@ -29,13 +29,11 @@ action:
             domain: sensor
             above: 72
         sequence:
-          - type: turn_on
-            device_id: 47073cebbaaca58b5f5931a4d0bf7914
-            entity_id: switch.air_circulator
-            domain: switch
+          - service: fan.turn_om
+            target:
+              entity_id: fan.air_circulator
     default:
-      - type: turn_off
-        device_id: 47073cebbaaca58b5f5931a4d0bf7914
-        entity_id: switch.air_circulator
-        domain: switch
+      - service: fan.turn_off
+        target:
+          entity_id: fan.air_circulator
 mode: single

@@ -11,8 +11,10 @@
       float + states('sensor.appliance_power')|
       float + states('sensor.dishwasher_plug_power')|
       float + states('sensor.coffee_station_plug_power')|
+      float + states('sensor.craftstation_plug_power')|
       float + states('sensor.fan_power')|
       float + states('sensor.ice_bear_plug_power')|
       float + states('sensor.laundry_power')|
+      float + states('sensor.nibbler_plug_power')|
       float + states('sensor.workstation_plug_power')|
       float)|round(3)}}"
