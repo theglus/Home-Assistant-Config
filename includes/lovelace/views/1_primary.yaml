@@ -405,7 +405,7 @@ cards:
                 ## Air Circulator
                 #----------------------------------------------------------------
                 - type: "custom:button-card"
-                  entity: switch.mini_air_circulator
+                  entity: fan.mini_air_circulator
                   name: Air Circulator
                   template:
                     - icon_circulator
@@ -506,7 +506,7 @@ cards:
                 ## Living Room Air Circulator
                 #----------------------------------------------------------------
                 - type: "custom:button-card"
-                  entity: switch.air_circulator
+                  entity: fan.air_circulator
                   name: Air Circulator
                   template:
                     - icon_circulator

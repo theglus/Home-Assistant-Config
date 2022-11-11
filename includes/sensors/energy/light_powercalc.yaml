@@ -75,4 +75,5 @@
           manufacturer: signify
           model: LTW001
         - entity_id: light.row_lamp
-          power_sensor_id: sensor.row_lamp_current_consumption
+          fixed:
+            power: 5.50

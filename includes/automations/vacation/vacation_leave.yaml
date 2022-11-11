@@ -28,16 +28,16 @@ action:
       entity_id:
         - fan.kirby
         - fan.kitchen
-  - service: switch.turn_off
-    data: {}
-    target:
-      entity_id: switch.air_circulator
-  - service: script.leave_vacuum
-    data: {}
-  - service: notify.telegram
-    data:
-      title: "\U0001F3DD Vacation: Start"
-      message:
-        Since you'll be out of town, I've taken the liberty of disabling some
-        automations and turned off the fans to conserve power.
+- service: switch.turn_off
+  data: {}
+  target:
+    entity_id: switch.air_circulator
+- service: script.leave_vacuum
+  data: {}
+- service: notify.telegram
+  data:
+    title: "\U0001F3DD Vacation: Start"
+    message:
+      Since you'll be out of town, I've taken the liberty of disabling some
+      automations and turned off the fans to conserve power.
 mode: single

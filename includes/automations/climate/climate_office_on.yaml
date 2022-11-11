@@ -12,8 +12,7 @@ trigger:
     to: "on"
     from: "off"
 action:
-  - type: turn_on
-    device_id: 81424ac53e80a7fdde726394ebea9ca2
-    entity_id: switch.mini_air_circulator
-    domain: switch
+  - service: fan.turn_on
+    target:
+      entity_id: fan.mini_air_circulator
 mode: single

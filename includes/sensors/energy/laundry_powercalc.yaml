@@ -11,8 +11,12 @@
       unique_id: 38b4cfeb-ca7a-4450-90a7-03e66897e7a2
       fixed:
         power: 200
+      unavailable_power: 0
+      ignore_unavailable_state: true
     # Dryer
     - entity_id: switch.dryer_power
       unique_id: 75dcb721-9a77-4a5b-9066-7144d86ecad6
       fixed:
         power: 2000
+      unavailable_power: 0
+      ignore_unavailable_state: true

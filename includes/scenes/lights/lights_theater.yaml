@@ -35,6 +35,6 @@ entities:
     state: "off"
   fan.kitchen:
     state: "off"
-  switch.air_circulator:
+  fan.air_circulator:
     state: "off"
 icon: mdi:theater
