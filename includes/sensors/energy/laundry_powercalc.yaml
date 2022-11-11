@@ -9,7 +9,8 @@
     # Washer
     - entity_id: switch.washer_power
       unique_id: 38b4cfeb-ca7a-4450-90a7-03e66897e7a2
-      power_sensor_id: sensor.washer_plug_power
+      fixed:
+        power: 200
     # Dryer
     - entity_id: switch.dryer_power
       unique_id: 75dcb721-9a77-4a5b-9066-7144d86ecad6
