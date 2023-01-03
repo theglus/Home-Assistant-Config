@@ -16,6 +16,7 @@ cards:
         style: |
           ha-card {
             border-radius: 30px;
+            border-style: none;
             background: rgba(0,0,0,.3);
             box-shadow: none;
             }
@@ -177,6 +178,7 @@ cards:
                 background: rgba(0,0,0,.3); 
                 padding: 10px; 
                 border-radius: 35px; 
+                border-style: none
                 margin-top: none; 
                 }
             card:
@@ -287,6 +289,7 @@ cards:
                 background: rgba(0,0,0,.3); 
                 padding: 10px; 
                 border-radius: 35px; 
+                border-style: none
                 margin-top: none; 
                 }
             card:
@@ -353,6 +356,7 @@ cards:
                 background: rgba(0,0,0,.3); 
                 padding: 10px; 
                 border-radius: 35px; 
+                border-style: none
                 margin-top: none; 
                 }
             card:
@@ -385,6 +389,7 @@ cards:
                 background: rgba(0,0,0,.3); 
                 padding: 10px; 
                 border-radius: 35px; 
+                border-style: none
                 margin-top: none; 
                 }
             card:
@@ -462,6 +467,7 @@ cards:
                 background: rgba(0,0,0,.3); 
                 padding: 10px; 
                 border-radius: 35px; 
+                border-style: none
                 margin-top: none; 
                 }
             card:
@@ -553,6 +559,7 @@ cards:
                 background: rgba(0,0,0,.3); 
                 padding: 10px; 
                 border-radius: 35px; 
+                border-style: none
                 margin-top: none; 
                 }
             card:
@@ -603,6 +610,7 @@ cards:
                 background: rgba(0,0,0,.3); 
                 padding: 10px; 
                 border-radius: 35px; 
+                border-style: none
                 margin-top: none; 
                 }
             card:
@@ -697,6 +705,7 @@ cards:
                 background: rgba(0,0,0,.3); 
                 padding: 10px; 
                 border-radius: 35px; 
+                border-style: none
                 margin-top: none; 
                 }
             card:

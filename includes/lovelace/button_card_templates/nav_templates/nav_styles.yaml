@@ -5,6 +5,7 @@ style:
   button:
     - background: "rgba(255,255,255,.1)"
     - border-radius: 25px
+    - border-style: none
     - padding: 20px
   icon:
     - "--mdc-icon-size": 40px

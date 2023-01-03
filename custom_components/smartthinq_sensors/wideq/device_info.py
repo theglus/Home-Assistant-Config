@@ -1,15 +1,17 @@
 """Definition for SmartThinQ device type and information."""
 
-import enum
+from enum import Enum
 import logging
-from typing import Any, Dict, Optional
+from typing import Any, Optional
 
 from .const import STATE_OPTIONITEM_UNKNOWN
+
+KEY_DEVICE_ID = "deviceId"
 
 _LOGGER = logging.getLogger(__name__)
 
 
-class DeviceType(enum.Enum):
+class DeviceType(Enum):
     """The category of device."""
 
     REFRIGERATOR = 101
@@ -60,7 +62,7 @@ WM_DEVICE_TYPES = [
 ]
 
 
-class PlatformType(enum.Enum):
+class PlatformType(Enum):
     """The category of device."""
 
     THINQ1 = "thinq1"
@@ -68,7 +70,7 @@ class PlatformType(enum.Enum):
     UNKNOWN = STATE_OPTIONITEM_UNKNOWN
 
 
-class NetworkType(enum.Enum):
+class NetworkType(Enum):
     """The type of network."""
 
     WIFI = "02"
@@ -77,13 +79,14 @@ class NetworkType(enum.Enum):
     UNKNOWN = STATE_OPTIONITEM_UNKNOWN
 
 
-class DeviceInfo(object):
-    """Details about a user's device.
-
+class DeviceInfo:
+    """
+    Details about a user's device.
     This is populated from a JSON dictionary provided by the API.
     """
 
-    def __init__(self, data: Dict[str, Any]) -> None:
+    def __init__(self, data: dict[str, Any]) -> None:
+        """Initialize the object."""
         self._data = data
         self._device_id = None
         self._device_type = None
@@ -97,12 +100,14 @@ class DeviceInfo(object):
         return self._data.copy()
 
     def _get_data_key(self, keys):
+        """Get valid key from a list of possible keys."""
         for key in keys:
             if key in self._data:
                 return key
         return ""
 
     def _get_data_value(self, key, default: Any = STATE_OPTIONITEM_UNKNOWN):
+        """Get data value for a specific key or list of keys."""
         if isinstance(key, list):
             vkey = self._get_data_key(key)
         else:
@@ -112,51 +117,58 @@ class DeviceInfo(object):
 
     @property
     def model_id(self) -> str:
+        """Return the model name."""
         return self._get_data_value(["modelName", "modelNm"])
 
     @property
-    def id(self) -> str:
+    def device_id(self) -> str:
+        """Return the device id."""
         if self._device_id is None:
-            self._device_id = self._get_data_value("deviceId")
+            self._device_id = self._data.get(KEY_DEVICE_ID, STATE_OPTIONITEM_UNKNOWN)
         return self._device_id
 
     @property
+    def name(self) -> str:
+        """Return the device name."""
+        return self._data.get("alias", self.device_id)
+
+    @property
     def model_info_url(self) -> str:
-        return self._get_data_value(
-            ["modelJsonUrl", "modelJsonUri"], default=None
-        )
+        """Return the url used to retrieve model info."""
+        return self._get_data_value(["modelJsonUrl", "modelJsonUri"], default=None)
 
     @property
     def model_lang_pack_url(self) -> str:
+        """Return the url used to retrieve model language pack."""
         return self._get_data_value(
             ["langPackModelUrl", "langPackModelUri"], default=None
         )
 
     @property
     def product_lang_pack_url(self) -> str:
+        """Return the url used to retrieve product info."""
         return self._get_data_value(
             ["langPackProductTypeUrl", "langPackProductTypeUri"], default=None
         )
 
     @property
-    def name(self) -> str:
-        return self._get_data_value("alias")
-
-    @property
     def model_name(self) -> str:
+        """Return the model name for the device."""
         return self._get_data_value(["modelName", "modelNm"])
 
     @property
     def macaddress(self) -> Optional[str]:
+        """Return the device mac address."""
         return self._data.get("macAddress")
 
     @property
     def firmware(self) -> Optional[str]:
-        if fw := self._data.get("fwVer"):
-            return fw
+        """Return the device firmware version."""
+        if fw_ver := self._data.get("fwVer"):
+            return fw_ver
         if "modemInfo" in self._data:
-            if fw := self._data["modemInfo"].get("appVersion"):
-                return fw
+            if fw_ver := self._data["modemInfo"].get("appVersion"):
+                return fw_ver
         return None
 
     @property
@@ -177,7 +189,11 @@ class DeviceInfo(object):
             try:
                 ret_val = DeviceType(device_type)
             except ValueError:
-                _LOGGER.warning("Device %s: unknown device type with id %s", self.id, device_type)
+                _LOGGER.warning(
+                    "Device %s: unknown device type with id %s",
+                    self.device_id,
+                    device_type,
+                )
                 ret_val = DeviceType.UNKNOWN
             self._device_type = ret_val
         return self._device_type
@@ -191,7 +207,11 @@ class DeviceInfo(object):
             try:
                 ret_val = PlatformType(plat_type)
             except ValueError:
-                _LOGGER.warning("Device %s: unknown platform type with id %s", self.id, plat_type)
+                _LOGGER.warning(
+                    "Device %s: unknown platform type with id %s",
+                    self.device_id,
+                    plat_type,
+                )
                 ret_val = PlatformType.UNKNOWN
             self._platform_type = ret_val
         return self._platform_type
@@ -205,12 +225,17 @@ class DeviceInfo(object):
             try:
                 ret_val = NetworkType(net_type)
             except ValueError:
-                _LOGGER.warning("Device %s: unknown network type with id %s", self.id, net_type)
+                _LOGGER.warning(
+                    "Device %s: unknown network type with id %s",
+                    self.device_id,
+                    net_type,
+                )
                 # for the moment we set WIFI if unknown
                 ret_val = NetworkType.WIFI
             self._network_type = ret_val
         return self._network_type
 
     @property
-    def snapshot(self) -> Optional[Dict[str, Any]]:
+    def snapshot(self) -> Optional[dict[str, Any]]:
+        """Return the snapshot data associated to the device."""
         return self._data.get("snapshot")

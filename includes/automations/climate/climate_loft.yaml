@@ -29,7 +29,7 @@ action:
             domain: sensor
             above: 72
         sequence:
-          - service: fan.turn_om
+          - service: fan.turn_on
             target:
               entity_id: fan.air_circulator
     default:

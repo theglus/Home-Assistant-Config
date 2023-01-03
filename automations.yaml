@@ -180,6 +180,10 @@
         data: {}
         target:
           entity_id: switch.switchbot_pc
+      - service: light.turn_off
+        data: {}
+        target:
+          entity_id: light.pinkie_lamp
     - conditions:
       - condition: trigger
         id: fixed-time-12am
@@ -191,4 +195,3 @@
           - switch.coffee_station_plug
           - switch.workstation_plug
   mode: single
-

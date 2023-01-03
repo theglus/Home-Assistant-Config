@@ -5,7 +5,14 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_USERNAME, CONF_PASSWORD
 from homeassistant.core import HomeAssistant
 
-from .const import DOMAIN, LOGGER, PLATFORMS
+from .const import (
+    COWAY_COORDINATOR,
+    DOMAIN,
+    LOGGER,
+    PLATFORMS,
+    SKIP_PASSWORD_CHANGE,
+    UPDATE_LISTENER,
+)
 from .coordinator import CowayDataUpdateCoordinator
 
 
@@ -14,9 +21,14 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     coordinator = CowayDataUpdateCoordinator(hass, entry)
     await coordinator.async_config_entry_first_refresh()
-    hass.data.setdefault(DOMAIN, {})[entry.entry_id] = coordinator
+    hass.data.setdefault(DOMAIN, {})[entry.entry_id] = {
+        COWAY_COORDINATOR: coordinator
+    }
 
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
+
+    update_listener = entry.add_update_listener(async_update_options)
+    hass.data[DOMAIN][entry.entry_id][UPDATE_LISTENER] = update_listener
 
     return True
 
@@ -25,6 +37,8 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Unload Coway config entry."""
 
     if unload_ok := await hass.config_entries.async_unload_platforms(entry, PLATFORMS):
+        update_listener = hass.data[DOMAIN][entry.entry_id][UPDATE_LISTENER]
+        update_listener()
         del hass.data[DOMAIN][entry.entry_id]
         if not hass.data[DOMAIN]:
             del hass.data[DOMAIN]
@@ -39,7 +53,7 @@ async def async_migrate_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         password = entry.data[CONF_PASSWORD]
 
         LOGGER.debug(f'Migrating Coway config entry unique id to {username}')
-        entry.version = 2
+        entry.version = 3
 
         hass.config_entries.async_update_entry(
             entry,
@@ -47,6 +61,20 @@ async def async_migrate_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
                 CONF_USERNAME: username,
                 CONF_PASSWORD: password,
             },
+            options={SKIP_PASSWORD_CHANGE: False},
             unique_id=username,
         )
+    if entry.version == 2:
+        LOGGER.debug('Migrating Coway config and disabling skipping password change.')
+        entry.version = 3
+
+        hass.config_entries.async_update_entry(
+            entry,
+            options={SKIP_PASSWORD_CHANGE: False},
+        )
     return True
+
+async def async_update_options(hass: HomeAssistant, entry: ConfigEntry) -> None:
+    """ Update options. """
+    
+    await hass.config_entries.async_reload(entry.entry_id)

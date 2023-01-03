@@ -6,17 +6,6 @@ from dataclasses import dataclass
 import logging
 from typing import Any, Awaitable, Callable, Tuple
 
-from .wideq import (
-    FEAT_ECOFRIENDLY,
-    FEAT_EXPRESSFRIDGE,
-    FEAT_EXPRESSMODE,
-    FEAT_ICEPLUS,
-    FEAT_LIGHTING_DISPLAY,
-    FEAT_MODE_JET,
-    WM_DEVICE_TYPES,
-    DeviceType,
-)
-
 from homeassistant.components.switch import (
     SwitchDeviceClass,
     SwitchEntity,
@@ -36,6 +25,18 @@ from .device_helpers import (
     LGEBaseDevice,
     get_entity_name,
     get_multiple_devices_types,
+)
+from .wideq import (
+    FEAT_ECOFRIENDLY,
+    FEAT_EXPRESSFRIDGE,
+    FEAT_EXPRESSMODE,
+    FEAT_ICEPLUS,
+    FEAT_LIGHTING_DISPLAY,
+    FEAT_MODE_AIRCLEAN,
+    FEAT_MODE_AWHP_SILENT,
+    FEAT_MODE_JET,
+    WM_DEVICE_TYPES,
+    DeviceType,
 )
 
 # general sensor attributes
@@ -99,6 +100,13 @@ REFRIGERATOR_SWITCH: Tuple[ThinQSwitchEntityDescription, ...] = (
 )
 AC_SWITCH: Tuple[ThinQSwitchEntityDescription, ...] = (
     ThinQSwitchEntityDescription(
+        key=FEAT_MODE_AIRCLEAN,
+        name="Ionizer",
+        icon="mdi:pine-tree",
+        turn_off_fn=lambda x: x.device.set_mode_airclean(False),
+        turn_on_fn=lambda x: x.device.set_mode_airclean(True),
+    ),
+    ThinQSwitchEntityDescription(
         key=FEAT_MODE_JET,
         name="Jet mode",
         icon="mdi:turbine",
@@ -113,6 +121,14 @@ AC_SWITCH: Tuple[ThinQSwitchEntityDescription, ...] = (
         turn_off_fn=lambda x: x.device.set_lighting_display(False),
         turn_on_fn=lambda x: x.device.set_lighting_display(True),
     ),
+    ThinQSwitchEntityDescription(
+        key=FEAT_MODE_AWHP_SILENT,
+        name="Silent mode",
+        icon="mdi:ear-hearing-off",
+        turn_off_fn=lambda x: x.device.set_mode_awhp_silent(False),
+        turn_on_fn=lambda x: x.device.set_mode_awhp_silent(True),
+        available_fn=lambda x: x.is_power_on,
+    ),
 )
 
 AC_DUCT_SWITCH = ThinQSwitchEntityDescription(
@@ -121,7 +137,9 @@ AC_DUCT_SWITCH = ThinQSwitchEntityDescription(
 )
 
 
-def _switch_exist(lge_device: LGEDevice, switch_desc: ThinQSwitchEntityDescription) -> bool:
+def _switch_exist(
+    lge_device: LGEDevice, switch_desc: ThinQSwitchEntityDescription
+) -> bool:
     """Check if a switch exist for device."""
     if switch_desc.value_fn is not None:
         return True
@@ -156,7 +174,9 @@ async def async_setup_entry(
             [
                 LGESwitch(lge_device, switch_desc)
                 for switch_desc in WASH_DEV_SWITCH
-                for lge_device in get_multiple_devices_types(lge_devices, WM_DEVICE_TYPES)
+                for lge_device in get_multiple_devices_types(
+                    lge_devices, WM_DEVICE_TYPES
+                )
                 if _switch_exist(lge_device, switch_desc)
             ]
         )
@@ -205,9 +225,9 @@ class LGESwitch(CoordinatorEntity, SwitchEntity):
     entity_description = ThinQSwitchEntityDescription
 
     def __init__(
-            self,
-            api: LGEDevice,
-            description: ThinQSwitchEntityDescription,
+        self,
+        api: LGEDevice,
+        description: ThinQSwitchEntityDescription,
     ):
         """Initialize the switch."""
         super().__init__(api.coordinator)
@@ -271,11 +291,7 @@ class LGESwitch(CoordinatorEntity, SwitchEntity):
 class LGEDuctSwitch(LGESwitch):
     """Class to control switches for LGE AC duct device"""
 
-    def __init__(
-            self,
-            api: LGEDevice,
-            duct_zone: str
-    ):
+    def __init__(self, api: LGEDevice, duct_zone: str):
         """Initialize the switch."""
         super().__init__(api, AC_DUCT_SWITCH)
         self._attr_name += f" {duct_zone}"
@@ -298,7 +314,9 @@ class LGEDuctSwitch(LGESwitch):
     async def async_turn_off(self, **kwargs):
         """Turn the entity off."""
         self._wrap_device.device.set_duct_zone(self._zone, False)
+        self._api.async_set_updated()
 
     async def async_turn_on(self, **kwargs):
         """Turn the entity on."""
         self._wrap_device.device.set_duct_zone(self._zone, True)
+        self._api.async_set_updated()

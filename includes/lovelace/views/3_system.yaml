@@ -10,6 +10,11 @@ cards:
     cards:
       - type: entities
         title: Home Assistant
+        card_mod:
+          style: |
+            ha-card {
+              border-style: none;
+            }
         entities:
           - entity: sensor.beta_version
           - entity: sensor.installed_version
@@ -93,6 +98,11 @@ cards:
     cards:
       - type: entities
         title: Desktop PC
+        card_mod:
+          style: |
+            ha-card {
+              border-style: none;
+            }
         entities:
           - entity: sensor.pc_last_boot
             name: Last Boot
@@ -118,6 +128,9 @@ cards:
                 to: 100
             entity_row: true
             style: |
+              ha-card {
+                border-style: none;
+              }
               bar-card-value { 
                 font-size: 1em; 
                 font-weight: 400; 

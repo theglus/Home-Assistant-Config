@@ -41,6 +41,11 @@ card:
           square: false
           cards:
             - type: custom:mini-graph-card
+              card_mod:
+                style: |
+                  ha-card {
+                    border-style: none;
+                  }
               entities:
                 - "[[sensor_temp]]"
               color_thresholds:

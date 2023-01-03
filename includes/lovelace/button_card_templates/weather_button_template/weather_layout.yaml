@@ -13,6 +13,7 @@
         font-size: 1em,
         background-color: "rgba(115, 115, 115, 0.2)",
         border-radius: 2em,
+        border-style: none,
         box-shadow: none,
         transition: none,
       ]

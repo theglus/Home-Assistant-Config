@@ -5,6 +5,7 @@ from decimal import Decimal
 from typing import Any, Callable
 
 import homeassistant.util.dt as dt_util
+from awesomeversion.awesomeversion import AwesomeVersion
 from homeassistant.components.sensor import ATTR_STATE_CLASS
 from homeassistant.components.sensor import DOMAIN as SENSOR_DOMAIN
 from homeassistant.components.sensor import (
@@ -25,10 +26,18 @@ from homeassistant.const import (
     STATE_UNAVAILABLE,
     STATE_UNKNOWN,
 )
+from homeassistant.const import __version__ as HA_VERSION
 from homeassistant.core import CoreState, HomeAssistant, State, callback
 from homeassistant.helpers import entity_registry as er
 from homeassistant.helpers.event import async_track_state_change_event
 from homeassistant.helpers.restore_state import RestoreEntity
+
+if AwesomeVersion(HA_VERSION) >= AwesomeVersion("2022.10.0"):
+    from homeassistant.util.unit_conversion import (
+        EnergyConverter,
+        PowerConverter,
+        BaseUnitConverter,
+    )
 
 from ..const import (
     ATTR_ENTITIES,
@@ -154,21 +163,17 @@ async def create_group_sensors_from_config_entry(
     return group_sensors
 
 
-async def remove_from_associated_group_entries(
+async def remove_power_sensor_from_associated_groups(
     hass: HomeAssistant, config_entry: ConfigEntry
 ) -> list[ConfigEntry]:
     """
     When the user remove a virtual power config entry we need to update all the groups which this sensor belongs to
     """
-    sensor_type = config_entry.data.get(CONF_SENSOR_TYPE)
-    if sensor_type != SensorType.VIRTUAL_POWER:
-        return []
-
     group_entries = [
         entry
         for entry in hass.config_entries.async_entries(DOMAIN)
         if entry.data.get(CONF_SENSOR_TYPE) == SensorType.GROUP
-        and config_entry.entry_id in entry.data.get(CONF_GROUP_MEMBER_SENSORS)
+        and config_entry.entry_id in (entry.data.get(CONF_GROUP_MEMBER_SENSORS) or [])
     ]
 
     for group_entry in group_entries:
@@ -181,6 +186,28 @@ async def remove_from_associated_group_entries(
         )
 
     return group_entries
+
+
+async def remove_group_from_power_sensor_entry(
+    hass: HomeAssistant, config_entry: ConfigEntry
+) -> list[ConfigEntry]:
+    """
+    When the user removes a group config entry we need to update all the virtual power sensors which reference this group
+    """
+    entries_to_update = [
+        entry
+        for entry in hass.config_entries.async_entries(DOMAIN)
+        if entry.data.get(CONF_SENSOR_TYPE) == SensorType.VIRTUAL_POWER
+        and entry.data.get(CONF_GROUP) == config_entry.entry_id
+    ]
+
+    for group_entry in entries_to_update:
+        hass.config_entries.async_update_entry(
+            group_entry,
+            data={**group_entry.data, CONF_GROUP: None},
+        )
+
+    return entries_to_update
 
 
 async def add_to_associated_group(
@@ -201,17 +228,18 @@ async def add_to_associated_group(
     group_entry = hass.config_entries.async_get_entry(group_entry_id)
 
     if not group_entry:
-        _LOGGER.error(
-            f"Cannot add/remove power sensor to group {group_entry_id}. It does not exist."
+        _LOGGER.warning(
+            f"ConfigEntry {config_entry.title}: Cannot add/remove to group {group_entry_id}. It does not exist."
         )
         return None
 
-    member_sensors = group_entry.data.get(CONF_GROUP_MEMBER_SENSORS) or []
-    member_sensors.append(config_entry.entry_id)
+    member_sensors = set(group_entry.data.get(CONF_GROUP_MEMBER_SENSORS) or [])
+    if config_entry.entry_id not in member_sensors:
+        member_sensors.add(config_entry.entry_id)
 
     hass.config_entries.async_update_entry(
         group_entry,
-        data={**group_entry.data, CONF_GROUP_MEMBER_SENSORS: member_sensors},
+        data={**group_entry.data, CONF_GROUP_MEMBER_SENSORS: list(member_sensors)},
     )
     return group_entry
 
@@ -349,6 +377,9 @@ class GroupedSensor(BaseEntity, RestoreEntity, SensorEntity):
         if unique_id:
             self._attr_unique_id = unique_id
         self.entity_id = entity_id
+        self.unit_converter: BaseUnitConverter | None = None
+        if hasattr(self, "get_unit_converter"):
+            self.unit_converter = self.get_unit_converter()
 
     async def async_added_to_hass(self) -> None:
         """Register state listeners."""
@@ -376,6 +407,10 @@ class GroupedSensor(BaseEntity, RestoreEntity, SensorEntity):
         for entity_id in self._entities:
             registry_entry = registry.async_get(entity_id)
             if not registry_entry:
+                continue
+
+            # We don't want to touch devices which are forced hidden by the user
+            if registry_entry.hidden_by == er.RegistryEntryHider.USER:
                 continue
 
             hidden_by = er.RegistryEntryHider.INTEGRATION if hide else None
@@ -410,9 +445,52 @@ class GroupedSensor(BaseEntity, RestoreEntity, SensorEntity):
             if state and state.state not in [STATE_UNKNOWN, STATE_UNAVAILABLE]
         ]
 
-        # Remove members with an incompatible unit of measurement for now
-        # Maybe we will convert these units in the future
-        for state in available_states:
+        apply_unit_conversions = AwesomeVersion(HA_VERSION) >= AwesomeVersion(
+            "2022.10.0"
+        )
+        if not apply_unit_conversions:  # pragma: no-cover
+            self._remove_incompatible_unit_entities(available_states)
+
+        if not available_states:
+            self._attr_available = False
+            self.async_schedule_update_ha_state(True)
+            return
+
+        summed = sum(self._get_state_values(available_states, apply_unit_conversions))
+
+        self._attr_native_value = round(summed, self._rounding_digits)
+        self._attr_available = True
+        self.async_schedule_update_ha_state(True)
+
+    def _get_state_values(
+        self, states: list[State], apply_unit_conversions: bool
+    ) -> list[Decimal]:
+        """Get the state value from all individual entity state. Apply unit conversions"""
+        values = []
+        for state in states:
+            value = float(state.state)
+            unit_of_measurement = state.attributes.get(ATTR_UNIT_OF_MEASUREMENT)
+            if (
+                unit_of_measurement
+                and apply_unit_conversions
+                and self._attr_native_unit_of_measurement != unit_of_measurement
+            ):
+                unit_converter = (
+                    EnergyConverter
+                    if isinstance(self, GroupedEnergySensor)
+                    else PowerConverter
+                )
+                value = unit_converter.convert(
+                    value, unit_of_measurement, self._attr_native_unit_of_measurement
+                )
+            values.append(Decimal(value))
+        return values
+
+    def _remove_incompatible_unit_entities(
+        self, states: list[State]
+    ) -> None:  # pragma: no cover
+        """Remove members with an incompatible unit of measurements"""
+        for state in states:
             unit_of_measurement = state.attributes.get(ATTR_UNIT_OF_MEASUREMENT)
             if (
                 unit_of_measurement is None
@@ -422,19 +500,8 @@ class GroupedSensor(BaseEntity, RestoreEntity, SensorEntity):
                 _LOGGER.warning(
                     f"Group member '{state.entity_id}' has another unit of measurement '{unit_of_measurement}' than the group '{self.entity_id}' which has '{self._attr_native_unit_of_measurement}', this is not supported yet. Removing this entity from the total sum."
                 )
-                available_states.remove(state)
+                states.remove(state)
                 self._entities.remove(state.entity_id)
-
-        if not available_states:
-            self._attr_available = False
-            self.async_schedule_update_ha_state(True)
-            return
-
-        summed = sum(Decimal(state.state) for state in available_states)
-
-        self._attr_native_value = round(summed, self._rounding_digits)
-        self._attr_available = True
-        self.async_schedule_update_ha_state(True)
 
 
 class GroupedPowerSensor(GroupedSensor, PowerSensor):
