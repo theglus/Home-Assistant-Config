@@ -128,13 +128,11 @@ def find_related_real_energy_sensor(
     return RealEnergySensor(energy_sensors[0])
 
 
-class EnergySensor:
+class EnergySensor(BaseEntity):
     """Class which all energy sensors should extend from"""
 
-    pass
 
-
-class VirtualEnergySensor(IntegrationSensor, EnergySensor, BaseEntity):
+class VirtualEnergySensor(IntegrationSensor, EnergySensor):
     """Virtual energy sensor, totalling kWh"""
 
     def __init__(
@@ -206,7 +204,7 @@ class RealEnergySensor(EnergySensor):
         return self._entity_entry.entity_id
 
     @property
-    def name(self) -> str:
+    def name(self) -> str | None:
         """Return the name of the sensor."""
         return self._entity_entry.name or self._entity_entry.original_name
 
