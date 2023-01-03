@@ -39,3 +39,6 @@ recorder:
       - sensor.daily_energy_*
       - sensor.monthly_energy_*
       - sensor.*_energy_cost
+      - sensor.*_plug_power
+      - sensor.*_plug_energy
+      
