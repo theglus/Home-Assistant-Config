@@ -6,6 +6,11 @@ card:
   entities:
     - "[[sensor]]"
   name: "[[name]]"
+  card_mod:
+    style: |
+      ha-card {
+        border-style: none;
+      }
   show: null
   color_thresholds:
     - value: "[[green]]"
@@ -36,6 +41,11 @@ card:
           square: false
           cards:
             - type: "custom:mini-graph-card"
+              card_mod:
+              style: |
+                ha-card {
+                  border-style: none;
+                }
               entities:
                 - "[[sensor]]"
               color_thresholds:

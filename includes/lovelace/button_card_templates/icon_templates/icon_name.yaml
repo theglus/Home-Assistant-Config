@@ -2,7 +2,7 @@
 ## System Dash Button Template
 #################################################################
 size: 1.4em
-color: '#9da0a2'
+color: "#9da0a2"
 styles:
   grid:
     - grid-template-areas: '"i n"'
@@ -14,9 +14,10 @@ styles:
   icon:
     - align-self: start
   card:
-    - color: '#9da0a2'
+    - color: "#9da0a2"
     - border-radius: 0.6em
+    - border-style: none
     - padding: 1em 0em 1em 0em
     - font-size: 1em
     - font-weight: 500
-    - background: '#FFFFFF10'
+    - background: "#FFFFFF10"
