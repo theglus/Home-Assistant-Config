@@ -13,13 +13,16 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import (
+    COWAY_COORDINATOR,
     DOMAIN,
     IOCARE_FAN_LOW,
     IOCARE_FAN_OFF,
     IOCARE_FAN_SPEED_TO_HASS,
     ORDERED_NAMED_FAN_SPEEDS,
     PRESET_MODES,
+    PRESET_MODES_AP,
     PRESET_MODE_AUTO,
+    PRESET_MODE_ECO,
     PRESET_MODE_NIGHT,
 )
 from .coordinator import CowayDataUpdateCoordinator
@@ -33,7 +36,7 @@ async def async_setup_entry(
 ) -> None:
     """Set Up Coway Fan Entities."""
 
-    coordinator: CowayDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
+    coordinator: CowayDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id][COWAY_COORDINATOR]
 
     fans = []
 
@@ -97,16 +100,25 @@ class Purifier(CoordinatorEntity, FanEntity):
     def preset_modes(self) -> list:
         """Return the available preset modes."""
 
-        return PRESET_MODES
+        if self.purifier_data.device_attr['model'] == "AIRMEGA AP-1512HHS":
+            return PRESET_MODES_AP
+        else:
+            return PRESET_MODES
 
     @property
     def preset_mode(self) -> str:
         """Return the current preset mode."""
 
-        if self.purifier_data.auto_eco_mode or self.purifier_data.auto_mode:
-            return PRESET_MODE_AUTO
-        if self.purifier_data.night_mode:
-            return PRESET_MODE_NIGHT
+        if self.purifier_data.device_attr['model'] == "AIRMEGA AP-1512HHS":
+            if self.purifier_data.auto_mode:
+                return PRESET_MODE_AUTO
+            if self.purifier_data.eco_mode:
+                return PRESET_MODE_ECO
+        else:
+            if self.purifier_data.auto_eco_mode or self.purifier_data.auto_mode:
+                return PRESET_MODE_AUTO
+            if self.purifier_data.night_mode:
+                return PRESET_MODE_NIGHT
 
     @property
     def percentage(self) -> int:
@@ -196,12 +208,19 @@ class Purifier(CoordinatorEntity, FanEntity):
         if preset_mode == PRESET_MODE_AUTO:
             await self.coordinator.client.async_set_auto_mode(self.purifier_data.device_attr)
             self.purifier_data.auto_mode = True
+            self.purifier_data.auto_eco_mode = False
+            self.purifier_data.eco_mode = False
             self.purifier_data.night_mode = False
             self.purifier_data.fan_speed = IOCARE_FAN_LOW
-        if preset_mode == PRESET_MODE_NIGHT:
-            await self.coordinator.client.async_set_night_mode(self.purifier_data.device_attr)
+        if preset_mode in [PRESET_MODE_NIGHT, PRESET_MODE_ECO]:
+            if self.purifier_data.device_attr['model'] == "AIRMEGA AP-1512HHS":
+                await self.coordinator.client.async_set_eco_mode(self.purifier_data.device_attr)
+                self.purifier_data.eco_mode = True
+            else:
+                await self.coordinator.client.async_set_night_mode(self.purifier_data.device_attr)
+                self.purifier_data.auto_eco_mode = False
+                self.purifier_data.night_mode = True
             self.purifier_data.auto_mode = False
-            self.purifier_data.night_mode = True
             self.purifier_data.fan_speed = IOCARE_FAN_OFF
 
         self.async_write_ha_state()

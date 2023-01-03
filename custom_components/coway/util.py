@@ -4,7 +4,7 @@ from __future__ import annotations
 import async_timeout
 
 from cowayaio import CowayClient
-from cowayaio.exceptions import AuthError, CowayError
+from cowayaio.exceptions import AuthError, CowayError, PasswordExpired
 
 from homeassistant.core import async_get_hass, HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
@@ -25,11 +25,12 @@ COWAY_CLIENT = CowayClient(
 )
 
 
-async def async_validate_api(username: str, password: str) -> None:
+async def async_validate_api(username: str, password: str, skip_password_change: bool) -> None:
     """Get data from API."""
 
     COWAY_CLIENT.username = username
     COWAY_CLIENT.password = password
+    COWAY_CLIENT.skip_password_change = skip_password_change
     client = COWAY_CLIENT
 
     try:
@@ -38,6 +39,9 @@ async def async_validate_api(username: str, password: str) -> None:
     except AuthError as err:
         LOGGER.error(f'Could not authenticate on Coway servers: {err}')
         raise AuthError from err
+    except PasswordExpired as err:
+        LOGGER.error("Coway servers are requesting a password change as the password on this account hasn't been changed for 60 days or more. Use the IoCare app to change your password or use the skip password change option.")
+        raise PasswordExpired from err
     except COWAY_ERRORS as err:
         LOGGER.error(f'Failed to get information from Coway servers: {err}')
         raise ConnectionError from err

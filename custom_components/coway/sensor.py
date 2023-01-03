@@ -20,7 +20,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from .const import DOMAIN
+from .const import COWAY_COORDINATOR, DOMAIN
 from .coordinator import CowayDataUpdateCoordinator
 
 
@@ -29,7 +29,7 @@ async def async_setup_entry(
 ) -> None:
     """Set Up Coway Sensor Entities."""
 
-    coordinator: CowayDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
+    coordinator: CowayDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id][COWAY_COORDINATOR]
 
     sensors = []
 

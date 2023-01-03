@@ -12,6 +12,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import (
+    COWAY_COORDINATOR,
     DOMAIN,
     IOCARE_TIMERS,
     IOCARE_TIMERS_TO_HASS,
@@ -28,7 +29,7 @@ async def async_setup_entry(
 ) -> None:
     """Set Up Coway Select Entities."""
 
-    coordinator: CowayDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
+    coordinator: CowayDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id][COWAY_COORDINATOR]
 
     selects = []
 
