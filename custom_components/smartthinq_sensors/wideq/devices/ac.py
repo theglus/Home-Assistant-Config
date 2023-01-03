@@ -1,27 +1,48 @@
 """------------------for AC"""
-import enum
-import logging
-from typing import Optional
+from __future__ import annotations
 
-from .const import (
+from enum import Enum
+import logging
+
+from ..const import (
     FEAT_ENERGY_CURRENT,
-    FEAT_HUMIDITY,
+    FEAT_FILTER_MAIN_LIFE,
     FEAT_HOT_WATER_TEMP,
-    FEAT_IN_WATER_TEMP,
+    FEAT_HUMIDITY,
     FEAT_LIGHTING_DISPLAY,
-    FEAT_OUT_WATER_TEMP,
+    FEAT_MODE_AIRCLEAN,
+    FEAT_MODE_AWHP_SILENT,
     FEAT_MODE_JET,
+    FEAT_ROOM_TEMP,
+    FEAT_WATER_IN_TEMP,
+    FEAT_WATER_OUT_TEMP,
     UNIT_TEMP_CELSIUS,
     UNIT_TEMP_FAHRENHEIT,
 )
-from .core_exceptions import InvalidRequestError
-from .device import Device, DeviceStatus
+from ..core_async import ClientAsync
+from ..core_exceptions import InvalidRequestError
+from ..core_util import TempUnitConversion
+from ..device import Device, DeviceStatus
+from ..device_info import DeviceInfo
 
-LABEL_VANE_HSTEP = "@AC_MAIN_WIND_DIRECTION_STEP_LEFT_RIGHT_W"
-LABEL_VANE_VSTEP = "@AC_MAIN_WIND_DIRECTION_STEP_UP_DOWN_W"
-LABEL_VANE_HSWING = "@AC_MAIN_WIND_DIRECTION_SWING_LEFT_RIGHT_W"
-LABEL_VANE_VSWING = "@AC_MAIN_WIND_DIRECTION_SWING_UP_DOWN_W"
-LABEL_VANE_SWIRL = "@AC_MAIN_WIND_DIRECTION_SWIRL_W"
+SUPPORT_OPERATION_MODE = ["SupportOpMode", "support.airState.opMode"]
+SUPPORT_WIND_STRENGTH = ["SupportWindStrength", "support.airState.windStrength"]
+SUPPORT_DUCT_ZONE = ["SupportDuctZoneType", "support.airState.ductZone.type"]
+SUPPORT_PAC_MODE = ["SupportPACMode", "support.pacMode"]
+SUPPORT_RAC_MODE = ["SupportRACMode", "support.racMode"]
+SUPPORT_RAC_SUBMODE = ["SupportRACSubMode", "support.racSubMode"]
+
+SUPPORT_VANE_HSTEP = [SUPPORT_RAC_SUBMODE, "@AC_MAIN_WIND_DIRECTION_STEP_LEFT_RIGHT_W"]
+SUPPORT_VANE_VSTEP = [SUPPORT_RAC_SUBMODE, "@AC_MAIN_WIND_DIRECTION_STEP_UP_DOWN_W"]
+SUPPORT_VANE_HSWING = [
+    SUPPORT_RAC_SUBMODE,
+    "@AC_MAIN_WIND_DIRECTION_SWING_LEFT_RIGHT_W",
+]
+SUPPORT_VANE_VSWING = [SUPPORT_RAC_SUBMODE, "@AC_MAIN_WIND_DIRECTION_SWING_UP_DOWN_W"]
+SUPPORT_JET_COOL = [SUPPORT_RAC_SUBMODE, "@AC_MAIN_WIND_MODE_COOL_JET_W"]
+SUPPORT_JET_HEAT = [SUPPORT_RAC_SUBMODE, "@AC_MAIN_WIND_MODE_HEAT_JET_W"]
+SUPPORT_AIRCLEAN = [SUPPORT_RAC_MODE, "@AIRCLEAN"]
+SUPPORT_HOT_WATER = [SUPPORT_PAC_MODE, "@HOTWATER"]
 
 CTRL_BASIC = ["Control", "basicCtrl"]
 CTRL_WIND_DIRECTION = ["Control", "wDirCtrl"]
@@ -32,29 +53,35 @@ CTRL_MISC = ["Control", "miscCtrl"]
 DUCT_ZONE_V1 = "DuctZone"
 DUCT_ZONE_V1_TYPE = "DuctZoneType"
 STATE_FILTER_V1 = "Filter"
+STATE_FILTER_V1_MAX = "FilterMax"
+STATE_FILTER_V1_USE = "FilterUse"
 STATE_POWER_V1 = "InOutInstantPower"
 
-SUPPORT_OPERATION_MODE = ["SupportOpMode", "support.airState.opMode"]
-SUPPORT_WIND_STRENGTH = ["SupportWindStrength", "support.airState.windStrength"]
-SUPPORT_RAC_SUBMODE = ["SupportRACSubMode", "support.racSubMode"]
-
+# AC Section
 STATE_OPERATION = ["Operation", "airState.operation"]
 STATE_OPERATION_MODE = ["OpMode", "airState.opMode"]
 STATE_CURRENT_TEMP = ["TempCur", "airState.tempState.current"]
-STATE_HOT_WATER_TEMP = ["HotWaterTempCur", "airState.tempState.hotWaterCurrent"]
-STATE_IN_WATER_TEMP = ["WaterInTempCur", "airState.tempState.inWaterCurrent"]
-STATE_OUT_WATER_TEMP = ["WaterTempCur", "airState.tempState.outWaterCurrent"]
 STATE_TARGET_TEMP = ["TempCfg", "airState.tempState.target"]
 STATE_WIND_STRENGTH = ["WindStrength", "airState.windStrength"]
 STATE_WDIR_HSTEP = ["WDirHStep", "airState.wDir.hStep"]
 STATE_WDIR_VSTEP = ["WDirVStep", "airState.wDir.vStep"]
 STATE_WDIR_HSWING = ["WDirLeftRight", "airState.wDir.leftRight"]
 STATE_WDIR_VSWING = ["WDirUpDown", "airState.wDir.upDown"]
+STATE_DUCT_ZONE = ["ZoneControl", "airState.ductZone.state"]
 STATE_POWER = [STATE_POWER_V1, "airState.energy.onCurrent"]
 STATE_HUMIDITY = ["SensorHumidity", "airState.humidity.current"]
-STATE_DUCT_ZONE = ["ZoneControl", "airState.ductZone.state"]
+STATE_MODE_AIRCLEAN = ["AirClean", "airState.wMode.airClean"]
 STATE_MODE_JET = ["Jet", "airState.wMode.jet"]
 STATE_LIGHTING_DISPLAY = ["DisplayControl", "airState.lightingState.displayControl"]
+
+FILTER_TYPES = [
+    [
+        FEAT_FILTER_MAIN_LIFE,
+        [STATE_FILTER_V1_USE, "airState.filterMngStates.useTime"],
+        [STATE_FILTER_V1_MAX, "airState.filterMngStates.maxTime"],
+        None,
+    ],
+]
 
 CMD_STATE_OPERATION = [CTRL_BASIC, "Set", STATE_OPERATION]
 CMD_STATE_OP_MODE = [CTRL_BASIC, "Set", STATE_OPERATION_MODE]
@@ -65,12 +92,28 @@ CMD_STATE_WDIR_VSTEP = [CTRL_WIND_DIRECTION, "Set", STATE_WDIR_VSTEP]
 CMD_STATE_WDIR_HSWING = [CTRL_WIND_DIRECTION, "Set", STATE_WDIR_HSWING]
 CMD_STATE_WDIR_VSWING = [CTRL_WIND_DIRECTION, "Set", STATE_WDIR_VSWING]
 CMD_STATE_DUCT_ZONES = [CTRL_MISC, "Set", [DUCT_ZONE_V1, "airState.ductZone.control"]]
+CMD_STATE_MODE_AIRCLEAN = [CTRL_BASIC, "Set", STATE_MODE_AIRCLEAN]
 CMD_STATE_MODE_JET = [CTRL_BASIC, "Set", STATE_MODE_JET]
 CMD_STATE_LIGHTING_DISPLAY = [CTRL_BASIC, "Set", STATE_LIGHTING_DISPLAY]
 
+# AWHP Section
+STATE_WATER_IN_TEMP = ["WaterInTempCur", "airState.tempState.inWaterCurrent"]
+STATE_WATER_OUT_TEMP = ["WaterTempCur", "airState.tempState.outWaterCurrent"]
+STATE_WATER_MIN_TEMP = ["WaterHeatMinTemp", "airState.tempState.waterTempCoolMin"]
+STATE_WATER_MAX_TEMP = ["WaterHeatMaxTemp", "airState.tempState.waterTempHeatMax"]
+STATE_HOT_WATER_TEMP = ["HotWaterTempCur", "airState.tempState.hotWaterCurrent"]
+STATE_HOT_WATER_TARGET_TEMP = ["HotWaterTempCfg", "airState.tempState.hotWaterTarget"]
+STATE_HOT_WATER_MIN_TEMP = ["HotWaterMinTemp", "airState.tempState.hotWaterTempMin"]
+STATE_HOT_WATER_MAX_TEMP = ["HotWaterMaxTemp", "airState.tempState.hotWaterTempMax"]
+STATE_HOT_WATER_MODE = ["HotWater", "airState.miscFuncState.hotWater"]
+STATE_MODE_AWHP_SILENT = ["SilentMode", "airState.miscFuncState.silentAWHP"]
+
+CMD_STATE_HOT_WATER_MODE = [CTRL_BASIC, "Set", STATE_HOT_WATER_MODE]
+CMD_STATE_HOT_WATER_TARGET_TEMP = [CTRL_BASIC, "Set", STATE_HOT_WATER_TARGET_TEMP]
+CMD_STATE_MODE_AWHP_SILENT = [CTRL_BASIC, "Set", STATE_MODE_AWHP_SILENT]
+
 CMD_ENABLE_EVENT_V2 = ["allEventEnable", "Set", "airState.mon.timeout"]
 
-# STATE_CURRENT_HUMIDITY_V2 = "airState.humidity.current"
 # STATE_AUTODRY_MODE_V2 = "airState.miscFuncState.autoDry"
 # STATE_AIRCLEAN_MODE_V2 = "airState.wMode.airClean"
 # STATE_FILTER_MAX_TIME_V2 = "airState.filterMngStates.maxTime"
@@ -78,8 +121,8 @@ CMD_ENABLE_EVENT_V2 = ["allEventEnable", "Set", "airState.mon.timeout"]
 
 DEFAULT_MIN_TEMP = 16
 DEFAULT_MAX_TEMP = 30
-MIN_AWHP_TEMP = 5
-MAX_AWHP_TEMP = 80
+AWHP_MIN_TEMP = 5
+AWHP_MAX_TEMP = 80
 
 TEMP_STEP_WHOLE = 1.0
 TEMP_STEP_HALF = 0.5
@@ -89,19 +132,26 @@ ADD_FEAT_POLL_INTERVAL = 300  # 5 minutes
 LIGHTING_DISPLAY_OFF = "0"
 LIGHTING_DISPLAY_ON = "1"
 
-MODE_JET_OFF = "@OFF"
-MODE_JET_COOL = "@COOL_JET"
-MODE_JET_HEAT = "@HEAT_JET"
+MODE_OFF = "@OFF"
+MODE_ON = "@ON"
+
+MODE_AIRCLEAN_OFF = "@AC_MAIN_AIRCLEAN_OFF_W"
+MODE_AIRCLEAN_ON = "@AC_MAIN_AIRCLEAN_ON_W"
 
 ZONE_OFF = "0"
 ZONE_ON = "1"
 ZONE_ST_CUR = "current"
 ZONE_ST_NEW = "new"
 
+FILTER_STATUS_MAP = {
+    STATE_FILTER_V1_USE: "UseTime",
+    STATE_FILTER_V1_MAX: "ChangePeriod",
+}
+
 _LOGGER = logging.getLogger(__name__)
 
 
-class ACOp(enum.Enum):
+class ACOp(Enum):
     """Whether a device is on or off."""
 
     OFF = "@AC_MAIN_OPERATION_OFF_W"
@@ -111,7 +161,7 @@ class ACOp(enum.Enum):
     ALL_ON = "@AC_MAIN_OPERATION_ALL_ON_W"  # Both fans (or only fan) on.
 
 
-class ACMode(enum.Enum):
+class ACMode(Enum):
     """The operation mode for an AC/HVAC device."""
 
     COOL = "@AC_MAIN_OPERATION_MODE_COOL_W"
@@ -126,7 +176,7 @@ class ACMode(enum.Enum):
     ENERGY_SAVER = "@AC_MAIN_OPERATION_MODE_ENERGY_SAVER_W"
 
 
-class ACFanSpeed(enum.Enum):
+class ACFanSpeed(Enum):
     """The fan speed for an AC/HVAC device."""
 
     SLOW = "@AC_MAIN_WIND_STRENGTH_SLOW_W"
@@ -147,8 +197,9 @@ class ACFanSpeed(enum.Enum):
     L_HIGH = "@AC_MAIN_WIND_STRENGTH_HIGH_LEFT_W"
 
 
-class ACVStepMode(enum.Enum):
-    """The vertical step mode for an AC/HVAC device.
+class ACVStepMode(Enum):
+    """
+    The vertical step mode for an AC/HVAC device.
 
     Blades are numbered vertically from 1 (topmost)
     to 6.
@@ -166,8 +217,9 @@ class ACVStepMode(enum.Enum):
     Swing = "@100"
 
 
-class ACHStepMode(enum.Enum):
-    """The horizontal step mode for an AC/HVAC device.
+class ACHStepMode(Enum):
+    """
+    The horizontal step mode for an AC/HVAC device.
     Blades are numbered horizontally from 1 (leftmost)
     to 5.
     Left half goes from 1-3, and right half goes from
@@ -186,80 +238,72 @@ class ACHStepMode(enum.Enum):
     Swing = "@100"
 
 
-class ACSwingMode(enum.Enum):
-    """The swing mode for an AC/HVAC device."""
+class JetMode(Enum):
+    """Possible JET modes."""
 
-    SwingOff = "@OFF"
-    SwingOn = "@ON"
+    OFF = MODE_OFF
+    COOL = "@COOL_JET"
+    HEAT = "@HEAT_JET"
+    DRY = "@DRY_JET_W"
+    HIMALAYAS = "@HIMALAYAS_COOL"
+
+
+class JetModeSupport(Enum):
+    """Supported JET modes."""
+
+    NONE = 0
+    COOL = 1
+    HEAT = 2
+    BOTH = 3
 
 
 class AirConditionerDevice(Device):
     """A higher-level interface for a AC."""
 
-    def __init__(self, client, device, temp_unit=UNIT_TEMP_CELSIUS):
-        super().__init__(client, device, AirConditionerStatus(self, None))
+    def __init__(
+        self, client: ClientAsync, device_info: DeviceInfo, temp_unit=UNIT_TEMP_CELSIUS
+    ):
+        """Initialize AirConditionerDevice object."""
+        super().__init__(client, device_info, AirConditionerStatus(self))
         self._temperature_unit = (
-            UNIT_TEMP_FAHRENHEIT if temp_unit == UNIT_TEMP_FAHRENHEIT else UNIT_TEMP_CELSIUS
+            UNIT_TEMP_FAHRENHEIT
+            if temp_unit == UNIT_TEMP_FAHRENHEIT
+            else UNIT_TEMP_CELSIUS
         )
         self._is_air_to_water = None
+        self._is_water_heater_supported = None
+        self._is_mode_airclean_supported = None
+        self._is_duct_zones_supported = None
         self._supported_operation = None
         self._supported_op_modes = None
         self._supported_fan_speeds = None
         self._supported_horizontal_steps = None
-        self._supported_horizontal_swings = None
         self._supported_vertical_steps = None
-        self._supported_vertical_swings = None
+        self._supported_mode_jet = None
         self._temperature_range = None
+        self._hot_water_temperature_range = None
         self._temperature_step = TEMP_STEP_WHOLE
         self._duct_zones = {}
 
         self._current_power = 0
         self._current_power_supported = True
 
-        self._filter_status = None
+        self._filter_status = {}
         self._filter_status_supported = True
 
-        self._f2c_map = None
-        self._c2f_map = None
+        self._unit_conv = TempUnitConversion()
 
     def _f2c(self, value):
-        """Get a dictionary mapping Fahrenheit to Celsius temperatures for
-        this device.
-
-        Unbelievably, SmartThinQ devices have their own lookup tables
-        for mapping the two temperature scales. You can get *close* by
-        using a real conversion between the two temperature scales, but
-        precise control requires using the custom LUT.
-        """
+        """Convert Fahrenheit to Celsius temperatures for this device if required."""
         if self._temperature_unit == UNIT_TEMP_CELSIUS:
             return value
-
-        if self._f2c_map is None:
-            mapping = self.model_info.value("TempFahToCel").options
-            self._f2c_map = {int(f): c for f, c in mapping.items()}
-        return self._f2c_map.get(value, value)
+        return self._unit_conv.f2c(value, self.model_info)
 
     def conv_temp_unit(self, value):
-        """Get an inverse mapping from Celsius to Fahrenheit.
-
-        Just as unbelievably, this is not exactly the inverse of the
-        `f2c` map. There are a few values in this reverse mapping that
-        are not in the other.
-        """
+        """Convert Celsius to Fahrenheit temperatures for this device if required."""
         if self._temperature_unit == UNIT_TEMP_CELSIUS:
             return float(value)
-
-        if self._c2f_map is None:
-            mapping = self.model_info.value("TempCelToFah").options
-            out = {}
-            for c, f in mapping.items():
-                try:
-                    c_num = int(c)
-                except ValueError:
-                    c_num = float(c)
-                out[c_num] = f
-            self._c2f_map = out
-        return self._c2f_map.get(value, value)
+        return self._unit_conv.c2f(value, self.model_info)
 
     def _adjust_temperature_step(self, target_temp):
         if self._temperature_step != TEMP_STEP_WHOLE:
@@ -268,6 +312,13 @@ class AirConditionerDevice(Device):
             return
         if int(target_temp) != target_temp:
             self._temperature_step = TEMP_STEP_HALF
+
+    def _is_mode_supported(self, key):
+        """Check if a specific mode for support key is supported."""
+        if not isinstance(key, list):
+            return False
+        supp_key = self._get_state_key(key[0])
+        return self.model_info.enum_value(supp_key, key[1]) is not None
 
     def _get_supported_operations(self):
         """Get a list of the ACOp Operations the device supports."""
@@ -279,7 +330,8 @@ class AirConditionerDevice(Device):
         return self._supported_operation
 
     def _supported_on_operation(self):
-        """Get the most correct "On" operation the device supports.
+        """
+        Get the most correct "On" operation the device supports.
         :raises ValueError: If ALL_ON is not supported, but there are
             multiple supported ON operations. If a model raises this,
             its behaviour needs to be determined so this function can
@@ -320,8 +372,8 @@ class AirConditionerDevice(Device):
                 return None
 
             if self.is_air_to_water:
-                min_temp = MIN_AWHP_TEMP
-                max_temp = MAX_AWHP_TEMP
+                min_temp = self._status.water_target_min_temp or AWHP_MIN_TEMP
+                max_temp = self._status.water_target_max_temp or AWHP_MAX_TEMP
             else:
                 key = self._get_state_key(STATE_TARGET_TEMP)
                 range_info = self.model_info.value(key)
@@ -334,12 +386,33 @@ class AirConditionerDevice(Device):
             self._temperature_range = [min_temp, max_temp]
         return self._temperature_range
 
-    def _is_vane_mode_supported(self, mode):
-        """Check if a specific vane mode is supported."""
-        supp_key = self._get_state_key(SUPPORT_RAC_SUBMODE)
-        if not self.model_info.enum_value(supp_key, mode):
-            return False
-        return True
+    def _get_hot_water_temperature_range(self):
+        """Get valid hot water temperature range for model."""
+
+        if not self.is_water_heater_supported:
+            return None
+
+        if not self._hot_water_temperature_range:
+            min_temp = self._status.hot_water_target_min_temp
+            max_temp = self._status.hot_water_target_max_temp
+            if min_temp is None or max_temp is None:
+                return [AWHP_MIN_TEMP, AWHP_MAX_TEMP]
+            self._hot_water_temperature_range = [min_temp, max_temp]
+        return self._hot_water_temperature_range
+
+    @property
+    def is_duct_zones_supported(self):
+        """Check if device support duct zones."""
+        if self._is_duct_zones_supported is None:
+            self._is_duct_zones_supported = False
+            supp_key = self._get_state_key(SUPPORT_DUCT_ZONE)
+            if not self.model_info.is_enum_type(supp_key):
+                return False
+            mapping = self.model_info.value(supp_key).options
+            zones = [key for key in mapping.keys() if key != "0"]
+            if zones:
+                self._is_duct_zones_supported = True
+        return self._is_duct_zones_supported
 
     def is_duct_zone_enabled(self, zone: str) -> bool:
         """Get if a specific zone is enabled"""
@@ -363,7 +436,7 @@ class AirConditionerDevice(Device):
     @property
     def duct_zones(self) -> list:
         """Return a list of available duct zones"""
-        return [key for key in self._duct_zones]
+        return list(self._duct_zones)
 
     async def update_duct_zones(self):
         """Update the current duct zones status."""
@@ -397,7 +470,7 @@ class AirConditionerDevice(Device):
         """
 
         # first check if duct is supported
-        if not self._status:
+        if not (self.is_duct_zones_supported and self._status):
             return {}
 
         duct_state = -1
@@ -408,25 +481,22 @@ class AirConditionerDevice(Device):
             return {}
 
         # get real duct zones states
-        """
-        For device that provide duct_state in payload we transform 
-        the value in the status in binary and than we create the result. 
-        We always have 8 duct zone.
-        """
-        if duct_state > 0:
-            bin_arr = [x for x in reversed(f"{duct_state:08b}")]
-            return {
-                str(v+1): {ZONE_ST_CUR: k} for v, k in enumerate(bin_arr)
-            }
 
-        """
-        For ThinQ1 devices result is a list of dicts with these keys:
-        - "No": The zone index. A string containing a number,
-          starting from 1.
-        - "Cfg": Whether the zone is enabled. A string, either "1" or
-          "0".
-        - "State": Whether the zone is open. Also "1" or "0".
-        """
+        # For device that provide duct_state in payload we transform
+        # the value in the status in binary and than we create the result.
+        # We always have 8 duct zone.
+
+        if duct_state > 0:
+            bin_arr = list(reversed(f"{duct_state:08b}"))
+            return {str(v + 1): {ZONE_ST_CUR: k} for v, k in enumerate(bin_arr)}
+
+        # For ThinQ1 devices result is a list of dicts with these keys:
+        # - "No": The zone index. A string containing a number,
+        #   starting from 1.
+        # - "Cfg": Whether the zone is enabled. A string, either "1" or
+        #   "0".
+        # - "State": Whether the zone is open. Also "1" or "0".
+
         zones = await self._get_config(DUCT_ZONE_V1)
         return {
             zone["No"]: {ZONE_ST_CUR: zone["State"]}
@@ -435,9 +505,9 @@ class AirConditionerDevice(Device):
         }
 
     async def _set_duct_zones(self, zones: dict):
-        """Turn off or on the device's zones.
-
-        The `zones` parameter is the same returned by _get_duct_zones()
+        """
+        Turn off or on the device's zones.
+        The `zones` parameter is the same returned by _get_duct_zones().
         """
 
         # Ensure at least one zone is enabled: we can't turn all zones
@@ -463,6 +533,15 @@ class AirConditionerDevice(Device):
         return self._is_air_to_water
 
     @property
+    def is_water_heater_supported(self):
+        """Return if Water Heater is supported."""
+        if not self.is_air_to_water:
+            return False
+        if self._is_water_heater_supported is None:
+            self._is_water_heater_supported = self._is_mode_supported(SUPPORT_HOT_WATER)
+        return self._is_water_heater_supported
+
+    @property
     def op_modes(self):
         """Return a list of available operation modes."""
         if self._supported_op_modes is None:
@@ -472,7 +551,9 @@ class AirConditionerDevice(Device):
                 return []
             mapping = self.model_info.value(key).options
             mode_list = [e.value for e in ACMode]
-            self._supported_op_modes = [ACMode(o).name for o in mapping.values() if o in mode_list]
+            self._supported_op_modes = [
+                ACMode(o).name for o in mapping.values() if o in mode_list
+            ]
         return self._supported_op_modes
 
     @property
@@ -485,7 +566,9 @@ class AirConditionerDevice(Device):
                 return []
             mapping = self.model_info.value(key).options
             mode_list = [e.value for e in ACFanSpeed]
-            self._supported_fan_speeds = [ACFanSpeed(o).name for o in mapping.values() if o in mode_list]
+            self._supported_fan_speeds = [
+                ACFanSpeed(o).name for o in mapping.values() if o in mode_list
+            ]
         return self._supported_fan_speeds
 
     @property
@@ -493,7 +576,7 @@ class AirConditionerDevice(Device):
         """Return a list of available horizontal step modes."""
         if self._supported_horizontal_steps is None:
             self._supported_horizontal_steps = []
-            if not self._is_vane_mode_supported(LABEL_VANE_HSTEP):
+            if not self._is_mode_supported(SUPPORT_VANE_HSTEP):
                 return []
 
             key = self._get_state_key(STATE_WDIR_HSTEP)
@@ -509,24 +592,11 @@ class AirConditionerDevice(Device):
         return self._supported_horizontal_steps
 
     @property
-    def horizontal_swing_modes(self):
-        """Return a list of available horizontal swing modes."""
-        if self._supported_horizontal_swings is None:
-            self._supported_horizontal_swings = []
-            if len(self.horizontal_step_modes) > 0:
-                return []
-            if not self._is_vane_mode_supported(LABEL_VANE_HSWING):
-                return []
-
-            self._supported_horizontal_swings = [e.name for e in ACSwingMode]
-        return self._supported_horizontal_swings
-
-    @property
     def vertical_step_modes(self):
         """Return a list of available vertical step modes."""
         if self._supported_vertical_steps is None:
             self._supported_vertical_steps = []
-            if not self._is_vane_mode_supported(LABEL_VANE_VSTEP):
+            if not self._is_mode_supported(SUPPORT_VANE_VSTEP):
                 return []
 
             key = self._get_state_key(STATE_WDIR_VSTEP)
@@ -540,19 +610,6 @@ class AirConditionerDevice(Device):
                 ACVStepMode(o).name for o in mapping.values() if o in mode_list
             ]
         return self._supported_vertical_steps
-
-    @property
-    def vertical_swing_modes(self):
-        """Return a list of available vertical swing modes."""
-        if self._supported_vertical_swings is None:
-            self._supported_vertical_swings = []
-            if len(self.vertical_step_modes) > 0:
-                return []
-            if not self._is_vane_mode_supported(LABEL_VANE_VSWING):
-                return []
-
-            self._supported_vertical_swings = [e.name for e in ACSwingMode]
-        return self._supported_vertical_swings
 
     @property
     def temperature_unit(self):
@@ -581,21 +638,78 @@ class AirConditionerDevice(Device):
         return self.conv_temp_unit(temp_range[1])
 
     @property
+    def is_mode_airclean_supported(self):
+        """Return if AirClean mode is supported."""
+        if self._is_mode_airclean_supported is None:
+            self._is_mode_airclean_supported = self._is_mode_supported(SUPPORT_AIRCLEAN)
+        return self._is_mode_airclean_supported
+
+    @property
+    def supported_mode_jet(self):
+        """Return if Jet mode is supported."""
+        if self._supported_mode_jet is None:
+            supported = JetModeSupport.NONE
+            if self._is_mode_supported(SUPPORT_JET_COOL):
+                supported = JetModeSupport.COOL
+            if self._is_mode_supported(SUPPORT_JET_HEAT):
+                if supported == JetModeSupport.COOL:
+                    supported = JetModeSupport.BOTH
+                else:
+                    supported = JetModeSupport.HEAT
+            self._supported_mode_jet = supported
+        return self._supported_mode_jet
+
+    @property
     def is_mode_jet_available(self):
         """Return if JET mode is available."""
-        return self._status.is_mode_jet_available
+        if (supported := self.supported_mode_jet) == JetModeSupport.NONE:
+            return False
+        if not self._status.is_on:
+            return False
+        if (curr_op_mode := self._status.operation_mode) is None:
+            return False
+        if curr_op_mode == ACMode.HEAT.name and supported in (
+            JetModeSupport.HEAT,
+            JetModeSupport.BOTH,
+        ):
+            return True
+        if curr_op_mode in (ACMode.COOL.name, ACMode.DRY.name) and supported in (
+            JetModeSupport.COOL,
+            JetModeSupport.BOTH,
+        ):
+            return True
+        return False
+
+    @property
+    def hot_water_target_temperature_step(self):
+        """Return target temperature step used for hot water."""
+        return TEMP_STEP_WHOLE
+
+    @property
+    def hot_water_target_temperature_min(self):
+        """Return minimum value for hot water target temperature."""
+        temp_range = self._get_hot_water_temperature_range()
+        if not temp_range:
+            return None
+        return self.conv_temp_unit(temp_range[0])
+
+    @property
+    def hot_water_target_temperature_max(self):
+        """Return maximum value for hot water target temperature."""
+        temp_range = self._get_hot_water_temperature_range()
+        if not temp_range:
+            return None
+        return self.conv_temp_unit(temp_range[1])
 
     async def power(self, turn_on):
         """Turn on or off the device (according to a boolean)."""
-
-        op = self._supported_on_operation() if turn_on else ACOp.OFF
+        operation = self._supported_on_operation() if turn_on else ACOp.OFF
         keys = self._get_cmd_keys(CMD_STATE_OPERATION)
-        op_value = self.model_info.enum_value(keys[2], op.value)
+        op_value = self.model_info.enum_value(keys[2], operation.value)
         await self.set(keys[0], keys[1], key=keys[2], value=op_value)
 
     async def set_op_mode(self, mode):
         """Set the device's operating mode to an `OpMode` value."""
-
         if mode not in self.op_modes:
             raise ValueError(f"Invalid operating mode: {mode}")
         keys = self._get_cmd_keys(CMD_STATE_OP_MODE)
@@ -604,7 +718,6 @@ class AirConditionerDevice(Device):
 
     async def set_fan_speed(self, speed):
         """Set the fan speed to a value from the `ACFanSpeed` enum."""
-
         if speed not in self.fan_speeds:
             raise ValueError(f"Invalid fan speed: {speed}")
         keys = self._get_cmd_keys(CMD_STATE_WIND_STRENGTH)
@@ -613,43 +726,42 @@ class AirConditionerDevice(Device):
 
     async def set_horizontal_step_mode(self, mode):
         """Set the horizontal step to a value from the `ACHStepMode` enum."""
-
         if mode not in self.horizontal_step_modes:
             raise ValueError(f"Invalid horizontal step mode: {mode}")
         keys = self._get_cmd_keys(CMD_STATE_WDIR_HSTEP)
         step_mode = self.model_info.enum_value(keys[2], ACHStepMode[mode].value)
         await self.set(keys[0], keys[1], key=keys[2], value=step_mode)
 
-    async def set_horizontal_swing_mode(self, mode):
-        """Set the horizontal swing to a value from the `ACSwingMode` enum."""
-
-        if mode not in self.horizontal_swing_modes:
-            raise ValueError(f"Invalid horizontal swing mode: {mode}")
+    async def horizontal_swing_mode(self, value: bool):
+        """Set the horizontal swing on or off."""
+        if not self._is_mode_supported(SUPPORT_VANE_HSWING):
+            raise ValueError("Horizontal swing mode not supported")
+        mode = MODE_ON if value else MODE_OFF
         keys = self._get_cmd_keys(CMD_STATE_WDIR_HSWING)
-        swing_mode = self.model_info.enum_value(keys[2], ACSwingMode[mode].value)
+        if (swing_mode := self.model_info.enum_value(keys[2], mode)) is None:
+            raise ValueError(f"Invalid horizontal swing mode: {mode}")
         await self.set(keys[0], keys[1], key=keys[2], value=swing_mode)
 
     async def set_vertical_step_mode(self, mode):
         """Set the vertical step to a value from the `ACVStepMode` enum."""
-
         if mode not in self.vertical_step_modes:
             raise ValueError(f"Invalid vertical step mode: {mode}")
         keys = self._get_cmd_keys(CMD_STATE_WDIR_VSTEP)
         step_mode = self.model_info.enum_value(keys[2], ACVStepMode[mode].value)
         await self.set(keys[0], keys[1], key=keys[2], value=step_mode)
 
-    async def set_vertical_swing_mode(self, mode):
-        """Set the vertical swing to a value from the `ACSwingMode` enum."""
-
-        if mode not in self.vertical_swing_modes:
-            raise ValueError(f"Invalid vertical swing mode: {mode}")
+    async def vertical_swing_mode(self, value: bool):
+        """Set the vertical swing on or off."""
+        if not self._is_mode_supported(SUPPORT_VANE_VSWING):
+            raise ValueError("Vertical swing mode not supported")
+        mode = MODE_ON if value else MODE_OFF
         keys = self._get_cmd_keys(CMD_STATE_WDIR_VSWING)
-        swing_mode = self.model_info.enum_value(keys[2], ACSwingMode[mode].value)
+        if (swing_mode := self.model_info.enum_value(keys[2], mode)) is None:
+            raise ValueError(f"Invalid vertical swing mode: {mode}")
         await self.set(keys[0], keys[1], key=keys[2], value=swing_mode)
 
     async def set_target_temp(self, temp):
         """Set the device's target temperature in Celsius degrees."""
-
         range_info = self._get_temperature_range()
         conv_temp = self._f2c(temp)
         if range_info and not (range_info[0] <= conv_temp <= range_info[1]):
@@ -657,33 +769,75 @@ class AirConditionerDevice(Device):
         keys = self._get_cmd_keys(CMD_STATE_TARGET_TEMP)
         await self.set(keys[0], keys[1], key=keys[2], value=conv_temp)
 
-    async def set_mode_jet(self, status):
-        """Set the mode jet."""
+    async def set_mode_airclean(self, status: bool):
+        """Set the Airclean mode on or off."""
+        if not self.is_mode_airclean_supported:
+            raise ValueError("Airclean mode not supported")
+
+        keys = self._get_cmd_keys(CMD_STATE_MODE_AIRCLEAN)
+        mode_key = MODE_AIRCLEAN_ON if status else MODE_AIRCLEAN_OFF
+        mode = self.model_info.enum_value(keys[2], mode_key)
+        await self.set(keys[0], keys[1], key=keys[2], value=mode)
+
+    async def set_mode_jet(self, status: bool):
+        """Set the Jet mode on or off."""
+        if self.supported_mode_jet == JetModeSupport.NONE:
+            raise ValueError("Jet mode not supported")
         if not self.is_mode_jet_available:
             raise ValueError("Invalid device status for jet mode")
 
-        keys = self._get_cmd_keys(CMD_STATE_MODE_JET)
         if status:
             if self._status.operation_mode == ACMode.HEAT.name:
-                jet_key = MODE_JET_HEAT
+                jet_key = JetMode.HEAT
             else:
-                jet_key = MODE_JET_COOL
+                jet_key = JetMode.COOL
         else:
-            jet_key = MODE_JET_OFF
-        jet = self.model_info.enum_value(keys[2], jet_key)
+            jet_key = JetMode.OFF
+        keys = self._get_cmd_keys(CMD_STATE_MODE_JET)
+        jet = self.model_info.enum_value(keys[2], jet_key.value)
         await self.set(keys[0], keys[1], key=keys[2], value=jet)
 
-    async def set_lighting_display(self, status):
-        """Set the lighting display."""
+    async def set_lighting_display(self, status: bool):
+        """Set the lighting display on or off."""
         keys = self._get_cmd_keys(CMD_STATE_LIGHTING_DISPLAY)
         lighting = LIGHTING_DISPLAY_ON if status else LIGHTING_DISPLAY_OFF
         await self.set(keys[0], keys[1], key=keys[2], value=lighting)
+
+    async def set_mode_awhp_silent(self, value: bool):
+        """Set the AWHP silent mode on or off."""
+        if not self.is_air_to_water:
+            raise ValueError("AWHP silent mode not supported")
+        mode = MODE_ON if value else MODE_OFF
+        keys = self._get_cmd_keys(CMD_STATE_MODE_AWHP_SILENT)
+        if (silent_mode := self.model_info.enum_value(keys[2], mode)) is None:
+            raise ValueError(f"Invalid AWHP silent mode: {mode}")
+        await self.set(keys[0], keys[1], key=keys[2], value=silent_mode)
+
+    async def hot_water_mode(self, value: bool):
+        """Set the device hot water mode on or off."""
+        if not self.is_water_heater_supported:
+            raise ValueError("Hot water mode not supported")
+        mode = MODE_ON if value else MODE_OFF
+        keys = self._get_cmd_keys(CMD_STATE_HOT_WATER_MODE)
+        if (hot_water_mode := self.model_info.enum_value(keys[2], mode)) is None:
+            raise ValueError(f"Invalid hot water mode: {mode}")
+        await self.set(keys[0], keys[1], key=keys[2], value=hot_water_mode)
+
+    async def set_hot_water_target_temp(self, temp):
+        """Set the device hot water target temperature in Celsius degrees."""
+        if not self.is_water_heater_supported:
+            raise ValueError("Hot water mode not supported")
+        range_info = self._get_hot_water_temperature_range()
+        conv_temp = self._f2c(temp)
+        if range_info and not (range_info[0] <= conv_temp <= range_info[1]):
+            raise ValueError(f"Target temperature out of range: {temp}")
+        keys = self._get_cmd_keys(CMD_STATE_HOT_WATER_TARGET_TEMP)
+        await self.set(keys[0], keys[1], key=keys[2], value=conv_temp)
 
     async def get_power(self):
         """Get the instant power usage in watts of the whole unit."""
         if not self._current_power_supported:
             return 0
-
         try:
             value = await self._get_config(STATE_POWER_V1)
             return value[STATE_POWER_V1]
@@ -695,16 +849,17 @@ class AirConditionerDevice(Device):
     async def get_filter_state(self):
         """Get information about the filter."""
         if not self._filter_status_supported:
-            return None
-
+            return {}
         try:
             return await self._get_config(STATE_FILTER_V1)
         except (ValueError, InvalidRequestError):
             # Device does not support filter status
             self._filter_status_supported = False
-            return None
+            return {}
 
-    async def set(self, ctrl_key, command, *, key=None, value=None, data=None, ctrl_path=None):
+    async def set(
+        self, ctrl_key, command, *, key=None, value=None, data=None, ctrl_path=None
+    ):
         """Set a device's control for `key` to `value`."""
         await super().set(
             ctrl_key, command, key=key, value=value, data=data, ctrl_path=ctrl_path
@@ -713,17 +868,22 @@ class AirConditionerDevice(Device):
             self._status.update_status(key, value)
 
     def reset_status(self):
-        self._status = AirConditionerStatus(self, None)
+        """Reset the device's status"""
+        self._status = AirConditionerStatus(self)
         return self._status
 
     async def _get_device_info(self):
-        """Call additional method to get device information for API v1.
-
-        Called by 'device_poll' method using a lower poll rate
+        """
+        Call additional method to get device information for API v1.
+        Called by 'device_poll' method using a lower poll rate.
         """
         # this command is to get power usage on V1 device
         if not self.is_air_to_water:
             self._current_power = await self.get_power()
+            filter_status = await self.get_filter_state()
+            self._filter_status = {
+                k: filter_status[v] for k, v in FILTER_STATUS_MAP if v in filter_status
+            }
 
     async def _pre_update_v2(self):
         """Call additional methods before data update for v2 API."""
@@ -731,10 +891,9 @@ class AirConditionerDevice(Device):
         keys = self._get_cmd_keys(CMD_ENABLE_EVENT_V2)
         await self.set(keys[0], keys[1], key=keys[2], value="70", ctrl_path="control")
 
-    async def poll(self) -> Optional["AirConditionerStatus"]:
+    async def poll(self) -> AirConditionerStatus | None:
         """Poll the device's current state."""
-
-        res = await self.device_poll(
+        res = await self._device_poll(
             thinq1_additional_poll=ADD_FEAT_POLL_INTERVAL,
             thinq2_query_device=True,
         )
@@ -742,6 +901,8 @@ class AirConditionerDevice(Device):
             return None
         if self._should_poll and not self.is_air_to_water:
             res[STATE_POWER_V1] = self._current_power
+            if self._filter_status:
+                res.update(self._filter_status)
 
         self._status = AirConditionerStatus(self, res)
         if self._temperature_step == TEMP_STEP_WHOLE:
@@ -750,7 +911,7 @@ class AirConditionerDevice(Device):
         # manage duct devices, does nothing if not ducted
         try:
             await self.update_duct_zones()
-        except Exception as ex:
+        except Exception as ex:  # pylint: disable=broad-except
             _LOGGER.exception("Duct zone control failed", exc_info=ex)
 
         return self._status
@@ -759,18 +920,20 @@ class AirConditionerDevice(Device):
 class AirConditionerStatus(DeviceStatus):
     """Higher-level information about a AC's current status."""
 
-    def __init__(self, device, data):
+    def __init__(self, device: AirConditionerDevice, data: dict | None = None):
+        """Initialize device status."""
         super().__init__(device, data)
         self._operation = None
 
-    def _str_to_temp(self, s):
+    def _str_to_temp(self, str_temp):
         """Convert a string to either an `int` or a `float` temperature."""
-        temp = self._str_to_num(s)
+        temp = self._str_to_num(str_temp)
         if not temp:  # value 0 return None!!!
             return None
         return self._device.conv_temp_unit(temp)
 
     def _get_operation(self):
+        """Get current operation."""
         if self._operation is None:
             key = self._get_state_key(STATE_OPERATION)
             operation = self.lookup_enum(key, True)
@@ -783,6 +946,7 @@ class AirConditionerStatus(DeviceStatus):
             return None
 
     def update_status(self, key, value):
+        """Update device status."""
         if not super().update_status(key, value):
             return False
         if key in STATE_OPERATION:
@@ -791,20 +955,21 @@ class AirConditionerStatus(DeviceStatus):
 
     @property
     def is_on(self):
-        op = self._get_operation()
-        if not op:
+        """Return if device is on."""
+        if not (operation := self._get_operation()):
             return False
-        return op != ACOp.OFF
+        return operation != ACOp.OFF
 
     @property
     def operation(self):
-        op = self._get_operation()
-        if not op:
+        """Return current device operation."""
+        if not (operation := self._get_operation()):
             return None
-        return op.name
+        return operation.name
 
     @property
     def operation_mode(self):
+        """Return current device operation mode."""
         key = self._get_state_key(STATE_OPERATION_MODE)
         if (value := self.lookup_enum(key, True)) is None:
             return None
@@ -814,7 +979,16 @@ class AirConditionerStatus(DeviceStatus):
             return None
 
     @property
+    def is_hot_water_on(self):
+        """Return if hot water is on."""
+        key = self._get_state_key(STATE_HOT_WATER_MODE)
+        if (value := self.lookup_enum(key, True)) is None:
+            return None
+        return value == MODE_ON
+
+    @property
     def fan_speed(self):
+        """Return current fan speed."""
         key = self._get_state_key(STATE_WIND_STRENGTH)
         if (value := self.lookup_enum(key, True)) is None:
             return None
@@ -825,6 +999,7 @@ class AirConditionerStatus(DeviceStatus):
 
     @property
     def horizontal_step_mode(self):
+        """Return current horizontal step mode."""
         key = self._get_state_key(STATE_WDIR_HSTEP)
         if (value := self.lookup_enum(key, True)) is None:
             return None
@@ -834,17 +1009,16 @@ class AirConditionerStatus(DeviceStatus):
             return None
 
     @property
-    def horizontal_swing_mode(self):
+    def is_horizontal_swing_on(self):
+        """Return current horizontal swing mode."""
         key = self._get_state_key(STATE_WDIR_HSWING)
         if (value := self.lookup_enum(key, True)) is None:
             return None
-        try:
-            return ACSwingMode(value).name
-        except ValueError:
-            return None
+        return value == MODE_ON
 
     @property
     def vertical_step_mode(self):
+        """Return current vertical step mode."""
         key = self._get_state_key(STATE_WDIR_VSTEP)
         if (value := self.lookup_enum(key, True)) is None:
             return None
@@ -854,57 +1028,42 @@ class AirConditionerStatus(DeviceStatus):
             return None
 
     @property
-    def vertical_swing_mode(self):
+    def is_vertical_swing_on(self):
+        """Return current vertical swing mode."""
         key = self._get_state_key(STATE_WDIR_VSWING)
         if (value := self.lookup_enum(key, True)) is None:
             return None
-        try:
-            return ACSwingMode(value).name
-        except ValueError:
-            return None
+        return value == MODE_ON
 
     @property
     def current_temp(self):
+        """Return current temperature."""
         key = self._get_state_key(STATE_CURRENT_TEMP)
-        return self._str_to_temp(self._data.get(key))
+        value = self._str_to_temp(self._data.get(key))
+        return self._update_feature(FEAT_ROOM_TEMP, value, False)
 
     @property
     def target_temp(self):
+        """Return target temperature."""
         key = self._get_state_key(STATE_TARGET_TEMP)
         return self._str_to_temp(self._data.get(key))
 
     @property
-    def hot_water_current_temp(self):
-        if not self.is_info_v2:
-            return None
-        key = self._get_state_key(STATE_HOT_WATER_TEMP)
-        value = self._str_to_temp(self._data.get(key))
-        return self._update_feature(
-            FEAT_HOT_WATER_TEMP, value, False
-        )
+    def duct_zones_state(self):
+        """Return current state for duct zones."""
+        key = self._get_state_key(STATE_DUCT_ZONE)
+        return self.to_int_or_none(self._data.get(key))
 
     @property
-    def in_water_current_temp(self):
-        if not self.is_info_v2:
+    def duct_zones_type(self):
+        """Return the type of configured duct zones (for V1 devices)."""
+        if self.is_info_v2:
             return None
-        key = self._get_state_key(STATE_IN_WATER_TEMP)
-        value = self._str_to_temp(self._data.get(key))
-        return self._update_feature(
-            FEAT_IN_WATER_TEMP, value, False
-        )
-
-    @property
-    def out_water_current_temp(self):
-        if not self.is_info_v2:
-            return None
-        key = self._get_state_key(STATE_OUT_WATER_TEMP)
-        value = self._str_to_temp(self._data.get(key))
-        return self._update_feature(
-            FEAT_OUT_WATER_TEMP, value, False
-        )
+        return self.to_int_or_none(self._data.get(DUCT_ZONE_V1_TYPE))
 
     @property
     def energy_current(self):
+        """Return current energy usage."""
         key = self._get_state_key(STATE_POWER)
         value = self._data.get(key)
         if value is not None and self.is_info_v2 and not self.is_on:
@@ -912,62 +1071,155 @@ class AirConditionerStatus(DeviceStatus):
             new_value = self.to_int_or_none(value)
             if new_value and new_value <= 50:
                 value = 5.0
-        return self._update_feature(
-            FEAT_ENERGY_CURRENT, value, False
-        )
+        return self._update_feature(FEAT_ENERGY_CURRENT, value, False)
 
     @property
     def humidity(self):
+        """Return current humidity."""
         key = self._get_state_key(STATE_HUMIDITY)
         if (value := self.to_int_or_none(self.lookup_range(key))) is None:
             return None
         if value >= 100:
             value = value / 10
-        return self._update_feature(
-            FEAT_HUMIDITY, value, False
-        )
+        return self._update_feature(FEAT_HUMIDITY, value, False)
 
     @property
-    def duct_zones_state(self):
-        key = self._get_state_key(STATE_DUCT_ZONE)
-        return self.to_int_or_none(self._data.get(key))
-
-    @property
-    def duct_zones_type(self):
-        if self.is_info_v2:
+    def mode_airclean(self):
+        """Return AirClean Mode status."""
+        if not self._device.is_mode_airclean_supported:
             return None
-        return self.to_int_or_none(self._data.get(DUCT_ZONE_V1_TYPE))
+        key = self._get_state_key(STATE_MODE_AIRCLEAN)
+        if (value := self.lookup_enum(key, True)) is None:
+            return None
+        status = value == MODE_AIRCLEAN_ON
+        return self._update_feature(FEAT_MODE_AIRCLEAN, status, False)
 
     @property
     def mode_jet(self):
+        """Return Jet Mode status."""
+        if self._device.supported_mode_jet == JetModeSupport.NONE:
+            return None
         key = self._get_state_key(STATE_MODE_JET)
         if (value := self.lookup_enum(key, True)) is None:
             return None
-        status = value in (MODE_JET_COOL, MODE_JET_HEAT)
+        try:
+            status = JetMode(value) != JetMode.OFF
+        except ValueError:
+            status = False
         return self._update_feature(FEAT_MODE_JET, status, False)
 
     @property
-    def is_mode_jet_available(self):
-        if not self.is_on:
-            return False
-        if (curr_op_mode := self.operation_mode) is None:
-            return False
-        return curr_op_mode in (ACMode.COOL.name, ACMode.DRY.name, ACMode.HEAT.name)
-
-    @property
     def lighting_display(self):
+        """Return display lighting status."""
         key = self._get_state_key(STATE_LIGHTING_DISPLAY)
         if (value := self.to_int_or_none(self._data.get(key))) is None:
             return None
-        return self._update_feature(FEAT_LIGHTING_DISPLAY, str(value) == LIGHTING_DISPLAY_ON, False)
+        return self._update_feature(
+            FEAT_LIGHTING_DISPLAY, str(value) == LIGHTING_DISPLAY_ON, False
+        )
+
+    @property
+    def filters_life(self):
+        """Return percentage status for all filters."""
+        result = {}
+
+        for filter_def in FILTER_TYPES:
+            status = self._get_filter_life(filter_def[1], filter_def[2])
+            if status is not None:
+                self._update_feature(filter_def[0], status, False)
+                result[filter_def[0]] = status
+
+        return result
+
+    @property
+    def water_in_current_temp(self):
+        """Return AWHP in water current temperature."""
+        if not self.is_info_v2:
+            return None
+        key = self._get_state_key(STATE_WATER_IN_TEMP)
+        value = self._str_to_temp(self._data.get(key))
+        return self._update_feature(FEAT_WATER_IN_TEMP, value, False)
+
+    @property
+    def water_out_current_temp(self):
+        """Return AWHP out water current temperature."""
+        if not self.is_info_v2:
+            return None
+        key = self._get_state_key(STATE_WATER_OUT_TEMP)
+        value = self._str_to_temp(self._data.get(key))
+        return self._update_feature(FEAT_WATER_OUT_TEMP, value, False)
+
+    @property
+    def water_target_min_temp(self):
+        """Return AWHP water target minimum allowed temperature."""
+        if not self.is_info_v2:
+            return None
+        key = self._get_state_key(STATE_WATER_MIN_TEMP)
+        return self._str_to_temp(self._data.get(key))
+
+    @property
+    def water_target_max_temp(self):
+        """Return AWHP water target maximun allowed temperature."""
+        if not self.is_info_v2:
+            return None
+        key = self._get_state_key(STATE_WATER_MAX_TEMP)
+        return self._str_to_temp(self._data.get(key))
+
+    @property
+    def mode_awhp_silent(self):
+        """Return AWHP silent mode status."""
+        if not self.is_info_v2:
+            return None
+        key = self._get_state_key(STATE_MODE_AWHP_SILENT)
+        if (value := self.lookup_enum(key, True)) is None:
+            return None
+        status = value == MODE_ON
+        return self._update_feature(FEAT_MODE_AWHP_SILENT, status, False)
+
+    @property
+    def hot_water_current_temp(self):
+        """Return AWHP hot water current temperature."""
+        if not self.is_info_v2:
+            return None
+        key = self._get_state_key(STATE_HOT_WATER_TEMP)
+        value = self._str_to_temp(self._data.get(key))
+        return self._update_feature(FEAT_HOT_WATER_TEMP, value, False)
+
+    @property
+    def hot_water_target_temp(self):
+        """Return AWHP hot water target temperature."""
+        if not self.is_info_v2:
+            return None
+        key = self._get_state_key(STATE_HOT_WATER_TARGET_TEMP)
+        return self._str_to_temp(self._data.get(key))
+
+    @property
+    def hot_water_target_min_temp(self):
+        """Return AWHP hot water target minimum allowed temperature."""
+        if not self.is_info_v2:
+            return None
+        key = self._get_state_key(STATE_HOT_WATER_MIN_TEMP)
+        return self._str_to_temp(self._data.get(key))
+
+    @property
+    def hot_water_target_max_temp(self):
+        """Return AWHP hot water target maximun allowed temperature."""
+        if not self.is_info_v2:
+            return None
+        key = self._get_state_key(STATE_HOT_WATER_MAX_TEMP)
+        return self._str_to_temp(self._data.get(key))
 
     def _update_features(self):
         _ = [
-            self.hot_water_current_temp,
-            self.in_water_current_temp,
-            self.out_water_current_temp,
+            self.current_temp,
             self.energy_current,
+            self.filters_life,
             self.humidity,
+            self.mode_airclean,
             self.mode_jet,
             self.lighting_display,
+            self.water_in_current_temp,
+            self.water_out_current_temp,
+            self.mode_awhp_silent,
+            self.hot_water_current_temp,
         ]

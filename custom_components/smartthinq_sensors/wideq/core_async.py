@@ -1,28 +1,37 @@
-"""A low-level, general abstraction for the LG SmartThinQ API.
+"""
+A low-level, general abstraction for the LG SmartThinQ API.
 """
 from __future__ import annotations
 
-import aiohttp
 import asyncio
 import base64
-import cchardet
+from datetime import datetime
 import hashlib
 import hmac
 import json
 import logging
 import os
 import ssl
+from typing import Any, Optional
+from urllib.parse import (
+    ParseResult,
+    parse_qs,
+    quote,
+    urlencode,
+    urljoin,
+    urlparse,
+    urlunparse,
+)
 import uuid
-import xmltodict
 
-from datetime import datetime
-from typing import Any, Dict, Generator, Optional
-from urllib.parse import urljoin, urlencode, urlparse, parse_qs, quote
+import aiohttp
+import cchardet
+import xmltodict
 
 from . import core_exceptions as exc
 from .const import DEFAULT_COUNTRY, DEFAULT_LANGUAGE, DEFAULT_TIMEOUT
 from .core_util import add_end_slash, as_list, gen_uuid
-from .device_info import DeviceInfo
+from .device_info import KEY_DEVICE_ID, DeviceInfo
 
 # The core version
 CORE_VERSION = "coreAsync"
@@ -44,9 +53,19 @@ V2_GATEWAY_URL = "https://route.lgthinq.com:46030/v1/service/application/gateway
 V2_AUTH_PATH = "/oauth/1.0/oauth2/token"
 V2_USER_INFO = "/users/profile"
 V2_EMP_SESS_URL = "https://emp-oauth.lgecloud.com/emp/oauth2/token/empsession"
-OAUTH_REDIRECT_URI = "https://kr.m.lgaccount.com/login/iabClose"
+OAUTH_LOGIN_HOST = "us.m.lgaccount.com"
+OAUTH_LOGIN_PATH = "login/signIn"
+OAUTH_REDIRECT_PATH = "login/iabClose"
+OAUTH_REDIRECT_URI = f"https://kr.m.lgaccount.com/{OAUTH_REDIRECT_PATH}"
 APPLICATION_KEY = "6V1V8H2BN5P9ZQGOI5DAQ92YZBDO3EK9"  # for spx login
-OAUTH_CLIENT_KEY = 'LGAO722A02'
+OAUTH_CLIENT_KEY = "LGAO722A02"
+EMP_REDIRECT_URL = "lgaccount.lgsmartthinq:/"
+THIRD_PART_LOGIN = {
+    "GGL": "google",
+    "AMZ": "amazon",
+    "FBK": "facebook",
+    "APPL": "apple",
+}
 
 # orig
 DATA_ROOT = "lgedmRoot"
@@ -73,38 +92,34 @@ TOKEN_EXP_LIMIT = 60  # will expire within 60 seconds
 # minimum time between 2 consecutive call for device snapshot updates (in seconds)
 MIN_TIME_BETWEEN_UPDATE = 25
 
-_LG_SSL_CIPHERS = "DEFAULT:!aNULL:!eNULL:!MD5:!3DES:!DES:!RC4:!IDEA:!SEED:!aDSS:!SRP:!PSK"
+_LG_SSL_CIPHERS = (
+    "DEFAULT:!aNULL:!eNULL:!MD5:!3DES:!DES:!RC4:!IDEA:!SEED:!aDSS:!SRP:!PSK"
+)
 
 _LOGGER = logging.getLogger(__name__)
 
 
-def parse_oauth_callback(url: str):
-    """Parse the URL to which an OAuth login redirected to obtain two
-    tokens: an access token for API credentials, and a refresh token for
-    getting updated access tokens.
-    """
-
-    params = parse_qs(urlparse(url).query)
-    return {k: v[0] for k, v in params.items()}
-
-
-def oauth_info_from_url(url: str) -> dict:
+def _oauth_info_from_result(result_info: dict) -> dict:
     """Return authentication info using an OAuth callback URL."""
-    parsed_info = parse_oauth_callback(url)
 
-    result = {
-        "oauth_url": parsed_info["oauth2_backend_url"],
-        "user_number": None,
-    }
-    if "refresh_token" in parsed_info:
-        result["access_token"] = parsed_info.get("access_token")
-        result["token_validity"] = str(DEFAULT_TOKEN_VALIDITY)
-        result["refresh_token"] = parsed_info["refresh_token"]
-    elif "code" in parsed_info:
-        result["user_number"] = parsed_info.get("user_number")
-        result["auth_code"] = parsed_info["code"]
-    else:
-        return {}
+    result = {}
+    if "refresh_token" in result_info:
+        result = {
+            "refresh_token": result_info["refresh_token"],
+            "access_token": result_info.get("access_token"),
+            "token_validity": result_info.get(
+                "expires_in", str(DEFAULT_TOKEN_VALIDITY)
+            ),
+            "user_number": None,
+        }
+    elif "code" in result_info:
+        result = {
+            "auth_code": result_info["code"],
+            "user_number": result_info.get("user_number"),
+        }
+
+    if result and "oauth2_backend_url" in result_info:
+        result["oauth_url"] = result_info["oauth2_backend_url"]
 
     return result
 
@@ -126,6 +141,7 @@ class CoreAsync:
         language: str = DEFAULT_LANGUAGE,
         *,
         timeout: int = DEFAULT_TIMEOUT,
+        oauth_url: str | None = None,
         session: aiohttp.ClientSession | None = None,
     ):
         """
@@ -141,6 +157,7 @@ class CoreAsync:
         self._country = country
         self._language = language
         self._timeout = timeout
+        self._oauth_url = oauth_url
 
         if session:
             self._session = session
@@ -179,7 +196,7 @@ class CoreAsync:
         try:
             return await response.json()
         except ValueError as ex:
-            resp_text = await response.text(errors='replace')
+            resp_text = await response.text(errors="replace")
             _LOGGER.debug("Error decoding json response %s: %s", resp_text, ex)
 
         # if fails, we try to convert text from xml to json
@@ -190,7 +207,8 @@ class CoreAsync:
 
     @staticmethod
     def _oauth2_signature(message: str, secret: str) -> str:
-        """Get the base64-encoded SHA-1 HMAC digest of a string, as used in
+        """
+        Get the base64-encoded SHA-1 HMAC digest of a string, as used in
         OAauth2 request signatures.
 
         Both the `secret` and `message` are given as text strings. We use
@@ -344,18 +362,53 @@ class CoreAsync:
 
         return msg
 
+    async def get_oauth_url(self):
+        """Return url used for oauth2 authentication."""
+
+        if self._oauth_url:
+            return self._oauth_url
+
+        headers = {
+            "Accept": "application/json",
+            "x-thinq-application-key": "wideq",
+            "x-thinq-security-key": SECURITY_KEY,
+        }
+
+        async with self._get_session().post(
+            url=GATEWAY_URL,
+            json={
+                DATA_ROOT: {"countryCode": self._country, "langCode": self._language}
+            },
+            headers=headers,
+            timeout=self._timeout,
+            raise_for_status=False,
+        ) as resp:
+            out = await resp.json()
+
+        gateway_result = self._manage_lge_result(out)
+        _LOGGER.debug("Gateway info: %s", gateway_result)
+        self._oauth_url = gateway_result["oauthUri"]
+        return self._oauth_url
+
     async def gateway_info(self):
         """Return ThinQ gateway information."""
-        return await self.thinq2_get(V2_GATEWAY_URL)
+        result = await self.thinq2_get(V2_GATEWAY_URL)
+        _LOGGER.debug("GatewayV2 info: %s", result)
+        return result
 
     async def auth_user_login(
-        self, login_base_url, emp_base_url, username, encrypted_pwd
+        self,
+        login_base_url: str,
+        emp_base_url: str,
+        username: str,
+        encrypted_pwd: str,
+        *,
+        extra_headers: dict | None = None,
     ):
-        """Perform a login with username and password.
-           password must be encrypted using hashlib with hash512 algorythm.
         """
-
-        _LOGGER.debug("auth_user_login - Enter")
+        Perform a login with username and password.
+        Password must be encrypted using hashlib with hash512 algorythm.
+        """
 
         headers = {
             "Accept": "application/json",
@@ -376,12 +429,16 @@ class CoreAsync:
 
         url = urljoin(login_base_url, "preLogin")
         pre_login_data = {
-          "user_auth2": encrypted_pwd,
-          "log_param": f"login request / user_id : {username} / third_party : null / svc_list : SVC202,SVC710 / 3rd_service : ",
+            "user_auth2": encrypted_pwd,
+            "log_param": f"login request / user_id : {username} / third_party : null / svc_list : SVC202,SVC710 / 3rd_service : ",
         }
 
         async with self._get_session().post(
-            url=url, data=pre_login_data, headers=headers, timeout=self._timeout, raise_for_status=False
+            url=url,
+            data=pre_login_data,
+            headers=headers,
+            timeout=self._timeout,
+            raise_for_status=False,
         ) as resp:
             pre_login = await resp.json()
 
@@ -390,16 +447,23 @@ class CoreAsync:
         headers["X-Timestamp"] = pre_login["tStamp"]
 
         # try login with username and hashed password
-        _LOGGER.debug("auth_user_login - getting account_data")
+        extra_data = extra_headers or {}
         data = {
-          "user_auth2": pre_login["encrypted_pw"],
-          "password_hash_prameter_flag": "Y",
-          "svc_list": "SVC202,SVC710",  # SVC202=LG SmartHome, SVC710=EMP OAuth
+            "user_auth2": pre_login["encrypted_pw"],
+            "password_hash_prameter_flag": "Y",
+            "svc_list": "SVC202,SVC710",  # SVC202=LG SmartHome, SVC710=EMP OAuth
+            **extra_data,
         }
-        emp_login_url = urljoin(emp_base_url, 'emp/v2.0/account/session/' + quote(username))
+        emp_login_url = urljoin(
+            emp_base_url, "emp/v2.0/account/session/" + quote(username)
+        )
 
         async with self._get_session().post(
-            url=emp_login_url, data=data, headers=headers, timeout=self._timeout, raise_for_status=False
+            url=emp_login_url,
+            data=data,
+            headers=headers,
+            timeout=self._timeout,
+            raise_for_status=False,
         ) as resp:
             account_data = await resp.json()
 
@@ -414,31 +478,35 @@ class CoreAsync:
                         msg += " - "
                     msg += f"message: {err_msg}"
             if not msg:
-                _LOGGER.error("auth_user_login - invalid account_data: %s", account_data)
+                _LOGGER.error(
+                    "auth_user_login - invalid account_data: %s", account_data
+                )
                 msg = "unknown error"
             raise exc.AuthenticationError(msg)
 
         account = account_data["account"]
 
         # dynamic get secret key for emp signature
-        _LOGGER.debug("auth_user_login - getting secret_data")
-        emp_search_key_url = urljoin(login_base_url, "searchKey?key_name=OAUTH_SECRETKEY&sever_type=OP")
+        emp_search_key_url = urljoin(
+            login_base_url, "searchKey?key_name=OAUTH_SECRETKEY&sever_type=OP"
+        )
 
         async with self._get_session().get(
             url=emp_search_key_url, timeout=self._timeout, raise_for_status=False
         ) as resp:
-            secret_data = json.loads(await resp.text())  # this return data as plain/text
+            secret_data = json.loads(
+                await resp.text()
+            )  # this return data as plain/text
 
         _LOGGER.debug("auth_user_login - secret_data: %s", secret_data)
         secret_key = secret_data["returnData"]
 
         # get token data
-        _LOGGER.debug("auth_user_login - getting token_data")
         emp_data = {
-          "account_type": account["userIDType"],
-          "client_id": CLIENT_ID,
-          "country_code": account["country"],
-          "username": account["userID"],
+            "account_type": account["userIDType"],
+            "client_id": CLIENT_ID,
+            "country_code": account["country"],
+            "username": account["userID"],
         }
 
         parse_url = urlparse(V2_EMP_SESS_URL)
@@ -447,73 +515,57 @@ class CoreAsync:
         signature = self._oauth2_signature(f"{req_url}\n{timestamp}", secret_key)
 
         emp_headers = {
-          "lgemp-x-app-key": OAUTH_CLIENT_KEY,
-          "lgemp-x-date": timestamp,
-          "lgemp-x-session-key": account["loginSessionID"],
-          "lgemp-x-signature": signature,
-          "Accept": "application/json",
-          "X-Device-Type": "M01",
-          "X-Device-Platform": "ADR",
-          "Content-Type": "application/x-www-form-urlencoded",
-          "Access-Control-Allow-Origin": "*",
-          "Accept-Encoding": "gzip, deflate, br",
-          "Accept-Language": "en-US,en;q=0.9",
-          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36 Edg/93.0.961.44",
+            "lgemp-x-app-key": OAUTH_CLIENT_KEY,
+            "lgemp-x-date": timestamp,
+            "lgemp-x-session-key": account["loginSessionID"],
+            "lgemp-x-signature": signature,
+            "Accept": "application/json",
+            "X-Device-Type": "M01",
+            "X-Device-Platform": "ADR",
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Access-Control-Allow-Origin": "*",
+            "Accept-Encoding": "gzip, deflate, br",
+            "Accept-Language": "en-US,en;q=0.9",
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36 Edg/93.0.961.44",
         }
 
         async with self._get_session().post(
-            url=V2_EMP_SESS_URL, headers=emp_headers, data=emp_data, timeout=self._timeout, raise_for_status=False
+            url=V2_EMP_SESS_URL,
+            headers=emp_headers,
+            data=emp_data,
+            timeout=self._timeout,
+            raise_for_status=False,
         ) as resp:
             token_data = await resp.json()
 
         if LOG_AUTH_INFO:
             _LOGGER.debug("auth_user_login - token_data: %s", token_data)
-        _LOGGER.debug("auth_user_login - token_data retrieved")
 
-        if token_data["status"] != 1:
+        if token_data.get("status", -1) != 1:
             raise exc.TokenError()
 
-        _LOGGER.debug("auth_user_login - Exit")
         return token_data
 
-    async def get_oauth_url(self):
-        """Return url used for oauth2 authentication."""
-
-        headers = {
-          "Accept": "application/json",
-          "x-thinq-application-key": "wideq",
-          "x-thinq-security-key": SECURITY_KEY,
-        },
-
-        async with self._get_session().post(
-            url=GATEWAY_URL,
-            json={DATA_ROOT: {"countryCode": self._country, "langCode": self._language}},
-            headers=headers,
-            timeout=self._timeout,
-            raise_for_status=False,
-        ) as resp:
-            out = await resp.json()
-
-        gateway = self._manage_lge_result(out)
-        return gateway["oauthUri"]
-
-    async def get_user_number(self, oauth_url, access_token):
+    async def get_user_number(self, access_token, *, oauth_url: str | None = None):
         """Get the user number used by API requests based on access token."""
+
+        if not oauth_url:
+            oauth_url = await self.get_oauth_url()
 
         url = urljoin(oauth_url, V2_USER_INFO)
         timestamp = datetime.utcnow().strftime(DATE_FORMAT)
         sig = self._oauth2_signature(f"{V2_USER_INFO}\n{timestamp}", OAUTH_SECRET_KEY)
 
         headers = {
-          "Accept": "application/json",
-          "Authorization": f"Bearer {access_token}",
-          "X-Lge-Svccode": SVC_CODE,
-          "X-Application-Key": APPLICATION_KEY,
-          "lgemp-x-app-key": CLIENT_ID,
-          "X-Device-Type": "M01",
-          "X-Device-Platform": "ADR",
-          "x-lge-oauth-date": timestamp,
-          "x-lge-oauth-signature": sig,
+            "Accept": "application/json",
+            "Authorization": f"Bearer {access_token}",
+            "X-Lge-Svccode": SVC_CODE,
+            "X-Application-Key": APPLICATION_KEY,
+            "lgemp-x-app-key": CLIENT_ID,
+            "X-Device-Type": "M01",
+            "X-Device-Platform": "ADR",
+            "x-lge-oauth-date": timestamp,
+            "x-lge-oauth-signature": sig,
         }
 
         async with self._get_session().get(
@@ -521,18 +573,24 @@ class CoreAsync:
         ) as resp:
             res_data = await resp.json()
 
-        if res_data["status"] != 1 or "account" not in res_data:
+        if res_data.get("status", -1) != 1 or "account" not in res_data:
             _LOGGER.error("get_user_number: invalid response: %s", res_data)
             raise exc.AuthenticationError("Failed to retrieve User Number")
         if LOG_AUTH_INFO:
-            _LOGGER.debug(res_data)
+            _LOGGER.debug("Get user number: %s", res_data)
 
         return res_data["account"]["userNo"]
 
-    async def _auth_request(self, oauth_url, data, *, log_auth_info=False):
-        """Use an auth code to log into the v2 API and obtain an access token
+    async def _auth_request(
+        self, data, *, oauth_url: str | None = None, log_auth_info=False
+    ):
+        """
+        Use an auth code to log into the v2 API and obtain an access token
         and refresh token.
         """
+        if not oauth_url:
+            oauth_url = await self.get_oauth_url()
+
         url = urljoin(oauth_url, V2_AUTH_PATH)
         timestamp = datetime.utcnow().strftime(DATE_FORMAT)
         req_url = f"{V2_AUTH_PATH}?{urlencode(data)}"
@@ -546,7 +604,11 @@ class CoreAsync:
         }
 
         async with self._get_session().post(
-            url=url, headers=headers, data=data, timeout=self._timeout, raise_for_status=False
+            url=url,
+            headers=headers,
+            data=data,
+            timeout=self._timeout,
+            raise_for_status=False,
         ) as resp:
             if resp.status != 200:
                 raise exc.TokenError()
@@ -559,40 +621,42 @@ class CoreAsync:
 
         return res_data
 
-    async def auth_code_login(self, oauth_url, auth_code):
-        """Get a new access_token using an authorization_code
-
+    async def auth_code_login(self, auth_code, *, oauth_url: str | None = None):
+        """
+        Get a new access_token using an authorization_code.
         May raise a `tokenError`.
         """
-
         out = await self._auth_request(
-            oauth_url,
             {
                 "code": auth_code,
                 "grant_type": "authorization_code",
-                "redirect_uri": OAUTH_REDIRECT_URI,
+                "redirect_uri": EMP_REDIRECT_URL,
             },
             log_auth_info=LOG_AUTH_INFO,
+            oauth_url=oauth_url,
         )
 
         return out["access_token"], out.get("expires_in"), out["refresh_token"]
 
-    async def refresh_auth(self, oauth_root, refresh_token):
-        """Get a new access_token using a refresh_token.
-
+    async def refresh_auth(self, refresh_token, *, oauth_url: str | None = None):
+        """
+        Get a new access_token using a refresh_token.
         May raise a `TokenError`.
         """
         out = await self._auth_request(
-            oauth_root,
             {"grant_type": "refresh_token", "refresh_token": refresh_token},
             log_auth_info=LOG_AUTH_INFO,
+            oauth_url=oauth_url,
         )
 
         return out["access_token"], out["expires_in"]
 
 
-class Gateway(object):
+class Gateway:
+    """ThinQ authentication gateway."""
+
     def __init__(self, gw_info: dict, core: CoreAsync) -> None:
+        """Initialize the gateway object."""
         self.auth_base = add_end_slash(gw_info["empUri"])
         self.emp_base_uri = add_end_slash(gw_info["empTermsUri"])
         self.login_base_uri = add_end_slash(gw_info["empSpxUri"])
@@ -625,13 +689,34 @@ class Gateway(object):
         gw_info = await core.gateway_info()
         return cls(gw_info, core)
 
-    def oauth_url(self, *, redirect_uri=None, state=None, use_oauth2=True) -> str:
-        """Construct the URL for users to log in (in a browser) to start an
+    def oauth_login_url(
+        self,
+        *,
+        use_oauth2=True,
+        redirect_uri: str | None = None,
+        state: str | None = None,
+    ) -> str:
+        """
+        Construct the URL for users to log in (in a browser) to start an
         authenticated session.
         """
 
-        url = urljoin(self.login_base_uri, "login/signIn")
+        url_base_parsed = urlparse(self.login_base_uri)
+        url_redirect = urlunparse(
+            ParseResult(
+                scheme=url_base_parsed.scheme,
+                netloc=url_base_parsed.netloc,
+                path=urljoin(url_base_parsed.path, OAUTH_REDIRECT_PATH),
+                params=None,
+                query=None,
+                fragment=None,
+            )
+        )
+        url_netloc = OAUTH_LOGIN_HOST
+        if url_base_parsed.port:
+            url_netloc += f":{url_base_parsed.port}"
 
+        redir_param = "callback_url" if use_oauth2 else "redirect_uri"
         state_param = "oauth2State" if use_oauth2 else "state"
         query = {
             "country": self.country,
@@ -639,18 +724,31 @@ class Gateway(object):
             "client_id": CLIENT_ID,
             "svc_list": SVC_CODE,
             "svc_integrated": "Y",
-            "show_thirdparty_login": "LGE,MYLG,GGL,AMZ,FBK,APPL",
-            "division": "ha:T20",
+            "show_thirdparty_login": ",".join(["LGE", "MYLG", *THIRD_PART_LOGIN]),
+            "division": "ha",  # "ha:T20",
+            redir_param: url_redirect,
             state_param: state or uuid.uuid1().hex,
             "show_select_country": "N",
         }
-        if redirect_uri or not use_oauth2:
+        if "redirect_uri" in query:
             query["redirect_uri"] = redirect_uri or OAUTH_REDIRECT_URI
 
         url_query = urlencode(query)
-        return f"{url}?{url_query}"
+        url_login = urlunparse(
+            ParseResult(
+                scheme=url_base_parsed.scheme,
+                netloc=url_netloc,
+                path=urljoin(url_base_parsed.path, OAUTH_LOGIN_PATH),
+                params=None,
+                query=url_query,
+                fragment=None,
+            )
+        )
+
+        return url_login
 
     def dump(self) -> dict:
+        """Dump the gateway objet."""
         return {
             "empUri": self.auth_base,
             "empTermsUri": self.emp_base_uri,
@@ -662,24 +760,24 @@ class Gateway(object):
         }
 
 
-class Auth(object):
-    """ThinQ authentication object"""
+class Auth:
+    """ThinQ authentication."""
 
     def __init__(
         self,
         gateway: Gateway,
         refresh_token: str,
-        oauth_url: str | None = None,
         access_token: str | None = None,
         token_validity: str | None = None,
         user_number: str | None = None,
     ) -> None:
-        """Initialize ThinQ authentication"""
+        """Initialize ThinQ authentication object."""
         self._gateway: Gateway = gateway
         self.refresh_token = refresh_token
-        self.oauth_url = oauth_url
         self.access_token = access_token
-        self.token_validity = int(token_validity) if token_validity else DEFAULT_TOKEN_VALIDITY
+        self.token_validity = (
+            int(token_validity) if token_validity else DEFAULT_TOKEN_VALIDITY
+        )
         self.user_number = user_number
         self._token_created_on = datetime.utcnow() if access_token else datetime.min
 
@@ -689,13 +787,11 @@ class Auth(object):
         return self._gateway
 
     @staticmethod
-    async def oauth_info_from_url(url: str, core: CoreAsync) -> dict:
+    async def _oauth_info_from_result(result: dict, core: CoreAsync) -> dict:
         """Return authentication info using an OAuth callback URL."""
-        result = oauth_info_from_url(url)
-
         if auth_code := result.pop("auth_code", None):
             access_token, token_validity, refresh_token = await core.auth_code_login(
-                result["oauth_url"], auth_code
+                auth_code, oauth_url=result.get("oauth_url")
             )
             return {
                 **result,
@@ -706,27 +802,53 @@ class Auth(object):
 
         return result
 
-    @classmethod
-    async def from_url(cls, gateway: Gateway, url: str) -> Auth | None:
-        """Create an authentication using an OAuth callback URL."""
-        oauth_info = await cls.oauth_info_from_url(url, gateway.core)
-        if not oauth_info:
-            return None
+    @staticmethod
+    async def oauth_info_from_url(
+        url: str, core: CoreAsync, *, gateway: Gateway | None = None
+    ) -> dict:
+        """Return authentication info using an OAuth callback URL."""
+        params = parse_qs(urlparse(url).query)
+        parse_result = {k: v[0] for k, v in params.items()}
+        url_info = _oauth_info_from_result(parse_result)
 
-        return cls(
-            gateway,
-            oauth_info["refresh_token"],
-            oauth_info["oauth_url"],
-            oauth_info["access_token"],
-            oauth_info["token_validity"],
-            oauth_info["user_number"],
-        )
+        # Manage third part login
+        if not url_info:
+            username = parse_result.get("user_id")
+            thirdparty_token = parse_result.get("user_thirdparty_token")
+            id_type = parse_result.get("user_id_type", "")
 
-    @classmethod
-    async def from_user_login(
-        cls, gateway: Gateway, username: str, password: str
-    ) -> Auth:
-        """Perform authentication, returning a new Auth object."""
+            if not (username and thirdparty_token) or id_type not in THIRD_PART_LOGIN:
+                raise exc.AuthenticationError("Invalid third part login info")
+
+            try:
+                if not gateway:
+                    gateway = await Gateway.discover(core)
+                token_info = await core.auth_user_login(
+                    gateway.login_base_uri,
+                    gateway.emp_base_uri,
+                    username,
+                    thirdparty_token,
+                    extra_headers={
+                        "third_party": THIRD_PART_LOGIN[id_type],
+                    },
+                )
+            except exc.AuthenticationError:
+                raise
+            except Exception as ex:
+                raise exc.AuthenticationError("Third part login failed") from ex
+            url_info = _oauth_info_from_result(token_info)
+
+        result = await Auth._oauth_info_from_result(url_info, core)
+        if not result:
+            raise exc.AuthenticationError("Url login failed")
+
+        return result
+
+    @staticmethod
+    async def oauth_info_from_user_login(
+        username: str, password: str, gateway: Gateway
+    ) -> dict:
+        """Return authentication info using username and password."""
         hash_pwd = hashlib.sha512()
         hash_pwd.update(password.encode("utf8"))
         try:
@@ -741,19 +863,51 @@ class Auth(object):
         except Exception as ex:
             raise exc.AuthenticationError("User login failed") from ex
 
-        refresh_token = token_info["refresh_token"]
-        oauth_url = token_info["oauth2_backend_url"]
-        access_token = token_info["access_token"]
-        token_validity = token_info["expires_in"]
-        user_number = await gateway.core.get_user_number(oauth_url, access_token)
+        login_info = _oauth_info_from_result(token_info)
+        result = await Auth._oauth_info_from_result(login_info, gateway.core)
+        if not result:
+            raise exc.AuthenticationError("User login failed")
 
-        return cls(
-            gateway, refresh_token, oauth_url, access_token, token_validity, user_number
+        return result
+
+    @classmethod
+    async def from_url(cls, gateway: Gateway, url: str) -> Auth | None:
+        """Create an authentication using an OAuth callback URL."""
+        oauth_info = await cls.oauth_info_from_url(url, gateway.core, gateway=gateway)
+        if not oauth_info:
+            return None
+
+        auth = cls(
+            gateway,
+            oauth_info["refresh_token"],
+            oauth_info["access_token"],
+            oauth_info["token_validity"],
+            oauth_info["user_number"],
         )
+        return await auth.refresh()
+
+    @classmethod
+    async def from_user_login(
+        cls, gateway: Gateway, username: str, password: str
+    ) -> Auth:
+        """Perform authentication, returning a new Auth object."""
+        oauth_info = await cls.oauth_info_from_user_login(username, password, gateway)
+        if not oauth_info:
+            return None
+
+        auth = cls(
+            gateway,
+            oauth_info["refresh_token"],
+            oauth_info["access_token"],
+            oauth_info["token_validity"],
+            oauth_info["user_number"],
+        )
+        return await auth.refresh()
 
     def start_session(self):
-        """Start an API session for the logged-in user. Return the
-        Session object and a list of the user's devices.
+        """
+        Start an API session for the logged-in user.
+        Return the Session object and a list of the user's devices.
         """
         return Session(self)
 
@@ -761,9 +915,6 @@ class Auth(object):
         """Refresh the authentication token, returning a new Auth object."""
 
         access_token = self.access_token
-
-        if not self.oauth_url:
-            self.oauth_url = await self._gateway.core.get_oauth_url()
 
         get_new_token: bool = force_refresh or (access_token is None)
         if not get_new_token:
@@ -775,15 +926,13 @@ class Auth(object):
             _LOGGER.debug("Request new access token")
             self.access_token = None
             access_token, token_validity = await self._gateway.core.refresh_auth(
-                self.oauth_url, self.refresh_token
+                self.refresh_token
             )
         else:
             token_validity = str(self.token_validity)
 
         if not self.user_number:
-            self.user_number = await self._gateway.core.get_user_number(
-                self.oauth_url, access_token
-            )
+            self.user_number = await self._gateway.core.get_user_number(access_token)
 
         if not get_new_token:
             return self
@@ -791,7 +940,6 @@ class Auth(object):
         return Auth(
             self._gateway,
             self.refresh_token,
-            self.oauth_url,
             access_token,
             token_validity,
             self.user_number,
@@ -805,7 +953,6 @@ class Auth(object):
         """Return a dict of dumped Auth class."""
         return {
             "refresh_token": self.refresh_token,
-            "oauth_url": self.oauth_url,
             "access_token": self.access_token,
             "expires_in": self.token_validity,
             "user_number": self.user_number,
@@ -817,30 +964,34 @@ class Auth(object):
         return cls(
             gateway,
             data["refresh_token"],
-            data["oauth_url"],
             data.get("access_token"),
             data.get("expires_in"),
             data["user_number"],
         )
 
 
-class Session(object):
+class Session:
+    """ThinQ authentication session."""
+
     def __init__(self, auth: Auth, session_id=0) -> None:
+        """Initialize session object."""
         self._auth = auth
         self.session_id = session_id
         self._common_lang_pack_url = None
 
     @property
     def common_lang_pack_url(self):
+        """Return common language pack url."""
         return self._common_lang_pack_url
 
     async def refresh_auth(self) -> Auth:
-        """Refresh associated authentication"""
+        """Refresh associated authentication."""
         self._auth = await self._auth.refresh()
         return self._auth
 
     async def post(self, path: str, data: dict | None = None) -> dict:
-        """Make a POST request to the APIv1 server.
+        """
+        Make a POST request to the APIv1 server.
 
         This is like `lgedm_post`, but it pulls the context for the
         request from an active Session.
@@ -856,7 +1007,8 @@ class Session(object):
         )
 
     async def post2(self, path: str, data: dict | None = None) -> dict:
-        """Make a POST request to the APIv2 server.
+        """
+        Make a POST request to the APIv2 server.
 
         This is like `lgedm_post`, but it pulls the context for the
         request from an active Session.
@@ -890,10 +1042,10 @@ class Session(object):
             self._auth.user_number,
         )
 
-    async def get_devices(self):
-        """Get a list of devices associated with the user's account.
-
-        Return a list of dicts with information about the devices.
+    async def get_devices(self) -> list[dict]:
+        """
+        Get a list of devices associated with the user's account.
+        Return information about the devices.
         """
         dashboard = await self.get2("service/application/dashboard")
         if self._common_lang_pack_url is None:
@@ -901,8 +1053,8 @@ class Session(object):
         return as_list(dashboard.get("item", []))
 
     async def monitor_start(self, device_id):
-        """Begin monitoring a device's status.
-
+        """
+        Begin monitoring a device's status.
         Return a "work ID" that can be used to retrieve the result of
         monitoring.
         """
@@ -919,10 +1071,11 @@ class Session(object):
         return res["workId"]
 
     async def monitor_poll(self, device_id, work_id):
-        """Get the result of a monitoring task.
+        """
+        Get the result of a monitoring task.
 
-        `work_id` is a string ID retrieved from `monitor_start`. Return
-        a status result, which is a bytestring, or None if the
+        `work_id` is a string ID retrieved from `monitor_start`.
+        Return a status result, which is a bytestring, or None if the
         monitoring is not yet ready.
 
         May raise a `MonitorError`, in which case the right course of
@@ -962,15 +1115,15 @@ class Session(object):
         )
 
     async def set_device_controls(
-            self,
-            device_id,
-            ctrl_key,
-            command=None,
-            value=None,
-            data=None,
+        self,
+        device_id,
+        ctrl_key,
+        command=None,
+        value=None,
+        data=None,
     ):
-        """Control a device's settings.
-
+        """
+        Control a device's settings.
         `values` is a key/value map containing the settings to update.
         """
         res = {}
@@ -986,24 +1139,26 @@ class Session(object):
             }
 
         if payload:
-            payload.update({
-                "deviceId": device_id,
-                "workId": gen_uuid(),
-            })
+            payload.update(
+                {
+                    "deviceId": device_id,
+                    "workId": gen_uuid(),
+                }
+            )
             res = await self.post("rti/rtiControl", payload)
             _LOGGER.debug("Set V1 result: %s", str(res))
 
         return res
 
-    async def set_device_v2_controls(
-            self,
-            device_id,
-            ctrl_key,
-            command=None,
-            key=None,
-            value=None,
-            *,
-            ctrl_path=None,
+    async def device_v2_controls(
+        self,
+        device_id,
+        ctrl_key,
+        command=None,
+        key=None,
+        value=None,
+        *,
+        ctrl_path=None,
     ):
         """Control a device's settings based on api V2."""
 
@@ -1028,7 +1183,8 @@ class Session(object):
         return res
 
     async def get_device_config(self, device_id, key, category="Config"):
-        """Get a device configuration option.
+        """
+        Get a device configuration option.
 
         The `category` string should probably either be "Config" or
         "Control"; the right choice appears to depend on the key.
@@ -1052,14 +1208,15 @@ class Session(object):
         return await self.get2(f"service/devices/{device_id}")
 
     async def delete_permission(self, device_id):
-        """Delete permission on V1 device after a control command"""
+        """Delete permission on V1 device after a control command."""
         await self.post("rti/delControlPermission", {"deviceId": device_id})
 
 
-class ClientAsync(object):
-    """A higher-level API wrapper that provides a session more easily
-        and allows serialization of state.
-        """
+class ClientAsync:
+    """
+    A higher-level API wrapper that provides a session more easily
+    and allows serialization of state.
+    """
 
     def __init__(
         self,
@@ -1068,7 +1225,7 @@ class ClientAsync(object):
         country: str = DEFAULT_COUNTRY,
         language: str = DEFAULT_LANGUAGE,
         *,
-        enable_emulation: bool = False
+        enable_emulation: bool = False,
     ) -> None:
         """Initialize the client."""
         # The three steps required to get access to call the API.
@@ -1082,7 +1239,7 @@ class ClientAsync(object):
 
         # Cached model info data. This is a mapping from URLs to JSON
         # responses.
-        self._model_url_info: Dict[str, Any] = {}
+        self._model_url_info: dict[str, Any] = {}
         self._common_lang_pack = None
 
         # Locale information used to discover a gateway, if necessary.
@@ -1092,27 +1249,29 @@ class ClientAsync(object):
         # enable emulation mode for debug / test
         self._emulation = enable_emulation
 
-    def _inject_thinq2_device(self):
-        """This is used only for debug"""
+    def _load_emul_devices(self):
+        """This is used only for debug."""
         data_file = os.path.join(
             os.path.dirname(os.path.realpath(__file__)), "deviceV2.txt"
         )
         try:
             with open(data_file, "r") as f:
                 device_v2 = json.load(f)
-        except FileNotFoundError:
-            return
-        for d in device_v2:
-            self._devices.append(d)
-            _LOGGER.debug("Injected debug device: %s", d)
+        except (FileNotFoundError, json.JSONDecodeError):
+            return None
+        return device_v2
 
     async def _load_devices(self, force_update: bool = False):
         """Load dict with available devices."""
         if self._session and (self._devices is None or force_update):
-            self._devices = await self._session.get_devices()
+            new_devices = await self._session.get_devices()
             if self.emulation:
                 # for debug
-                self._inject_thinq2_device()
+                if emul_device := self._load_emul_devices():
+                    new_devices.extend(emul_device)
+            self._devices = {
+                d[KEY_DEVICE_ID]: d for d in new_devices if KEY_DEVICE_ID in d
+            }
 
     @property
     def api_version(self):
@@ -1136,14 +1295,22 @@ class ClientAsync(object):
     @property
     def has_devices(self) -> bool:
         """Return True if there are devices associated."""
-        return True if self._devices else False
+        return bool(self._devices)
 
     @property
-    def devices(self) -> Generator[DeviceInfo, None, None] | None:
-        """DeviceInfo objects describing the user's devices."""
+    def devices(self) -> list[DeviceInfo] | None:
+        """Return list of DeviceInfo objects describing the user's devices."""
         if self._devices is None:
             return None
-        return (DeviceInfo(d) for d in self._devices)
+        return [DeviceInfo(d) for d in self._devices.values()]
+
+    def get_device(self, device_id: str) -> DeviceInfo | None:
+        """Return a DeviceInfo object by device ID or None if the device id does not exist."""
+        if not self._devices:
+            return None
+        if device_id in self._devices:
+            return DeviceInfo(self._devices[device_id])
+        return None
 
     @property
     def emulation(self) -> bool:
@@ -1155,7 +1322,6 @@ class ClientAsync(object):
         """Return current auth info."""
         return {
             "refresh_token": self.auth.refresh_token,
-            "oauth_url": self.auth.oauth_url,
             "access_token": self.auth.access_token,
             "user_number": self.auth.user_number,
         }
@@ -1165,7 +1331,7 @@ class ClientAsync(object):
         await self._auth.gateway.close()
 
     async def refresh_devices(self):
-        """Refresh the devices' information for this client"""
+        """Refresh the devices' information for this client."""
         async with self._lock:
             call_time = datetime.utcnow()
             difference = (call_time - self._last_device_update).total_seconds()
@@ -1173,18 +1339,6 @@ class ClientAsync(object):
                 return
             await self._load_devices(True)
             self._last_device_update = call_time
-
-    def get_device(self, device_id) -> DeviceInfo | None:
-        """Look up a DeviceInfo object by device ID.
-            
-        Return None if the device does not exist.
-        """
-        if not self._devices:
-            return None
-        for device in self.devices:
-            if device.id == device_id:
-                return device
-        return None
 
     async def refresh(self, refresh_gateway=False) -> None:
         """Refresh client connection."""
@@ -1203,80 +1357,133 @@ class ClientAsync(object):
             await self.refresh()
 
     @classmethod
-    async def from_login(
+    async def from_user_login(
         cls,
         username: str,
         password: str,
         *,
         country: str = DEFAULT_COUNTRY,
         language: str = DEFAULT_LANGUAGE,
+        oauth_url: str | None = None,
         aiohttp_session: aiohttp.ClientSession | None = None,
         enable_emulation: bool = False,
     ) -> ClientAsync:
-        """Construct a client using username and password.
+        """
+        Construct a client using username and password.
 
-            This allows simpler state storage (e.g., for human-written
-            configuration) but it is a little less efficient because we need
-            to reload the gateway servers and restart the session.
-            """
+        This allows simpler state storage (e.g., for human-written
+        configuration) but it is a little less efficient because we need
+        to reload the gateway servers and restart the session.
+        """
 
-        gateway = await Gateway.discover(
-            CoreAsync(country, language, session=aiohttp_session)
+        core = CoreAsync(
+            country, language, oauth_url=oauth_url, session=aiohttp_session
         )
-        auth = await Auth.from_user_login(gateway, username, password)
-        client = cls(auth=auth, country=country, language=language, enable_emulation=enable_emulation)
-        client._session = auth.start_session()
-        await client._load_devices()
+        try:
+            gateway = await Gateway.discover(core)
+            auth = await Auth.from_user_login(gateway, username, password)
+            client = cls(
+                auth=auth,
+                country=country,
+                language=language,
+                enable_emulation=enable_emulation,
+            )
+            client._session = auth.start_session()
+            await client._load_devices()
+        except Exception:  # pylint: disable=broad-except
+            await core.close()
+            raise
+
         return client
 
     @classmethod
     async def from_token(
         cls,
         refresh_token: str,
-        oauth_url: str | None = None,
         *,
         country: str = DEFAULT_COUNTRY,
         language: str = DEFAULT_LANGUAGE,
+        oauth_url: str | None = None,
         aiohttp_session: aiohttp.ClientSession | None = None,
         enable_emulation: bool = False,
     ) -> ClientAsync:
-        """Construct a client using just a refresh token.
-            
-            This allows simpler state storage (e.g., for human-written
-            configuration) but it is a little less efficient because we need
-            to reload the gateway servers and restart the session.
-            """
+        """
+        Construct a client using just a refresh token.
 
-        gateway = await Gateway.discover(
-            CoreAsync(country, language, session=aiohttp_session)
+        This allows simpler state storage (e.g., for human-written
+        configuration) but it is a little less efficient because we need
+        to reload the gateway servers and restart the session.
+        """
+
+        core = CoreAsync(
+            country, language, oauth_url=oauth_url, session=aiohttp_session
         )
-        auth = Auth(gateway, refresh_token, oauth_url)
-        client = cls(auth=auth, country=country, language=language, enable_emulation=enable_emulation)
-        await client.refresh()
+        try:
+            gateway = await Gateway.discover(core)
+            auth = Auth(gateway, refresh_token)
+            client = cls(
+                auth=auth,
+                country=country,
+                language=language,
+                enable_emulation=enable_emulation,
+            )
+            await client.refresh()
+        except Exception:  # pylint: disable=broad-except
+            await core.close()
+            raise
+
         return client
 
     @staticmethod
-    async def get_oauth_url(
+    async def get_login_url(
         country: str = DEFAULT_COUNTRY,
         language: str = DEFAULT_LANGUAGE,
         *,
         aiohttp_session: aiohttp.ClientSession | None = None,
     ) -> str:
         """Return an url to use to login in a browser."""
-        gateway = await Gateway.discover(
-            CoreAsync(country, language, session=aiohttp_session)
-        )
-        await gateway.close()
-        return gateway.oauth_url()
+        core = CoreAsync(country, language, session=aiohttp_session)
+        try:
+            gateway = await Gateway.discover(core)
+        finally:
+            await core.close()
+
+        return gateway.oauth_login_url()
 
     @staticmethod
     async def oauth_info_from_url(
-        url: str, aiohttp_session: aiohttp.ClientSession | None = None
+        url: str,
+        country: str = DEFAULT_COUNTRY,
+        language: str = DEFAULT_LANGUAGE,
+        *,
+        aiohttp_session: aiohttp.ClientSession | None = None,
     ) -> dict:
         """Return authentication info from an OAuth callback URL."""
-        core = CoreAsync(session=aiohttp_session)
-        result = await Auth.oauth_info_from_url(url, core)
-        await core.close()
+        core = CoreAsync(country, language, session=aiohttp_session)
+        try:
+            result = await Auth.oauth_info_from_url(url, core)
+        finally:
+            await core.close()
+
+        return result
+
+    @staticmethod
+    async def oauth_info_from_user_login(
+        username: str,
+        password: str,
+        country: str = DEFAULT_COUNTRY,
+        language: str = DEFAULT_LANGUAGE,
+        *,
+        aiohttp_session: aiohttp.ClientSession | None = None,
+    ) -> dict:
+        """Return authentication info from an OAuth callback URL."""
+        core = CoreAsync(country, language, session=aiohttp_session)
+        try:
+            gateway = await Gateway.discover(core)
+            result = await Auth.oauth_info_from_user_login(username, password, gateway)
+        finally:
+            await core.close()
+
         return result
 
     async def _load_json_info(self, info_url: str):
@@ -1287,9 +1494,9 @@ class ClientAsync(object):
         content = await self._auth.gateway.core.http_get_bytes(info_url)
 
         # we use cchardet to detect correct encoding and convert to unicode string
-        encoding = cchardet.detect(content)['encoding']
+        encoding = cchardet.detect(content)["encoding"]
         try:
-            str_content = str(content, encoding, errors='replace')
+            str_content = str(content, encoding, errors="replace")
         except (LookupError, TypeError):
             # A LookupError is raised if the encoding was not found which could
             # indicate a misspelling or similar mistake.
@@ -1297,10 +1504,16 @@ class ClientAsync(object):
             # A TypeError can be raised if encoding is None
             #
             # So we try blindly encoding.
-            str_content = str(content, errors='replace')
+            str_content = str(content, errors="replace")
 
         enc_resp = str_content.encode()
-        return json.loads(enc_resp)
+        try:
+            return json.loads(enc_resp)
+        except json.JSONDecodeError as ex:
+            _LOGGER.warning(
+                "Failed to load json info file: %s - error: %s", info_url, ex
+            )
+            return None
 
     async def common_lang_pack(self):
         """Load JSON common lang pack from specific url."""
@@ -1313,9 +1526,10 @@ class ClientAsync(object):
         return self._common_lang_pack
 
     async def model_url_info(self, url, device=None):
-        """For a DeviceInfo object, get a ModelInfo object describing
-            the model's capabilities.
-            """
+        """
+        For a DeviceInfo object, get a ModelInfo object describing
+        the model's capabilities.
+        """
         if not url:
             return {}
         if url not in self._model_url_info:
@@ -1326,10 +1540,12 @@ class ClientAsync(object):
                     device.model_name,
                     url,
                 )
-            self._model_url_info[url] = await self._load_json_info(url)
+            if not (model_url_info := await self._load_json_info(url)):
+                return None
+            self._model_url_info[url] = model_url_info
         return self._model_url_info[url]
 
-    def dump(self) -> Dict[str, Any]:
+    def dump(self) -> dict[str, Any]:
         """Serialize the client state."""
 
         out = {
@@ -1349,7 +1565,7 @@ class ClientAsync(object):
         return out
 
     @classmethod
-    def load(cls, state: Dict[str, Any]) -> ClientAsync | None:
+    def load(cls, state: dict[str, Any]) -> ClientAsync | None:
         """Load a client from serialized state."""
 
         auth = None
@@ -1361,7 +1577,7 @@ class ClientAsync(object):
                 CoreAsync(
                     data.get("country", DEFAULT_COUNTRY),
                     data.get("language", DEFAULT_LANGUAGE),
-                )
+                ),
             )
 
         if "auth" in state and gateway:
@@ -1377,7 +1593,7 @@ class ClientAsync(object):
             client._session = Session(client.auth, state["session"])
 
         if "model_info" in state:
-            client._model_info = state["model_info"]
+            client._model_url_info = state["model_url_info"]
 
         if "country" in state:
             client._country = state["country"]

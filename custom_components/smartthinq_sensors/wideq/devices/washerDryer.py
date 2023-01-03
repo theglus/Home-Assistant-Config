@@ -1,14 +1,16 @@
 """------------------for Washer and Dryer"""
+from __future__ import annotations
+
 import base64
 import json
 import logging
-from typing import Optional
 
-from .const import (
+from ..const import (
     FEAT_ANTICREASE,
     FEAT_CHILDLOCK,
     FEAT_CREASECARE,
     FEAT_DAMPDRYBEEP,
+    FEAT_DETERGENT,
     FEAT_DOORCLOSE,
     FEAT_DOORLOCK,
     FEAT_DRYLEVEL,
@@ -17,12 +19,14 @@ from .const import (
     FEAT_HANDIRON,
     FEAT_MEDICRINSE,
     FEAT_PRE_STATE,
-    FEAT_PROCESS_STATE,
     FEAT_PREWASH,
+    FEAT_PROCESS_STATE,
     FEAT_REMOTESTART,
     FEAT_RESERVATION,
+    FEAT_RINSEMODE,
     FEAT_RUN_STATE,
     FEAT_SELFCLEAN,
+    FEAT_SOFTENER,
     FEAT_SPINSPEED,
     FEAT_STANDBY,
     FEAT_STEAM,
@@ -36,9 +40,10 @@ from .const import (
     STATE_OPTIONITEM_OFF,
     STATE_OPTIONITEM_ON,
 )
-from .core_exceptions import InvalidDeviceStatus
-from .device import Device, DeviceStatus
-from .device_info import DeviceType
+from ..core_async import ClientAsync
+from ..core_exceptions import InvalidDeviceStatus
+from ..device import Device, DeviceStatus
+from ..device_info import DeviceInfo, DeviceType
 
 STATE_WM_POWER_OFF = "@WM_STATE_POWER_OFF_W"
 STATE_WM_END = [
@@ -54,22 +59,75 @@ STATE_WM_ERROR_NO_ERROR = [
 ]
 
 WM_ROOT_DATA = "washerDryer"
+WM_SUB_DEV = {"mini": "miniState"}
 
 POWER_STATUS_KEY = ["State", "state"]
 REMOTE_START_KEY = ["RemoteStart", "remoteStart"]
 
-CMD_POWER_OFF = [["Control", "WMControl"], ["Power", "WMOff"], ["Off", None]]
+CMD_POWER_OFF = [["Control", "WMOff"], ["Power", "WMOff"], ["Off", None]]
 CMD_WAKE_UP = [["Control", "WMWakeup"], ["Operation", "WMWakeup"], ["WakeUp", None]]
-CMD_REMOTE_START = [["Control", "WMStart"], ["OperationStart", "WMStart"], ["Start", "WMStart"]]
+CMD_REMOTE_START = [
+    ["Control", "WMStart"],
+    ["OperationStart", "WMStart"],
+    ["Start", "WMStart"],
+]
+
+BIT_FEATURES = {
+    FEAT_ANTICREASE: ["AntiCrease", "antiCrease"],
+    FEAT_CHILDLOCK: ["ChildLock", "childLock"],
+    FEAT_CREASECARE: ["CreaseCare", "creaseCare"],
+    FEAT_DAMPDRYBEEP: ["DampDryBeep", "dampDryBeep"],
+    FEAT_DETERGENT: ["DetergentRemaining", "detergentRemaining"],
+    FEAT_DOORCLOSE: ["DoorClose", "doorClose"],
+    FEAT_DOORLOCK: ["DoorLock", "doorLock"],
+    FEAT_HANDIRON: ["HandIron", "handIron"],
+    FEAT_MEDICRINSE: ["MedicRinse", "medicRinse"],
+    FEAT_PREWASH: ["PreWash", "preWash"],
+    FEAT_REMOTESTART: REMOTE_START_KEY,
+    FEAT_RESERVATION: ["Reservation", "reservation"],
+    FEAT_SELFCLEAN: ["SelfClean", "selfClean"],
+    FEAT_SOFTENER: ["SoftenerRemaining", "softenerRemaining"],
+    FEAT_STEAM: ["Steam", "steam"],
+    FEAT_STEAMSOFTENER: ["SteamSoftener", "steamSoftener"],
+    FEAT_TURBOWASH: ["TurboWash", "turboWash"],
+}
 
 _LOGGER = logging.getLogger(__name__)
 
 
+def get_sub_devices(device_info: DeviceInfo) -> list[str]:
+    """Search for valid sub devices and return related sub keys."""
+    if not (snapshot := device_info.snapshot):
+        return []
+    if not (payload := snapshot.get(WM_ROOT_DATA)):
+        return []
+    return [k for k, s in WM_SUB_DEV.items() if s in payload]
+
+
 class WMDevice(Device):
     """A higher-level interface for washer and dryer."""
-    def __init__(self, client, device):
-        super().__init__(client, device, WMStatus(self, None))
+
+    def __init__(
+        self, client: ClientAsync, device_info: DeviceInfo, sub_key: str | None = None
+    ):
+        super().__init__(client, device_info, WMStatus(self))
+        self._sub_key = sub_key
+        if sub_key:
+            self._attr_unique_id += f"-{sub_key}"
+            self._attr_name += f" {sub_key.capitalize()}"
         self._remote_start_status = None
+
+    def getkey(self, key: str | None) -> str | None:
+        """Add subkey prefix to a key if required."""
+        if not (key and self._sub_key):
+            return key
+        return f"{self._sub_key}{key[0].upper()}{key[1:]}"
+
+    def _getcmdkey(self, key: str | None) -> str | None:
+        """Add subkey prefix to a command key if required."""
+        if not (key and self._sub_key):
+            return key
+        return f"{self._sub_key.capitalize()}{key}"
 
     def _update_status(self, key, value):
         if self._status:
@@ -82,21 +140,24 @@ class WMDevice(Device):
         """Get definition for a specific course ID."""
         if course_key is None:
             return None
-        if self.model_info.is_info_v2:
-            return self.model_info.data_root(course_key).get(course_id)
         return self.model_info.value(course_key).reference.get(course_id)
 
     def _update_course_info(self, data, course_id=None):
-        """Save information in the data payload for a specific course
+        """
+        Save information in the data payload for a specific course
         or default course if not already available.
         """
         ret_data = data.copy()
         if self.model_info.is_info_v2:
-            n_course_key = self.model_info.config_value("courseType")
-            s_course_key = self.model_info.config_value("smartCourseType")
-            def_course_id = self.model_info.config_value("defaultCourse")
+            n_course_key = self.model_info.config_value(self.getkey("courseType"))
+            s_course_key = self.model_info.config_value(self.getkey("smartCourseType"))
+            def_course_id = self.model_info.config_value(
+                f"default{self._getcmdkey('Course')}"
+            )
         else:
-            n_course_key = "APCourse" if self.model_info.value_exist("APCourse") else "Course"
+            n_course_key = (
+                "APCourse" if self.model_info.value_exist("APCourse") else "Course"
+            )
             s_course_key = "SmartCourse"
             def_course_id = str(self.model_info.config_value("defaultCourseId"))
         if course_id is None:
@@ -140,16 +201,16 @@ class WMDevice(Device):
             cmd["data"] = str_data
         return cmd
 
-    def _prepare_command_v2(self, cmd, key):
+    def _prepare_command_v2(self, cmd, key: str):
         """Prepare command for specific ThinQ2 device."""
         data_set = cmd.pop("data", None)
         if not data_set:
             return cmd
 
-        if key and key == "WMStart":
+        if key and key.find("WMStart") >= 0:
             status_data = self._update_course_info(self._remote_start_status)
-            n_course_key = self.model_info.config_value("courseType")
-            s_course_key = self.model_info.config_value("smartCourseType")
+            n_course_key = self.model_info.config_value(self.getkey("courseType"))
+            s_course_key = self.model_info.config_value(self.getkey("smartCourseType"))
             cmd_data_set = {}
 
             for cmd_key, cmd_value in data_set[WM_ROOT_DATA].items():
@@ -173,7 +234,7 @@ class WMDevice(Device):
                         cmd_data_set["courseType"] = course_type
                     else:
                         cmd_data_set[s_course_key] = "NOT_SELECTED"
-                elif cmd_key == "initialBit":
+                elif cmd_key == self.getkey("initialBit"):
                     cmd_data_set[cmd_key] = "INITIAL_BIT_ON"
                 else:
                     cmd_data_set[cmd_key] = status_data.get(cmd_key, cmd_value)
@@ -212,17 +273,30 @@ class WMDevice(Device):
         keys = self._get_cmd_keys(CMD_REMOTE_START)
         await self.set(keys[0], keys[1], key=keys[2])
 
+    async def set(
+        self, ctrl_key, command, *, key=None, value=None, data=None, ctrl_path=None
+    ):
+        """Set a device's control for `key` to `value`."""
+        await super().set(
+            self._getcmdkey(ctrl_key),
+            self._getcmdkey(command),
+            key=self._getcmdkey(key),
+            value=value,
+            data=data,
+            ctrl_path=ctrl_path,
+        )
+
     def reset_status(self):
         tcl_count = None
         if self._status:
             tcl_count = self._status.tubclean_count
-        self._status = WMStatus(self, None, tcl_count)
+        self._status = WMStatus(self, tcl_count=tcl_count)
         return self._status
 
     def _set_remote_start_opt(self, res):
         """Save the status to use for remote start."""
 
-        status_key = self._get_state_key(REMOTE_START_KEY)
+        status_key = self.getkey(self._get_state_key(REMOTE_START_KEY))
         remote_enabled = self._status.lookup_bit(status_key) == STATE_OPTIONITEM_ON
         if not self._remote_start_status:
             if remote_enabled:
@@ -230,10 +304,10 @@ class WMDevice(Device):
         elif not remote_enabled:
             self._remote_start_status = None
 
-    async def poll(self) -> Optional["WMStatus"]:
+    async def poll(self) -> WMStatus | None:
         """Poll the device's current state."""
 
-        res = await self.device_poll(WM_ROOT_DATA)
+        res = await self._device_poll(WM_ROOT_DATA)
         if not res:
             return None
 
@@ -243,12 +317,21 @@ class WMDevice(Device):
 
 
 class WMStatus(DeviceStatus):
-    """Higher-level information about a WM current status.
+    """
+    Higher-level information about a WM current status.
 
     :param device: The Device instance.
     :param data: JSON data from the API.
     """
-    def __init__(self, device, data, tcl_count: str = None):
+
+    def __init__(
+        self,
+        device: WMDevice,
+        data: dict | None = None,
+        *,
+        tcl_count: str | None = None,
+    ):
+        """Initialize device status."""
         super().__init__(device, data)
         self._run_state = None
         self._pre_state = None
@@ -256,9 +339,16 @@ class WMStatus(DeviceStatus):
         self._error = None
         self._tcl_count = tcl_count
 
+    def _getkeys(self, keys: str | list[str]) -> str | list[str]:
+        """Add subkey prefix to a key or a list of keys if required."""
+        if isinstance(keys, list):
+            return [self._device.getkey(key) for key in keys]
+        return self._device.getkey(keys)
+
     def _get_run_state(self):
+        """Get current run state."""
         if not self._run_state:
-            state = self.lookup_enum(POWER_STATUS_KEY)
+            state = self.lookup_enum(self._getkeys(POWER_STATUS_KEY))
             if not state:
                 self._run_state = STATE_WM_POWER_OFF
             else:
@@ -266,10 +356,12 @@ class WMStatus(DeviceStatus):
         return self._run_state
 
     def _get_pre_state(self):
+        """Get previous run state."""
         if not self._pre_state:
-            if not self.key_exist(["PreState", "preState"]):
+            keys = self._getkeys(["PreState", "preState"])
+            if not (key := self.get_model_info_key(keys)):
                 return None
-            state = self.lookup_enum(["PreState", "preState"])
+            state = self.lookup_enum(key)
             if not state:
                 self._pre_state = STATE_WM_POWER_OFF
             else:
@@ -277,10 +369,12 @@ class WMStatus(DeviceStatus):
         return self._pre_state
 
     def _get_process_state(self):
+        """Get current process state."""
         if not self._process_state:
-            if not self.key_exist(["ProcessState", "processState"]):
+            keys = self._getkeys(["ProcessState", "processState"])
+            if not (key := self.get_model_info_key(keys)):
                 return None
-            state = self.lookup_enum(["ProcessState", "processState"])
+            state = self.lookup_enum(key)
             if not state:
                 self._process_state = STATE_OPTIONITEM_NONE
             else:
@@ -288,35 +382,39 @@ class WMStatus(DeviceStatus):
         return self._process_state
 
     def _get_error(self):
+        """Get current error."""
         if not self._error:
-            error = self.lookup_reference(["Error", "error"], ref_key="title")
+            keys = self._getkeys(["Error", "error"])
+            error = self.lookup_reference(keys, ref_key="title")
             if not error:
                 self._error = STATE_WM_ERROR_OFF
             else:
                 self._error = error
         return self._error
 
-    def update_status(self, key, value, upd_features=False):
-        if not super().update_status(key, value):
+    def update_status(self, key, value):
+        """Update device status."""
+        if not super().update_status(self._getkeys(key), value):
             return False
         self._run_state = None
-        if upd_features:
-            self._update_features()
         return True
 
     @property
     def is_on(self):
+        """Return if device is on."""
         run_state = self._get_run_state()
         return run_state != STATE_WM_POWER_OFF
 
     @property
     def is_dryer(self):
+        """Return if device is a dryer."""
         if self._device.device_info.type in [DeviceType.DRYER, DeviceType.TOWER_DRYER]:
             return True
         return False
 
     @property
     def is_run_completed(self):
+        """Return if run is completed."""
         run_state = self._get_run_state()
         pre_state = self._get_pre_state()
         if pre_state is None:
@@ -329,6 +427,7 @@ class WMStatus(DeviceStatus):
 
     @property
     def is_error(self):
+        """Return if an error is present."""
         if not self.is_on:
             return False
         error = self._get_error()
@@ -338,8 +437,11 @@ class WMStatus(DeviceStatus):
 
     @property
     def current_course(self):
+        """Return current course."""
         if self.is_info_v2:
-            course_key = self._device.model_info.config_value("courseType")
+            course_key = self._device.model_info.config_value(
+                self._getkeys("courseType")
+            )
         else:
             course_key = ["APCourse", "Course"]
         course = self.lookup_reference(course_key, ref_key="name")
@@ -347,8 +449,11 @@ class WMStatus(DeviceStatus):
 
     @property
     def current_smartcourse(self):
+        """Return current smartcourse."""
         if self.is_info_v2:
-            course_key = self._device.model_info.config_value("smartCourseType")
+            course_key = self._device.model_info.config_value(
+                self._getkeys("smartCourseType")
+            )
         else:
             course_key = "SmartCourse"
         smart_course = self.lookup_reference(course_key, ref_key="name")
@@ -356,309 +461,194 @@ class WMStatus(DeviceStatus):
 
     @property
     def initialtime_hour(self):
+        """Return hour initial time."""
         if self.is_info_v2:
-            return DeviceStatus.int_or_none(self._data.get("initialTimeHour"))
+            return self.int_or_none(self._data.get(self._getkeys("initialTimeHour")))
         return self._data.get("Initial_Time_H")
 
     @property
     def initialtime_min(self):
+        """Return minute initial time."""
         if self.is_info_v2:
-            return DeviceStatus.int_or_none(self._data.get("initialTimeMinute"))
+            return self.int_or_none(self._data.get(self._getkeys("initialTimeMinute")))
         return self._data.get("Initial_Time_M")
 
     @property
     def remaintime_hour(self):
+        """Return hour remaining time."""
         if self.is_info_v2:
-            return DeviceStatus.int_or_none(self._data.get("remainTimeHour"))
+            return self.int_or_none(self._data.get(self._getkeys("remainTimeHour")))
         return self._data.get("Remain_Time_H")
 
     @property
     def remaintime_min(self):
+        """Return minute remaining time."""
         if self.is_info_v2:
-            return DeviceStatus.int_or_none(self._data.get("remainTimeMinute"))
+            return self.int_or_none(self._data.get(self._getkeys("remainTimeMinute")))
         return self._data.get("Remain_Time_M")
 
     @property
     def reservetime_hour(self):
+        """Return hour reserved time."""
         if self.is_info_v2:
-            return DeviceStatus.int_or_none(self._data.get("reserveTimeHour"))
+            return self.int_or_none(self._data.get(self._getkeys("reserveTimeHour")))
         return self._data.get("Reserve_Time_H")
 
     @property
     def reservetime_min(self):
+        """Return minute reserved time."""
         if self.is_info_v2:
-            return DeviceStatus.int_or_none(self._data.get("reserveTimeMinute"))
+            return self.int_or_none(self._data.get(self._getkeys("reserveTimeMinute")))
         return self._data.get("Reserve_Time_M")
 
     @property
     def run_state(self):
+        """Return current run state."""
         run_state = self._get_run_state()
         if run_state == STATE_WM_POWER_OFF:
             run_state = STATE_OPTIONITEM_NONE
-        return self._update_feature(
-            FEAT_RUN_STATE, run_state
-        )
+        return self._update_feature(FEAT_RUN_STATE, run_state)
 
     @property
     def pre_state(self):
+        """Return previous run state."""
         pre_state = self._get_pre_state()
         if pre_state is None:
             return None
         if pre_state == STATE_WM_POWER_OFF:
             pre_state = STATE_OPTIONITEM_NONE
-        return self._update_feature(
-            FEAT_PRE_STATE, pre_state
-        )
+        return self._update_feature(FEAT_PRE_STATE, pre_state)
 
     @property
     def process_state(self):
+        """Return current process state."""
         process = self._get_process_state()
         if process is None:
             return None
-        return self._update_feature(
-            FEAT_PROCESS_STATE, process
-        )
+        return self._update_feature(FEAT_PROCESS_STATE, process)
 
     @property
     def error_msg(self):
+        """Return current error message."""
         if not self.is_error:
             error = STATE_OPTIONITEM_NONE
         else:
             error = self._get_error()
-        return self._update_feature(
-            FEAT_ERROR_MSG, error
-        )
+        return self._update_feature(FEAT_ERROR_MSG, error)
 
     @property
     def spin_option_state(self):
-        if not self.key_exist(["SpinSpeed", "spin"]):
+        """Return spin option state."""
+        keys = self._getkeys(["SpinSpeed", "spin"])
+        if not (key := self.get_model_info_key(keys)):
             return None
-        spin_speed = self.lookup_enum(["SpinSpeed", "spin"])
+        spin_speed = self.lookup_enum(key)
         if not spin_speed:
             spin_speed = STATE_OPTIONITEM_NONE
-        return self._update_feature(
-            FEAT_SPINSPEED, spin_speed
-        )
+        return self._update_feature(FEAT_SPINSPEED, spin_speed)
 
     @property
     def water_temp_option_state(self):
-        if not self.key_exist(["WTemp", "WaterTemp", "temp"]):
+        """Return water temperature option state."""
+        keys = self._getkeys(["WTemp", "WaterTemp", "temp"])
+        if not (key := self.get_model_info_key(keys)):
             return None
         if self.key_exist("temp") and self.is_dryer:
             return None
-        water_temp = self.lookup_enum(["WTemp", "WaterTemp", "temp"])
+        water_temp = self.lookup_enum(key)
         if not water_temp:
             water_temp = STATE_OPTIONITEM_NONE
-        return self._update_feature(
-            FEAT_WATERTEMP, water_temp
-        )
+        return self._update_feature(FEAT_WATERTEMP, water_temp)
+
+    @property
+    def rinse_mode_option_state(self):
+        """Return rinse mode option state."""
+        keys = self._getkeys(["RinseOption", "rinse"])
+        if not (key := self.get_model_info_key(keys)):
+            return None
+        rinse_mode = self.lookup_enum(key)
+        if not rinse_mode:
+            rinse_mode = STATE_OPTIONITEM_NONE
+        return self._update_feature(FEAT_RINSEMODE, rinse_mode)
 
     @property
     def dry_level_option_state(self):
-        if not self.key_exist(["DryLevel", "dryLevel"]):
+        """Return dry level option state."""
+        keys = self._getkeys(["DryLevel", "dryLevel"])
+        if not (key := self.get_model_info_key(keys)):
             return None
-        dry_level = self.lookup_enum(["DryLevel", "dryLevel"])
+        dry_level = self.lookup_enum(key)
         if not dry_level:
             dry_level = STATE_OPTIONITEM_NONE
-        return self._update_feature(
-            FEAT_DRYLEVEL, dry_level
-        )
+        return self._update_feature(FEAT_DRYLEVEL, dry_level)
 
     @property
     def temp_control_option_state(self):
-        if not self.key_exist(["TempControl", "tempControl", "temp"]):
+        """Return temperature control option state."""
+        keys = self._getkeys(["TempControl", "tempControl", "temp"])
+        if not (key := self.get_model_info_key(keys)):
             return None
         if self.key_exist("temp") and not self.is_dryer:
             return None
-        temp_control = self.lookup_enum(["TempControl", "tempControl", "temp"])
+        temp_control = self.lookup_enum(key)
         if not temp_control:
             temp_control = STATE_OPTIONITEM_NONE
-        return self._update_feature(
-            FEAT_TEMPCONTROL, temp_control
-        )
+        return self._update_feature(FEAT_TEMPCONTROL, temp_control)
 
     @property
     def time_dry_option_state(self):
-        """Get the time dry setting."""
-        if not self.key_exist("TimeDry"):
+        """Return time dry option state."""
+        keys = self._getkeys("TimeDry")
+        if not (key := self.get_model_info_key(keys)):
             return None
-        time_dry = self.lookup_enum("TimeDry")
+        time_dry = self.lookup_enum(key)
         if not time_dry:
             time_dry = STATE_OPTIONITEM_NONE
-        return self._update_feature(
-            FEAT_TIMEDRY, time_dry, False
-        )
+        return self._update_feature(FEAT_TIMEDRY, time_dry, False)
 
     @property
     def eco_hybrid_option_state(self):
-        if not self.key_exist(["EcoHybrid", "ecoHybrid"]):
+        """Return eco hybrid option state."""
+        keys = self._getkeys(["EcoHybrid", "ecoHybrid"])
+        if not (key := self.get_model_info_key(keys)):
             return None
-        eco_hybrid = self.lookup_enum(["EcoHybrid", "ecoHybrid"])
+        eco_hybrid = self.lookup_enum(key)
         if not eco_hybrid:
             eco_hybrid = STATE_OPTIONITEM_NONE
-        return self._update_feature(
-            FEAT_ECOHYBRID, eco_hybrid
-        )
+        return self._update_feature(FEAT_ECOHYBRID, eco_hybrid)
 
     @property
     def tubclean_count(self):
-        if not self.key_exist("TCLCount"):
-            return None
+        """Return tub clean counter."""
+        key = self._getkeys("TCLCount")
         if self.is_info_v2:
-            result = self.int_or_none(self._data.get("TCLCount"))
+            if (result := self.int_or_none(self._data.get(key))) is None:
+                return None
         else:
-            result = self._data.get("TCLCount")
-        if result is None:
-            result = self._tcl_count or "N/A"
-        return self._update_feature(
-            FEAT_TUBCLEAN_COUNT, result, False
-        )
+            if not self.get_model_info_key(key):
+                return None
+            result = self._data.get(key)
+            if result is None:
+                result = self._tcl_count or "N/A"
+        return self._update_feature(FEAT_TUBCLEAN_COUNT, result, False)
 
     @property
     def standby_state(self):
-        if not self.key_exist(["Standby", "standby"]):
+        """Return standby state."""
+        keys = self._getkeys(["Standby", "standby"])
+        if not (key := self.get_model_info_key(keys)):
             return None
-        status = self.lookup_enum(["Standby", "standby"])
+        status = self.lookup_enum(key)
         if not status:
             status = STATE_OPTIONITEM_OFF
-        return self._update_feature(
-            FEAT_STANDBY, status
-        )
+        return self._update_feature(FEAT_STANDBY, status)
 
-    @property
-    def remotestart_state(self):
-        status = self.lookup_bit(
-            REMOTE_START_KEY[1] if self.is_info_v2 else REMOTE_START_KEY[0]
-        )
-        return self._update_feature(
-            FEAT_REMOTESTART, status, False
-        )
-
-    @property
-    def doorlock_state(self):
-        status = self.lookup_bit(
-            "doorLock" if self.is_info_v2 else "DoorLock"
-        )
-        return self._update_feature(
-            FEAT_DOORLOCK, status, False
-        )
-
-    @property
-    def doorclose_state(self):
-        status = self.lookup_bit(
-            "doorClose" if self.is_info_v2 else "DoorClose"
-        )
-        return self._update_feature(
-            FEAT_DOORCLOSE, status, False
-        )
-
-    @property
-    def childlock_state(self):
-        status = self.lookup_bit(
-            "childLock" if self.is_info_v2 else "ChildLock"
-        )
-        return self._update_feature(
-            FEAT_CHILDLOCK, status, False
-        )
-
-    @property
-    def creasecare_state(self):
-        status = self.lookup_bit(
-            "creaseCare" if self.is_info_v2 else "CreaseCare"
-        )
-        return self._update_feature(
-            FEAT_CREASECARE, status, False
-        )
-
-    @property
-    def steam_state(self):
-        status = self.lookup_bit(
-            "steam" if self.is_info_v2 else "Steam"
-        )
-        return self._update_feature(
-            FEAT_STEAM, status, False
-        )
-
-    @property
-    def steam_softener_state(self):
-        status = self.lookup_bit(
-            "steamSoftener" if self.is_info_v2 else "SteamSoftener"
-        )
-        return self._update_feature(
-            FEAT_STEAMSOFTENER, status, False
-        )
-
-    @property
-    def prewash_state(self):
-        status = self.lookup_bit(
-            "preWash" if self.is_info_v2 else "PreWash"
-        )
-        return self._update_feature(
-            FEAT_PREWASH, status, False
-        )
-
-    @property
-    def turbowash_state(self):
-        status = self.lookup_bit(
-            "turboWash" if self.is_info_v2 else "TurboWash"
-        )
-        return self._update_feature(
-            FEAT_TURBOWASH, status, False
-        )
-
-    @property
-    def medicrinse_state(self):
-        status = self.lookup_bit(
-            "medicRinse" if self.is_info_v2 else "MedicRinse"
-        )
-        return self._update_feature(
-            FEAT_MEDICRINSE, status, False
-        )
-
-    @property
-    def dampdrybeep_state(self):
-        status = self.lookup_bit(
-            "dampDryBeep" if self.is_info_v2 else "DampDryBeep"
-        )
-        return self._update_feature(
-            FEAT_DAMPDRYBEEP, status, False
-        )
-
-    @property
-    def reservation_state(self):
-        status = self.lookup_bit(
-            "reservation" if self.is_info_v2 else "Reservation"
-        )
-        return self._update_feature(
-            FEAT_RESERVATION, status, False
-        )
-
-    @property
-    def handiron_state(self):
-        status = self.lookup_bit(
-            "handIron" if self.is_info_v2 else "HandIron"
-        )
-        return self._update_feature(
-            FEAT_HANDIRON, status, False
-        )
-
-    @property
-    def selfclean_state(self):
-        status = self.lookup_bit(
-            "selfClean" if self.is_info_v2 else "SelfClean"
-        )
-        return self._update_feature(
-            FEAT_SELFCLEAN, status, False
-        )
-
-    @property
-    def anticrease_state(self):
-        status = self.lookup_bit(
-            "antiCrease" if self.is_info_v2 else "AntiCrease"
-        )
-        return self._update_feature(
-            FEAT_ANTICREASE, status, False
-        )
+    def _update_bit_features(self):
+        """Update features related to bit status."""
+        index = 1 if self.is_info_v2 else 0
+        for feature, keys in BIT_FEATURES.items():
+            status = self.lookup_bit(self._getkeys(keys[index]))
+            self._update_feature(feature, status, False)
 
     def _update_features(self):
         _ = [
@@ -668,25 +658,12 @@ class WMStatus(DeviceStatus):
             self.error_msg,
             self.spin_option_state,
             self.water_temp_option_state,
+            self.rinse_mode_option_state,
             self.dry_level_option_state,
             self.temp_control_option_state,
             # self.time_dry_option_state,
             self.eco_hybrid_option_state,
             self.tubclean_count,
             self.standby_state,
-            self.remotestart_state,
-            self.doorlock_state,
-            self.doorclose_state,
-            self.childlock_state,
-            self.creasecare_state,
-            self.steam_state,
-            self.steam_softener_state,
-            self.prewash_state,
-            self.turbowash_state,
-            self.medicrinse_state,
-            self.dampdrybeep_state,
-            self.reservation_state,
-            self.handiron_state,
-            self.selfclean_state,
-            self.anticrease_state,
         ]
+        self._update_bit_features()
