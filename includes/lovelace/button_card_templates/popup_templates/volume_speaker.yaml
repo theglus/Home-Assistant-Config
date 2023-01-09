@@ -16,6 +16,11 @@ double_tap_action:
     data:
       title: "[[[ return entity.attributes.friendly_name ]]]"
       content:
+        card_mod:
+          style: |
+            ha-card {
+              border-style: none;
+            }
         type: entities
         entities:
           - type: custom:media_player-popup-card

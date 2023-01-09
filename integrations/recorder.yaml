@@ -24,21 +24,33 @@ recorder:
       - sensor.kirby_temperature
       - sensor.kitchen_temperature
       # TrueNAS Sensors
-      - sensor.truenas_arc_size
       - sensor.truenas_cpu_usage
-      - sensor.truenas_sda
-      - sensor.truenas_sdb
+      # - sensor.truenas_arc_size
+      # - sensor.truenas_sda
+      # - sensor.truenas_sdb
       - sensor.truenas_temperature
+      # Power Tracking
+      - sensor.all_lights_power
+      - sensor.craftstation_plug_power
+      - sensor.grid_power
+      - sensor.nibbler_plug_power
+      - sensor.workstation_plug_power
+      # Energy Tracking
+      - sensor.all_lights_energy
+      - sensor.craftstation_plug_energy
+      - sensor.dishwasher_plug_energy
+      - sensor.dyson_kitchen_energy
+      - sensor.dyson_kirby_energy
+      - sensor.grid_energy
+      - sensor.laundry_energy
+      - sensor.media_hub_energy
+      - sensor.nibbler_plug_energy
+      - sensor.workstation_plug_energy
     entity_globs:
       - person.jeffrey_*
       - person.tiffany_*
       - sensor.beacon_*
       - sensor.processor_*
-      - sensor.*_power
-      - sensor.*_energy*
       - sensor.daily_energy_*
       - sensor.monthly_energy_*
       - sensor.*_energy_cost
-      - sensor.*_plug_power
-      - sensor.*_plug_energy
-      
