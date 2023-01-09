@@ -173,7 +173,7 @@ Inspired by [matt8707](https://github.com/matt8707), I created several custom ic
 ### Quick Access Controls
 The Quick Access Controls are a logical grouping of Lovelace buttons + cards using many of the [above listed custom components](#custom-components). The inspiration for Quick Access came from stumbling upon [Crixle's Light Control Card](https://github.com/crixle/homeassistant-config#light-control-card) via r/homeassistant. I was fascinated by the idea of reducing the number of clicks required to control my smart home. This led me to overhaul my Lovelace setup with the goal of making all essential controls availible in 3-clicks or less.
 
-![Quick Access Controls](www/readme/demo/quick_access_controls.gif) 
+![Quick Access Controls](https://uc09300dedc77d8c14b5415f3bde.previews.dropboxusercontent.com/p/thumb/ABza7nfmo7pDMJvoGgRixkil7uUnYsRnBQlmwwQEfQ75bEOkwV3uVXH0m02IYMHD-w3zEKQCbbKenz6NputKP8Nm5zWsRb62RFXzAPcjAfGAB1WufhrY2AcPsJDHBVszELiDtP7wKS2ZP_iuA_mr6OivJSUoeyKBnpRToUMzZxmXwKZs5TFiqBac-yaR9vaNiWEP1h_RnOM3phtjns-ATFxjmr44UrXbp8Wj-lDXK9gkVBTqyHAoBTlB_oyzGTfv6MIg4CUzZCO7_2_YgY11ySvlgT9YteiY0PJFQ3dPAcaZ0Jc6QGT-znU7vxeSICElGox4DQXApVfsWcWCOkZFrYZIKabK2oaJSwdSCbbQZRSw3KLXER9Z0ZiKW-JBEvz_rhaeu8jTXTlJT6GPfeW3Oldtg2Beoe6zPsontdCkFyXqoOiBKm5lFi0UkocJtpFDSxaIt8FwWJbNTYd_CMDtl-JRbooh4sOs5hlk2wIdGHJrLWvqmnSo_CczUcqCBCITtD496n38BrQIOVpzSzT5AOHVPdrd5xtg-RaYqNR_EvLwfmIbpPehScufU4S67dp5VcxyIgGwyDUQeiJSrIM12iKqZuOYyBMnKHEYb8nG_VSIjgFcBA6xV3tGNVsn3EnyioAUezAhEerZ7siukgLj4J0S/p.gif) 
 <details>
   <summary>Code</summary>
   
@@ -254,7 +254,7 @@ entities:
 
 ### Room Controls
 
-![Room Controls](www/readme/demo/room_controls.png)
+![Room Controls](https://ucc0eb5a789696219e0699eedb8e.previews.dropboxusercontent.com/p/thumb/ABxUBonFebUIN7k4RL0kxP3vO5EbRvIXxehlEeFQcx3DazJNffJcjKSdRhCY62TwVqmDAEwPXPh0Mm4eKRmIH8peTcxaYgeuUXtnyFGFN08NxBY_BsYtnxogBqcSOkK44UKo-LSpyDj1ET7gDzwFllS5cCdlfqx44e0C4Bzhpef043LPgGvSc0mEB73UHlvCi_ArvVM4SZlUFV-5SOKotkG9KbBfbh4urrR7rZYhlDGw6HNs26a0bjNusGsVrkBgdoczU0p6EPcMghg8Eq6aume0mNkxf4qi0Eu9Gt_jER3GgP6w3QzDVwKfEIZS2Bg7QCUByLpCJioLO4LKmfq8eAiiqKonMPaOBJxPdIDzi7l498ffk-kyWpggXEF5AiRnctMxjuYMousCspRXvOy0hEPttxWBKdMLibJEGiRPocdtQg/p.png)
 #### Icons
 - [Entryway Icon](www/custom_icons.js)
 - [Office Icon](www/custom_icons.js)
@@ -365,7 +365,7 @@ General:
 
 ### Hallway Controls
 
-![Hallway Controls](www/readme/demo/hallway.png)
+![Hallway Controls](https://uca22ac7d9b051d3ca97434a4f0e.previews.dropboxusercontent.com/p/thumb/ABwgyzSuGJ51JGYpkfkbMguQ0N8AM35x1_HLtxLIv8CqB8d__jz7v4-q2NJvDsX0Sb_bgRarwUyM75wCC-DMXZS0ApBFcGQhtKMdDgYlb4e8FGx_4xmF0-KqcJR7YmhMJBXj-GRtZkN78KkWXeo3orNwi51LmDoIDPjFcGOpBM0L_9esFLi3YdxvHvX48mgUYkjFLWGsQmHk4ld8EbPgFHgUPMmVVMBXTw_9Fsl-irkaTHPoF-2KhQSFBZT6iCh2MiTT6s4VYwI_zdtXm6e6j4E-jOVp99qDF39Ao-KrHNI5LtUuroZC46BBbLEYpR_12Lg34k3hq06Z1jKsNFOygPMxx4fIgyCZwqFOxhnlt7pfLKogrUlv_kwt9kDZG5fd4lcUM6q94vF6HFC35OK5YfSgHgLN97Cm9iKxSOqS0SUnyg/p.png)
 #### Icons
 - [Marquee Icon](includes/lovelace/button_card_templates/icon_templates/icon_light/icon_marquee.yaml)
 - [Stair Icon](includes/lovelace/button_card_templates/icon_templates/icon_light/icon_led.yaml)
@@ -433,7 +433,7 @@ Entryway:
 
 ### Laundry Controls
 
-![Laundry Controls](www/readme/demo/laundry.png) 
+![Laundry Controls](https://ucb74503707ab0e08bb78302e78a.previews.dropboxusercontent.com/p/thumb/AByo-7deh0r9HP6f7ybwWLoaVJqpCa4TX7lS3cTPv8_lP5vmIh6xeX3Y_DF1rRJxc89co1JXGRuZ_Mu2wQMLuVmyLgN1VoISEDmjg7AAbyqOdp2INlmcb6Zj51KYz28CZo-HjN7xXOaW9vLdWwVsKNAOeihlyC8-BL5-yns6biogXBUn33Aa4M8eIBbsTLhXGSntrY7pvEppzkntADEHbSVG3UlquPZR8Y5-TK9VJyFa1SzC1D663gJf5DJgEiFfd6fhPqQuGq9AmBaRb3-v5rd9dciHTdgNnRyb8OQsl4BnsOX50bBdYCGJdH5Et0yBh1CufVDKzEOvEGHsC9JOY5TGivn-vJFEMinHX0LLwMn2Uct1X3GiEv6qkpTgNdcZ6yuLZHQ4DftsPMxB2BWTlbiT7vGOLwc577U-tkTzPNeegw/p.png) 
 #### Icons
 - [Washer Icon](includes/lovelace/button_card_templates/icon_templates/icon_laundry/icon_washer.yaml)
 - [Dryer Icon](includes/lovelace/button_card_templates/icon_templates/icon_laundry/icon_dryer.yaml)
@@ -472,7 +472,7 @@ Laundry:
 
 ### Office Controls
 
-![Office Controls](www/readme/demo/office.png) 
+![Office Controls](https://uc1296868c590914c439b31db2f9.previews.dropboxusercontent.com/p/thumb/AByLnRsbmiXwbH2OFvGxdNY8s6ynKRNNKV_a5aSatgMefqtXLyLhZM749IMqoEMDH05qKGgzytGbVZaL9teEKx9AtY3nNyBe_Qg6ycB9XFULE5Zbd9ppOWkqajGEdbJfFhqEmsHHymFC0JvD_P4ZNECtgUMM-C6ul-c3KNdx6ZZtS-Y7fb3YrV63UYIFGWRMm-6svUtYaDd4IkRcX727DMeYQciWr4gG8OMqcwtxYA9S_O9lef63Zi3T4MBhhudxkmeTViJrgtjkV7KIidf8RsQ2TRP75VKyC-7w6wWY6oPRAkmQtBX8Nasb0mlvHYqzoMvepJcDOQxRtsLIFlm9b3KwfHfWgTjEY2Of5ElU2qFm4IsEZN2D5lQ0HbHaVPeSj09Jx0-1yyUIBxwmOSQscS9KDDiZcvhF-POBg8c7GJtxZw/p.png) 
 #### Icons
 - [Ceiling Icon](includes/lovelace/button_card_templates/icon_templates/icon_light/icon_recessed.yaml)
 - [Printer Icon](includes/lovelace/button_card_templates/icon_templates/icon_printer.yaml)
@@ -526,7 +526,7 @@ Office:
 
 ### Living Room Controls
 
-![Living Room Controls](www/readme/demo/living_room.png)
+![Living Room Controls](https://uc27665525b7eb0e9744d7e8727d.previews.dropboxusercontent.com/p/thumb/AByRqSdk4P9-XqcM7igh8G44mdrej-Eco2nXw_03VE8wvOKw6FwLxfk3S_oLIBPhfYNeJ8sglaWOwtGd6oBWUQCYRfKOB8gFB72YQwZfUB7v3Nmh-rBTgyVALtSETtnS9pCJdhpF20V0v4PafVsnjxcp7MhXusWx9dek1bXk2RgTQXKnbXEzOZN0P7xfCLNe0E88pxB3PQDNFSBqrT3Bedems1Df9H7o4gAESqyw_lxV9qDimYAlYMWiY95mAJfcTnYSFVniTKM6iNaqLLdGCissaD57BXfvxx8HVEV9M0nRfOZMMMnw6vLUNF5CbtCzYDAgHrDSu3X3WmFFQfkqHQwBrwpGDCU_3-ucyQUrS7CMacIG2u6f6cULqDgjL0xI1Jn96-ubug_MNMWKONlckKAffsasg-vQl0zV6XJdYc0whA/p.png)
 #### Icons
 - [Spotlight Icon](includes/lovelace/button_card_templates/icon_templates/icon_light/icon_spot.yaml)
 - [Garden Lights Icon](includes/lovelace/button_card_templates/icon_templates/icon_light/icon_garden.yaml)
@@ -611,7 +611,7 @@ Living Room:
 
 ### Kitchen Controls
 
-![Kitchen Controls](www/readme/demo/kitchen.png) 
+![Kitchen Controls](https://ucc6f1f3f29edd3e833b48586c15.previews.dropboxusercontent.com/p/thumb/ABzqDjjJiI5RzCqUO1Rt5spqNWOxhSZEy1LnzvktORjrL9Af5sceemKdJGMeMtcXxaChgAqnZK3h6o2pMepUbx5m4W0abDp1HrODm7zy1V_uGOrGBnrG9H-iXE3aHMYlyUlVemZh3M_QWYEypx-PPYP0u9xQgyPzQObiU6fOTHWx7Y_qM_G2kiZ3v4UsnCgZggd-jqSlBCWeTsa_BxbHYgPtWwh566wYDb3IrTQSeEnWsXnm529Tc3zF2bY7ogHygfVRxXiMEUCDJM9tiVu8f1rTffo_S_K06CsJFy1_BQM4V0g2ihvynsVPcxAX4mgnHWQgSDenfgOph5EGU3JFEY6ZeMncgl5qXKGdqbRKWICTZFw_w6ZMAbwiWU8m9TRo13_ylEPOaCb0cXZLjOP7_bbG-U5Uc6K7wGxi6ni_fSL9RQ/p.png) 
 #### Icons
 - [Spotlight Icon](includes/lovelace/button_card_templates/icon_templates/icon_light/icon_spot.yaml)
 - [Nanoleaf Icon](includes/lovelace/button_card_templates/icon_templates/icon_light/icon_dinopanel.yaml)
@@ -665,7 +665,7 @@ Kitchen:
 
 ### Loft Controls
 
-![Loft Controls](www/readme/demo/loft.png) 
+![Loft Controls](https://uc0d5882a7d158af05b2922d7841.previews.dropboxusercontent.com/p/thumb/ABw_S12mjqdzWFavPoN3pVQMdakBLjOdVBex0i8z2ofO4J_eboMDg4HdEX3ia5LYoynP4ZogdiP1kRpddYPHIzTE-DPvAPd91_pTzwzGBBKdubYrGM3a4hfKGouePkyCGiZTaRMJTZFzoNFiuIAoET2MBSEqKIL1YpnV8BoH2-SvNEboCPP6qWLeSG7JeT5x2KzeNWuhmx7sZ3SceklDqe0uG6UlZWtjCVHkI_D9_2g15JuLXYQVcRrjkpLBF94pzgUPniNPQYRfCkZRQfhVQwzpe4qCoVgSy13AAj3kopY_mFw3K6FYx7Omlul6Y9aGSCxSho_ZRGgWyLAIYR1FjN3pTlGtnleC5ub6ZzkR59wJa0GDfgqT-UcG26zJJYfSHgzCembPLXRehHU4FSggCW5g-kGWDueoiN1mZgQBXm18IQ/p.png) 
 #### Icons
 - [Bedside Icon](includes/lovelace/button_card_templates/icon_templates/icon_light/icon_bed.yaml)
 - [Table Lamp Icon](includes/lovelace/button_card_templates/icon_templates/icon_light/icon_bedside.yaml)
