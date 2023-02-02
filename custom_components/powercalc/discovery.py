@@ -179,7 +179,8 @@ class DiscoveryManager:
         existing_entries = [
             entry
             for entry in self.hass.config_entries.async_entries(DOMAIN)
-            if entry.unique_id == source_entity.unique_id
+            if entry.unique_id
+            in [source_entity.unique_id, f"pc_{source_entity.unique_id}"]
         ]
         if existing_entries:
             _LOGGER.debug(
@@ -188,8 +189,6 @@ class DiscoveryManager:
             return
 
         discovery_data = {
-            CONF_UNIQUE_ID: source_entity.unique_id,
-            CONF_NAME: source_entity.name,
             CONF_ENTITY_ID: source_entity.entity_id,
             DISCOVERY_SOURCE_ENTITY: source_entity,
         }
