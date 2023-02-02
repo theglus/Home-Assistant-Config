@@ -35,6 +35,7 @@ LOCAL_LANG_PACK = {
     "INITIAL_BIT_OFF": StateOptions.OFF,
     "INITIAL_BIT_ON": StateOptions.ON,
     "IGNORE": StateOptions.NONE,
+    "NONE": StateOptions.NONE,
     "NOT_USE": "Not Used",
 }
 
@@ -730,12 +731,10 @@ class Device:
 
     def feature_title(self, feature_name, item_key=None, status=None, allow_none=False):
         """Return title associated to a specific feature."""
-        title = self._available_features.get(feature_name)
-        if title is None:
+        if (title := self._available_features.get(feature_name)) is None:
             if status is None and not allow_none:
                 return None
-            title = self._get_feature_title(feature_name, item_key)
-            if not title:
+            if not (title := self._get_feature_title(feature_name, item_key)):
                 return None
             self._available_features[feature_name] = title
         return title
@@ -792,7 +791,7 @@ class DeviceStatus:
             return None
         try:
             return int(value)
-        except ValueError:
+        except (TypeError, ValueError):
             return None
 
     @staticmethod

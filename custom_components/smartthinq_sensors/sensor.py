@@ -302,8 +302,18 @@ RANGE_SENSORS: Tuple[ThinQSensorEntityDescription, ...] = (
         icon="mdi:inbox-arrow-down",
     ),
     ThinQSensorEntityDescription(
+        key=RangeFeatures.OVEN_LOWER_MODE,
+        name="Oven lower mode",
+        icon="mdi:inbox-arrow-down",
+    ),
+    ThinQSensorEntityDescription(
         key=RangeFeatures.OVEN_UPPER_STATE,
         name="Oven upper state",
+        icon="mdi:inbox-arrow-up",
+    ),
+    ThinQSensorEntityDescription(
+        key=RangeFeatures.OVEN_UPPER_MODE,
+        name="Oven upper mode",
         icon="mdi:inbox-arrow-up",
     ),
     ThinQSensorEntityDescription(
