@@ -1,0 +1,23 @@
+#################################################################
+## Dock Steam Deck
+#################################################################
+media_steam_deck:
+  alias: Dock Steam Deck
+  sequence:
+    - service: media_player.turn_on
+      data: {}
+      target:
+        entity_id: media_player.sony_bravia_tv
+    - wait_for_trigger:
+        - platform: device
+          device_id: e91dbbd97a045ee80fab4e22628d52d6
+          domain: media_player
+          entity_id: media_player.dennis
+          type: turned_on
+    - service: media_player.select_source
+      data:
+        source: STEAM
+      target:
+        entity_id: media_player.dennis
+  mode: single
+  icon: mdi:steam
