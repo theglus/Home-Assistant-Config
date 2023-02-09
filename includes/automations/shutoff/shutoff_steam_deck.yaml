@@ -1,0 +1,33 @@
+#################################################################
+## Steam Deck Shutoff
+#
+## Shutoff TV + Denon AVR when Steam profile goes offline.
+#################################################################
+id: "1675981207736"
+alias: Steam Deck Off
+description: "Shutoff TV + Denon AVR when Steam profile goes offline."
+trigger:
+  - platform: state
+    entity_id:
+      - sensor.steam_id
+    from: online
+    to: offline
+condition:
+  - condition: state
+    entity_id: media_player.dennis
+    state: STEAM
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 1
+    attribute: source
+action:
+  - type: turn_off
+    device_id: 8e43112e84b571c195ac8e8c8adbb2ee
+    entity_id: remote.sony_bravia_tv
+    domain: remote
+  - service: media_player.turn_off
+    data: {}
+    target:
+      entity_id: media_player.dennis
+mode: single
