@@ -1,0 +1,10 @@
+#################################################################
+## Wake Steam Deck via LAN
+#################################################################
+wake_on_lan:
+  alias: Wake on LAN Deck
+  sequence:
+    - service: wake_on_lan.send_magic_packet
+      data:
+        mac: !secret steam_mac
+  icon: mdi:weather-sunset-up
