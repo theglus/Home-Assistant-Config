@@ -87,7 +87,9 @@ cards:
                 icon: "mdi:reload-alert"
                 tap_action:
                   action: call-service
-                  service: script.reload
+                  service: script.turn_on
+                  service_data:
+                    entity_id: script.reload
                   haptic: light
                 template: icon_name
   #################################################################
