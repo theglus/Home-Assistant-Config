@@ -3,15 +3,19 @@
 #################################################################
 card:
   type: "custom:mini-graph-card"
+  name: "[[name]]"  
   entities:
-    - "[[sensor]]"
-  name: "[[name]]"
+    - entity: "[[sensor]]"
+      name: "[[name]]"
   card_mod:
     style: |
       ha-card {
         border-style: none;
       }
-  show: null
+  show:
+    name: true
+    icon: true
+    labels: false
   color_thresholds:
     - value: "[[green]]"
       color: "#6aa84f"
@@ -23,6 +27,8 @@ card:
       color: "#cc0000"
   line_width: 8
   font_size: 75
+  hours_to_show: 3
+  points_per_hour: 4
   tap_action:
     action: fire-dom-event
     haptic: light
@@ -59,7 +65,7 @@ card:
                   color: "#cc0000"
               name: Temperature
               line_width: 5
-              points_per_hour: 2
+              points_per_hour: 1
               align_icon: left
               align_state: right
               align_header: left
