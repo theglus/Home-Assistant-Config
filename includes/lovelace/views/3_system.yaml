@@ -118,18 +118,19 @@ cards:
                 width: 55%
                 height: 2em
                 decimal: 0
-                unit_of_measurement: "%"
+                unit_of_measurement: "GiB"
                 positions: &bar_card_positions
                   icon: outside
                   indicator: "off"
                   name: outside
+                max: 15.5
                 severity: &bar_card_severity
                   - color: "#303435"
                     from: 0
-                    to: 74
-                  - color: "#6d2525"
-                    from: 75
-                    to: 100
+                    to: 15.5
+                  # - color: "#6d2525"
+                  #   from: 75
+                  #   to: 100
                 entity_row: true
                 style: |
                   ha-card {
@@ -167,8 +168,10 @@ cards:
                   #----------------------------------------------------------------
                   ## PC Memory Bar
                   #----------------------------------------------------------------
-                  - entity: sensor.truenas_system_memory_usage
-                    name: RAM used
+                  - entity: sensor.truenas_arc_size
+                    name: ZFS Cache
+                  - entity: sensor.truenas_ram_free
+                    name: Memory Free
                     # tap_action:
                     #   action: call-service
                     #   service: homeassistant.update_entity
@@ -201,17 +204,16 @@ cards:
                       - orange: 70
                       - red: 75
                   #----------------------------------------------------------------
-                  ## PC GPU Temp Graph
+                  ## Nibbler Network Graph
                   #----------------------------------------------------------------
-                  # - type: "custom:decluttering-card"
-                  #   template: declutter_system_graph
-                  #   variables:
-                  #     - sensor: sensor.pc_gpu_temp
-                  #     - name: GPU ºF
-                  #     - green: 140
-                  #     - yellow: 158
-                  #     - orange: 176
-                  #     - red: 210
+                  - type: "custom:decluttering-card"
+                    template: declutter_network_graph
+                    variables:
+                      - sensor1: sensor.truenas_eth_down
+                      - sensor2: sensor.truenas_eth_up
+                      - data1: Down
+                      - data2: Up
+                      - name: Network
               #----------------------------------------------------------------
               ## PC Boot Button
               #----------------------------------------------------------------
