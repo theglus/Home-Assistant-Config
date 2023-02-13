@@ -199,12 +199,57 @@ cards:
             calibration_source:
               camera: true
             map_modes:
-              - template: vacuum_clean_zone
               - template: vacuum_goto
-              - template: vacuum_clean_zone_predefined
-                predefined_selections::
-                  - zones: [[21050, 23950, 26500, 25950]]
-                  - zones: [[26550, 23350, 32000, 25950]]
-                  - zones: [[26300, 20600, 32000, 23350]]
-                  - zones: [[23450, 20650, 27100, 24000]]
-                  - zones: [[21200, 21400, 23200, 24050]]
+              - template: vacuum_clean_zone
+              - template: vacuum_clean_segment
+                predefined_selections:
+                  - id: 18
+                    label:
+                      text: Room 18
+                      x: 29150
+                      y: 21975
+                      offset_y: 35
+                    icon:
+                      name: "mdi:broom"
+                      x: 29150
+                      y: 21975
+                  - id: 19
+                    label:
+                      text: Room 19
+                      x: 25275
+                      y: 22325
+                      offset_y: 35
+                    icon:
+                      name: "mdi:broom"
+                      x: 25275
+                      y: 22325
+                  - id: 20
+                    label:
+                      text: Room 20
+                      x: 22200
+                      y: 22700
+                      offset_y: 35
+                    icon:
+                      name: "mdi:broom"
+                      x: 22200
+                      y: 22700
+                  - id: 17
+                    label:
+                      text: Room 17
+                      x: 29275
+                      y: 24650
+                      offset_y: 35
+                    icon:
+                      name: "mdi:broom"
+                      x: 29275
+                      y: 24650
+                  - id: 16
+                    label:
+                      text: Room 16
+                      x: 23775
+                      y: 24950
+                      offset_y: 35
+                    icon:
+                      name: "mdi:broom"
+                      x: 23775
+                      y: 24950
