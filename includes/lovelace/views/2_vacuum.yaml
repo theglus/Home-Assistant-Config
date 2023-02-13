@@ -194,11 +194,17 @@ cards:
                 border-style: none;
               }
             entity: vacuum.winston
-            map_camera: camera.xiaomi_cloud_map_extractor
-            camera_calibration: true
-            zones:
-              - [[21050, 23950, 26500, 25950]]
-              - [[26550, 23350, 32000, 25950]]
-              - [[26300, 20600, 32000, 23350]]
-              - [[23450, 20650, 27100, 24000]]
-              - [[21200, 21400, 23200, 24050]]
+            map_source:
+              camera: camera.xiaomi_cloud_map_extractor
+            calibration_source:
+              camera: true
+            map_modes:
+              - template: vacuum_clean_zone
+              - template: vacuum_goto
+              - template: vacuum_clean_zone_predefined
+                predefined_selections::
+                  - zones: [[21050, 23950, 26500, 25950]]
+                  - zones: [[26550, 23350, 32000, 25950]]
+                  - zones: [[26300, 20600, 32000, 23350]]
+                  - zones: [[23450, 20650, 27100, 24000]]
+                  - zones: [[21200, 21400, 23200, 24050]]
