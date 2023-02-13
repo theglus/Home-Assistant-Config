@@ -53,4 +53,5 @@ recorder:
       - sensor.processor_*
       - sensor.daily_energy_*
       - sensor.monthly_energy_*
+      - sensor.truenas_eth_*
       - sensor.*_energy_cost

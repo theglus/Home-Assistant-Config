@@ -1,0 +1,72 @@
+#################################################################
+## Network Mini Graphs
+#################################################################
+card:
+  # Mini Graph
+  type: "custom:mini-graph-card"
+  name: "[[name]]"
+  entities:
+    - entity: "[[sensor1]]"
+      name: "[[data1]]"
+      color: "green"
+    - entity: "[[sensor2]]"
+      name: "[[data2]]"
+      color: "#385581"
+  # Mini Graph Settings
+  decimals: 2
+  font_size: 75
+  hours_to_show: 3
+  line_width: 8
+  points_per_hour: 4
+  show:
+    icon: true
+    labels: false
+    legend: false
+    name: true
+  # Card Mod styling
+  card_mod:
+    style: |
+      ha-card {
+        border-style: none;
+      }
+  # Browser Mod Action + Styling
+  tap_action:
+    action: fire-dom-event
+    haptic: light
+    browser_mod:
+      service: browser_mod.popup
+      data:
+        title: "[[name]]"
+        style:
+          hui-grid-card$: |
+            #root {
+              grid-gap: 0 !important;
+            }
+        content:
+          type: grid
+          columns: 1
+          square: false
+          # Pop-up Mini Graph
+          cards:
+            - type: "custom:mini-graph-card"
+              entities:
+                - entity: "[[sensor1]]"
+                  color: "green"
+                - entity: "[[sensor2]]"
+                  color: "#385581"
+              name: Network
+              line_width: 5
+              points_per_hour: 1
+              align_icon: left
+              align_state: right
+              align_header: left
+              hours_to_show: 24
+              show:
+                icon: true
+                name: false
+              # Card Mod styling
+              card_mod:
+              style: |
+                ha-card {
+                  border-style: none;
+                }

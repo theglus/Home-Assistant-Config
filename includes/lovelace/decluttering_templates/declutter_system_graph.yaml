@@ -2,16 +2,13 @@
 ## System Load Mini Graphs
 #################################################################
 card:
+  # Mini Graph
   type: "custom:mini-graph-card"
-  entities:
-    - "[[sensor]]"
   name: "[[name]]"
-  card_mod:
-    style: |
-      ha-card {
-        border-style: none;
-      }
-  show: null
+  entities:
+    - entity: "[[sensor]]"
+      name: "[[name]]"
+  # Mini Graph Settings
   color_thresholds:
     - value: "[[green]]"
       color: "#6aa84f"
@@ -21,8 +18,22 @@ card:
       color: "#e69138"
     - value: "[[red]]"
       color: "#cc0000"
-  line_width: 8
+  decimals: 1
   font_size: 75
+  hours_to_show: 3
+  line_width: 8
+  show:
+    name: true
+    icon: true
+    labels: false
+  points_per_hour: 4
+  # Card Mod styling
+  card_mod:
+    style: |
+      ha-card {
+        border-style: none;
+      }
+  # Browser Mod Action + Styling
   tap_action:
     action: fire-dom-event
     haptic: light
@@ -39,15 +50,15 @@ card:
           type: grid
           columns: 1
           square: false
+          # Pop-up Mini Graph
           cards:
             - type: "custom:mini-graph-card"
-              card_mod:
-              style: |
-                ha-card {
-                  border-style: none;
-                }
               entities:
                 - "[[sensor]]"
+              name: Temperature
+              align_icon: left
+              align_header: left
+              align_state: right
               color_thresholds:
                 - value: "[[green]]"
                   color: "#6aa84f"
@@ -57,12 +68,14 @@ card:
                   color: "#e69138"
                 - value: "[[red]]"
                   color: "#cc0000"
-              name: Temperature
-              line_width: 5
-              points_per_hour: 2
-              align_icon: left
-              align_state: right
-              align_header: left
               hours_to_show: 24
+              line_width: 5
+              points_per_hour: 1
               show:
                 icon: true
+              # Card Mod styling
+              card_mod:
+              style: |
+                ha-card {
+                  border-style: none;
+                }

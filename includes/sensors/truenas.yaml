@@ -1,0 +1,25 @@
+#################################################################
+## TrueNAS sensors.
+#################################################################
+- platform: template
+  sensors:
+    truenas_ram_used:
+      unique_id: 67994855-fb8f-4b62-b0ff-4c0e17b167fc
+      friendly_name: TrueNAS Memory Used
+      unit_of_measurement: " GiB "
+      value_template: "{{state_attr('sensor.truenas_system_memory_usage', 'Memory used value')}}"
+    truenas_ram_free:
+      unique_id: 98e6730b-df10-4abe-a226-734dbd08fb63
+      friendly_name: TrueNAS Memory Free
+      unit_of_measurement: " GiB "
+      value_template: "{{state_attr('sensor.truenas_system_memory_usage', 'Memory free value')}}"
+    truenas_eth_up:
+      unique_id: 38e48d20-f53b-496c-87a5-dd413f11ba70
+      friendly_name: TrueNAS Upload
+      unit_of_measurement: " MiB "
+      value_template: "{{(states('sensor.truenas_enp4s0_tx') | float / 10024) | float | round(2)}}"
+    truenas_eth_down:
+      unique_id: b3f26047-93e1-44a9-8d9a-3e3f786da98d
+      friendly_name: TrueNAS Download
+      unit_of_measurement: " MiB "
+      value_template: "{{(states('sensor.truenas_enp4s0_rx') | float / 10024) | float | round(2)}}"
