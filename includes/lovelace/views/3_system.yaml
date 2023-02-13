@@ -166,17 +166,12 @@ cards:
                   }
                 entities:
                   #----------------------------------------------------------------
-                  ## PC Memory Bar
+                  ## Nibbler Memory Bar
                   #----------------------------------------------------------------
                   - entity: sensor.truenas_arc_size
                     name: ZFS Cache
-                  - entity: sensor.truenas_ram_free
-                    name: Memory Free
-                    # tap_action:
-                    #   action: call-service
-                    #   service: homeassistant.update_entity
-                    #   service_data:
-                    #     entity_id: sensor.pc_memory_use
+                  # - entity: sensor.truenas_ram_free
+                  #   name: Memory Free
               #----------------------------------------------------------------
               ## Nibbler CPU Utilization Graph
               #----------------------------------------------------------------
@@ -214,36 +209,6 @@ cards:
                       - data1: Down
                       - data2: Up
                       - name: Network
-              #----------------------------------------------------------------
-              ## PC Boot Button
-              #----------------------------------------------------------------
-              # TODO: #312 Format Dekstop + HA system control buttons.
-              # - type: custom:hui-horizontal-stack-card
-              #   cards:
-              #     - type: custom:button-card
-              #       name: "WAKE"
-              #       icon: "mdi:monitor"
-              #       entity: script.pc_wake
-              #       tap_action:
-              #         action: toggle
-              #         haptic: light
-              #       template: icon_name
-              #     - type: custom:button-card
-              #       name: "SLEEP"
-              #       icon: "mdi:power-sleep"
-              #       entity: switch.pc_sleep
-              #       tap_action:
-              #         action: toggle
-              #         haptic: light
-              #       template: icon_name
-              #     - type: custom:button-card
-              #       name: "SHUTDWN"
-              #       icon: "mdi:power"
-              #       entity: script.pc_shutdown
-              #       tap_action:
-              #         action: toggle
-              #         haptic: light
-              #       template: icon_name
       #################################################################
       ## Desktop PC Controls
       #################################################################

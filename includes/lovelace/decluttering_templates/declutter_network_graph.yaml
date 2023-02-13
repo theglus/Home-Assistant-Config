@@ -8,8 +8,10 @@ card:
   entities:
     - entity: "[[sensor1]]"
       name: "[[data1]]"
+      color: "green"
     - entity: "[[sensor2]]"
       name: "[[data2]]"
+      color: "#385581"
   # Mini Graph Settings
   decimals: 2
   font_size: 75
@@ -48,8 +50,10 @@ card:
           cards:
             - type: "custom:mini-graph-card"
               entities:
-                - "[[sensor1]]"
-                - "[[sensor2]]"
+                - entity: "[[sensor1]]"
+                  color: "green"
+                - entity: "[[sensor2]]"
+                  color: "#385581"
               name: Network
               line_width: 5
               points_per_hour: 1
