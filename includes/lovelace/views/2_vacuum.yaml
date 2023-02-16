@@ -163,7 +163,7 @@ cards:
     cards:
       - type: entities
         title: Map
-        color: transparent
+        # color: transparent
         card_mod:
           style: |
             .card-header {
@@ -202,6 +202,8 @@ cards:
                   --map-card-predefined-rectangle-fill-color-selected: rgba(42, 124, 194, 0.1);
                   --map-card-predefined-rectangle-icon-background-color-selected: rgb(42, 124, 194);
                   --map-card-internal-big-radius: 0.6em !important;
+                  border: none;
+                  background: none;
                 }
                 div.map-wrapper, div.controls-wrapper {
                   padding: var(--tablet-popup-content-padding);
@@ -227,7 +229,6 @@ cards:
               camera: true
             map_locked: true
             map_modes:
-              - template: vacuum_clean_zone
               - template: vacuum_clean_zone_predefined
                 predefined_selections:
                   # Hallway - 16
@@ -260,8 +261,6 @@ cards:
                       name: mdi:fridge
                       x: 22200
                       y: 22700
-              - template: vacuum_goto
-              - template: vacuum_follow_path
               # predefined_selections:
               #   - id: 18
               #     icon:
