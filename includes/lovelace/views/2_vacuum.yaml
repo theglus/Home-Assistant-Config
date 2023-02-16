@@ -105,7 +105,8 @@ cards:
                 name: Sensors
                 icon: custom:vacuum-sensor
 
-          - type: custom:hui-horizontal-stack-card
+          - type: custom:hui-element
+            card_type: horizontal-stack
             card_mod:
               style: >
                 #root {
