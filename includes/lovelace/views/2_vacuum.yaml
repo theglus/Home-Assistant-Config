@@ -186,48 +186,108 @@ cards:
           class: header
         entities:
           - type: custom:xiaomi-vacuum-map-card
-            style: |
-              ha-card {
-                background: transparent;
-                box-shadow: none;
-                border-style: none;
-              }
+            view_layout:
+              grid-area: map
+            card_mod:
+              class: header
+              style: |
+                ha-card {
+                  --map-card-primary-color: #FFFFFF10;
+                  --map-card-secondary-color: none;
+                  --map-card-secondary-text-color: #9da0a2;
+                  --map-card-zoomer-background: none;
+                  --map-card-predefined-rectangle-fill-color: none;
+                  --map-card-predefined-rectangle-line-color: none;
+                  --map-card-predefined-rectangle-line-color-selected: rgba(255, 255, 255, 0.5);
+                  --map-card-predefined-rectangle-fill-color-selected: rgba(42, 124, 194, 0.1);
+                  --map-card-predefined-rectangle-icon-background-color-selected: rgb(42, 124, 194);
+                  --map-card-internal-big-radius: 0.6em !important;
+                }
+                div.map-wrapper, div.controls-wrapper {
+                  padding: var(--tablet-popup-content-padding);
+                  padding-top: 0;
+                  padding-bottom: 0;
+                  letter-spacing: normal;
+                }
+                div.tiles-wrapper, div.vacuum-controls, #map-zoomer-overlay {
+                  display: none;
+                }
+                div.map-controls-wrapper {
+                  padding-top: 24px;
+                }
+                paper-button {
+                  --mdc-icon-size: 2em;
+                  color: #9da0a2 !important;
+                  padding: 0.42em;
+                }
             entity: vacuum.winston
             map_source:
               camera: camera.xiaomi_cloud_map_extractor
             calibration_source:
               camera: true
             map_locked: true
-            tiles: []
-            icons: []
             map_modes:
-              - template: vacuum_clean_segment
+              - template: vacuum_clean_zone
+              - template: vacuum_clean_zone_predefined
                 predefined_selections:
-                  - id: 18
-                    icon:
-                      name: mdi:washing-machine
-                      x: 29150
-                      y: 21975
-                  - id: 19
-                    icon:
-                      name: mdi:chair-school
-                      x: 25275
-                      y: 22325
-                  - id: 20
-                    icon:
-                      name: mdi:fridge
-                      x: 22200
-                      y: 22700
-                  - id: 17
-                    icon:
-                      name: mdi:sofa
-                      x: 29275
-                      y: 24650
-                  - id: 16
+                  # Hallway - 16
+                  - zones: [[21050, 23950, 26500, 25950]]
                     icon:
                       name: mdi:coat-rack
                       x: 23775
                       y: 24950
+                  # Living Room - 17
+                  - zones: [[26550, 23350, 32000, 25950]]
+                    icon:
+                      name: mdi:sofa
+                      x: 29275
+                      y: 24650
+                  # Bathroom - 18
+                  - zones: [[26300, 20600, 32000, 23350]]
+                    icon:
+                      name: mdi:washing-machine
+                      x: 29150
+                      y: 21975
+                  # Office - 19
+                  - zones: [[23450, 20650, 27100, 24000]]
+                    icon:
+                      name: mdi:desk
+                      x: 25275
+                      y: 22325
+                  # Kitchen - 20
+                  - zones: [[21200, 21400, 23200, 24050]]
+                    icon:
+                      name: mdi:fridge
+                      x: 22200
+                      y: 22700
+              - template: vacuum_goto
+              - template: vacuum_follow_path
+              # predefined_selections:
+              #   - id: 18
+              #     icon:
+              #       name: mdi:washing-machine
+              #       x: 29150
+              #       y: 21975
+              #   - id: 19
+              #     icon:
+              #       name: mdi:chair-school
+              #       x: 25275
+              #       y: 22325
+              #   - id: 20
+              #     icon:
+              #       name: mdi:fridge
+              #       x: 22200
+              #       y: 22700
+              #   - id: 17
+              #     icon:
+              #       name: mdi:sofa
+              #       x: 29275
+              #       y: 24650
+              #   - id: 16
+              #     icon:
+              #       name: mdi:coat-rack
+              #       x: 23775
+              #       y: 24950
           - type: custom:more-info-card
             entity: vacuum.winston
             card_mod:
