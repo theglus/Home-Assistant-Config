@@ -180,12 +180,6 @@ cards:
             }
           class: header
         entities:
-          - entity: input_select.vacuum_speed
-            icon: []
-            style: |
-              :host state-badge {
-                display: none;
-              }
           - type: custom:xiaomi-vacuum-map-card
             style: |
               ha-card {
@@ -198,6 +192,9 @@ cards:
               camera: camera.xiaomi_cloud_map_extractor
             calibration_source:
               camera: true
+            map_locked: true
+            tiles: []
+            icons: []
             map_modes:
               - template: vacuum_clean_segment
                 predefined_selections:
@@ -226,3 +223,44 @@ cards:
                       name: mdi:coat-rack
                       x: 23775
                       y: 24950
+          - type: custom:more-info-card
+            entity: vacuum.winston
+            card_mod:
+              style:
+                # hide everything but ha-select
+                $: |
+                  h1 {
+                    display: none !important;
+                  }
+                .: |
+                  h1, state-card-content {
+                    display: none !important;
+                  }
+                  .card-content {
+                    padding: 1.5em 0 0 0.7em;
+                  }
+                more-info-vacuum$:
+                  .: |
+                    div.flex-horizontal>div, div:nth-child(2), ha-attributes {
+                      display: none;
+                    }
+                    ha-select {
+                      display: contents;
+                    }
+                  ha-select:
+                    $:
+                      # no icon so remove label inset
+                      .: |
+                        .mdc-floating-label {
+                          inset-inline-start: 0 !important;
+                        }
+                      # fix transparent menu background color
+                      mwc-menu$: |
+                        mwc-list {
+                          background: var(--card-background-color);
+                        }
+          # ha-card:
+          #   background: transparent;
+          #   box-shadow: none;
+          #   border-style: none;
+          # }
