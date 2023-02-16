@@ -105,55 +105,45 @@ cards:
                 name: Sensors
                 icon: custom:vacuum-sensor
 
-          - type: custom:mod-card
+          - type: custom:more-info-card
+            entity: vacuum.winston
             card_mod:
               style:
-                # horizontal bottom buttons
-                hui-horizontal-stack-card$: |
-                  #root {
-                    justify-content: space-evenly !important;
-                    padding: var(--tablet-popup-button-padding);
+                # hide everything but ha-select
+                $: |
+                  h1 {
+                    display: none !important;
                   }
-            card:
-              type: horizontal-stack
-              cards:
-                - type: custom:button-card
-                  entity: vacuum.winston
-                  icon: mdi:play-pause
-                  tap_action:
-                    action: call-service
-                    service: >
-                      [[[
-                        return entity.state === 'docked' || entity.state === 'paused'
-                          ? 'vacuum.start'
-                          : 'vacuum.pause';
-                      ]]]
-                    service_data:
-                      entity_id: >
-                        [[[ return entity.entity_id; ]]]
-                  template: icon_only
-
-                - type: custom:button-card
-                  entity: vacuum.winston
-                  icon: mdi:battery-charging
-                  tap_action:
-                    action: call-service
-                    service: vacuum.return_to_base
-                    service_data:
-                      entity_id: >
-                        [[[ return entity.entity_id; ]]]
-                  template: icon_only
-
-                - type: custom:button-card
-                  icon: mdi:delete-empty
-                  tap_action:
-                    action: call-service
-                    service: vacuum.send_command
-                    service_data:
-                      entity_id: vacuum.winston
-                      command: app_goto_target
-                      params: [30750, 22150]
-                  template: icon_only
+                .: |
+                  h1, state-card-content {
+                    display: none !important;
+                  }
+                  .card-content {
+                    padding: 1.5em 0 0 0.7em;
+                  }
+                  ha-card {
+                    border-style: none;
+                    background: none;
+                  }
+                more-info-vacuum$:
+                  .: |
+                    div.flex-horizontal>div, div:nth-child(2), ha-attributes {
+                      display: none;
+                    }
+                    ha-select {
+                      display: contents;
+                    }
+                    $:
+                      # no icon so remove label inset
+                      .: |
+                        .mdc-floating-label {
+                          inset-inline-start: 0 !important;
+                        }
+                      # fix transparent menu background color
+                      mwc-menu$: |
+                        mwc-list {
+                          background: rgba(34,38,39,0.9);
+                        }
 
   #################################################################
   ## Vacuum Map
@@ -261,70 +251,52 @@ cards:
                       name: mdi:fridge
                       x: 22200
                       y: 22700
-              # predefined_selections:
-              #   - id: 18
-              #     icon:
-              #       name: mdi:washing-machine
-              #       x: 29150
-              #       y: 21975
-              #   - id: 19
-              #     icon:
-              #       name: mdi:chair-school
-              #       x: 25275
-              #       y: 22325
-              #   - id: 20
-              #     icon:
-              #       name: mdi:fridge
-              #       x: 22200
-              #       y: 22700
-              #   - id: 17
-              #     icon:
-              #       name: mdi:sofa
-              #       x: 29275
-              #       y: 24650
-              #   - id: 16
-              #     icon:
-              #       name: mdi:coat-rack
-              #       x: 23775
-              #       y: 24950
-          - type: custom:more-info-card
-            entity: vacuum.winston
+          - type: custom:mod-card
             card_mod:
               style:
-                # hide everything but ha-select
-                $: |
-                  h1 {
-                    display: none !important;
+                # horizontal bottom buttons
+                hui-horizontal-stack-card$: |
+                  #root {
+                    justify-content: space-evenly !important;
+                    padding: 0.1em 2em 1.8em 2em;
                   }
-                .: |
-                  h1, state-card-content {
-                    display: none !important;
-                  }
-                  .card-content {
-                    padding: 1.5em 0 0 0.7em;
-                  }
-                more-info-vacuum$:
-                  .: |
-                    div.flex-horizontal>div, div:nth-child(2), ha-attributes {
-                      display: none;
-                    }
-                    ha-select {
-                      display: contents;
-                    }
-                  ha-select:
-                    $:
-                      # no icon so remove label inset
-                      .: |
-                        .mdc-floating-label {
-                          inset-inline-start: 0 !important;
-                        }
-                      # fix transparent menu background color
-                      mwc-menu$: |
-                        mwc-list {
-                          background: var(--card-background-color);
-                        }
-          # ha-card:
-          #   background: transparent;
-          #   box-shadow: none;
-          #   border-style: none;
-          # }
+            card:
+              type: horizontal-stack
+              cards:
+                - type: custom:button-card
+                  entity: vacuum.winston
+                  icon: mdi:play-pause
+                  tap_action:
+                    action: call-service
+                    service: >
+                      [[[
+                        return entity.state === 'docked' || entity.state === 'paused'
+                          ? 'vacuum.start'
+                          : 'vacuum.pause';
+                      ]]]
+                    service_data:
+                      entity_id: >
+                        [[[ return entity.entity_id; ]]]
+                  template: icon_only
+
+                - type: custom:button-card
+                  entity: vacuum.winston
+                  icon: mdi:battery-charging
+                  tap_action:
+                    action: call-service
+                    service: vacuum.return_to_base
+                    service_data:
+                      entity_id: >
+                        [[[ return entity.entity_id; ]]]
+                  template: icon_only
+
+                - type: custom:button-card
+                  icon: mdi:delete-empty
+                  tap_action:
+                    action: call-service
+                    service: vacuum.send_command
+                    service_data:
+                      entity_id: vacuum.winston
+                      command: app_goto_target
+                      params: [30750, 22150]
+                  template: icon_only
