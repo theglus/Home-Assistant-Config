@@ -105,51 +105,55 @@ cards:
                 name: Sensors
                 icon: custom:vacuum-sensor
 
-          - type: custom:hui-element
-            card_type: horizontal-stack
+          - type: custom:mod-card
             card_mod:
-              style: >
-                #root {
-                  justify-content: space-evenly;
-                }
-            cards:
-              - type: custom:button-card
-                entity: vacuum.winston
-                icon: mdi:play-pause
-                tap_action:
-                  action: call-service
-                  service: >
-                    [[[
-                      return entity.state === 'docked' || entity.state === 'paused'
-                        ? 'vacuum.start'
-                        : 'vacuum.pause';
-                    ]]]
-                  service_data:
-                    entity_id: >
-                      [[[ return entity.entity_id; ]]]
-                template: icon_only
+              style:
+                # horizontal bottom buttons
+                hui-horizontal-stack-card$: |
+                  #root {
+                    justify-content: space-evenly !important;
+                    padding: var(--tablet-popup-button-padding);
+                  }
+            card:
+              type: horizontal-stack
+              cards:
+                - type: custom:button-card
+                  entity: vacuum.winston
+                  icon: mdi:play-pause
+                  tap_action:
+                    action: call-service
+                    service: >
+                      [[[
+                        return entity.state === 'docked' || entity.state === 'paused'
+                          ? 'vacuum.start'
+                          : 'vacuum.pause';
+                      ]]]
+                    service_data:
+                      entity_id: >
+                        [[[ return entity.entity_id; ]]]
+                  template: icon_only
 
-              - type: custom:button-card
-                entity: vacuum.winston
-                icon: mdi:battery-charging
-                tap_action:
-                  action: call-service
-                  service: vacuum.return_to_base
-                  service_data:
-                    entity_id: >
-                      [[[ return entity.entity_id; ]]]
-                template: icon_only
+                - type: custom:button-card
+                  entity: vacuum.winston
+                  icon: mdi:battery-charging
+                  tap_action:
+                    action: call-service
+                    service: vacuum.return_to_base
+                    service_data:
+                      entity_id: >
+                        [[[ return entity.entity_id; ]]]
+                  template: icon_only
 
-              - type: custom:button-card
-                icon: mdi:delete-empty
-                tap_action:
-                  action: call-service
-                  service: vacuum.send_command
-                  service_data:
-                    entity_id: vacuum.winston
-                    command: app_goto_target
-                    params: [30750, 22150]
-                template: icon_only
+                - type: custom:button-card
+                  icon: mdi:delete-empty
+                  tap_action:
+                    action: call-service
+                    service: vacuum.send_command
+                    service_data:
+                      entity_id: vacuum.winston
+                      command: app_goto_target
+                      params: [30750, 22150]
+                  template: icon_only
 
   #################################################################
   ## Vacuum Map
