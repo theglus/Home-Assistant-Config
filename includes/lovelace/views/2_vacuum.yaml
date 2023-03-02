@@ -196,7 +196,8 @@ cards:
                   background: none;
                 }
                 div.map-wrapper, div.controls-wrapper {
-                  padding: var(--tablet-popup-content-padding);
+                ### May need to change ###
+                  padding: 1.4em 2.2em 1.6em 1.5em;
                   padding-top: 0;
                   padding-bottom: 0;
                   letter-spacing: normal;
