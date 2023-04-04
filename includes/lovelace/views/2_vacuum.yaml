@@ -257,9 +257,9 @@ cards:
                 div.map-controls-wrapper {
                   padding-top: 7px;
                   padding-bottom: 7px;
+                  padding-right: 4em;
                 }
                 paper-button.map-actions-item.main {
-                  margin-right: 4em;
                   border-radius: 0.6em;
                 }
                 paper-button {
@@ -291,7 +291,7 @@ cards:
                   # Bathroom - 18
                   - zones: [[26300, 20600, 32000, 23350]]
                     icon:
-                      name: mdi:washing-machine
+                      name: mdi:fridge
                       x: 29150
                       y: 21975
                   # Office - 19
@@ -300,9 +300,9 @@ cards:
                       name: mdi:desk
                       x: 25275
                       y: 22325
-                  # Kitchen - 20
+                  # Bathroom - 20
                   - zones: [[21200, 21400, 23200, 24050]]
                     icon:
-                      name: mdi:fridge
+                      name: mdi:washing-machine
                       x: 22200
                       y: 22700
