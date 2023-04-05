@@ -105,50 +105,45 @@ cards:
                 name: Sensors
                 icon: custom:vacuum-sensor
 
-          - type: custom:hui-horizontal-stack-card
+          - type: custom:more-info-card
+            entity: vacuum.winston
             card_mod:
-              style: >
-                #root {
-                  justify-content: space-evenly;
-                }
-            cards:
-              - type: custom:button-card
-                entity: vacuum.winston
-                icon: mdi:play-pause
-                tap_action:
-                  action: call-service
-                  service: >
-                    [[[
-                      return entity.state === 'docked' || entity.state === 'paused'
-                        ? 'vacuum.start'
-                        : 'vacuum.pause';
-                    ]]]
-                  service_data:
-                    entity_id: >
-                      [[[ return entity.entity_id; ]]]
-                template: icon_only
-
-              - type: custom:button-card
-                entity: vacuum.winston
-                icon: mdi:battery-charging
-                tap_action:
-                  action: call-service
-                  service: vacuum.return_to_base
-                  service_data:
-                    entity_id: >
-                      [[[ return entity.entity_id; ]]]
-                template: icon_only
-
-              - type: custom:button-card
-                icon: mdi:delete-empty
-                tap_action:
-                  action: call-service
-                  service: vacuum.send_command
-                  service_data:
-                    entity_id: vacuum.winston
-                    command: app_goto_target
-                    params: [30750, 22150]
-                template: icon_only
+              style:
+                # hide everything but ha-select
+                $: |
+                  h1 {
+                    display: none !important;
+                  }
+                .: |
+                  h1, state-card-content {
+                    display: none !important;
+                  }
+                  .card-content {
+                    padding: 1.5em 0 0 0.7em;
+                  }
+                  ha-card {
+                    border-style: none;
+                    background: none;
+                  }
+                more-info-vacuum$:
+                  .: |
+                    div.flex-horizontal>div, div:nth-child(2), ha-attributes {
+                      display: none;
+                    }
+                    ha-select {
+                      display: contents;
+                    }
+                    $:
+                      # no icon so remove label inset
+                      .: |
+                        .mdc-floating-label {
+                          inset-inline-start: 0 !important;
+                        }
+                      # fix transparent menu background color
+                      mwc-menu$: |
+                        mwc-list {
+                          background: rgba(34,38,39,0.9);
+                        }
 
   #################################################################
   ## Vacuum Map
@@ -158,7 +153,7 @@ cards:
     cards:
       - type: entities
         title: Map
-        color: transparent
+        # color: transparent
         card_mod:
           style: |
             .card-header {
@@ -180,25 +175,134 @@ cards:
             }
           class: header
         entities:
-          - entity: input_select.vacuum_speed
-            icon: []
-            style: |
-              :host state-badge {
-                display: none;
-              }
+          - type: custom:mod-card
+            card_mod:
+              style:
+                # horizontal bottom buttons
+                hui-horizontal-stack-card$: |
+                  #root {
+                    justify-content: space-evenly !important;
+                    padding: 0.1em 2em 1.8em 2em;
+                  }
+            card:
+              type: horizontal-stack
+              cards:
+                - type: custom:button-card
+                  entity: vacuum.winston
+                  icon: mdi:play-pause
+                  tap_action:
+                    action: call-service
+                    service: >
+                      [[[
+                        return entity.state === 'docked' || entity.state === 'paused'
+                          ? 'vacuum.start'
+                          : 'vacuum.pause';
+                      ]]]
+                    service_data:
+                      entity_id: >
+                        [[[ return entity.entity_id; ]]]
+                  template: icon_only
+
+                - type: custom:button-card
+                  entity: vacuum.winston
+                  icon: mdi:battery-charging
+                  tap_action:
+                    action: call-service
+                    service: vacuum.return_to_base
+                    service_data:
+                      entity_id: >
+                        [[[ return entity.entity_id; ]]]
+                  template: icon_only
+
+                - type: custom:button-card
+                  icon: mdi:delete-empty
+                  tap_action:
+                    action: call-service
+                    service: vacuum.send_command
+                    service_data:
+                      entity_id: vacuum.winston
+                      command: app_goto_target
+                      params: [30750, 22150]
+                  template: icon_only
           - type: custom:xiaomi-vacuum-map-card
-            style: |
-              ha-card {
-                background: transparent;
-                box-shadow: none;
-                border-style: none;
-              }
+            view_layout:
+              grid-area: map
+            card_mod:
+              class: header
+              style: |
+                ha-card {
+                  --map-card-primary-color: #FFFFFF10;
+                  --map-card-secondary-color: none;
+                  --map-card-secondary-text-color: #9da0a2;
+                  --map-card-zoomer-background: none;
+                  --map-card-predefined-rectangle-fill-color: none;
+                  --map-card-predefined-rectangle-line-color: none;
+                  --map-card-predefined-rectangle-line-color-selected: rgba(255, 255, 255, 0.5);
+                  --map-card-predefined-rectangle-fill-color-selected: rgba(42, 124, 194, 0.1);
+                  --map-card-predefined-rectangle-icon-background-color-selected: rgb(42, 124, 194);
+                  --map-card-internal-big-radius: 0.6em !important;
+                  border: none;
+                  background: none;
+                }
+                div.map-wrapper, div.controls-wrapper {
+                ### May need to change ###
+                  padding: 1.4em 2.2em 1.6em 1.5em;
+                  padding-top: 0;
+                  padding-bottom: 0;
+                  letter-spacing: normal;
+                }
+                div.tiles-wrapper, div.vacuum-controls, #map-zoomer-overlay {
+                  display: none;
+                }
+                div.map-controls-wrapper {
+                  padding-top: 7px;
+                  padding-bottom: 7px;
+                  padding-right: 4em;
+                }
+                paper-button.map-actions-item.main {
+                  border-radius: 0.6em;
+                }
+                paper-button {
+                  --mdc-icon-size: 2em;
+                  color: #9da0a2 !important;
+                  padding: 0.44em 0.67em 0.44em 0.67em;
+                }
             entity: vacuum.winston
-            map_camera: camera.xiaomi_cloud_map_extractor
-            camera_calibration: true
-            zones:
-              - [[21050, 23950, 26500, 25950]]
-              - [[26550, 23350, 32000, 25950]]
-              - [[26300, 20600, 32000, 23350]]
-              - [[23450, 20650, 27100, 24000]]
-              - [[21200, 21400, 23200, 24050]]
+            map_source:
+              camera: camera.xiaomi_cloud_map_extractor
+            calibration_source:
+              camera: true
+            map_locked: true
+            map_modes:
+              - template: vacuum_clean_zone_predefined
+                predefined_selections:
+                  # Hallway - 16
+                  - zones: [[21050, 23950, 26500, 25950]]
+                    icon:
+                      name: mdi:coat-rack
+                      x: 23775
+                      y: 24950
+                  # Living Room - 17
+                  - zones: [[26550, 23350, 32000, 25950]]
+                    icon:
+                      name: mdi:sofa
+                      x: 29275
+                      y: 24650
+                  # Bathroom - 18
+                  - zones: [[26300, 20600, 32000, 23350]]
+                    icon:
+                      name: mdi:fridge
+                      x: 29150
+                      y: 21975
+                  # Office - 19
+                  - zones: [[23450, 20650, 27100, 24000]]
+                    icon:
+                      name: mdi:desk
+                      x: 25275
+                      y: 22325
+                  # Bathroom - 20
+                  - zones: [[21200, 21400, 23200, 24050]]
+                    icon:
+                      name: mdi:washing-machine
+                      x: 22200
+                      y: 22700

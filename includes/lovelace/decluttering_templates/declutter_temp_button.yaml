@@ -21,7 +21,7 @@ card:
     ]]]
   label: |
     [[[
-      return states['[[sensor_temp]]'].state + '°F'
+      return parseFloat(states['[[sensor_temp]]'].state).toFixed(1) + '°F'
     ]]]
   name: "[[room]]"
   double_tap_action:

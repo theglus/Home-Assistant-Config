@@ -9,6 +9,12 @@ camera:
     username: !secret winston_username
     password: !secret winston_password
     country: us
+    attributes:
+      - calibration_points
+      - rooms
+      - vacuum_room_name
+      - room_numbers
+      - vacuum_room
     colors:
       color_robo: [224, 224, 224]
       color_charger: [27, 117, 27]
@@ -47,12 +53,6 @@ camera:
     sizes:
       charger_radius: 10
       vacuum_radius: 10
-    attributes:
-      - calibration_points
-      - vacuum_room_name
-      - room_numbers
-      - rooms
-      - vacuum_room
     scan_interval:
       seconds: 5
     auto_update: true

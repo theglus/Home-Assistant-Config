@@ -1,6 +1,6 @@
 """Helper class for ThinQ devices"""
 
-from datetime import timedelta
+from datetime import datetime, timedelta
 
 from homeassistant.const import STATE_OFF, STATE_ON, UnitOfTemperature
 from homeassistant.util.dt import utcnow
@@ -122,6 +122,11 @@ class LGEBaseDevice:
 class LGEWashDevice(LGEBaseDevice):
     """A wrapper to monitor LGE Wash devices"""
 
+    def __init__(self, api_device):
+        """Initialize the device."""
+        super().__init__(api_device)
+        self._start_time: datetime | None = None
+
     @property
     def run_completed(self):
         """Return the state on/off for run completed."""
@@ -142,19 +147,21 @@ class LGEWashDevice(LGEBaseDevice):
     def start_time(self):
         """Return the time and date the wash began or will begin in ISO format."""
         if not (self._api.state and self._api.state.is_on):
+            self._start_time = None
             return None
+
         state = self._api.state
-        hrs = (
-            int(state.reservetime_hour or "0")
-            - int(state.initialtime_hour or "0")
-            + int(state.remaintime_hour or "0")
-        )
-        mins = (
-            int(state.reservetime_min or "0")
-            - int(state.initialtime_min or "0")
-            + int(state.remaintime_min or "0")
-        )
-        return (utcnow() + timedelta(hours=hrs, minutes=mins)).isoformat()
+        st_hrs = int(state.remaintime_hour or "0") - int(state.initialtime_hour or "0")
+        st_min = int(state.remaintime_min or "0") - int(state.initialtime_min or "0")
+        if st_hrs == 0 and st_min == 0:
+            self._start_time = None
+            hrs = int(state.reservetime_hour or "0")
+            mins = int(state.reservetime_min or "0")
+            return (utcnow() + timedelta(hours=hrs, minutes=mins)).isoformat()
+
+        if self._start_time is None:
+            self._start_time = utcnow() + timedelta(hours=st_hrs, minutes=st_min)
+        return self._start_time.isoformat()
 
     @property
     def end_time(self):

@@ -76,7 +76,10 @@ lovelace:
     # https://github.com/kalkih/mini-graph-card
     - url: /hacsfiles/mini-graph-card/mini-graph-card-bundle.js
       type: module
-    # RGB Light Card
+    # More Info Card
+    - url: /hacsfiles/lovelace-more-info-card/more-info-card.js
+      type: module
+      # RGB Light Card
     # https://github.com/bokub/rgb-light-card
     - url: /hacsfiles/rgb-light-card/card.js
       type: module

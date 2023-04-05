@@ -188,7 +188,7 @@ class PowerProfile:
         return self._json_data.get("config_flow_discovery_remarks")
 
     def get_sub_profiles(self) -> list[str]:
-        """Get listing op possible sub profiles"""
+        """Get listing of possible sub profiles"""
         return sorted(next(os.walk(self.get_model_directory(True)))[1])
 
     @property
@@ -228,9 +228,16 @@ class PowerProfile:
 
         self.sub_profile = sub_profile
 
-    def is_entity_domain_supported(self, domain: str) -> bool:
+    def is_entity_domain_supported(self, source_entity: SourceEntity) -> bool:
         """Check whether this power profile supports a given entity domain"""
-        return DEVICE_DOMAINS[self.device_type] == domain
+        entity_entry = source_entity.entity_entry
+        if (
+            self.device_type == DeviceType.SMART_SWITCH
+            and entity_entry
+            and entity_entry.platform in ["hue"]
+        ):
+            return True
+        return DEVICE_DOMAINS[self.device_type] == source_entity.domain
 
 
 class SubProfileSelector:
@@ -287,6 +294,8 @@ class SubProfileSelector:
                 matcher_config["entity_id"],
                 matcher_config["map"],
             )
+        if matcher_type == "entity_id":
+            return EntityIdMatcher(matcher_config["pattern"], matcher_config["profile"])
         raise PowercalcSetupError(f"Unknown sub profile matcher type: {matcher_type}")
 
 
@@ -343,6 +352,21 @@ class AttributeMatcher(SubProfileMatcher):
             return None
 
         return self._mapping.get(val)
+
+    def get_tracking_entities(self) -> list[str]:
+        return []
+
+
+class EntityIdMatcher(SubProfileMatcher):
+    def __init__(self, pattern: str, profile: str):
+        self._pattern = pattern
+        self._profile = profile
+
+    def match(self, entity_state: State) -> str | None:
+        if re.search(self._pattern, entity_state.entity_id):
+            return self._profile
+
+        return None
 
     def get_tracking_entities(self) -> list[str]:
         return []
