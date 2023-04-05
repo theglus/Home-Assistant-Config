@@ -57,7 +57,7 @@ class CowayConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         if user_input:
             username = user_input[CONF_USERNAME]
             password = user_input[CONF_PASSWORD]
-            skip_password_change = user_input[SKIP_PASSWORD_CHANGE]
+            skip_password_change = user_input[SKIP_PASSWORD_CHANGE] if SKIP_PASSWORD_CHANGE in user_input else False
             try:
                 await async_validate_api(username, password, skip_password_change)
             except AuthError:
@@ -99,7 +99,7 @@ class CowayConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         if user_input:
             username = user_input[CONF_USERNAME]
             password = user_input[CONF_PASSWORD]
-            skip_password_change = user_input[SKIP_PASSWORD_CHANGE]
+            skip_password_change = user_input[SKIP_PASSWORD_CHANGE] if SKIP_PASSWORD_CHANGE in user_input else False
             try:
                 await async_validate_api(username, password, skip_password_change)
             except AuthError:
