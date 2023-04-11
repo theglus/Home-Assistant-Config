@@ -18,6 +18,7 @@ from .const import (
     IOCARE_FAN_LOW,
     IOCARE_FAN_OFF,
     IOCARE_FAN_SPEED_TO_HASS,
+    LOGGER,
     ORDERED_NAMED_FAN_SPEEDS,
     PRESET_MODES,
     PRESET_MODES_AP,
@@ -147,6 +148,7 @@ class Purifier(CoordinatorEntity, FanEntity):
         if self.purifier_data.network_status:
             return True
         else:
+            LOGGER.error(f'{self.purifier_data.device_attr["name"]} is reported as offline.')
             return False
 
     async def async_turn_on(self, percentage: int = None, **kwargs) -> None:
