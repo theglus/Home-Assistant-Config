@@ -1,7 +1,0 @@
-#################################################################
-## qBittorrent Sensors
-#################################################################
-- platform: qbittorrent
-  url: !secret qbit_host
-  username: !secret qbit_username
-  password: !secret qbit_password
