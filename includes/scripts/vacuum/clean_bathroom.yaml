@@ -8,5 +8,5 @@ clean_bathroom:
       data:
         entity_id: vacuum.winston
         command: app_segment_clean
-        params: [20]
+        params: [16]
   icon: "mdi:shower"

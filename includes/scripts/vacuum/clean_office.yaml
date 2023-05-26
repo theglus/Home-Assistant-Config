@@ -8,5 +8,5 @@ clean_office:
       data:
         entity_id: vacuum.winston
         command: app_segment_clean
-        params: [19]
+        params: [17]
   icon: "mdi:desk"
