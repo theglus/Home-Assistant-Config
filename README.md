@@ -71,7 +71,7 @@ I routinely stream games via Moonlight from my desktop computer (in the Office) 
 - [Google Home](https://github.com/leikoilja/ha-google-home): Creates HA sensors for alarms + timers that have been set on various Google Home devices.
 - [LG ThinQ Sensors](https://github.com/ollo69/ha-smartthinq-sensors): Supports integrating my LG washer + dryer into HA.
 - [PowerCalc](https://github.com/bramstroker/homeassistant-powercalc): Virtual power sensors for estimated tracking of energy consumption.
-- [TrueNAS](https://github.com/tomaae/homeassistant-truenas): Monitor and control my TrueNAS Scale NAS directly in HA.
+- [TrueNAS](https://github.com/tomaae/homeassistant-truenas): Adds the ability to monitor and control my TrueNAS Scale NAS directly in HA.
 - [Xiaomi Cloud Map Extractor](https://github.com/PiotrMachowski/Home-Assistant-custom-components-Xiaomi-Cloud-Map-Extractor): Harnesses lidar in RoboRock S4 to create a live map of my home.
  
 </details>
