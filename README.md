@@ -1,11 +1,11 @@
 # Home-Assistant-Config
 Welcome to theglus's Home Assistant setup. I hope you find value in the projects and documentation I've been working on. I'll be continuting to update my documentaion in the coming weeks so stay tuned. 
 ## Table of Contents 
-* [Hardware](#🔩-hardware)
-* [Software](#💾-software)
-* [Devices](#🕹-devices)
-* [Lovelace Dashboards](#🎛-lovelace-dashboards)
-* [Automations](#🤖-automations)
+* [Hardware](#-hardware)
+* [Software](#-software)
+* [Devices](#-devices)
+* [Lovelace Dashboards](#-lovelace-dashboards)
+* [Automations](#-automations)
 ## 🔩 Hardware
 * [Home Assistant Server](#home-assistant-server)
 * [Network](#network)
