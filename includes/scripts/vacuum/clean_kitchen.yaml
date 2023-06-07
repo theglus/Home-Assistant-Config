@@ -8,5 +8,5 @@ clean_kitchen:
       data:
         entity_id: vacuum.winston
         command: app_segment_clean
-        params: [18]
+        params: [20]
   icon: "mdi:silverware-fork-knife"

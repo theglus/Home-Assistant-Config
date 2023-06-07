@@ -195,3 +195,11 @@
           - switch.coffee_station_plug
           - switch.workstation_plug
   mode: single
+- id: '1684367579757'
+  alias: Vacuum API
+  description: Disable vacuum camera update when docked
+  use_blueprint:
+    path: PiotrMachowski/disable_vacuum_camera_update_when_docked.yaml
+    input:
+      vacuum: vacuum.winston
+      camera: camera.xiaomi_cloud_map_extractor

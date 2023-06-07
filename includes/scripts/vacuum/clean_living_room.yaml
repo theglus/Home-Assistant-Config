@@ -8,5 +8,5 @@ clean_living_room:
       data:
         entity_id: vacuum.winston
         command: app_segment_clean
-        params: [17]
+        params: [19]
   icon: "mdi:sofa"

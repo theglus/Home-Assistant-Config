@@ -24,8 +24,8 @@ action:
             data:
               command: app_segment_clean
               params:
-                - 16
                 - 18
+                - 20
             target:
               entity_id: vacuum.winston
           - service: vacuum.set_fan_speed

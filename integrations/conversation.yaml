@@ -1,0 +1,56 @@
+#################################################################
+## Conversations + Custom Sentences
+#################################################################
+conversation:
+  intents:
+    temp_kitchen:
+      - "What's the temperature in the Kitchen?"
+      - "What's the Kitchen temperature?"
+    temp_living_room:
+      - "What's the temperature in the Living Room?"
+      - "What's the Living Room temperature?"
+    temp_loft:
+      - "What's the temperature in the Loft?"
+      - "What's the Loft temperature?"
+    temp_office:
+      - "What's the temperature in the Office?"
+      - "What's the Office temperature?"
+    weather_now:
+      - "What's the weather?"
+    weather_today:
+      - "What's the weather today?"
+      - "What's todays weather"
+    music:
+      - "What's playing?"
+      - "Who is this?"
+    dan:
+      - "Hello?"
+      - "Hello"
+      - "Hi?"
+      - "Hi"
+
+intent_script:
+  dan:
+    speech:
+      text: "Hi gay, did you know the human anus can fit two adult racoons?"
+  music:
+    speech:
+      text: "{{state_attr('media_player.spotify', 'media_title')}} by {{state_attr('media_player.spotify', 'media_artist')}}"
+  temp_kitchen:
+    speech:
+      text: "The temperature in the Kitchen is {{states('sensor.kitchen_temperature')}} degrees."
+  temp_loft:
+    speech:
+      text: "The temperature in the Loft is {{states('sensor.kirby_temperature')}} degrees."
+  temp_living_room:
+    speech:
+      text: "The temperature in the Living Room is {{states('sensor.temperature_living_room')}} degrees."
+  temp_office:
+    speech:
+      text: "The temperature in the Office is {{states('sensor.temperature_office')}} degrees."
+  weather_now:
+    speech:
+      text: "The weather in Dogpatch is {{state_attr('weather.climacell_nowcast', 'temperature')}} degrees and {{states('weather.climacell_nowcast')}}."
+  weather_today:
+    speech:
+      text: "The weather in Dogpatch is {{state_attr('weather.climacell_nowcast', 'temperature')}} degrees. Today you can expect a high of {{state_attr('weather.climacell_daily', 'forecast')[0].temperature}} and a low of {{state_attr('weather.climacell_daily', 'forecast')[0].templow}}."

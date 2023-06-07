@@ -54,5 +54,5 @@ camera:
       charger_radius: 10
       vacuum_radius: 10
     scan_interval:
-      seconds: 5
+      seconds: 15
     auto_update: true

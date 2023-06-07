@@ -276,31 +276,31 @@ cards:
             map_modes:
               - template: vacuum_clean_zone_predefined
                 predefined_selections:
-                  # Hallway - 16
+                  # Hallway - 18
                   - zones: [[21050, 23950, 26500, 25950]]
                     icon:
                       name: mdi:coat-rack
                       x: 23775
                       y: 24950
-                  # Living Room - 17
+                  # Living Room - 19
                   - zones: [[26550, 23350, 32000, 25950]]
                     icon:
                       name: mdi:sofa
                       x: 29275
                       y: 24650
-                  # Bathroom - 18
+                  # Kitchen - 20
                   - zones: [[26300, 20600, 32000, 23350]]
                     icon:
                       name: mdi:fridge
                       x: 29150
                       y: 21975
-                  # Office - 19
+                  # Office - 17
                   - zones: [[23450, 20650, 27100, 24000]]
                     icon:
                       name: mdi:desk
                       x: 25275
                       y: 22325
-                  # Bathroom - 20
+                  # Bathroom - 16
                   - zones: [[21200, 21400, 23200, 24050]]
                     icon:
                       name: mdi:washing-machine
