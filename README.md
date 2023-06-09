@@ -11,14 +11,14 @@ Welcome to theglus's Home Assistant setup. I hope you find value in the projects
 * [Network](#network)
 ### Home Assistant Server
 My Home Assistant setup is pretty basic but it gets the job done without any hiccups.
-| [Raspberry Pi 4 Model B 4GB](https://www.amazon.com/Raspberry-Model-2019-Quad-Bluetooth/dp/B07TC2BK1X?th=1) | [Raspbee II](https://www.amazon.com/Phoscon-RaspBee-II/dp/B084MK8F5M) | [SanDisk Extreme 64GB MicroSD](https://www.amazon.com/SanDisk-Extreme-microSDXC-UHS-I-Adapter/dp/B01HU3Q6S4) | [Argon Neo Case](https://www.amazon.com/Argon-Raspberry-Heatsink-Supports-Accessible/dp/B07WMG27T7) |
+| [Raspberry Pi 4 Model B 4GB](https://a.co/d/1OWca61) | [Raspbee II](https://a.co/d/9k93ZNW) | [SanDisk Extreme 64GB MicroSD]https://a.co/d/6piTlaW) | [Argon Neo Case](https://a.co/d/73W0bTn) |
 | --- | --- | --- | --- |
 | ![Raspberry Pi 4 Model B 4GB](www/readme/ha_hardware/pi_4.jpg) | ![Raspbee II](www/readme/ha_hardware/raspbee_II.jpg) | ![SanDisk Extreme 64GB MicroSD](www/readme/ha_hardware/sandisk_64.jpg) | ![Argon Neo Pi case](www/readme/ha_hardware/argon_neo.jpg) |
 
 I opted to go the Zigbee route primarily because I really like the Aqara platform. I landed on the Raspbee II over the Conbee as it just seemed like a more elegant solution. It's a little bit of a pain to initially setup, but after that it's smooth sailing. 
 ### Network
 Living in a 950 sqft Loft apartment, I don't have to worry about signal strength. My setup consists of a Google WiFi puck in the Living Room. This is my primary router: one end connects to my in-wall ethernet port and the other end to a TP-Link 8-port network switch. 
-| [Google Wifi](https://store.google.com/us/product/google_wifi_2nd_gen?hl=en-US) | [TP-Link Switch](https://www.amazon.com/gp/product/B00A121WN6/ref=ppx_od_dt_b_asin_title_s00?ie=UTF8&psc=1) | [MoCa Network Adapter](https://www.amazon.com/Actiontec-MoCA-Network-Adapter-Ethernet/dp/B013J7O3X0/ref=sr_1_3?dchild=1&keywords=ethernet%2Bover%2Bcoax&qid=1629947247&sr=8-3&th=1) |
+| [Google Wifi](https://store.google.com/us/product/google_wifi_2nd_gen?hl=en-US) | [TP-Link Switch](https://a.co/d/3TJbImA) | [MoCa Network Adapter](https://a.co/d/fYFKBw5) |
 | --- | --- | --- |
 | ![Google Wifi](www/readme/network/google_wifi.jpg) | ![TP-Link Switch](www/readme/network/switch.jpg) | ![MoCa Network Adapter](www/readme/network/coax.jpg) |
 
@@ -84,6 +84,7 @@ I routinely stream games via Moonlight from my desktop computer (in the Office) 
 - [Card Mod](https://github.com/thomasloven/lovelace-card-mod)
 - [Declutter Card](https://github.com/custom-cards/decluttering-card)
 - [Home Assistant Swipe Navigation](https://github.com/zanna-37/hass-swipe-navigation)
+- [Home Assistant Swipe Navigation](https://github.com/zanna-37/hass-swipe-navigation)
 - [Hue Icon](https://github.com/arallsopp/hass-hue-icons)
 - [Hui Element](https://github.com/thomasloven/lovelace-hui-element)
 - [Layout Card](https://github.com/thomasloven/lovelace-layout-card)
@@ -120,7 +121,7 @@ I'm currently utilizing Nabu Casa to leverage Google Assistant via the aforement
 #### Home Theater
 I recently built out my home theater system centered around my Denon S960H + NVIDIA SHIELD TV Pro and managed by Home Assistant using `denonavr`, `androidtv`, and `media_player`. The system is primarly controlled using the NVIDIA SHIELD Toblerone as it can accomplish almost everything I need via CEC. The main gaps currently in the system are the following Denon buttons `Setup`, `Options`, `Info`, `Back`, `ECO`, `Input` and the following Sony Bravia buttons `Settings`, `Home`. I'm working to create a series of `custom:button-cards` and 
 `media_player-popup-cards` to control my Home Theater with the ultimate goal of eliminating the need for all remotes but the Tobelerone. 
-| [Denon 960H](https://www.bhphotovideo.com/c/product/1571155-REG/denon_avrs960h_7_2_channel_home_theatre.html) | [Polk S35](https://www.bhphotovideo.com/c/product/1342730-REG/polk_audio_s35_center_channel_multi_purpose_home.html) | [Polk S10](https://www.bhphotovideo.com/c/product/1342734-REG/polk_audio_s10_two_way_surround_speaker.html) | [Polk S50](https://www.bhphotovideo.com/c/product/1342729-REG/polk_audio_s50_small_two_way_floor.html) | [NVIDIA SHIELD TV Pro](https://amazon.com/NVIDIA-Shield-Android-Streaming-Performance/dp/B07YP9FBMM?ref_=ast_sto_dp) | [Sony TV](https://amazon.com/gp/product/B084KPSM5C/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&psc=1) |
+| [Denon 960H](https://www.bhphotovideo.com/c/product/1571155-REG/denon_avrs960h_7_2_channel_home_theatre.html) | [Polk S35](https://www.bhphotovideo.com/c/product/1342730-REG/polk_audio_s35_center_channel_multi_purpose_home.html) | [Polk S10](https://www.bhphotovideo.com/c/product/1342734-REG/polk_audio_s10_two_way_surround_speaker.html) | [Polk S50](https://www.bhphotovideo.com/c/product/1342729-REG/polk_audio_s50_small_two_way_floor.html) | [NVIDIA SHIELD TV Pro](https://a.co/d/2xHjdVf) | [Sony TV](https://a.co/d/9dySjA0) |
 | --- | --- | --- | --- | --- | --- |
 | ![Denon](www/readme/av/denon.png) | ![Polk S35](www/readme/av/polk_s35.jpg) | ![Polk S10](www/readme/av/polk_s10.jpg) | ![Polk S50](www/readme/av/polk_s50.jpg) | ![NVIDIA SHIELD TV Pro](www/readme/av/nvidia_shield_tv_pro.jpg) | ![Sony](www/readme/av/sony_x900h.jpg) |
 
@@ -133,7 +134,7 @@ I have a series of Google Home and Nest Mini's scattered throughout the apartmen
 
 The Google Nest Hub lives in the loft and is used as a control panel, picture frame, and alarm clock. The Lenovo Smart Clock lives in the downstairs bedroom (referred to in HA as Office) for use as an alarm clock and simplified control panel.
 ### Appliances
-| [Dyson Pure Cool Purifying Fan TP04](https://www.dyson.com/air-treatment/purifiers/dyson-pure-cool/dyson-pure-cool-tower-white-silver) | [Frigidaire Cool Connect Portable AC FGPC1244T1](https://www.amazon.com/FRIGIDAIRE-Connect-Smart-Portable-Conditioner/dp/B06Y1BLFBN) | [Airmega 400S Air Purifier](https://www.amazon.com/gp/product/B01C9RIAFS) | [Roborock S4 Robot Vacuum](https://www.amazon.com/Roborock-Navigation-Suction-Multi-Level-Connected/dp/B08CNCB44L) | [LG Smart Washer WM3900HBA](https://www.lg.com/us/washers/lg-WM3900HBA-front-load-washer) | [LG Smart Dryer DLEX3900B](https://www.lg.com/us/dryers/lg-DLEX3900B-electric-dryer) |
+| [Dyson Pure Cool Purifying Fan TP04](https://www.dyson.com/air-treatment/purifiers/dyson-pure-cool/dyson-pure-cool-tower-white-silver) | [Frigidaire Cool Connect Portable AC FGPC1244T1](https://a.co/d/i7ARVG2) | [Airmega 400S Air Purifier](https://a.co/d/9VWsrRB) | [Roborock S4 Robot Vacuum](https://a.co/d/07T35Dz) | [LG Smart Washer WM3900HBA](https://www.lg.com/us/washers/lg-WM3900HBA-front-load-washer) | [LG Smart Dryer DLEX3900B](https://www.lg.com/us/dryers/lg-DLEX3900B-electric-dryer) |
 | --- | --- | --- | --- | --- | --- |
 | ![Dyson TP04](www/readme/appliance/dyson_tp04.jpg) | ![Frigidaire](www/readme/appliance/frigidaire.jpg) | ![Airmega 400S Air Purifier](https://home-assistant-readme.s3.amazonaws.com/appliances/airmega.jpg) | ![Roborock](www/readme/appliance/roborock.jpg) | ![LG Smart Washer](www/readme/appliance/washer.jpg) | ![LG Smart Dryer](www/readme/appliance/dryer.jpg) |
 #### Climate
@@ -141,17 +142,17 @@ My climate situation is pretty simple, just a fan and portable AC. The Dyson air
 
 My apartment has casement windows so my AC options were fairly limited. The Frigidaire Cool Connect Portable AC (Ice Bear) was an easy decision due to it's high BTUs, small footprint, and WiFi conductivity. Unfortunately the smart functionality is incredibly limited and the Frigidaire app very slow to load, making less than ideal for controlling the unit. Thanks to [bm1549](https://github.com/bm1549) I was able to use the [Fridigaire custom component](https://github.com/bm1549/home-assistant-frigidaire) to integrate Ice Bear with Home Assistant. This was a HUGE development as it means I can control the AC via Google Assistant as well.
 #### Vacuum
-The first floor of my apartment is serviced by a [Roborock S4](https://www.amazon.com/Roborock-Navigation-Suction-Multi-Level-Connected/dp/B08CNCB44L) named Winston. The Roborock S4 intrigued me due to it's lidar, smart mapping, and friendliness with Home Assistant. A lot of people report that you have to do a crazy hack switching the region in Mainland China, but I didn't have to do that, you can read more about my process/HA vacuum implimentation in the wiki under [WINSTON my Roborock S4](https://github.com/theglus/Home-Assistant-Config/wiki/WINSTON-my-Roborock-S4).
+The first floor of my apartment is serviced by a [Roborock S4](https://a.co/d/07T35Dz) named Winston. The Roborock S4 intrigued me due to it's lidar, smart mapping, and friendliness with Home Assistant. A lot of people report that you have to do a crazy hack switching the region in Mainland China, but I didn't have to do that, you can read more about my process/HA vacuum implimentation in the wiki under [WINSTON my Roborock S4](https://github.com/theglus/Home-Assistant-Config/wiki/WINSTON-my-Roborock-S4).
 #### Lighting
 I'm pretty deep into the Hue ecosystem sans my Sengled lightstrip. As a result I have my lights paired directly to the Hue app using the Hue bridge. The main reason I did this instead of utilizing my Raspbee II was so I can ensure my lights remain functional regardless of if Home Assistant is operational. This allows me a lot more flexibility to work with Home Assistant without adversely effecting the other people in my household. 
-| [Hue Starter Kit](https://www.amazon.com/Philips-Hue-Ambiance-Starter-Assistant/dp/B07353SKDD/ref=sr_1_20?dchild=1&keywords=philips+hue+starter+kit&qid=1634536245&sr=8-20) | [BR30 White Ambiance](https://www.amazon.com/Philips-Hue-Ambiance-Equivalent-Assistant/dp/B01N536U07) | [Hue Color](https://www.amazon.com/Philips-Hue-Bluetooth-Compatible-Assistant/dp/B08D9N7RJ4) | [Sengled Light Strip](https://www.amazon.com/Sengled-Multicolor-Required-2000-6500K-Assistant/dp/B07QD2SGDB?th=1) |
+| [Hue Starter Kit](https://a.co/d/cqyZFPy) | [BR30 White Ambiance](https://a.co/d/25pj5jB) | [Hue Color](https://a.co/d/i7HmDXJ) | [Sengled Light Strip](https://a.co/d/aVl0VMJ) |
 | --- | --- | --- | --- |
 | ![Hue Starter Kit](www/readme/lighting/hue_starter.jpg) | ![BR30 White Ambiance](www/readme/lighting/hue_br30.jpg) | ![Hue Color](www/readme/lighting/hue_color.jpeg) | ![Sengled Light Strip](www/readme/lighting/sengled_ledstrip.jpg) |
 
 The only light outside the Hue ecosystem is my Sengled LED strip. I needed 6 feet of LEDs just for my stairs not to mention the other areas of the apartment, it would have been $79 for 6.5' of Hue lights where Sengled was ~$60 for 16.5'. The LED strip is hooked up directly to the Raspbee II. 
 #### Switches + Outlets
 I have a series of smart plugs which I use to control various appliances. I recently migrated from Kasa HS103 outlets to Sengled plugs in order the strengthen my Zigbee network. Additionally, the Sengled plugs have engergy monitoring capabilities.
-| [Hue Smart Plug](https://www.amazon.com/Philips-Hue-Lights-Bluetooth-compatible/dp/B07XD578LD) | [Sengled Energy Monitoring Plugs](https://www.amazon.com/gp/product/B092DBFFBY) | [Kasa 3-plug Surge](https://www.amazon.com/Kasa-Smart-Protector-Required-KP303/dp/B083JKSSR5) | [Lutron Aurora](https://www.amazon.com/Lutron-Aurora-Dimmer-Philips-Z3-1BRL-WH-L0/dp/B07RJ14FBS) | 
+| [Hue Smart Plug](https://a.co/d/cRt5O9x) | [Sengled Energy Monitoring Plugs](https://a.co/d/3luPeQJ) | [Kasa 3-plug Surge](https://a.co/d/fe35mXo) | [Lutron Aurora](https://a.co/d/c9uJlks) | 
 | --- | --- | --- | --- |
 | ![Hue Smart Plug](www/readme/switches/hue_plug.jpg) | ![Sengled Energy Monitoring Plugs](https://home-assistant-readme.s3.amazonaws.com/switches/sengled_plug.jpg) | ![Kasa Surge](www/readme/switches/kasa_surge.jpg) | ![Lutron Aurora](www/readme/switches/lutron_aurora.jpg) |
 
@@ -778,7 +779,7 @@ I currently have notifications set to be delivered via one of two channels [Tele
 </details>
 
 ### 🚪 Presence
-I decided to take a unique approach to presence automations and forgo the use of motion sensors, in favor of manual triggers before leaving the apartment. I have an [Aqara Mini Switch](https://www.amazon.com/Aqara-WXKG11LM-Switch-Wireless-Remote/dp/B07D19YXND) next to the door, which triggers automations based on the number of button clicks and status of the front door sensor.
+I decided to take a unique approach to presence automations and forgo the use of motion sensors, in favor of manual triggers before leaving the apartment. I have an [Aqara Mini Switch](https://a.co/d/eQp5jyT) next to the door, which triggers automations based on the number of button clicks and status of the front door sensor.
 <details>
   <summary>Automations</summary>
 
