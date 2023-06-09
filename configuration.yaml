@@ -41,6 +41,10 @@ lovelace:
     # https://github.com/custom-cards/decluttering-card
     - url: /hacsfiles/decluttering-card/decluttering-card.js
       type: module
+    # Hass Sidebar Swipe
+    # https://github.com/breakthestatic/hass-sidebar-swipe
+    - url: /hacsfiles/hass-sidebar-swipe/hass-sidebar-swipe.js
+      type: module
     # Home Assistant Swipe Navigation
     # https://github.com/zanna-37/hass-swipe-navigation
     - url: /hacsfiles/hass-swipe-navigation/swipe-navigation.js
