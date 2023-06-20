@@ -203,3 +203,24 @@
     input:
       vacuum: vacuum.winston
       camera: camera.xiaomi_cloud_map_extractor
+- id: '1687296279667'
+  alias: Notify Zigbee
+  description: Send Telegram notifications when Zigbee device has gone offline.
+  use_blueprint:
+    path: Tahutipai/zigbee_zwave_notify_when_battery_devices_have_fallen_offline.yaml
+    input:
+      actions:
+      - service: notify.telegram
+        data:
+          title: '⚠️ Zigbee Network:'
+          message: '{{sensors}} has gone offline.'
+      exclude:
+        entity_id:
+        - sensor.browsermod_pixel_browser_battery
+        - sensor.macintoshbook_air_internal_battery_level
+        - sensor.lenovo_smart_tab_m8_battery
+        - sensor.ipad_battery_level
+        - sensor.pixel_5_battery_level
+        - sensor.samsung_flip_battery_level
+        - sensor.bot_075e_battery
+      time: 09:00:00
