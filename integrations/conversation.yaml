@@ -3,6 +3,14 @@
 #################################################################
 conversation:
   intents:
+    muni_minutes:
+      - "When is the next train downtown?"
+      - "When is the next train to Chinatown?"
+      - "When are the trains arriving?"
+      - "What's the train schedule?"
+      - "What is the train schedule?"
+      - "What is the Muni schedule?"
+      - "What's the Muni schedule?"
     temp_kitchen:
       - "What's the temperature in the Kitchen?"
       - "What's the Kitchen temperature?"
@@ -30,6 +38,9 @@ conversation:
       - "Hi"
 
 intent_script:
+  muni_minutes:
+    speech:
+      text: "The next 3 trains to Chinatown arrive in {{ state_attr('sensor.muni_metro_inbound', 'upcoming').split(', ')[0] }}, {{ state_attr('sensor.muni_metro_inbound', 'upcoming').split(', ')[1] }}, and {{ state_attr('sensor.muni_metro_inbound', 'upcoming').split(', ')[2] }} minutes."
   music:
     speech:
       text: "{{state_attr('media_player.spotify', 'media_title')}} by {{state_attr('media_player.spotify', 'media_artist')}}"

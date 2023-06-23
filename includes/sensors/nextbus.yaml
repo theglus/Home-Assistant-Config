@@ -1,13 +1,20 @@
 #################################################################
 ## Nextbus Sensors
 #################################################################
-# - platform: nextbus
-#   name: !secret name_inbound
-#   agency: !secret agency
-#   route: !secret route
-#   stop: !secret stop_inbound
-# - platform: nextbus
-#   name: !secret name_outbound
-#   agency: !secret agency
-#   route: !secret route
-#   stop: !secret stop_outbound
+# 15 Bus
+- platform: nextbus
+  name: !secret name_15_inbound
+  agency: !secret agency
+  route: !secret route_15
+  stop: !secret stop_15_inbound
+- platform: nextbus
+  name: !secret name_15_outbound
+  agency: !secret agency
+  route: !secret route_15
+  stop: !secret stop_15_outbound
+# Muni Metro T
+- platform: nextbus
+  name: !secret name_t_inbound
+  agency: !secret agency
+  route: !secret route_t
+  stop: !secret stop_t_inbound
