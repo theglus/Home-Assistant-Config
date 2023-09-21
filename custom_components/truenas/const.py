@@ -1,4 +1,4 @@
-"""Constants used by the TrueNAS integration"""
+"""Constants used by the TrueNAS integration."""
 from homeassistant.const import Platform
 
 PLATFORMS = [
@@ -29,6 +29,8 @@ TO_REDACT = {
     "system_serial",
     "ip4_addr",
     "ip6_addr",
+    "account",
+    "key",
 }
 
 SERVICE_CLOUDSYNC_RUN = "cloudsync_run"
@@ -63,3 +65,8 @@ SERVICE_VM_START = "vm_start"
 SCHEMA_SERVICE_VM_START = {}
 SERVICE_VM_STOP = "vm_stop"
 SCHEMA_SERVICE_VM_STOP = {}
+
+SERVICE_APP_START = "app_start"
+SCHEMA_SERVICE_APP_START = {}
+SERVICE_APP_STOP = "app_stop"
+SCHEMA_SERVICE_APP_STOP = {}

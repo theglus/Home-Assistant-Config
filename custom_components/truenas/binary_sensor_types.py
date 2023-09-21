@@ -1,26 +1,32 @@
-"""Definitions for TrueNAS binary sensor entities"""
+"""Definitions for TrueNAS binary sensor entities."""
 from dataclasses import dataclass, field
 from typing import List
+
 from homeassistant.components.binary_sensor import BinarySensorEntityDescription
+
 from .const import (
-    SERVICE_JAIL_START,
-    SCHEMA_SERVICE_JAIL_START,
-    SERVICE_JAIL_STOP,
-    SCHEMA_SERVICE_JAIL_STOP,
-    SERVICE_JAIL_RESTART,
+    SCHEMA_SERVICE_APP_START,
+    SCHEMA_SERVICE_APP_STOP,
     SCHEMA_SERVICE_JAIL_RESTART,
-    SERVICE_SERVICE_START,
-    SCHEMA_SERVICE_SERVICE_START,
-    SERVICE_SERVICE_STOP,
-    SCHEMA_SERVICE_SERVICE_STOP,
-    SERVICE_SERVICE_RESTART,
-    SCHEMA_SERVICE_SERVICE_RESTART,
-    SERVICE_SERVICE_RELOAD,
+    SCHEMA_SERVICE_JAIL_START,
+    SCHEMA_SERVICE_JAIL_STOP,
     SCHEMA_SERVICE_SERVICE_RELOAD,
-    SERVICE_VM_START,
+    SCHEMA_SERVICE_SERVICE_RESTART,
+    SCHEMA_SERVICE_SERVICE_START,
+    SCHEMA_SERVICE_SERVICE_STOP,
     SCHEMA_SERVICE_VM_START,
-    SERVICE_VM_STOP,
     SCHEMA_SERVICE_VM_STOP,
+    SERVICE_APP_START,
+    SERVICE_APP_STOP,
+    SERVICE_JAIL_RESTART,
+    SERVICE_JAIL_START,
+    SERVICE_JAIL_STOP,
+    SERVICE_SERVICE_RELOAD,
+    SERVICE_SERVICE_RESTART,
+    SERVICE_SERVICE_START,
+    SERVICE_SERVICE_STOP,
+    SERVICE_VM_START,
+    SERVICE_VM_STOP,
 )
 
 DEVICE_ATTRIBUTES_POOL = [
@@ -34,6 +40,7 @@ DEVICE_ATTRIBUTES_POOL = [
     "scrub_end",
     "scrub_secs_left",
     "available_gib",
+    "total_gib",
 ]
 
 DEVICE_ATTRIBUTES_JAIL = [
@@ -61,10 +68,19 @@ DEVICE_ATTRIBUTES_SERVICE = [
     "state",
 ]
 
+DEVICE_ATTRIBUTES_APP = [
+    "name",
+    "version",
+    "human_version",
+    "update_available",
+    "container_images_update_available",
+    "portal",
+]
+
 
 @dataclass
 class TrueNASBinarySensorEntityDescription(BinarySensorEntityDescription):
-    """Class describing mikrotik entities"""
+    """Class describing mikrotik entities."""
 
     icon_enabled: str = ""
     icon_disabled: str = ""
@@ -144,6 +160,22 @@ SENSOR_TYPES = {
         data_attributes_list=DEVICE_ATTRIBUTES_SERVICE,
         func="TrueNASServiceBinarySensor",
     ),
+    "app": TrueNASBinarySensorEntityDescription(
+        key="app",
+        name="",
+        icon_enabled="mdi:server",
+        icon_disabled="mdi:server-off",
+        device_class=None,
+        entity_category=None,
+        ha_group="Apps",
+        data_path="app",
+        data_is_on="running",
+        data_name="name",
+        data_uid="",
+        data_reference="id",
+        data_attributes_list=DEVICE_ATTRIBUTES_APP,
+        func="TrueNASAppBinarySensor",
+    ),
 }
 
 SENSOR_SERVICES = [
@@ -156,4 +188,6 @@ SENSOR_SERVICES = [
     [SERVICE_SERVICE_STOP, SCHEMA_SERVICE_SERVICE_STOP, "stop"],
     [SERVICE_SERVICE_RESTART, SCHEMA_SERVICE_SERVICE_RESTART, "restart"],
     [SERVICE_SERVICE_RELOAD, SCHEMA_SERVICE_SERVICE_RELOAD, "reload"],
+    [SERVICE_APP_START, SCHEMA_SERVICE_APP_START, "start"],
+    [SERVICE_APP_STOP, SCHEMA_SERVICE_APP_STOP, "stop"],
 ]
