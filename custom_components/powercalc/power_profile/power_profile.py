@@ -6,7 +6,16 @@ import os
 import re
 from typing import NamedTuple, Protocol
 
-from homeassistant.backports.enum import StrEnum
+from awesomeversion.awesomeversion import AwesomeVersion
+from homeassistant.const import __version__ as HA_VERSION  # noqa
+
+if AwesomeVersion(HA_VERSION) >= AwesomeVersion("2023.8.0"):
+    from enum import StrEnum
+else:
+    from homeassistant.backports.enum import StrEnum  # pragma: no cover
+
+from homeassistant.components.binary_sensor import DOMAIN as BINARY_SENSOR_DOMAIN
+from homeassistant.components.camera import DOMAIN as CAMERA_DOMAIN
 from homeassistant.components.light import DOMAIN as LIGHT_DOMAIN
 from homeassistant.components.media_player import DOMAIN as MEDIA_PLAYER_DOMAIN
 from homeassistant.components.switch import DOMAIN as SWITCH_DOMAIN
@@ -25,15 +34,26 @@ _LOGGER = logging.getLogger(__name__)
 
 
 class DeviceType(StrEnum):
+    CAMERA = "camera"
     LIGHT = "light"
     SMART_SWITCH = "smart_switch"
     SMART_SPEAKER = "smart_speaker"
+    NETWORK = "network"
+
+
+class SubProfileMatcherType(StrEnum):
+    ATTRIBUTE = "attribute"
+    ENTITY_ID = "entity_id"
+    ENTITY_STATE = "entity_state"
+    INTEGRATION = "integration"
 
 
 DEVICE_DOMAINS = {
+    DeviceType.CAMERA: CAMERA_DOMAIN,
     DeviceType.LIGHT: LIGHT_DOMAIN,
     DeviceType.SMART_SWITCH: SWITCH_DOMAIN,
     DeviceType.SMART_SPEAKER: MEDIA_PLAYER_DOMAIN,
+    DeviceType.NETWORK: BINARY_SENSOR_DOMAIN,
 }
 
 
@@ -156,15 +176,6 @@ class PowerProfile:
         return mode == self.calculation_strategy
 
     @property
-    def is_additional_configuration_required(self) -> bool:
-        """Checks if the power profile can be setup without any additional user configuration."""
-        if self.has_sub_profiles and self.sub_profile is None:
-            return True
-        if self.needs_fixed_config:
-            return True
-        return False
-
-    @property
     def needs_fixed_config(self) -> bool:
         """Used for smart switches which only provides standby power values.
         This indicates the user must supply the power values in the config flow.
@@ -210,7 +221,7 @@ class PowerProfile:
             return
 
         self._sub_profile_dir = os.path.join(self._directory, sub_profile)
-        _LOGGER.debug(f"Loading sub profile directory {sub_profile}")
+        _LOGGER.debug("Loading sub profile directory %s", sub_profile)
         if not os.path.exists(self._sub_profile_dir):
             raise ModelNotSupportedError(
                 f"Sub profile not found (manufacturer: {self._manufacturer}, model: {self._model}, "
@@ -233,7 +244,8 @@ class PowerProfile:
             self.device_type == DeviceType.SMART_SWITCH
             and entity_entry
             and entity_entry.platform in ["hue"]
-        ):
+            and source_entity.domain == LIGHT_DOMAIN
+        ):  # see https://github.com/bramstroker/homeassistant-powercalc/issues/1491
             return True
         return DEVICE_DOMAINS[self.device_type] == source_entity.domain
 
@@ -243,7 +255,7 @@ class SubProfileSelector:
         self,
         hass: HomeAssistant,
         config: SubProfileSelectConfig,
-        source_entity: SourceEntity | None = None,
+        source_entity: SourceEntity,
     ) -> None:
         self._hass = hass
         self._config = config
@@ -261,7 +273,7 @@ class SubProfileSelector:
         This method always need to return a sub profile, when nothing is matched it will return a default.
         """
         for matcher in self._matchers:
-            sub_profile = matcher.match(entity_state)
+            sub_profile = matcher.match(entity_state, self._source_entity)
             if sub_profile:
                 return sub_profile
 
@@ -277,18 +289,23 @@ class SubProfileSelector:
 
     def _create_matcher(self, matcher_config: dict) -> SubProfileMatcher:
         """Create a matcher from json config. Can be extended for more matchers in the future."""
-        matcher_type: str = matcher_config["type"]
-        if matcher_type == "attribute":
+        matcher_type: SubProfileMatcherType = matcher_config["type"]
+        if matcher_type == SubProfileMatcherType.ATTRIBUTE:
             return AttributeMatcher(matcher_config["attribute"], matcher_config["map"])
-        if matcher_type == "entity_state":
+        if matcher_type == SubProfileMatcherType.ENTITY_STATE:
             return EntityStateMatcher(
                 self._hass,
                 self._source_entity,
                 matcher_config["entity_id"],
                 matcher_config["map"],
             )
-        if matcher_type == "entity_id":
+        if matcher_type == SubProfileMatcherType.ENTITY_ID:
             return EntityIdMatcher(matcher_config["pattern"], matcher_config["profile"])
+        if matcher_type == SubProfileMatcherType.INTEGRATION:
+            return IntegrationMatcher(
+                matcher_config["integration"],
+                matcher_config["profile"],
+            )
         raise PowercalcSetupError(f"Unknown sub profile matcher type: {matcher_type}")
 
 
@@ -298,7 +315,7 @@ class SubProfileSelectConfig(NamedTuple):
 
 
 class SubProfileMatcher(Protocol):
-    def match(self, entity_state: State) -> str | None:
+    def match(self, entity_state: State, source_entity: SourceEntity) -> str | None:
         """Returns a sub profile."""
 
     def get_tracking_entities(self) -> list[str]:
@@ -322,7 +339,7 @@ class EntityStateMatcher(SubProfileMatcher):
         self._entity_id = entity_id
         self._mapping = mapping
 
-    def match(self, entity_state: State) -> str | None:
+    def match(self, entity_state: State, source_entity: SourceEntity) -> str | None:
         state = self._hass.states.get(self._entity_id)
         if state is None:
             return None
@@ -338,7 +355,7 @@ class AttributeMatcher(SubProfileMatcher):
         self._attribute = attribute
         self._mapping = mapping
 
-    def match(self, entity_state: State) -> str | None:
+    def match(self, entity_state: State, source_entity: SourceEntity) -> str | None:
         val = entity_state.attributes.get(self._attribute)
         if val is None:
             return None
@@ -354,8 +371,27 @@ class EntityIdMatcher(SubProfileMatcher):
         self._pattern = pattern
         self._profile = profile
 
-    def match(self, entity_state: State) -> str | None:
+    def match(self, entity_state: State, source_entity: SourceEntity) -> str | None:
         if re.search(self._pattern, entity_state.entity_id):
+            return self._profile
+
+        return None
+
+    def get_tracking_entities(self) -> list[str]:
+        return []
+
+
+class IntegrationMatcher(SubProfileMatcher):
+    def __init__(self, integration: str, profile: str) -> None:
+        self._integration = integration
+        self._profile = profile
+
+    def match(self, entity_state: State, source_entity: SourceEntity) -> str | None:
+        registry_entry = source_entity.entity_entry
+        if not registry_entry:
+            return None
+
+        if registry_entry.platform == self._integration:
             return self._profile
 
         return None

@@ -20,10 +20,8 @@ from homeassistant.const import (
     CONF_NAME,
     CONF_UNIQUE_ID,
     CONF_UNIT_OF_MEASUREMENT,
-    ENERGY_KILO_WATT_HOUR,
-    ENERGY_MEGA_WATT_HOUR,
-    ENERGY_WATT_HOUR,
-    POWER_WATT,
+    UnitOfEnergy,
+    UnitOfPower,
 )
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.event import async_track_time_interval
@@ -57,8 +55,11 @@ DEFAULT_DAILY_UPDATE_FREQUENCY = 1800
 DAILY_FIXED_ENERGY_SCHEMA = vol.Schema(
     {
         vol.Required(CONF_VALUE): vol.Any(vol.Coerce(float), cv.template),
-        vol.Optional(CONF_UNIT_OF_MEASUREMENT, default=ENERGY_KILO_WATT_HOUR): vol.In(
-            [ENERGY_KILO_WATT_HOUR, POWER_WATT],
+        vol.Optional(
+            CONF_UNIT_OF_MEASUREMENT,
+            default=UnitOfEnergy.KILO_WATT_HOUR,
+        ): vol.In(
+            [UnitOfEnergy.KILO_WATT_HOUR, UnitOfPower.WATT],
         ),
         vol.Optional(CONF_ON_TIME, default=timedelta(days=1)): cv.time_period,
         vol.Optional(CONF_START_TIME): cv.time,
@@ -126,14 +127,16 @@ async def create_daily_fixed_energy_power_sensor(
     source_entity: SourceEntity,
 ) -> VirtualPowerSensor | None:
     mode_config: dict = sensor_config.get(CONF_DAILY_FIXED_ENERGY)  # type: ignore
-    if mode_config.get(CONF_UNIT_OF_MEASUREMENT) != POWER_WATT:
-        return None
 
     if mode_config.get(CONF_ON_TIME) != timedelta(days=1):
         return None
 
+    power_value: float = mode_config.get(CONF_VALUE)  # type: ignore
+    if mode_config.get(CONF_UNIT_OF_MEASUREMENT) == UnitOfEnergy.KILO_WATT_HOUR:
+        power_value = power_value * 1000 / 24
+
     power_sensor_config = sensor_config.copy()
-    power_sensor_config[CONF_FIXED] = {CONF_POWER: mode_config.get(CONF_VALUE)}
+    power_sensor_config[CONF_FIXED] = {CONF_POWER: power_value}
 
     unique_id = sensor_config.get(CONF_UNIQUE_ID)
     if unique_id:
@@ -145,7 +148,12 @@ async def create_daily_fixed_energy_power_sensor(
         unique_id,
     )
 
-    return await create_virtual_power_sensor(hass, power_sensor_config, source_entity)
+    return await create_virtual_power_sensor(
+        hass,
+        power_sensor_config,
+        source_entity,
+        None,
+    )
 
 
 class DailyEnergySensor(RestoreEntity, SensorEntity, EnergySensor):
@@ -191,11 +199,11 @@ class DailyEnergySensor(RestoreEntity, SensorEntity, EnergySensor):
             self._sensor_config.get(CONF_ENERGY_SENSOR_UNIT_PREFIX) or UnitPrefix.KILO
         )
         if unit_prefix == UnitPrefix.KILO:
-            self._attr_native_unit_of_measurement = ENERGY_KILO_WATT_HOUR
+            self._attr_native_unit_of_measurement = UnitOfEnergy.KILO_WATT_HOUR
         elif unit_prefix == UnitPrefix.NONE:
-            self._attr_native_unit_of_measurement = ENERGY_WATT_HOUR
+            self._attr_native_unit_of_measurement = UnitOfEnergy.WATT_HOUR
         elif unit_prefix == UnitPrefix.MEGA:
-            self._attr_native_unit_of_measurement = ENERGY_MEGA_WATT_HOUR
+            self._attr_native_unit_of_measurement = UnitOfEnergy.MEGA_WATT_HOUR
 
     async def async_added_to_hass(self) -> None:
         """Handle entity which will be added."""
@@ -204,7 +212,9 @@ class DailyEnergySensor(RestoreEntity, SensorEntity, EnergySensor):
                 self._state = Decimal(state.state)
             except decimal.DecimalException:
                 _LOGGER.warning(
-                    f"{self.entity_id}: Cannot restore state: {state.state}",
+                    "%s: Cannot restore state: %s",
+                    self.entity_id,
+                    state.state,
                 )
                 self._state = Decimal(0)
             self._last_updated = state.last_changed.timestamp()
@@ -213,7 +223,7 @@ class DailyEnergySensor(RestoreEntity, SensorEntity, EnergySensor):
         else:
             self._state = Decimal(0)
 
-        _LOGGER.debug(f"{self.entity_id}: Restoring state: {self._state}")
+        _LOGGER.debug("%s: Restoring state: %s", self.entity_id, self._state)
 
         @callback
         def refresh(now: datetime) -> None:
@@ -222,7 +232,9 @@ class DailyEnergySensor(RestoreEntity, SensorEntity, EnergySensor):
             if delta > 0:
                 self._state = self._state + delta
                 _LOGGER.debug(
-                    f"{self.entity_id}: Updating daily_fixed_energy sensor: {round(self._state, 4)}",
+                    "%s: Updating daily_fixed_energy sensor: %.4f",
+                    self.entity_id,
+                    self._state,
                 )
                 self.async_schedule_update_ha_state()
                 self._last_updated = dt_util.now().timestamp()
@@ -249,15 +261,15 @@ class DailyEnergySensor(RestoreEntity, SensorEntity, EnergySensor):
 
         wh_per_day = (
             value * (self._on_time.total_seconds() / 3600)
-            if self._user_unit_of_measurement == POWER_WATT
+            if self._user_unit_of_measurement == UnitOfPower.WATT
             else value * 1000
         )
 
         # Convert Wh to the native measurement unit
         energy_per_day = wh_per_day
-        if self._attr_native_unit_of_measurement == ENERGY_KILO_WATT_HOUR:
+        if self._attr_native_unit_of_measurement == UnitOfEnergy.KILO_WATT_HOUR:
             energy_per_day = wh_per_day / 1000
-        elif self._attr_native_unit_of_measurement == ENERGY_MEGA_WATT_HOUR:
+        elif self._attr_native_unit_of_measurement == UnitOfEnergy.MEGA_WATT_HOUR:
             energy_per_day = wh_per_day / 1000000
 
         return Decimal((energy_per_day / 86400) * elapsed_seconds)
@@ -269,17 +281,17 @@ class DailyEnergySensor(RestoreEntity, SensorEntity, EnergySensor):
 
     @callback
     def async_reset(self) -> None:
-        _LOGGER.debug(f"{self.entity_id}: Reset energy sensor")
+        _LOGGER.debug("%s: Reset energy sensor", self.entity_id)
         self._state = Decimal(0)
         self._attr_last_reset = dt_util.utcnow()
         self.async_write_ha_state()
 
     async def async_increase(self, value: str) -> None:
-        _LOGGER.debug(f"{self.entity_id}: Increasing energy sensor with {value}")
+        _LOGGER.debug("%s: Increasing energy sensor with %s", self.entity_id, value)
         self._state += Decimal(value)
         self.async_write_ha_state()
 
     async def async_calibrate(self, value: str) -> None:
-        _LOGGER.debug(f"{self.entity_id}: Calibrate energy sensor with {value}")
+        _LOGGER.debug("%s: Calibrate energy sensor with %s", self.entity_id, value)
         self._state = Decimal(value)
         self.async_write_ha_state()
