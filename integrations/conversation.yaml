@@ -3,6 +3,15 @@
 #################################################################
 conversation:
   intents:
+    aqi:
+      - "What's the AQI?"
+      - "What's the air quality?"
+      - "What is the AQI?"
+      - "What is the air quality?"
+      - "How's the air quality?"
+      - "How's the AQI?"
+      - "How is the air quality?"
+      - "How is the AQI?"
     muni_minutes:
       - "When is the next train downtown?"
       - "When is the next train to Chinatown?"
@@ -38,6 +47,9 @@ conversation:
       - "Hi"
 
 intent_script:
+  aqi:
+    speech:
+      text: "The AQI in Dogpatch is {{states('sensor.aqi')}}."
   muni_minutes:
     speech:
       text: "The next 3 trains to Chinatown arrive in {{ state_attr('sensor.muni_metro_inbound', 'upcoming').split(', ')[0] }}, {{ state_attr('sensor.muni_metro_inbound', 'upcoming').split(', ')[1] }}, and {{ state_attr('sensor.muni_metro_inbound', 'upcoming').split(', ')[2] }} minutes."
