@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from datetime import timedelta
 
+from cowayaio import CowayClient
 from cowayaio.exceptions import AuthError, CowayError, PasswordExpired
 from cowayaio.purifier_model import PurifierData
 
@@ -10,10 +11,10 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_USERNAME, CONF_PASSWORD
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryAuthFailed
+from homeassistant.helpers.aiohttp_client import async_create_clientsession
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
-from .const import DEFAULT_SCAN_INTERVAL, DOMAIN, LOGGER, SKIP_PASSWORD_CHANGE
-from .util import COWAY_CLIENT
+from .const import DEFAULT_SCAN_INTERVAL, DOMAIN, LOGGER, SKIP_PASSWORD_CHANGE, TIMEOUT
 
 
 class CowayDataUpdateCoordinator(DataUpdateCoordinator):
@@ -24,10 +25,13 @@ class CowayDataUpdateCoordinator(DataUpdateCoordinator):
     def __init__(self, hass: HomeAssistant, entry: ConfigEntry) -> None:
         """Initialize the Coway coordinator."""
 
-        COWAY_CLIENT.username = entry.data[CONF_USERNAME]
-        COWAY_CLIENT.password = entry.data[CONF_PASSWORD]
-        COWAY_CLIENT.skip_password_change = entry.options[SKIP_PASSWORD_CHANGE]
-        self.client = COWAY_CLIENT
+        self.client = CowayClient(
+            entry.data[CONF_USERNAME],
+            entry.data[CONF_PASSWORD],
+            session=async_create_clientsession(hass),
+            timeout=TIMEOUT,
+        )
+        self.client.skip_password_change = entry.options[SKIP_PASSWORD_CHANGE]
         super().__init__(
             hass,
             LOGGER,

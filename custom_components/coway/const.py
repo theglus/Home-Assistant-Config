@@ -35,6 +35,12 @@ COWAY_ERRORS = (
     CowayError,
 )
 
+IAQ_NAMED = {
+    "1": "Good",
+    "2": "Moderate",
+    "3": "Unhealthy",
+    "4": "Very Unhealthy"
+}
 
 IOCARE_FAN_OFF = "0"
 IOCARE_FAN_LOW = "1"
@@ -54,6 +60,20 @@ IOCARE_TIMERS_TO_HASS = {
     IOCARE_TIMER_2H: "2 Hours",
     IOCARE_TIMER_4H: "4 Hours",
     IOCARE_TIMER_8H: "8 Hours"
+}
+
+IOCARE_PRE_FILTER_WASH_FREQUENCIES = ["2 Weeks", "3 Weeks", "4 Weeks"]
+IOCARE_PRE_FILTER_TO_HASS = {
+    2: "2 Weeks",
+    3: "3 Weeks",
+    4: "4 Weeks"
+}
+
+IOCARE_SMART_SENSITIVITIES = ["Sensitive", "Normal", "Insensitive"]
+IOCARE_SMART_SENSITIVITY_TO_HASS = {
+    1: "Sensitive",
+    2: "Normal",
+    3: "Insensitive"
 }
 
 PRESET_MODE_AUTO = "Auto"

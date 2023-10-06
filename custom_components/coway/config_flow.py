@@ -11,6 +11,7 @@ from homeassistant import config_entries
 from homeassistant.const import CONF_USERNAME, CONF_PASSWORD
 from homeassistant.core import callback
 from homeassistant.data_entry_flow import FlowResult
+from homeassistant.helpers.aiohttp_client import async_create_clientsession
 import homeassistant.helpers.config_validation as cv
 
 from .const import DEFAULT_NAME, DOMAIN, SKIP_PASSWORD_CHANGE
@@ -59,7 +60,8 @@ class CowayConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             password = user_input[CONF_PASSWORD]
             skip_password_change = user_input[SKIP_PASSWORD_CHANGE] if SKIP_PASSWORD_CHANGE in user_input else False
             try:
-                await async_validate_api(username, password, skip_password_change)
+                session = async_create_clientsession(self.hass)
+                await async_validate_api(self.hass, username, password, skip_password_change, session)
             except AuthError:
                 errors["base"] = "invalid_auth"
             except ConnectionError:
@@ -101,7 +103,8 @@ class CowayConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             password = user_input[CONF_PASSWORD]
             skip_password_change = user_input[SKIP_PASSWORD_CHANGE] if SKIP_PASSWORD_CHANGE in user_input else False
             try:
-                await async_validate_api(username, password, skip_password_change)
+                session = async_create_clientsession(self.hass)
+                await async_validate_api(self.hass, username, password, skip_password_change, session)
             except AuthError:
                 errors["base"] = "invalid_auth"
             except ConnectionError:
