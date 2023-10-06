@@ -194,7 +194,7 @@ cards:
                       [[[
                         return states['sensor.aqi'].state + ' AQI'
                       ]]]
-                  entity: weather.loft
+                  entity: weather.climacell_nowcast
                   label: |
                     [[[
                       return states['weather.climacell_nowcast'].attributes.temperature + '°F '
