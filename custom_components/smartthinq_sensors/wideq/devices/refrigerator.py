@@ -152,7 +152,6 @@ class RefrigeratorDevice(Device):
                 self._temp_unit = unit
                 self._fridge_temps = None
                 self._freezer_temps = None
-        return
 
     def _get_temp_unit(self, unit=None):
         """Get the configured temperature unit."""
@@ -326,8 +325,7 @@ class RefrigeratorDevice(Device):
         if self._status.temp_fridge is None:
             return
 
-        temp_key = self._get_temp_key(self._fridge_temps, temp)
-        if not temp_key:
+        if (temp_key := self._get_temp_key(self._fridge_temps, temp)) is None:
             raise ValueError(f"Target fridge temperature not valid: {temp}")
         if not self.model_info.is_info_v2:
             temp_key = str(temp_key)
@@ -344,8 +342,7 @@ class RefrigeratorDevice(Device):
         if self._status.temp_freezer is None:
             return
 
-        temp_key = self._get_temp_key(self._freezer_temps, temp)
-        if not temp_key:
+        if (temp_key := self._get_temp_key(self._freezer_temps, temp)) is None:
             raise ValueError(f"Target freezer temperature not valid: {temp}")
         if not self.model_info.is_info_v2:
             temp_key = str(temp_key)

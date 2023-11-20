@@ -13,7 +13,7 @@ import logging
 import os
 import ssl
 import sys
-from typing import Any, Optional
+from typing import Any
 from urllib.parse import (
     ParseResult,
     parse_qs,
@@ -89,8 +89,9 @@ API2_ERRORS = {
     "0106": exc.NotConnectedError,
     "0100": exc.FailedRequestError,
     "0110": exc.InvalidCredentialError,
-    # "9999": exc.NotConnectedError,  # This come as "other errors", we manage as not connected.
     9000: exc.InvalidRequestError,  # Surprisingly, an integer (not a string).
+    "9995": exc.FailedRequestError,  # This come as "other errors", we manage as not FailedRequestError.
+    "9999": exc.FailedRequestError,  # This come as "other errors", we manage as not FailedRequestError.
 }
 
 DEFAULT_TOKEN_VALIDITY = 3600  # seconds
@@ -353,7 +354,7 @@ class CoreAsync:
             if "resultCode" in result:
                 code = result["resultCode"]
                 if code != "0000":
-                    message = result.get("result", "ThinQ APIv2 error")
+                    message = result.get("result") or "ThinQ APIv2 error"
                     if code in API2_ERRORS:
                         raise API2_ERRORS[code](message)
                     raise exc.APIError(message, code)
@@ -367,7 +368,7 @@ class CoreAsync:
         if "returnCd" in msg:
             code = msg["returnCd"]
             if code != "0000":
-                message = msg.get("returnMsg", "ThinQ APIv1 error")
+                message = msg.get("returnMsg") or "ThinQ APIv1 error"
                 if code in API2_ERRORS:
                     raise API2_ERRORS[code](message)
                 raise exc.APIError(message, code)
@@ -1233,7 +1234,7 @@ class ClientAsync:
     def __init__(
         self,
         auth: Auth,
-        session: Optional[Session] = None,
+        session: Session | None = None,
         country: str = DEFAULT_COUNTRY,
         language: str = DEFAULT_LANGUAGE,
         *,
@@ -1242,7 +1243,7 @@ class ClientAsync:
         """Initialize the client."""
         # The three steps required to get access to call the API.
         self._auth: Auth = auth
-        self._session: Optional[Session] = session
+        self._session: Session | None = session
         self._last_device_update = datetime.utcnow()
         self._lock = asyncio.Lock()
         # The last list of devices we got from the server. This is the

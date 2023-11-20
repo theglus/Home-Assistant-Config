@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 import logging
-from typing import Any, Awaitable, Callable, Tuple
+from typing import Any, Awaitable, Callable
 
 import voluptuous as vol
 
@@ -74,7 +74,7 @@ class ThinQRefClimateEntityDescription(
     """A class that describes ThinQ climate entities."""
 
 
-REFRIGERATOR_CLIMATE: Tuple[ThinQRefClimateEntityDescription, ...] = (
+REFRIGERATOR_CLIMATE: tuple[ThinQRefClimateEntityDescription, ...] = (
     ThinQRefClimateEntityDescription(
         key=ATTR_FRIDGE,
         name="Fridge",
@@ -117,15 +117,11 @@ async def async_setup_entry(
         if not lge_devices:
             return
 
-        lge_climates = []
-
         # AC devices
-        lge_climates.extend(
-            [
-                LGEACClimate(lge_device)
-                for lge_device in lge_devices.get(DeviceType.AC, [])
-            ]
-        )
+        lge_climates = [
+            LGEACClimate(lge_device)
+            for lge_device in lge_devices.get(DeviceType.AC, [])
+        ]
 
         # Refrigerator devices
         lge_climates.extend(
@@ -362,7 +358,7 @@ class LGEACClimate(LGEClimate):
 
     async def async_set_temperature(self, **kwargs) -> None:
         """Set new target temperature."""
-        if new_temp := kwargs.get(ATTR_TEMPERATURE):
+        if (new_temp := kwargs.get(ATTR_TEMPERATURE)) is not None:
             await self._device.set_target_temp(new_temp)
         if hvac_mode := kwargs.get(ATTR_HVAC_MODE):
             await self.async_set_hvac_mode(HVACMode(hvac_mode))
@@ -504,7 +500,7 @@ class LGERefrigeratorClimate(LGEClimate):
 
     async def async_set_temperature(self, **kwargs) -> None:
         """Set new target temperature."""
-        if new_temp := kwargs.get(ATTR_TEMPERATURE):
+        if (new_temp := kwargs.get(ATTR_TEMPERATURE)) is not None:
             await self.entity_description.set_temp_fn(self._wrap_device, new_temp)
             self._api.async_set_updated()
 

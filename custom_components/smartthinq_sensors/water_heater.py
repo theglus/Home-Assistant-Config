@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import logging
+from typing import Any
 
 from homeassistant.components.water_heater import (
     STATE_ECO,
@@ -65,15 +66,11 @@ async def async_setup_entry(
         if not lge_devices:
             return
 
-        lge_water_heater = []
-
         # WH devices
-        lge_water_heater.extend(
-            [
-                LGEWHWaterHeater(lge_device)
-                for lge_device in lge_devices.get(DeviceType.WATER_HEATER, [])
-            ]
-        )
+        lge_water_heater = [
+            LGEWHWaterHeater(lge_device)
+            for lge_device in lge_devices.get(DeviceType.WATER_HEATER, [])
+        ]
 
         # AC devices
         lge_water_heater.extend(
@@ -180,6 +177,14 @@ class LGEWHWaterHeater(LGEWaterHeater):
         await self._device.set_op_mode(new_mode)
         self._api.async_set_updated()
 
+    async def async_turn_on(self, **kwargs: Any) -> None:
+        """Turn the water heater on."""
+        await self.async_set_operation_mode(STATE_HEAT_PUMP)
+
+    async def async_turn_off(self, **kwargs: Any) -> None:
+        """Turn the water heater off."""
+        await self.async_set_operation_mode(STATE_OFF)
+
     @property
     def current_temperature(self) -> float | None:
         """Return the current temperature."""
@@ -248,6 +253,14 @@ class LGEACWaterHeater(LGEWaterHeater):
             return
         await self._device.hot_water_mode(operation_mode == STATE_HEAT_PUMP)
         self._api.async_set_updated()
+
+    async def async_turn_on(self, **kwargs: Any) -> None:
+        """Turn the water heater on."""
+        await self.async_set_operation_mode(STATE_HEAT_PUMP)
+
+    async def async_turn_off(self, **kwargs: Any) -> None:
+        """Turn the water heater off."""
+        await self.async_set_operation_mode(STATE_OFF)
 
     @property
     def current_temperature(self) -> float | None:
