@@ -1,6 +1,7 @@
 """Config flow for LG SmartThinQ."""
 from __future__ import annotations
 
+from collections.abc import Mapping
 import logging
 import re
 from typing import Any
@@ -99,7 +100,7 @@ class SmartThinQFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
         return None
 
     def _get_hass_region_lang(self):
-        """Get the hass configured region and languange."""
+        """Get the hass configured region and language."""
         if self._region and self._user_lang:
             return
         # This works starting from HA 2022.12
@@ -334,6 +335,10 @@ class SmartThinQFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
             data_schema=schema,
             errors={CONF_BASE: base_err} if base_err else None,
         )
+
+    async def async_step_reauth(self, entry_data: Mapping[str, Any]) -> FlowResult:
+        """Perform reauth upon an API authentication error."""
+        return await self.async_step_user()
 
 
 def _dict_to_select(opt_dict: dict) -> SelectSelectorConfig:

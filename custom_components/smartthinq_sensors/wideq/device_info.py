@@ -2,7 +2,7 @@
 
 from enum import Enum
 import logging
-from typing import Any, Optional
+from typing import Any
 
 from .const import StateOptions
 
@@ -59,6 +59,10 @@ WM_DEVICE_TYPES = [
     DeviceType.TOWER_DRYER,
     DeviceType.TOWER_WASHER,
     DeviceType.WASHER,
+]
+
+SET_TIME_DEVICE_TYPES = [
+    DeviceType.MICROWAVE,
 ]
 
 
@@ -157,12 +161,12 @@ class DeviceInfo:
         return self._get_data_value(["modelName", "modelNm"])
 
     @property
-    def macaddress(self) -> Optional[str]:
+    def macaddress(self) -> str | None:
         """Return the device mac address."""
         return self._data.get("macAddress")
 
     @property
-    def firmware(self) -> Optional[str]:
+    def firmware(self) -> str | None:
         """Return the device firmware version."""
         if fw_ver := self._data.get("fwVer"):
             return fw_ver
@@ -236,11 +240,11 @@ class DeviceInfo:
         return self._network_type
 
     @property
-    def device_state(self) -> Optional[str]:
+    def device_state(self) -> str | None:
         """Return the status associated to the device."""
         return self._data.get("deviceState")
 
     @property
-    def snapshot(self) -> Optional[dict[str, Any]]:
+    def snapshot(self) -> dict[str, Any] | None:
         """Return the snapshot data associated to the device."""
         return self._data.get("snapshot")

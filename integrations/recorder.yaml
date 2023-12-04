@@ -42,6 +42,7 @@ recorder:
       - sensor.dyson_kitchen_energy
       - sensor.dyson_kirby_energy
       - sensor.grid_energy
+      - sensor.ice_bear_plug_energy
       - sensor.laundry_energy
       - sensor.media_hub_energy
       - sensor.nibbler_plug_energy

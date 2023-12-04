@@ -3,6 +3,23 @@
 #################################################################
 conversation:
   intents:
+    aqi:
+      - "What's the AQI?"
+      - "What's the air quality?"
+      - "What is the AQI?"
+      - "What is the air quality?"
+      - "How's the air quality?"
+      - "How's the AQI?"
+      - "How is the air quality?"
+      - "How is the AQI?"
+    muni_minutes:
+      - "When is the next train downtown?"
+      - "When is the next train to Chinatown?"
+      - "When are the trains arriving?"
+      - "What's the train schedule?"
+      - "What is the train schedule?"
+      - "What is the Muni schedule?"
+      - "What's the Muni schedule?"
     temp_kitchen:
       - "What's the temperature in the Kitchen?"
       - "What's the Kitchen temperature?"
@@ -23,16 +40,19 @@ conversation:
     music:
       - "What's playing?"
       - "Who is this?"
-    dan:
+    welcome:
       - "Hello?"
       - "Hello"
       - "Hi?"
       - "Hi"
 
 intent_script:
-  dan:
+  aqi:
     speech:
-      text: "Hi gay, did you know the human anus can fit two adult racoons?"
+      text: "The AQI in Dogpatch is {{states('sensor.aqi')}}."
+  muni_minutes:
+    speech:
+      text: "The next 3 trains to Chinatown arrive in {{ state_attr('sensor.muni_metro_inbound', 'upcoming').split(', ')[0] }}, {{ state_attr('sensor.muni_metro_inbound', 'upcoming').split(', ')[1] }}, and {{ state_attr('sensor.muni_metro_inbound', 'upcoming').split(', ')[2] }} minutes."
   music:
     speech:
       text: "{{state_attr('media_player.spotify', 'media_title')}} by {{state_attr('media_player.spotify', 'media_artist')}}"
@@ -54,3 +74,6 @@ intent_script:
   weather_today:
     speech:
       text: "The weather in Dogpatch is {{state_attr('weather.climacell_nowcast', 'temperature')}} degrees. Today you can expect a high of {{state_attr('weather.climacell_daily', 'forecast')[0].temperature}} and a low of {{state_attr('weather.climacell_daily', 'forecast')[0].templow}}."
+  welcome:
+    speech:
+      text: "Hi I'm Farnsworth your home assistant. You can ask me things like 'what's the weather today,' 'what's playing,' and 'turn off the office lights.'"

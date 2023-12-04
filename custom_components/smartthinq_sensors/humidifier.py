@@ -47,15 +47,11 @@ async def async_setup_entry(
         if not lge_devices:
             return
 
-        lge_humidifier = []
-
         # DeHumidifier devices
-        lge_humidifier.extend(
-            [
-                LGEDeHumidifier(lge_device)
-                for lge_device in lge_devices.get(DeviceType.DEHUMIDIFIER, [])
-            ]
-        )
+        lge_humidifier = [
+            LGEDeHumidifier(lge_device)
+            for lge_device in lge_devices.get(DeviceType.DEHUMIDIFIER, [])
+        ]
 
         async_add_entities(lge_humidifier)
 
@@ -92,11 +88,13 @@ class LGEBaseHumidifier(CoordinatorEntity, HumidifierEntity):
 class LGEDeHumidifier(LGEBaseHumidifier):
     """LG DeHumidifier device."""
 
+    _attr_has_entity_name = True
+    _attr_name = None
+
     def __init__(self, api: LGEDevice) -> None:
         """Initialize the dehumidifier."""
         super().__init__(api)
         self._device: DeHumidifierDevice = api.device
-        self._attr_name = api.name
         self._attr_unique_id = f"{api.unique_id}-DEHUM"
         self._attr_device_class = HumidifierDeviceClass.DEHUMIDIFIER
 

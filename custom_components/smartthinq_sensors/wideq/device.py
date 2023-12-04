@@ -6,7 +6,9 @@ from __future__ import annotations
 
 import asyncio
 import base64
+from copy import deepcopy
 from datetime import datetime
+from enum import Enum
 import json
 import logging
 from numbers import Number
@@ -77,18 +79,25 @@ class Monitor:
         self._invalid_credential_count = 0
 
     def _raise_error(
-        self, msg, *, not_logged=False, exc: Exception = None, exc_info=False
+        self,
+        msg,
+        *,
+        not_logged=False,
+        exc: Exception = None,
+        exc_info=False,
+        warn_lev=True,
     ) -> None:
         """Log and raise error with different level depending on condition."""
-        log_lev = logging.DEBUG
+
         if not_logged and Monitor._client_connected:
             Monitor._client_connected = False
-            self._has_error = True
-            log_lev = logging.WARNING
 
-        if not self._has_error:
-            self._has_error = True
+        if self._has_error or not_logged or warn_lev:
             log_lev = logging.WARNING
+        else:
+            log_lev = logging.INFO
+
+        self._has_error = True
         _LOGGER.log(
             log_lev, "%s - Device: %s", msg, self._device_descr, exc_info=exc_info
         )
@@ -166,6 +175,9 @@ class Monitor:
                     raise
                 continue
 
+            except core_exc.FailedRequestError:
+                self._raise_error("Status update request failed", warn_lev=False)
+
             except core_exc.DeviceNotFound:
                 self._raise_error(
                     f"Device ID {self._device_id} is invalid, status update failed"
@@ -206,7 +218,9 @@ class Monitor:
 
             except (asyncio.TimeoutError, aiohttp.ServerTimeoutError) as exc:
                 # These are network errors, refresh client is not required
-                self._raise_error("Connection to ThinQ failed. Timeout error", exc=exc)
+                self._raise_error(
+                    "Connection to ThinQ failed. Timeout error", exc=exc, warn_lev=False
+                )
 
             except aiohttp.ClientError as exc:
                 # These are network errors, refresh client is not required
@@ -243,7 +257,8 @@ class Monitor:
         """Start monitor for ThinQ1 device."""
         if self._platform_type != PlatformType.THINQ1:
             return
-        self._work_id = None
+        if self._work_id:
+            return
         self._work_id = await self._client.session.monitor_start(self._device_id)
 
     async def stop(self) -> None:
@@ -268,33 +283,24 @@ class Monitor:
         Get the current status data (a bytestring) or None if the
         device is not yet ready.
         """
-        state = None
-        await self._client.refresh_devices()
-        if device_data := self._client.get_device(self._device_id):
-            state = device_data.device_state
-
-        if not state or state == "D":
-            _LOGGER.debug(
-                "Device %s not reachable, state: %s", self._device_descr, state
-            )
-            if self._work_id:
-                self._work_id = None
-            return None, False
-
+        await self.start()
         if not self._work_id:
-            await self.start()
-            if not self._work_id:
-                return None, True
+            return None, True
 
         try:
-            return (
-                await self._client.session.monitor_poll(self._device_id, self._work_id),
-                True,
+            result = await self._client.session.monitor_poll(
+                self._device_id, self._work_id
             )
         except core_exc.MonitorError:
-            # Try to restart the task.
-            await self.stop()
-            return None, True
+            result = None
+        except Exception:
+            self._work_id = None
+            raise
+
+        if not result:
+            self._work_id = None
+
+        return result, True
 
     async def _poll_v2(self, query_device=False) -> tuple[Any | None, bool]:
         """
@@ -303,14 +309,20 @@ class Monitor:
         """
         if self._platform_type != PlatformType.THINQ2:
             return None, False
+
+        snapshot = None
         if query_device:
             result = await self._client.session.get_device_v2_settings(self._device_id)
-            return result.get("snapshot"), False
+            if "snapshot" in result:
+                snapshot = deepcopy(result["snapshot"])
+            return snapshot, False
 
         await self._client.refresh_devices()
         if device_data := self._client.get_device(self._device_id):
-            return device_data.snapshot, False
-        return None, False
+            if dev_snapshot := device_data.snapshot:
+                snapshot = deepcopy(dev_snapshot)
+
+        return snapshot, False
 
     @staticmethod
     def decode_json(data: bytes) -> dict[str, Any]:
@@ -332,6 +344,15 @@ class Monitor:
 
     async def __aexit__(self, exc_type, exc_value, exc_traceback) -> None:
         await self.stop()
+
+
+def _remove_duplicated(elem: list) -> list:
+    """Remove duplicated values from a list."""
+    return list(dict.fromkeys(elem))
+
+
+class DeviceNotInitialized(Exception):
+    """Device exception occurred when device is not initialized."""
 
 
 class Device:
@@ -392,8 +413,10 @@ class Device:
         return self._attr_name
 
     @property
-    def model_info(self) -> ModelInfo | None:
+    def model_info(self) -> ModelInfo:
         """Return 'model_info' for this device."""
+        if self._model_info is None:
+            raise DeviceNotInitialized()
         return self._model_info
 
     @property
@@ -460,6 +483,16 @@ class Device:
         key = self._get_state_key(key_name[2])
 
         return [ctrl, cmd, key]
+
+    def _get_property_values(self, prop_key: list | str, prop_enum: Enum) -> list[str]:
+        """Return a list of available values for a specific device property."""
+        key = self._get_state_key(prop_key)
+        if not self.model_info.is_enum_type(key):
+            return []
+        options = self.model_info.value(key).options
+        mapping = _remove_duplicated(list(options.values()))
+        valid_props = [e.value for e in prop_enum]
+        return [prop_enum(o).name for o in mapping if o in valid_props]
 
     async def _set_control(
         self,
@@ -856,7 +889,7 @@ class DeviceStatus:
 
     @property
     def has_data(self) -> bool:
-        """Check if status cointain valid data."""
+        """Check if status contain valid data."""
         return bool(self._data)
 
     @property

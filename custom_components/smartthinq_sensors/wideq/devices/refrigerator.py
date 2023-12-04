@@ -152,7 +152,6 @@ class RefrigeratorDevice(Device):
                 self._temp_unit = unit
                 self._fridge_temps = None
                 self._freezer_temps = None
-        return
 
     def _get_temp_unit(self, unit=None):
         """Get the configured temperature unit."""
@@ -170,7 +169,8 @@ class RefrigeratorDevice(Device):
         value_type = self.model_info.value_type(key)
         if not value_type or value_type != TYPE_ENUM:
             return {}
-        return self.model_info.value(key).options
+        temp_values = self.model_info.value(key).options
+        return {k: v for k, v in temp_values.items() if v != ""}
 
     def _get_temps_v2(self, key, unit_key=None):
         """Get valid values for temps for V2 models"""
@@ -322,9 +322,10 @@ class RefrigeratorDevice(Device):
         """Set the fridge target temperature."""
         if not self.set_values_allowed:
             return
+        if self._status.temp_fridge is None:
+            return
 
-        temp_key = self._get_temp_key(self._fridge_temps, temp)
-        if not temp_key:
+        if (temp_key := self._get_temp_key(self._fridge_temps, temp)) is None:
             raise ValueError(f"Target fridge temperature not valid: {temp}")
         if not self.model_info.is_info_v2:
             temp_key = str(temp_key)
@@ -338,9 +339,10 @@ class RefrigeratorDevice(Device):
         """Set the freezer target temperature."""
         if not self.set_values_allowed:
             return
+        if self._status.temp_freezer is None:
+            return
 
-        temp_key = self._get_temp_key(self._freezer_temps, temp)
-        if not temp_key:
+        if (temp_key := self._get_temp_key(self._freezer_temps, temp)) is None:
             raise ValueError(f"Target freezer temperature not valid: {temp}")
         if not self.model_info.is_info_v2:
             temp_key = str(temp_key)
@@ -372,6 +374,8 @@ class RefrigeratorStatus(DeviceStatus):
     :param device: The Device instance.
     :param data: JSON data from the API.
     """
+
+    _device: RefrigeratorDevice
 
     def __init__(self, device: RefrigeratorDevice, data: dict | None = None):
         """Initialize device status."""
@@ -468,9 +472,9 @@ class RefrigeratorStatus(DeviceStatus):
             index = 1
         temp_key = self._get_temp_key(STATE_FRIDGE_TEMP[index])
         if temp_key is None:
-            return StateOptions.NONE
+            return None
         temp_lists = self._device.get_fridge_temps(self._get_temp_unit(), unit_key)
-        return temp_lists.get(temp_key, temp_key)
+        return self.to_int_or_none(temp_lists.get(temp_key))
 
     @property
     def temp_freezer(self):
@@ -482,9 +486,9 @@ class RefrigeratorStatus(DeviceStatus):
             index = 1
         temp_key = self._get_temp_key(STATE_FREEZER_TEMP[index])
         if temp_key is None:
-            return StateOptions.NONE
+            return None
         temp_lists = self._device.get_freezer_temps(self._get_temp_unit(), unit_key)
-        return temp_lists.get(temp_key, temp_key)
+        return self.to_int_or_none(temp_lists.get(temp_key))
 
     @property
     def temp_unit(self):

@@ -8,12 +8,17 @@ from cowayaio.purifier_model import CowayPurifier
 from homeassistant.components.select import SelectEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import (
     COWAY_COORDINATOR,
     DOMAIN,
+    IOCARE_PRE_FILTER_TO_HASS,
+    IOCARE_PRE_FILTER_WASH_FREQUENCIES,
+    IOCARE_SMART_SENSITIVITIES,
+    IOCARE_SMART_SENSITIVITY_TO_HASS,
     IOCARE_TIMERS,
     IOCARE_TIMERS_TO_HASS,
     LOGGER,
@@ -22,6 +27,8 @@ from .coordinator import CowayDataUpdateCoordinator
 
 
 HASS_TIMER_TO_IOCARE = {v: k for (k, v) in IOCARE_TIMERS_TO_HASS.items()}
+HASS_PRE_FILTER_TO_IOCARE = {v: k for (k, v) in IOCARE_PRE_FILTER_TO_HASS.items()}
+HASS_SMART_SENSITIVITY_TO_IOCARE = {v: k for (k, v) in IOCARE_SMART_SENSITIVITY_TO_HASS.items()}
 
 
 async def async_setup_entry(
@@ -36,6 +43,8 @@ async def async_setup_entry(
     for purifier_id, purifier_data in coordinator.data.purifiers.items():
             selects.extend((
                 Timer(coordinator, purifier_id),
+                PreFilterFrequency(coordinator, purifier_id),
+                SmartModeSensitivity(coordinator, purifier_id),
             ))
 
     async_add_entities(selects)
@@ -86,7 +95,7 @@ class Timer(CoordinatorEntity, SelectEntity):
     def icon(self) -> str:
         """Set icon."""
 
-        if self.current_option is "OFF":
+        if self.current_option == "OFF":
             return 'mdi:timer-off'
         else:
             return 'mdi:timer'
@@ -128,3 +137,180 @@ class Timer(CoordinatorEntity, SelectEntity):
         self.async_write_ha_state()
         await self.coordinator.async_request_refresh()
 
+
+class PreFilterFrequency(CoordinatorEntity, SelectEntity):
+    """Representation of pre-filter wash frequency."""
+
+    def __init__(self, coordinator, purifier_id):
+        super().__init__(coordinator)
+        self.purifier_id = purifier_id
+
+    @property
+    def purifier_data(self) -> CowayPurifier:
+        """Handle coordinator purifier data."""
+
+        return self.coordinator.data.purifiers[self.purifier_id]
+
+    @property
+    def device_info(self) -> dict[str, Any]:
+        """Return device registry information for this entity."""
+
+        return {
+            "identifiers": {(DOMAIN, self.purifier_data.device_attr['device_id'])},
+            "name": self.purifier_data.device_attr['name'],
+            "manufacturer": "Coway",
+            "model": self.purifier_data.device_attr['model'],
+        }
+
+    @property
+    def unique_id(self) -> str:
+        """Sets unique ID for this entity."""
+
+        return self.purifier_data.device_attr['device_id'] + '_pre_filter_frequency'
+
+    @property
+    def name(self) -> str:
+        """Return name of the entity."""
+
+        return "Pre-filter wash frequency"
+
+    @property
+    def has_entity_name(self) -> bool:
+        """Indicate that entity has name defined."""
+
+        return True
+
+    @property
+    def icon(self) -> str:
+        """Set icon."""
+
+        return 'mdi:dishwasher'
+
+    @property
+    def entity_category(self) -> EntityCategory:
+        """Set category to config."""
+
+        return EntityCategory.CONFIG
+
+    @property
+    def current_option(self) -> str:
+        """Returns current wash frequency."""
+
+        return IOCARE_PRE_FILTER_TO_HASS.get(self.purifier_data.pre_filter_change_frequency)
+
+    @property
+    def options(self) -> list:
+        """Return list of all the available wash frequencies."""
+
+        return IOCARE_PRE_FILTER_WASH_FREQUENCIES
+
+    @property
+    def available(self) -> bool:
+        """Return true if purifier is connected to Coway servers."""
+
+        if self.purifier_data.network_status:
+            return True
+        else:
+            return False
+
+    async def async_select_option(self, option: str) -> None:
+        """Change the selected option."""
+
+        if self.purifier_data.is_on:
+            wash_frequency = HASS_PRE_FILTER_TO_IOCARE.get(option)
+            await self.coordinator.client.async_change_prefilter_setting(self.purifier_data.device_attr, str(wash_frequency))
+            self.purifier_data.pre_filter_change_frequency = wash_frequency
+        else:
+            LOGGER.error(f'Setting a pre-filter wash frequency for {self.purifier_data.device_attr["name"]} can only be done when the purifier is On.')
+
+        self.async_write_ha_state()
+        await self.coordinator.async_request_refresh()
+
+
+class SmartModeSensitivity(CoordinatorEntity, SelectEntity):
+    """Representation of smart mode sensitivity."""
+
+    def __init__(self, coordinator, purifier_id):
+        super().__init__(coordinator)
+        self.purifier_id = purifier_id
+
+    @property
+    def purifier_data(self) -> CowayPurifier:
+        """Handle coordinator purifier data."""
+
+        return self.coordinator.data.purifiers[self.purifier_id]
+
+    @property
+    def device_info(self) -> dict[str, Any]:
+        """Return device registry information for this entity."""
+
+        return {
+            "identifiers": {(DOMAIN, self.purifier_data.device_attr['device_id'])},
+            "name": self.purifier_data.device_attr['name'],
+            "manufacturer": "Coway",
+            "model": self.purifier_data.device_attr['model'],
+        }
+
+    @property
+    def unique_id(self) -> str:
+        """Sets unique ID for this entity."""
+
+        return self.purifier_data.device_attr['device_id'] + '_smart_mode_sensitivity'
+
+    @property
+    def name(self) -> str:
+        """Return name of the entity."""
+
+        return "Smart mode sensitivity"
+
+    @property
+    def has_entity_name(self) -> bool:
+        """Indicate that entity has name defined."""
+
+        return True
+
+    @property
+    def icon(self) -> str:
+        """Set icon."""
+
+        return 'mdi:scale-bathroom'
+
+    @property
+    def entity_category(self) -> EntityCategory:
+        """Set category to config."""
+
+        return EntityCategory.CONFIG
+
+    @property
+    def current_option(self) -> str:
+        """Returns current smart mode sensitivity."""
+
+        return IOCARE_SMART_SENSITIVITY_TO_HASS.get(self.purifier_data.smart_mode_sensitivity)
+
+    @property
+    def options(self) -> list:
+        """Return list of all the available sensitivities."""
+
+        return IOCARE_SMART_SENSITIVITIES
+
+    @property
+    def available(self) -> bool:
+        """Return true if purifier is connected to Coway servers."""
+
+        if self.purifier_data.network_status:
+            return True
+        else:
+            return False
+
+    async def async_select_option(self, option: str) -> None:
+        """Change the selected option."""
+
+        if self.purifier_data.is_on:
+            sensitivity = HASS_SMART_SENSITIVITY_TO_IOCARE.get(option)
+            await self.coordinator.client.async_set_smart_mode_sensitivity(self.purifier_data.device_attr, str(sensitivity))
+            self.purifier_data.smart_mode_sensitivity = sensitivity
+        else:
+            LOGGER.error(f'Setting smart mode sensitivity for {self.purifier_data.device_attr["name"]} can only be done when the purifier is On.')
+
+        self.async_write_ha_state()
+        await self.coordinator.async_request_refresh()

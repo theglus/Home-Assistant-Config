@@ -25,6 +25,8 @@ _pycache_
 .HA_VERSION
 aircast.xml
 deps/
+esphome/trash/*
+homeassistant
 home-assistant.log.*
 home-assistant_v2.*
 tts/

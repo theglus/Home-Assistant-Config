@@ -3,7 +3,9 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 import logging
-from typing import Any, Awaitable, Callable, Tuple
+from typing import Any, Awaitable, Callable
+
+import voluptuous as vol
 
 from homeassistant.components.climate import ClimateEntity, ClimateEntityDescription
 from homeassistant.components.climate.const import (
@@ -19,18 +21,21 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import ATTR_TEMPERATURE, UnitOfTemperature
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
-from homeassistant.helpers.entity_platform import AddEntitiesCallback
+from homeassistant.helpers.entity_platform import AddEntitiesCallback, current_platform
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from . import LGEDevice
 from .const import DOMAIN, LGE_DEVICES, LGE_DISCOVERY_NEW
-from .device_helpers import TEMP_UNIT_LOOKUP, LGERefrigeratorDevice, get_entity_name
+from .device_helpers import TEMP_UNIT_LOOKUP, LGERefrigeratorDevice
 from .wideq import AirConditionerFeatures, DeviceType, TemperatureUnit
 from .wideq.devices.ac import AWHP_MAX_TEMP, AWHP_MIN_TEMP, ACMode, AirConditionerDevice
 
 # general ac attributes
 ATTR_FRIDGE = "fridge"
 ATTR_FREEZER = "freezer"
+
+# service definitions
+SERVICE_SET_SLEEP_TIME = "set_sleep_time"
 
 HVAC_MODE_LOOKUP: dict[str, HVACMode] = {
     ACMode.AI.name: HVACMode.AUTO,
@@ -69,7 +74,7 @@ class ThinQRefClimateEntityDescription(
     """A class that describes ThinQ climate entities."""
 
 
-REFRIGERATOR_CLIMATE: Tuple[ThinQRefClimateEntityDescription, ...] = (
+REFRIGERATOR_CLIMATE: tuple[ThinQRefClimateEntityDescription, ...] = (
     ThinQRefClimateEntityDescription(
         key=ATTR_FRIDGE,
         name="Fridge",
@@ -112,15 +117,11 @@ async def async_setup_entry(
         if not lge_devices:
             return
 
-        lge_climates = []
-
         # AC devices
-        lge_climates.extend(
-            [
-                LGEACClimate(lge_device)
-                for lge_device in lge_devices.get(DeviceType.AC, [])
-            ]
-        )
+        lge_climates = [
+            LGEACClimate(lge_device)
+            for lge_device in lge_devices.get(DeviceType.AC, [])
+        ]
 
         # Refrigerator devices
         lge_climates.extend(
@@ -139,6 +140,14 @@ async def async_setup_entry(
         async_dispatcher_connect(hass, LGE_DISCOVERY_NEW, _async_discover_device)
     )
 
+    # register services
+    platform = current_platform.get()
+    platform.async_register_entity_service(
+        SERVICE_SET_SLEEP_TIME,
+        {vol.Required("sleep_time"): int},
+        "async_set_sleep_time",
+    )
+
 
 class LGEClimate(CoordinatorEntity, ClimateEntity):
     """Base climate device."""
@@ -154,15 +163,21 @@ class LGEClimate(CoordinatorEntity, ClimateEntity):
         """Return True if entity is available."""
         return self._api.available
 
+    async def async_set_sleep_time(self, sleep_time: int) -> None:
+        """Call the set sleep time command for AC devices."""
+        raise NotImplementedError()
+
 
 class LGEACClimate(LGEClimate):
     """Air-to-Air climate device."""
+
+    _attr_has_entity_name = True
+    _attr_name = None
 
     def __init__(self, api: LGEDevice) -> None:
         """Initialize the climate."""
         super().__init__(api)
         self._device: AirConditionerDevice = api.device
-        self._attr_name = api.name
         self._attr_unique_id = f"{api.unique_id}-AC"
         self._attr_fan_modes = self._device.fan_speeds
         self._attr_swing_modes = [
@@ -343,7 +358,7 @@ class LGEACClimate(LGEClimate):
 
     async def async_set_temperature(self, **kwargs) -> None:
         """Set new target temperature."""
-        if new_temp := kwargs.get(ATTR_TEMPERATURE):
+        if (new_temp := kwargs.get(ATTR_TEMPERATURE)) is not None:
             await self._device.set_target_temp(new_temp)
         if hvac_mode := kwargs.get(ATTR_HVAC_MODE):
             await self.async_set_hvac_mode(HVACMode(hvac_mode))
@@ -423,11 +438,16 @@ class LGEACClimate(LGEClimate):
             AWHP_MAX_TEMP if self._device.is_air_to_water else DEFAULT_MAX_TEMP
         )
 
+    async def async_set_sleep_time(self, sleep_time: int) -> None:
+        """Call the set sleep time command for AC devices."""
+        await self._device.set_reservation_sleep_time(sleep_time)
+
 
 class LGERefrigeratorClimate(LGEClimate):
     """Refrigerator climate device."""
 
     entity_description: ThinQRefClimateEntityDescription
+    _attr_has_entity_name = True
 
     def __init__(
         self,
@@ -438,7 +458,6 @@ class LGERefrigeratorClimate(LGEClimate):
         super().__init__(api)
         self._wrap_device = LGERefrigeratorDevice(api)
         self.entity_description = description
-        self._attr_name = get_entity_name(api, description.key, description.name)
         self._attr_unique_id = f"{api.unique_id}-{description.key}-AC"
         self._attr_hvac_modes = [HVACMode.AUTO]
         self._attr_hvac_mode = HVACMode.AUTO
@@ -481,7 +500,7 @@ class LGERefrigeratorClimate(LGEClimate):
 
     async def async_set_temperature(self, **kwargs) -> None:
         """Set new target temperature."""
-        if new_temp := kwargs.get(ATTR_TEMPERATURE):
+        if (new_temp := kwargs.get(ATTR_TEMPERATURE)) is not None:
             await self.entity_description.set_temp_fn(self._wrap_device, new_temp)
             self._api.async_set_updated()
 

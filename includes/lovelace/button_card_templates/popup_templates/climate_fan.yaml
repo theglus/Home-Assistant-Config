@@ -15,48 +15,4 @@ variables:
 hold_action:
   action: failure
 double_tap_action:
-  action: fire-dom-event
-  browser_mod:
-    service: browser_mod.popup
-    data:
-      title: "[[[ return entity.attributes.friendly_name ]]]"
-      content:
-        card_mod:
-          style: |
-            ha-card {
-              border-style: none;
-            }
-        type: entities
-        entities:
-          - type: custom:switch-popup-card
-            fullscreen: false
-            brightnessWidth: 130px
-            brightnessHeight: 300px
-            borderRadius: 1.7em
-            icon: none
-            entity_value_path: attributes.speed
-            service: fan.set_speed
-            service_data:
-              entity_id: this
-              speed: value
-            entities:
-              - "[[[ return entity.entity_id ]]]"
-            buttons:
-              - icon: "mdi:fan"
-                value: "high"
-                name: high
-                color: "#FFF"
-                icon_color: "rgba(255,255,255,1)"
-              - icon: "mdi:fan"
-                value: "medium"
-                name: medium
-                color: "#FFF"
-                icon_color: "rgba(255,255,255,1)"
-              - icon: "mdi:fan"
-                value: "low"
-                name: low
-                color: "#FFF"
-                icon_color: "rgba(255,255,255,1)"
-              - icon: "mdi:fan-off"
-                name: "off"
-                value: "off"
+  action: more-info

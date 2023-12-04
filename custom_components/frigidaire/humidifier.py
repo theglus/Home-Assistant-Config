@@ -27,6 +27,7 @@ _LOGGER = logging.getLogger(__name__)
 
 
 FAN_LOW = "low"
+FAN_MEDIUM = "medium"
 FAN_HIGH = "high"
 
 
@@ -71,6 +72,7 @@ HA_TO_FRIGIDAIRE_MODE = {v: k for k, v in FRIGIDAIRE_TO_HA_MODE.items()}
 
 FRIGIDAIRE_TO_HA_FAN_MODE = {
     frigidaire.FanSpeed.LOW: FAN_LOW,
+    frigidaire.FanSpeed.MEDIUM: FAN_MEDIUM,
     frigidaire.FanSpeed.HIGH: FAN_HIGH,
 }
 

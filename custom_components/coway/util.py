@@ -3,35 +3,25 @@ from __future__ import annotations
 
 import async_timeout
 
+from aiohttp import ClientSession
 from cowayaio import CowayClient
 from cowayaio.exceptions import AuthError, CowayError, PasswordExpired
 
-from homeassistant.core import async_get_hass, HomeAssistant
-from homeassistant.helpers.aiohttp_client import async_get_clientsession
+from homeassistant.core import HomeAssistant
 
 from .const import LOGGER, COWAY_ERRORS, TIMEOUT
 
 
-# Create a single instance of CowayClient that is
-# used during the initial config flow and afterwards by
-# the update coordinator. The creation of two CowayClient objects
-# during initial integration configuration caused errors as Coway's
-# servers don't like rapid back-to-back logins.
-COWAY_CLIENT = CowayClient(
-    "",
-    "",
-    session=async_get_clientsession(async_get_hass()),
-    timeout=TIMEOUT
-)
-
-
-async def async_validate_api(username: str, password: str, skip_password_change: bool) -> None:
+async def async_validate_api(hass: HomeAssistant, username: str, password: str, skip_password_change: bool, session: ClientSession) -> None:
     """Get data from API."""
 
-    COWAY_CLIENT.username = username
-    COWAY_CLIENT.password = password
-    COWAY_CLIENT.skip_password_change = skip_password_change
-    client = COWAY_CLIENT
+    client = CowayClient(
+        username,
+        password,
+        session=session,
+        timeout=TIMEOUT,
+    )
+    client.skip_password_change = skip_password_change
 
     try:
         async with async_timeout.timeout(TIMEOUT):

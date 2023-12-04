@@ -837,7 +837,7 @@ The [Room Controls](#room-controls) buttons leverage code from eximo84's [Weathe
  
 **[matt8707](https://github.com/matt8707/hass-config)**
  
-The original inspiration for overauling my Lovelace dashboard was kicked-off when I stumbled upon [A different take on designing a Lovelace UI](https://community.home-assistant.io/t/a-different-take-on-designing-a-lovelace-ui/162594].
+The original inspiration for overauling my Lovelace dashboard was kicked-off when I stumbled upon [A different take on designing a Lovelace UI](https://community.home-assistant.io/t/a-different-take-on-designing-a-lovelace-ui/162594).
 
 My approach to button templates was heavily influence by Matt's [button_card_templates.yaml](https://github.com/matt8707/hass-config/blob/master/button_card_templates.yaml). His approach to custom icons also inspired me to learn how to create SVGs in Inkspace and SVGator. Matt's work gave me the push to move towards a 100% `yaml` approach to my Lovelace dashboard and greatly increased my all around technical knowledge.
 
