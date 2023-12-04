@@ -224,3 +224,33 @@
         - sensor.samsung_flip_battery_level
         - sensor.bot_075e_battery
       time: 09:00:00
+- id: '1696625276509'
+  alias: Reset PowerCal at Startup
+  description: ''
+  trigger:
+  - platform: homeassistant
+    event: start
+  condition: []
+  action:
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 30
+      milliseconds: 0
+  - service: homeassistant.update_entity
+    data: {}
+    target:
+      entity_id:
+      - sensor.air_purifiers_power
+      - sensor.appliance_power
+      - sensor.fan_power
+      - sensor.grid_power
+      - sensor.grid_energy
+      - sensor.laundry_power
+      - switch.paper_shredder
+      - sensor.refrigerator_power
+  - service: notify.telegram
+    data:
+      title: "\U0001F916 Automation Triggered"
+      message: Updated PowerCalc appliance entities.
+  mode: single
