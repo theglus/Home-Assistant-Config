@@ -33,7 +33,9 @@ class DeviceType(Enum):
     FAN = 405
     WATER_HEATER = 406
     AIR_PURIFIER_FAN = 410
-    ROBOT_KING = 501
+    ROBOT_VACUUM = 501
+    STICK_VACUUM = 504
+    CLOUD_GATEWAY = 603
     TV = 701
     BOILER = 801
     SPEAKER = 901
@@ -170,9 +172,10 @@ class DeviceInfo:
         """Return the device firmware version."""
         if fw_ver := self._data.get("fwVer"):
             return fw_ver
-        if "modemInfo" in self._data:
-            if fw_ver := self._data["modemInfo"].get("appVersion"):
-                return fw_ver
+        if (fw_ver := self._data.get("modemInfo")) is not None:
+            if isinstance(fw_ver, dict):
+                return fw_ver.get("appVersion")
+            return fw_ver
         return None
 
     @property
