@@ -151,7 +151,7 @@ class Purifier(CoordinatorEntity, FanEntity):
             LOGGER.error(f'{self.purifier_data.device_attr["name"]} is reported as offline.')
             return False
 
-    async def async_turn_on(self, percentage: int = None, **kwargs) -> None:
+    async def async_turn_on(self, percentage: int = None, preset_mode: str = None, **kwargs) -> None:
         """Turn the air purifier on."""
 
         if percentage is not None:
