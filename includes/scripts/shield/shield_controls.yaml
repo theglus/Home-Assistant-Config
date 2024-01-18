@@ -1,0 +1,12 @@
+#################################################################
+## Shield play/pause controls
+#################################################################
+shield_controls:
+  alias: Shield Controls
+  icon: mdi:remote
+  sequence:
+    - service: media_player.media_play_pause
+      data: {}
+      target:
+        entity_id: media_player.shield_tv
+  mode: single
