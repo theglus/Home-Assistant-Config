@@ -17865,7 +17865,7 @@ var a=function(){try{(new Date).toLocaleDateString("i");}catch(e){return "RangeE
 // ###   Global constants
 // ##########################################################################################
 const SIDEBAR_CARD_TITLE = 'SIDEBAR-CARD';
-const SIDEBAR_CARD_VERSION = '0.1.9.5.2';
+const SIDEBAR_CARD_VERSION = '0.1.9.6.1';
 // ##########################################################################################
 // ###   The actual Sidebar Card element
 // ##########################################################################################
@@ -17877,6 +17877,7 @@ class SidebarCard extends LitElement {
         super();
         this.templateLines = [];
         this.clock = false;
+        this.updateMenu = true;
         this.digitalClock = false;
         this.twelveHourVersion = false;
         this.digitalClockWithSeconds = false;
@@ -17911,6 +17912,7 @@ class SidebarCard extends LitElement {
         this.date = this.config.date ? this.config.date : false;
         this.dateFormat = this.config.dateFormat ? this.config.dateFormat : 'DD MMMM';
         this.bottomCard = this.config.bottomCard ? this.config.bottomCard : null;
+        this.updateMenu = this.config.hasOwnProperty('updateMenu') ? this.config.updateMenu : true;
         return html `
       ${addStyle
             ? html `
@@ -18104,7 +18106,9 @@ class SidebarCard extends LitElement {
             self._updateActiveMenu();
         }, 1);
         window.addEventListener('resize', function () {
-            self.updateSidebarSize(root);
+            setTimeout(() => {
+                self.updateSidebarSize(root);
+            }, 1);
         }, true);
         if (this.bottomCard) {
             setTimeout(() => {
@@ -18148,12 +18152,14 @@ class SidebarCard extends LitElement {
         }
     }
     _updateActiveMenu() {
-        this.shadowRoot.querySelectorAll('ul.sidebarMenu li[data-type="navigate"]').forEach((menuItem) => {
-            menuItem.classList.remove('active');
-        });
-        let activeEl = this.shadowRoot.querySelector('ul.sidebarMenu li[data-path="' + document.location.pathname + '"]');
-        if (activeEl) {
-            activeEl.classList.add('active');
+        if (this.updateMenu) {
+            this.shadowRoot.querySelectorAll('ul.sidebarMenu li[data-type="navigate"]').forEach((menuItem) => {
+                menuItem.classList.remove('active');
+            });
+            let activeEl = this.shadowRoot.querySelector('ul.sidebarMenu li[data-path="' + document.location.pathname + '"]');
+            if (activeEl) {
+                activeEl.classList.add('active');
+            }
         }
     }
     _menuAction(e) {
