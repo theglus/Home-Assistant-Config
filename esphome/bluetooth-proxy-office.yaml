@@ -1,15 +1,15 @@
 substitutions:
   name: "bluetooth-proxy-office"
-  friendly_name: bluetooth-proxy-office
+  friendly_name: Bluetooth Proxy Office
 packages:
   esphome.bluetooth-proxy: github://esphome/firmware/bluetooth-proxy/esp32-generic.yaml@main
 esphome:
   name: ${name}
   name_add_mac_suffix: false
-  friendly_name: Bluetooth Proxy
+  friendly_name: ${friendly_name}
 api:
   encryption:
-    key: gwWHbtbqxrqRQCd9a1rL2wxWCR2xy3OxWc2yk/smRWc=
+    key: !secret bt_proxy_office
 
 wifi:
   ssid: !secret wifi_ssid
