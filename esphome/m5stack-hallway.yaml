@@ -1,15 +1,15 @@
 substitutions:
-  name: "bluetooth-proxy-office"
-  friendly_name: Bluetooth Proxy Office
+  name: "m5stack-hallway"
+  friendly_name: M5Stack Hallway
 packages:
-  esphome.bluetooth-proxy: github://esphome/firmware/bluetooth-proxy/esp32-generic.yaml@main
+  m5stack.atom-echo-voice-assistant: github://esphome/firmware/voice-assistant/m5stack-atom-echo.yaml@main
 esphome:
   name: ${name}
   name_add_mac_suffix: false
   friendly_name: ${friendly_name}
 api:
   encryption:
-    key: !secret bt_proxy_office
+    key: !secret m5stack_hallway
 
 wifi:
   ssid: !secret wifi_ssid

@@ -1,17 +1,12 @@
 substitutions:
   name: "bluetooth-proxy-kitchen"
+  friendly_name: Bluetooth Proxy Kitchen
 packages:
   esphome.bluetooth-proxy: github://esphome/bluetooth-proxies/esp32-generic.yaml@main
 esphome:
-  name: bluetooth-proxy-kitchen
+  name: ${name}
   name_add_mac_suffix: false
-button:
-  - platform: shutdown 
-    name: "Kitchen BT Proxy Shutdown"
-# sensor:
-#  - platform: esp32_hall
-#    name: :"Kitchen Hall Sensor"
-#    update_interval: 60s
+  friendly_name: ${friendly_name}
 
 wifi:
   ssid: !secret wifi_ssid
