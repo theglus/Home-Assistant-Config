@@ -40,7 +40,7 @@ card:
     browser_mod:
       service: browser_mod.popup
       data:
-        title: "[[name]]"
+        title: "[[server]]"
         style:
           hui-grid-card$: |
             #root {
@@ -55,7 +55,7 @@ card:
             - type: "custom:mini-graph-card"
               entities:
                 - "[[sensor]]"
-              name: Temperature
+              name: "[[title]]"
               align_icon: left
               align_header: left
               align_state: right

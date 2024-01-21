@@ -147,6 +147,8 @@ cards:
                           variables:
                             - sensor: sensor.processor_use_percent
                             - name: CPU
+                            - server: Farnsworth
+                            - title: CPU Utilization 
                             - green: 25
                             - yellow: 50
                             - orange: 75
@@ -159,6 +161,8 @@ cards:
                           variables:
                             - sensor: sensor.memory_use_percent
                             - name: RAM
+                            - server: Farnsworth
+                            - title: RAM Utilization
                             - green: 25
                             - yellow: 50
                             - orange: 75
@@ -171,6 +175,8 @@ cards:
                           variables:
                             - sensor: sensor.processor_temperature
                             - name: CPU ºC
+                            - server: Farnsworth
+                            - title: CPU Temperature 
                             - green: 50
                             - yellow: 65
                             - orange: 80
@@ -312,6 +318,8 @@ cards:
                               variables:
                                 - sensor: sensor.truenas_cpu_usage
                                 - name: CPU
+                                - server: Nibbler
+                                - title: CPU Utilization 
                                 - green: 25
                                 - yellow: 50
                                 - orange: 75
@@ -324,6 +332,8 @@ cards:
                               variables:
                                 - sensor: sensor.truenas_temperature
                                 - name: CPU ºC
+                                - server: Nibbler
+                                - title: CPU Temperature 
                                 - green: 50
                                 - yellow: 65
                                 - orange: 70
@@ -376,6 +386,8 @@ cards:
                           variables:
                             - sensor: sensor.leela_cpu_used
                             - name: CPU
+                            - server: Leela
+                            - title: CPU Utilization
                             - green: 25
                             - yellow: 50
                             - orange: 75
@@ -388,6 +400,8 @@ cards:
                           variables:
                             - sensor: sensor.leela_ram_used
                             - name: RAM
+                            - server: Leela
+                            - title: RAM Utilization
                             - green: 25
                             - yellow: 50
                             - orange: 75
@@ -400,6 +414,8 @@ cards:
                           variables:
                             - sensor: sensor.leela_package_temperature
                             - name: CPU ºC
+                            - server: Leela
+                            - title: CPU Temperature
                             - green: 50
                             - yellow: 65
                             - orange: 80
@@ -539,6 +555,8 @@ cards:
                           variables:
                             - sensor: sensor.pc_cpu_load
                             - name: CPU
+                            - server: Zoidberg
+                            - title: CPU Utilization
                             - green: 25
                             - yellow: 50
                             - orange: 75
@@ -551,6 +569,8 @@ cards:
                           variables:
                             - sensor: sensor.pc_gpu_load
                             - name: GPU
+                            - server: Zoidberg 
+                            - title: GPU Utilization
                             - green: 25
                             - yellow: 50
                             - orange: 75
@@ -563,6 +583,8 @@ cards:
                           variables:
                             - sensor: sensor.pc_gpu_temp
                             - name: GPU ºF
+                            - server: Zoidberg
+                            - title: GPU Temperature 
                             - green: 140
                             - yellow: 158
                             - orange: 176
