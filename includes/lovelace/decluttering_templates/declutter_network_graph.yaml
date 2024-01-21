@@ -36,7 +36,7 @@ card:
     browser_mod:
       service: browser_mod.popup
       data:
-        title: "[[name]]"
+        title: "[[server]]"
         style:
           hui-grid-card$: |
             #root {
@@ -51,8 +51,10 @@ card:
             - type: "custom:mini-graph-card"
               entities:
                 - entity: "[[sensor1]]"
+                  name: "[[name1]]"
                   color: "green"
                 - entity: "[[sensor2]]"
+                  name: "[[name2]]"
                   color: "#385581"
               name: Network
               line_width: 5
@@ -63,7 +65,7 @@ card:
               hours_to_show: 24
               show:
                 icon: true
-                name: false
+                name: true
               # Card Mod styling
               card_mod:
               style: |

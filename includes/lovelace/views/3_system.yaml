@@ -148,7 +148,7 @@ cards:
                             - sensor: sensor.processor_use_percent
                             - name: CPU
                             - server: Farnsworth
-                            - title: CPU Utilization 
+                            - title: CPU Utilization
                             - green: 25
                             - yellow: 50
                             - orange: 75
@@ -176,7 +176,7 @@ cards:
                             - sensor: sensor.processor_temperature
                             - name: CPU ºC
                             - server: Farnsworth
-                            - title: CPU Temperature 
+                            - title: CPU Temperature
                             - green: 50
                             - yellow: 65
                             - orange: 80
@@ -319,7 +319,7 @@ cards:
                                 - sensor: sensor.truenas_cpu_usage
                                 - name: CPU
                                 - server: Nibbler
-                                - title: CPU Utilization 
+                                - title: CPU Utilization
                                 - green: 25
                                 - yellow: 50
                                 - orange: 75
@@ -333,7 +333,7 @@ cards:
                                 - sensor: sensor.truenas_temperature
                                 - name: CPU ºC
                                 - server: Nibbler
-                                - title: CPU Temperature 
+                                - title: CPU Temperature
                                 - green: 50
                                 - yellow: 65
                                 - orange: 70
@@ -346,9 +346,13 @@ cards:
                               variables:
                                 - sensor1: sensor.truenas_eth_down
                                 - sensor2: sensor.truenas_eth_up
+                                - name: Network
+                                - server: Nibbler
+                                - name1: Download
+                                - name2: Upload
                                 - data1: Down
                                 - data2: Up
-                                - name: Network
+
           #################################################################
           ## Leela Controls
           #################################################################
@@ -569,7 +573,7 @@ cards:
                           variables:
                             - sensor: sensor.pc_gpu_load
                             - name: GPU
-                            - server: Zoidberg 
+                            - server: Zoidberg
                             - title: GPU Utilization
                             - green: 25
                             - yellow: 50
@@ -584,7 +588,7 @@ cards:
                             - sensor: sensor.pc_gpu_temp
                             - name: GPU ºF
                             - server: Zoidberg
-                            - title: GPU Temperature 
+                            - title: GPU Temperature
                             - green: 140
                             - yellow: 158
                             - orange: 176
