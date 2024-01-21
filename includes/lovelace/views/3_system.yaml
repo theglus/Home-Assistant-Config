@@ -1,7 +1,17 @@
 title: ha
 path: ha
-icon: "mdi:home-assistant"
 panel: false
+icon: "mdi:home-assistant"
+badges:
+  - entity: binary_sensor.m5stack_living_room_assist_in_progress
+    name: "Living"
+    label: false
+  - entity: binary_sensor.m5stack_hallway_assist_in_progress
+    name: "Hallway"
+    label: false
+  - entity: binary_sensor.m5stack_office_assist_in_progress
+    name: "Office"
+    label: false
 cards:
   - type: vertical-stack
     cards:
@@ -109,7 +119,9 @@ cards:
                 margin-top: none; 
                 }
             card:
-              type: vertical-stack
+              type: grid
+              columns: 1
+              square: false
               cards:
                 - type: entities
                   title: Home Assistant
@@ -211,7 +223,9 @@ cards:
                 margin-top: none; 
                 }
             card:
-              type: vertical-stack
+              type: grid
+              columns: 1
+              square: false
               cards:
                 - type: vertical-stack
                   cards:
@@ -339,120 +353,89 @@ cards:
                 margin-top: none; 
                 }
             card:
-              type: vertical-stack
+              type: grid
+              columns: 1
+              square: false
               cards:
-                - type: vertical-stack
-                  cards:
-                    - type: entities
-                      title: Leela
+                - type: entities
+                  title: Leela
+                  card_mod:
+                    style: |
+                      ha-card {
+                        border-style: none;
+                        background: none;
+                      }
+                  entities:
+                    - type: custom:hui-horizontal-stack-card
+                      cards:
+                        #----------------------------------------------------------------
+                        ## Leela CPU Utilization Graph
+                        #----------------------------------------------------------------
+                        - type: "custom:decluttering-card"
+                          template: declutter_system_graph
+                          variables:
+                            - sensor: sensor.leela_cpu_used
+                            - name: CPU
+                            - green: 25
+                            - yellow: 50
+                            - orange: 75
+                            - red: 100
+                        #----------------------------------------------------------------
+                        ## Leela Memory Utilization Graph
+                        #----------------------------------------------------------------
+                        - type: "custom:decluttering-card"
+                          template: declutter_system_graph
+                          variables:
+                            - sensor: sensor.leela_ram_used
+                            - name: RAM
+                            - green: 25
+                            - yellow: 50
+                            - orange: 75
+                            - red: 100
+                        #----------------------------------------------------------------
+                        ## Leela CPU Temp Graph
+                        #----------------------------------------------------------------
+                        - type: "custom:decluttering-card"
+                          template: declutter_system_graph
+                          variables:
+                            - sensor: sensor.leela_package_temperature
+                            - name: CPU ºC
+                            - green: 50
+                            - yellow: 65
+                            - orange: 80
+                            - red: 93
+                    #----------------------------------------------------------------
+                    ## Leela Controls
+                    #----------------------------------------------------------------
+                    # TODO: #312 Format Dekstop + HA system control buttons.
+                    - type: custom:hui-element
+                      card_type: horizontal-stack
                       card_mod:
-                        style: |
-                          ha-card {
-                            border-style: none;
-                            background: none;
-                          }
-                      entities:
-                        - entity: update.truenas_system_update
-                          name: Updates
-                        - entity: binary_sensor.truenas_nibbler_healthy
-                          name: NAS Health
-                        - entity: sensor.truenas_uptime
-                          name: Uptime
-                        - type: custom:bar-card
-                          width: 55%
-                          height: 2em
-                          decimal: 0
-                          unit_of_measurement: "GiB"
-                          positions: &bar_card_positions_leela
-                            icon: outside
-                            indicator: "off"
-                            name: outside
-                          max: 15.5
-                          severity: &bar_card_severity_leela
-                            - color: "#303435"
-                              from: 0
-                              to: 15.5
-                            # - color: "#6d2525"
-                            #   from: 75
-                            #   to: 100
-                          entity_row: true
-                          style: |
-                            ha-card {
-                              border-style: none;
-                            }
-                            bar-card-value { 
-                              font-size: 1em; 
-                              font-weight: 400; 
-                              color: #e0e1e1; 
-                              letter-spacing: 0.01em; 
-                              text-shadow: none; 
-                              margin-right: auto; 
-                              margin-left: auto;
-                              margin-top: 5px; 
-                            } 
-                            bar-card-name { 
-                              padding-left: 0.25em; 
-                            } 
-                            bar-card-iconbar { 
-                              padding-left: 0.23em;
-                            } 
-                            bar-card-backgroundbar { 
-                              background: none; 
-                            } 
-                            bar-card-currentbar {
-                              border-radius: 0.3em;
-                            }
-                            bar-card-background { 
-                              background: radial-gradient(circle, rgba(52, 57, 58, 0.1) 0%, rgba(17, 18, 18, 0.2) 75%); 
-                              box-shadow: inset 0 0 25px #00000045; 
-                              border-radius: 0.3em; 
-                              overflow: hidden; 
-                            }
-                          entities:
-                            #----------------------------------------------------------------
-                            ## Nibbler Memory Bar
-                            #----------------------------------------------------------------
-                            - entity: sensor.truenas_arc_size
-                              name: ZFS Cache
-                            # - entity: sensor.truenas_ram_free
-                            #   name: Memory Free
-                        #----------------------------------------------------------------
-                        ## Nibbler CPU Utilization Graph
-                        #----------------------------------------------------------------
-                        - type: custom:hui-horizontal-stack-card
-                          cards:
-                            - type: "custom:decluttering-card"
-                              template: declutter_system_graph
-                              variables:
-                                - sensor: sensor.truenas_cpu_usage
-                                - name: CPU
-                                - green: 25
-                                - yellow: 50
-                                - orange: 75
-                                - red: 100
-                            #----------------------------------------------------------------
-                            ## Nibbler CPU Temp Graph
-                            #----------------------------------------------------------------
-                            - type: "custom:decluttering-card"
-                              template: declutter_system_graph
-                              variables:
-                                - sensor: sensor.truenas_temperature
-                                - name: CPU ºC
-                                - green: 50
-                                - yellow: 65
-                                - orange: 70
-                                - red: 75
-                            #----------------------------------------------------------------
-                            ## Nibbler Network Graph
-                            #----------------------------------------------------------------
-                            - type: "custom:decluttering-card"
-                              template: declutter_network_graph
-                              variables:
-                                - sensor1: sensor.truenas_eth_down
-                                - sensor2: sensor.truenas_eth_up
-                                - data1: Down
-                                - data2: Up
-                                - name: Network
+                      cards:
+                        - type: custom:button-card
+                          name: HEIMDALL
+                          icon: "mdi:monitor-dashboard"
+                          tap_action:
+                            action: url
+                            url_path: !secret heimdall
+                            haptic: light
+                          template: icon_name
+                        - type: custom:button-card
+                          name: UPTIME
+                          icon: "mdi:lifebuoy"
+                          tap_action:
+                            action: url
+                            url_path: !secret uptime
+                            haptic: light
+                          template: icon_name
+                        - type: custom:button-card
+                          name: STATS
+                          icon: "mdi:abacus"
+                          tap_action:
+                            action: url
+                            url_path: !secret stats
+                            haptic: light
+                          template: icon_name
           #################################################################
           ## Desktop Controls
           #################################################################
@@ -467,7 +450,9 @@ cards:
                 margin-top: none; 
                 }
             card:
-              type: vertical-stack
+              type: grid
+              columns: 1
+              square: false
               cards:
                 - type: entities
                   title: Desktop PC
@@ -520,7 +505,7 @@ cards:
                     #     }
                     #     bar-card-iconbar {
                     #       padding-left: 0.23em;
-                    #     }
+                    #     ]
                     #     bar-card-backgroundbar {
                     #       background: none;
                     #     }
