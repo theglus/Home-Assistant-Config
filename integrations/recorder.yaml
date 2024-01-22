@@ -13,6 +13,10 @@ recorder:
       - sensor.pc_gpu_temp
       # Devices
       - device_tracker.keys
+      # Leela
+      - sensor.leela_cpu_used
+      - sensor.leela_ram_used
+      - sensor.leela_package_temperature
       # Home Assistant Sensors
       - sensor.memory_use_percent
       - sensor.time_online
