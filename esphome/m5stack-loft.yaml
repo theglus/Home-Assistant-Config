@@ -1,6 +1,6 @@
 substitutions:
-  name: "m5stack-hallway"
-  friendly_name: M5Stack Hallway
+  name: "m5stack-loft"
+  friendly_name: M5Stack Loft
 packages:
   m5stack.atom-echo-voice-assistant: github://esphome/firmware/voice-assistant/m5stack-atom-echo.yaml@main
 esphome:
@@ -9,7 +9,8 @@ esphome:
   friendly_name: ${friendly_name}
 api:
   encryption:
-    key: !secret m5stack_hallway
+    key: !secret m5stack_loft
+
 
 wifi:
   ssid: !secret wifi_ssid
