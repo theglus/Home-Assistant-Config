@@ -1,0 +1,20 @@
+#################################################################
+## M5Stack Loft Button
+#
+## Press button on M5Stack Loft to turn on the desk lamp.
+#################################################################
+id: c105f26d-5260-47fa-8c70-6f838e3ddb26
+alias: M5 Loft Button
+description: "Press button on M5Stack Loft to turn on the desk lamp."
+trigger:
+  - type: turned_on
+    platform: device
+    device_id: b241806292966c0a697ccfc339b040ad
+    entity_id: 7e74ef70f2e5f7ab53ea9cadd5dc8428
+    domain: binary_sensor
+condition: []
+action:
+  - service: light.toggle
+    target:
+      entity_id: light.loft_desk_lamp
+mode: single
