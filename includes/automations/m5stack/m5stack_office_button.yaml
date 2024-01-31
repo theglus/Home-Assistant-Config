@@ -1,0 +1,21 @@
+#################################################################
+## M5Stack Office Button
+#
+## Press button on M5Stack Office to toggle PC KVM.
+#################################################################
+id: 6369e405-2e18-41dc-aa4a-1ff07b45eb9c
+alias: M5 Office Button
+description: "Press button on M5Stack Office to toggle PC KVM."
+trigger:
+  - type: turned_on
+    platform: device
+    device_id: 98074542f9d0d3cee7d5be78e840ea0f
+    entity_id: a3ee842dd9bf7657b109a068dca16bac
+    domain: binary_sensor
+condition: []
+action:
+  - service: switch.toggle
+    target:
+      entity_id: switch.switchbot_pc
+    data: {}
+mode: single
