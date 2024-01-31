@@ -51,6 +51,19 @@ async def async_setup_entry(
         get_entities, entry.data["username"], entry.data["password"]
     )
 
+    _LOGGER.warning("Humidifier support temporarily disabled due to an API change and "
+                    "lack of test hardware")
+    """
+    Setting the humidity on the humidifier will raise a FrigidaireException explaining
+    the feature is not implemented because @rothn does not have one of their
+    humidifiers to test on. For the same reason, it's also possible that the humidifier
+    Destination is not correctly detected.
+
+    These issues should be somewhat easily solvable by someone who has a compatible
+    humidifier manually calling `get_appliance_details()` on a humidifier, inspecting the
+    output, then making and testing changes based on climate.py. This can be easily
+    achieved with the frigidaire API in a Jupyter notebook.
+
     async_add_entities(
         [
             FrigidaireDehumidifier(client, appliance)
@@ -59,6 +72,7 @@ async def async_setup_entry(
         ],
         update_before_add=True,
     )
+    """
 
 
 FRIGIDAIRE_TO_HA_MODE = {

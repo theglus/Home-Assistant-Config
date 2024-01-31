@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import logging
-from typing import Optional, List, Mapping, Any
+from typing import Optional, List, Mapping, Any, Dict
 
 import frigidaire
 
@@ -19,7 +19,6 @@ from homeassistant.components.climate.const import (
     HVAC_MODE_OFF,
     SUPPORT_FAN_MODE,
     SUPPORT_TARGET_TEMPERATURE,
-    HVACAction,
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import ATTR_TEMPERATURE, TEMP_CELSIUS, TEMP_FAHRENHEIT
@@ -67,7 +66,6 @@ FRIGIDAIRE_TO_HA_MODE = {
 }
 
 FRIGIDAIRE_TO_HA_FAN_SPEED = {
-    frigidaire.FanSpeed.OFF: FAN_OFF,  # when the AC is off
     frigidaire.FanSpeed.AUTO: FAN_AUTO,
     frigidaire.FanSpeed.LOW: FAN_LOW,
     frigidaire.FanSpeed.MEDIUM: FAN_MEDIUM,
@@ -85,6 +83,7 @@ HA_TO_FRIGIDAIRE_HVAC_MODE = {
     HVAC_MODE_AUTO: frigidaire.Mode.ECO,
     HVAC_MODE_FAN_ONLY: frigidaire.Mode.FAN,
     HVAC_MODE_COOL: frigidaire.Mode.COOL,
+    HVAC_MODE_OFF: frigidaire.Mode.OFF,
 }
 
 
@@ -101,7 +100,7 @@ class FrigidaireClimate(ClimateEntity):
 
         self._client: frigidaire.Frigidaire = client
         self._appliance: frigidaire.Appliance = appliance
-        self._details: Optional[frigidaire.ApplianceDetails] = None
+        self._details: Optional[Dict] = None
 
         # Entity Class Attributes
         self._attr_unique_id = self._appliance.appliance_id
@@ -166,72 +165,38 @@ class FrigidaireClimate(ClimateEntity):
     @property
     def temperature_unit(self):
         """Return the unit of measurement which this thermostat uses."""
-        unit = self._details.for_code(
-            frigidaire.HaclCode.TEMPERATURE_REPRESENTATION
-        ).string_value
+        unit = self._details.get(
+            frigidaire.Detail.TEMPERATURE_REPRESENTATION
+        )
 
         return FRIGIDAIRE_TO_HA_UNIT[unit]
 
     @property
     def target_temperature(self):
         """Return the temperature we try to reach."""
-        return (
-            self._details.for_code(frigidaire.HaclCode.TARGET_TEMPERATURE)
-            .containers.for_id(frigidaire.ContainerId.TEMPERATURE)
-            .number_value
-        )
+        return self._details.get(frigidaire.Detail.TARGET_TEMPERATURE_F)
 
     @property
     def hvac_mode(self):
         """Return current operation ie. heat, cool, idle."""
-        frigidaire_mode = self._details.for_code(
-            frigidaire.HaclCode.AC_MODE
-        ).number_value
+        frigidaire_mode = self._details.get(frigidaire.Detail.MODE)
 
         return FRIGIDAIRE_TO_HA_MODE[frigidaire_mode]
 
     @property
-    def hvac_action(self):
-        """Return HVAC action
-
-        Prioritize cooling over fan
-        """
-        if self.hvac_mode == HVAC_MODE_OFF:
-            return HVACAction.OFF
-
-        compressor_state = self._details.for_code(frigidaire.HaclCode.COMPRESSOR_STATE)
-
-        if compressor_state is not None and bool(compressor_state.number_value):
-            return HVACAction.COOLING
-
-        fan_speed = self._details.for_code(frigidaire.HaclCode.AC_FAN_SPEED_STATE)
-
-        if fan_speed is None:
-            return HVACAction.IDLE
-
-        if bool(fan_speed.number_value):
-            return HVACAction.FAN
-
-        return HVACAction.IDLE
-
-    @property
     def current_temperature(self):
         """Return the current temperature."""
-        return (
-            self._details.for_code(frigidaire.HaclCode.AMBIENT_TEMPERATURE)
-            .containers.for_id(frigidaire.ContainerId.TEMPERATURE)
-            .number_value
-        )
+        return self._details.get(frigidaire.Detail.AMBIENT_TEMPERATURE_F)
 
     @property
     def fan_mode(self):
         """Return the fan setting."""
-        fan_speed = self._details.for_code(frigidaire.HaclCode.AC_FAN_SPEED_SETTING)
+        fan_speed = self._details.get(frigidaire.Detail.FAN_SPEED)
 
         if not fan_speed:
             return FAN_OFF
 
-        return FRIGIDAIRE_TO_HA_FAN_SPEED[fan_speed.number_value]
+        return FRIGIDAIRE_TO_HA_FAN_SPEED[fan_speed]
 
     @property
     def min_temp(self):
@@ -253,9 +218,7 @@ class FrigidaireClimate(ClimateEntity):
     def extra_state_attributes(self) -> Mapping[str, Any] | None:
         return {
             "check_filter": bool(
-                self._details.for_code(
-                    frigidaire.HaclCode.AC_CLEAN_FILTER_ALERT
-                ).number_value
+                self._details.get(frigidaire.Detail.FILTER_STATE) == "CHANGE"
             ),
         }
 
@@ -292,7 +255,7 @@ class FrigidaireClimate(ClimateEntity):
             return
 
         # Turn on if not currently on.
-        if self._details.for_code(frigidaire.HaclCode.AC_MODE) == 0:
+        if self._details.get(frigidaire.Detail.MODE) == frigidaire.Mode.OFF:
             self._client.execute_action(
                 self._appliance, frigidaire.Action.set_power(frigidaire.Power.ON)
             )
@@ -313,6 +276,6 @@ class FrigidaireClimate(ClimateEntity):
             self._attr_available = False
         else:
             self._attr_available = (
-                self._details.for_code(frigidaire.HaclCode.CONNECTIVITY_STATE)
-                != frigidaire.ConnectivityState.DISCONNECTED
+                self._details.get("connectivityState")
+                == "connected"
             )
