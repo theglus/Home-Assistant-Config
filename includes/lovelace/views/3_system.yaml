@@ -6,8 +6,8 @@ badges:
   - entity: binary_sensor.m5stack_living_room_assist_in_progress
     name: "Living"
     label: false
-  - entity: binary_sensor.m5stack_hallway_assist_in_progress
-    name: "Hallway"
+  - entity: binary_sensor.m5stack_loft_assist_in_progress
+    name: "Loft"
     label: false
   - entity: binary_sensor.m5stack_office_assist_in_progress
     name: "Office"
@@ -199,7 +199,7 @@ cards:
                           template: icon_name
                         - type: custom:button-card
                           name: HACS
-                          icon: "hacs:hacs"
+                          icon: "custom:hacs"
                           tap_action:
                             action: navigate
                             navigation_path: "/hacs/entry"
