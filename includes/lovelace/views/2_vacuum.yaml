@@ -105,45 +105,45 @@ cards:
                 name: Sensors
                 icon: custom:vacuum-sensor
 
-          - type: custom:more-info-card
-            entity: vacuum.winston
-            card_mod:
-              style:
-                # hide everything but ha-select
-                $: |
-                  h1 {
-                    display: none !important;
-                  }
-                .: |
-                  h1, state-card-content {
-                    display: none !important;
-                  }
-                  .card-content {
-                    padding: 1.5em 0 0 0.7em;
-                  }
-                  ha-card {
-                    border-style: none;
-                    background: none;
-                  }
-                more-info-vacuum$:
-                  .: |
-                    div.flex-horizontal>div, div:nth-child(2), ha-attributes {
-                      display: none;
-                    }
-                    ha-select {
-                      display: contents;
-                    }
-                    $:
-                      # no icon so remove label inset
-                      .: |
-                        .mdc-floating-label {
-                          inset-inline-start: 0 !important;
-                        }
-                      # fix transparent menu background color
-                      mwc-menu$: |
-                        mwc-list {
-                          background: rgba(34,38,39,0.9);
-                        }
+          # - type: custom:more-info-card
+          #   entity: vacuum.winston
+          #   card_mod:
+          #     style:
+          #       # hide everything but ha-select
+          #       $: |
+          #         h1 {
+          #           display: none !important;
+          #         }
+          #       .: |
+          #         h1, state-card-content {
+          #           display: none !important;
+          #         }
+          #         .card-content {
+          #           padding: 1.5em 0 0 0.7em;
+          #         }
+          #         ha-card {
+          #           border-style: none;
+          #           background: none;
+          #         }
+          #       more-info-vacuum$:
+          #         .: |
+          #           div.flex-horizontal>div, div:nth-child(2), ha-attributes {
+          #             display: none;
+          #           }
+          #           ha-select {
+          #             display: contents;
+          #           }
+          #           $:
+          #             # no icon so remove label inset
+          #             .: |
+          #               .mdc-floating-label {
+          #                 inset-inline-start: 0 !important;
+          #               }
+          #             # fix transparent menu background color
+          #             mwc-menu$: |
+          #               mwc-list {
+          #                 background: rgba(34,38,39,0.9);
+          #               }
 
   #################################################################
   ## Vacuum Map
@@ -306,3 +306,11 @@ cards:
                       name: mdi:washing-machine
                       x: 22200
                       y: 22700
+              # - template: vacuum_goto_predefined
+              #   predefined_selections:
+              #     - position: [30750, 22150]
+              #       label:
+              #         text: "Emptying"
+              #         x: 30750
+              #         y: 22150
+              #         offset_y: 35

@@ -18,4 +18,9 @@ action:
     data:
       title: 🧺 Laundry Complete!
       message: Time to empty the washer.
+  # Turn off washer
+  - type: turn_off
+    device_id: ef6deb28b5c011bcd5ccaa5dbf8a0c75
+    entity_id: 825bb0722fb6e54803496233f0ba8325
+    domain: switch
 mode: single

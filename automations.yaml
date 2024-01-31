@@ -1,15 +1,15 @@
-- id: '1644337161806'
+- id: "1644337161806"
   alias: Climate AQI
   description: Turn on Kitchen Dyson when AQI >75.
   trigger:
-  - platform: numeric_state
-    entity_id: sensor.aqi
-    above: '75'
+    - platform: numeric_state
+      entity_id: sensor.aqi
+      above: "75"
   condition: []
   action:
-  - scene: scene.dyson_aqi
+    - scene: scene.dyson_aqi
   mode: single
-- id: '1647740902224'
+- id: "1647740902224"
   alias: Notify Battery
   description: Notify if battery sensors is lower than 25%.
   use_blueprint:
@@ -19,183 +19,185 @@
       time: 09:00:00
       exclude:
         entity_id:
-        - sensor.pixel_5_battery_level
-        - sensor.jeffrey_glusman_internal_battery_level
-        - sensor.ipad_battery_level
-        - sensor.macintoshbook_air_internal_battery_level
+          - sensor.pixel_5_battery_level
+          - sensor.jeffrey_glusman_internal_battery_level
+          - sensor.ipad_battery_level
+          - sensor.macintoshbook_air_internal_battery_level
       actions:
-      - service: notify.telegram
-        data:
-          title: '⚠️ Battery:'
-          message: Low battery warning for {{sensors|replace("_"," ")}}.
-- id: '1666577570202'
+        - service: notify.telegram
+          data:
+            title: "⚠️ Battery:"
+            message: Low battery warning for {{sensors|replace("_"," ")}}.
+- id: "1666577570202"
   alias: Peak Usage
-  description: ''
+  description: ""
   trigger:
-  - platform: state
-    entity_id:
-    - binary_sensor.peak_usage
-    to: 'on'
-    variables:
-      tariff: peak
-  - platform: state
-    entity_id:
-    - binary_sensor.peak_usage
-    to: 'off'
-    variables:
-      tariff: offpeak
+    - platform: state
+      entity_id:
+        - binary_sensor.peak_usage
+      to: "on"
+      variables:
+        tariff: peak
+    - platform: state
+      entity_id:
+        - binary_sensor.peak_usage
+      to: "off"
+      variables:
+        tariff: offpeak
   condition: []
   action:
-  - service: select.select_option
-    target:
-      entity_id: select.daily_energy
-    data:
-      option: '{{ tariff }}'
-  - service: select.select_option
-    target:
-      entity_id: select.monthly_energy
-    data:
-      option: '{{ tariff }}'
+    - service: select.select_option
+      target:
+        entity_id: select.daily_energy
+      data:
+        option: "{{ tariff }}"
+    - service: select.select_option
+      target:
+        entity_id: select.monthly_energy
+      data:
+        option: "{{ tariff }}"
   mode: single
-- id: '1666754176988'
+- id: "1666754176988"
   alias: Eco Mode
-  description: ''
+  description: ""
   trigger:
-  - platform: state
-    entity_id:
-    - media_player.dennis
-    to: 'on'
-    for:
-      hours: 0
-      minutes: 0
-      seconds: 5
-  condition: []
-  action:
-  - choose:
-    - conditions:
-      - condition: state
-        entity_id: binary_sensor.peak_usage
-        state: 'on'
-      sequence:
-      - delay:
-          hours: 0
-          minutes: 0
-          seconds: 5
-          milliseconds: 0
-      - service: script.eco_on
-        data: {}
-    default:
-    - delay:
+    - platform: state
+      entity_id:
+        - media_player.dennis
+      to: "on"
+      for:
         hours: 0
         minutes: 0
         seconds: 5
-        milliseconds: 0
-    - service: script.eco_off
-      data: {}
+  condition: []
+  action:
+    - choose:
+        - conditions:
+            - condition: state
+              entity_id: binary_sensor.peak_usage
+              state: "on"
+          sequence:
+            - delay:
+                hours: 0
+                minutes: 0
+                seconds: 5
+                milliseconds: 0
+            - service: script.eco_on
+              data: {}
+      default:
+        - delay:
+            hours: 0
+            minutes: 0
+            seconds: 5
+            milliseconds: 0
+        - service: script.eco_off
+          data: {}
   mode: single
-- id: '1667587688860'
+- id: "1667587688860"
   alias: Aqara Magic Cube
-  description: ''
+  description: ""
   use_blueprint:
     path: EdwardTFN/aqara-cube-zha-simplified-face-based-device-control.yaml
     input:
       last_face_input: input_number.magic_cube
       cube: 55278effdc88ebe7ffa36b52540fa006
       face_1_knock:
-      - service: script.turn_on
-        data: {}
-        target:
-          entity_id: script.remote_finder
+        - service: script.turn_on
+          data: {}
+          target:
+            entity_id: script.remote_finder
       face_1_rotate_counter_clockwise:
-      - service: media_player.volume_down
-        data: {}
-        target:
-          entity_id: media_player.dennis
+        - service: media_player.volume_down
+          data: {}
+          target:
+            entity_id: media_player.dennis
       face_1_rotate_clockwise:
-      - service: media_player.volume_up
-        data: {}
-        target:
-          entity_id: media_player.dennis
+        - service: media_player.volume_up
+          data: {}
+          target:
+            entity_id: media_player.dennis
       face_2_knock: []
       face_2_rotate_counter_clockwise:
-      - service: media_player.media_pause
-        data: {}
-        target:
-          entity_id: media_player.shield_tv
+        - service: media_player.media_pause
+          data: {}
+          target:
+            entity_id: media_player.shield_tv
       face_2_rotate_clockwise:
-      - service: media_player.media_play
-        data: {}
-        target:
-          entity_id: media_player.shield_tv
+        - service: media_player.media_play
+          data: {}
+          target:
+            entity_id: media_player.shield_tv
       face_4_knock:
-      - service: light.toggle
-        data: {}
-        target:
-          entity_id: light.tv
+        - service: light.toggle
+          data: {}
+          target:
+            entity_id: light.tv
       face_4_rotate_counter_clockwise: []
       face_6_knock:
-      - service: switch.toggle
-        data: {}
-        target:
-          entity_id: switch.heat
+        - service: switch.toggle
+          data: {}
+          target:
+            entity_id: switch.heat
       face_5_knock:
-      - service: script.turn_on
-        data: {}
-        target:
-          entity_id: script.clean_empty
+        - service: script.turn_on
+          data: {}
+          target:
+            entity_id: script.clean_empty
       face_5_rotate_counter_clockwise:
-      - service: vacuum.return_to_base
-        data: {}
-        target:
-          entity_id: vacuum.winston
-- id: '1667808317967'
+        - service: vacuum.return_to_base
+          data: {}
+          target:
+            entity_id: vacuum.winston
+- id: "1667808317967"
   alias: Energy Office
-  description: ''
+  description: ""
   trigger:
-  - platform: time
-    at: 07:00:00
-    id: fixed-time-7am
-  - platform: time
-    at: 00:00:00
-    id: fixed-time-12am
+    - platform: time
+      at: 07:00:00
+      id: fixed-time-7am
+    - platform: time
+      at: 00:00:00
+      id: fixed-time-12am
   condition: []
   action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id: fixed-time-7am
-      sequence:
-      - service: switch.turn_on
-        data: {}
-        target:
-          entity_id:
-          - switch.coffee_station_plug
-          - switch.workstation_plug
-      - delay:
-          hours: 0
-          minutes: 1
-          seconds: 0
-          milliseconds: 0
-      - service: switch.toggle
-        data: {}
-        target:
-          entity_id: switch.switchbot_pc
-      - service: light.turn_off
-        data: {}
-        target:
-          entity_id: light.pinkie_lamp
-    - conditions:
-      - condition: trigger
-        id: fixed-time-12am
-      sequence:
-      - service: switch.turn_off
-        data: {}
-        target:
-          entity_id:
-          - switch.coffee_station_plug
-          - switch.workstation_plug
+    - choose:
+        - conditions:
+            - condition: trigger
+              id: fixed-time-7am
+          sequence:
+            - service: switch.turn_on
+              data: {}
+              target:
+                entity_id:
+                  - switch.coffee_station_plug
+                  - switch.workstation_plug
+                  - switch.craftstation_plug
+            - delay:
+                hours: 0
+                minutes: 1
+                seconds: 0
+                milliseconds: 0
+            - service: switch.toggle
+              data: {}
+              target:
+                entity_id: switch.switchbot_pc
+            - service: light.turn_off
+              data: {}
+              target:
+                entity_id: light.pinkie_lamp
+        - conditions:
+            - condition: trigger
+              id: fixed-time-12am
+          sequence:
+            - service: switch.turn_off
+              data: {}
+              target:
+                entity_id:
+                  - switch.coffee_station_plug
+                  - switch.workstation_plug
+                  - switch.craftstation_plug
   mode: single
-- id: '1684367579757'
+- id: "1684367579757"
   alias: Vacuum API
   description: Disable vacuum camera update when docked
   use_blueprint:
@@ -203,54 +205,54 @@
     input:
       vacuum: vacuum.winston
       camera: camera.xiaomi_cloud_map_extractor
-- id: '1687296279667'
+- id: "1687296279667"
   alias: Notify Zigbee
   description: Send Telegram notifications when Zigbee device has gone offline.
   use_blueprint:
     path: Tahutipai/zigbee_zwave_notify_when_battery_devices_have_fallen_offline.yaml
     input:
       actions:
-      - service: notify.telegram
-        data:
-          title: '⚠️ Zigbee Network:'
-          message: '{{sensors}} has gone offline.'
+        - service: notify.telegram
+          data:
+            title: "⚠️ Zigbee Network:"
+            message: "{{sensors}} has gone offline."
       exclude:
         entity_id:
-        - sensor.browsermod_pixel_browser_battery
-        - sensor.macintoshbook_air_internal_battery_level
-        - sensor.lenovo_smart_tab_m8_battery
-        - sensor.ipad_battery_level
-        - sensor.pixel_5_battery_level
-        - sensor.samsung_flip_battery_level
-        - sensor.bot_075e_battery
+          - sensor.browsermod_pixel_browser_battery
+          - sensor.macintoshbook_air_internal_battery_level
+          - sensor.lenovo_smart_tab_m8_battery
+          - sensor.ipad_battery_level
+          - sensor.pixel_5_battery_level
+          - sensor.samsung_flip_battery_level
+          - sensor.bot_075e_battery
       time: 09:00:00
-- id: '1696625276509'
+- id: "1696625276509"
   alias: Reset PowerCal at Startup
-  description: ''
+  description: ""
   trigger:
-  - platform: homeassistant
-    event: start
+    - platform: homeassistant
+      event: start
   condition: []
   action:
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 30
-      milliseconds: 0
-  - service: homeassistant.update_entity
-    data: {}
-    target:
-      entity_id:
-      - sensor.air_purifiers_power
-      - sensor.appliance_power
-      - sensor.fan_power
-      - sensor.grid_power
-      - sensor.grid_energy
-      - sensor.laundry_power
-      - switch.paper_shredder
-      - sensor.refrigerator_power
-  - service: notify.telegram
-    data:
-      title: "\U0001F916 Automation Triggered"
-      message: Updated PowerCalc appliance entities.
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 30
+        milliseconds: 0
+    - service: homeassistant.update_entity
+      data: {}
+      target:
+        entity_id:
+          - sensor.air_purifiers_power
+          - sensor.appliance_power
+          - sensor.fan_power
+          - sensor.grid_power
+          - sensor.grid_energy
+          - sensor.laundry_power
+          - switch.paper_shredder
+          - sensor.refrigerator_power
+    - service: notify.telegram
+      data:
+        title: "\U0001F916 Automation Triggered"
+        message: Updated PowerCalc appliance entities.
   mode: single
