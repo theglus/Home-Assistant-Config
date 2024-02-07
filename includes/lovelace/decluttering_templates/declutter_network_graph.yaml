@@ -4,6 +4,12 @@
 card:
   # Mini Graph
   type: "custom:mini-graph-card"
+  # Card Mod styling
+  card_mod:
+    style: |
+      ha-card {
+        border-style: none;
+      }
   name: "[[name]]"
   entities:
     - entity: "[[sensor1]]"
@@ -23,12 +29,6 @@ card:
     labels: false
     legend: false
     name: true
-  # Card Mod styling
-  card_mod:
-    style: |
-      ha-card {
-        border-style: none;
-      }
   # Browser Mod Action + Styling
   tap_action:
     action: fire-dom-event
@@ -49,6 +49,13 @@ card:
           # Pop-up Mini Graph
           cards:
             - type: "custom:mini-graph-card"
+              # Card Mod styling
+              card_mod:
+                style: |
+                  ha-card {
+                    border-style: none;
+                    background: none;
+                  }
               entities:
                 - entity: "[[sensor1]]"
                   name: "[[name1]]"
@@ -66,9 +73,3 @@ card:
               show:
                 icon: true
                 name: true
-              # Card Mod styling
-              card_mod:
-              style: |
-                ha-card {
-                  border-style: none;
-                }
