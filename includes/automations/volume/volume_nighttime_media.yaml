@@ -1,0 +1,61 @@
+#################################################################
+## Volume Media Nighttime
+#
+## Turn down volume at nighttime after playing media.
+#################################################################
+id: 86e6021b-6fd9-4b8f-a58f-467d91adc7d7
+alias: Volume Nighttime Media
+description: "Turn down volume at nighttime after playing media."
+trigger:
+  - platform: state
+    entity_id:
+      - media_player.loft_bathroom
+    to: "off"
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 2
+    id: Loft Bathroom
+    alias: Whem Loft Bathroom media player Off  for 2 seconds
+  - platform: state
+    entity_id:
+      - media_player.loft_nest_hub
+    to: "off"
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 2
+    id: Loft Nest Hub
+    alias: When Loft Nest Hub media player Off  for 2 seconds
+condition:
+  - condition: state
+    entity_id: binary_sensor.volume_schedule
+    state: "on"
+    alias: Volume Schedule equal to nighttime
+action:
+  - choose:
+      - conditions:
+          - condition: trigger
+            id:
+              - Loft Bathroom
+        sequence:
+          - service: media_player.volume_set
+            metadata: {}
+            data:
+              volume_level: 0.4
+            target:
+              entity_id: media_player.loft_bathroom
+        alias: Loft Bathroom
+      - conditions:
+          - condition: trigger
+            id:
+              - Loft Nest Hub
+        sequence:
+          - service: media_player.volume_set
+            metadata: {}
+            data:
+              volume_level: 0.6
+            target:
+              entity_id: media_player.loft_nest_hub
+        alias: Loft Nest Hub
+mode: single
