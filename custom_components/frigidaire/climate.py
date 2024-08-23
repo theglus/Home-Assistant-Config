@@ -174,11 +174,14 @@ class FrigidaireClimate(ClimateEntity):
     @property
     def target_temperature(self):
         """Return the temperature we try to reach."""
-        return self._details.get(frigidaire.Detail.TARGET_TEMPERATURE_F)
+        if self.temperature_unit == TEMP_FAHRENHEIT:
+            return self._details.get(frigidaire.Detail.TARGET_TEMPERATURE_F)
+        else:
+            return self._details.get(frigidaire.Detail.TARGET_TEMPERATURE_C)
 
     @property
     def hvac_mode(self):
-        """Return current operation ie. heat, cool, idle."""
+        """Return current operation i.e. heat, cool, idle."""
         frigidaire_mode = self._details.get(frigidaire.Detail.MODE)
 
         return FRIGIDAIRE_TO_HA_MODE[frigidaire_mode]
@@ -258,6 +261,12 @@ class FrigidaireClimate(ClimateEntity):
         if self._details.get(frigidaire.Detail.MODE) == frigidaire.Mode.OFF:
             self._client.execute_action(
                 self._appliance, frigidaire.Action.set_power(frigidaire.Power.ON)
+            )
+
+            # temperature reverts to default when the device is turned on
+            self._client.execute_action(
+                self._appliance,
+                frigidaire.Action.set_temperature(self.target_temperature)
             )
 
         self._client.execute_action(
