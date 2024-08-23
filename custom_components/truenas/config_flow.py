@@ -1,4 +1,5 @@
 """Config flow to configure TrueNAS."""
+
 from __future__ import annotations
 
 from logging import getLogger
@@ -24,7 +25,7 @@ from .const import (
     DEFAULT_SSL_VERIFY,
     DOMAIN,
 )
-from .truenas_api import TrueNASAPI
+from .api import TrueNASAPI
 
 _LOGGER = getLogger(__name__)
 
