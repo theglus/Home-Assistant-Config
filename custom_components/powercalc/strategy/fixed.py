@@ -4,7 +4,7 @@ from decimal import Decimal
 
 import homeassistant.helpers.config_validation as cv
 import voluptuous as vol
-from homeassistant.components import climate, vacuum  # type: ignore
+from homeassistant.components import climate, vacuum
 from homeassistant.core import State
 from homeassistant.helpers.event import TrackTemplate
 from homeassistant.helpers.template import Template
@@ -70,10 +70,7 @@ class FixedStrategy(PowerCalculationStrategyInterface):
                 "fixed_mandatory",
             )
 
-        if (
-            self._source_entity.domain in STATE_BASED_ENTITY_DOMAINS
-            and self._per_state_power is None
-        ):
+        if self._source_entity.domain in STATE_BASED_ENTITY_DOMAINS and self._per_state_power is None:
             raise StrategyConfigurationError(
                 "This entity can only work with 'states_power' not 'power'",
                 "fixed_states_power_only",

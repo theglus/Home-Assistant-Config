@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import inspect
 import logging
 from decimal import Decimal
 
@@ -10,12 +11,12 @@ from homeassistant.components.sensor import SensorDeviceClass, SensorStateClass
 from homeassistant.const import (
     ATTR_UNIT_OF_MEASUREMENT,
     CONF_NAME,
-    TIME_HOURS,
     UnitOfEnergy,
     UnitOfPower,
     UnitOfTime,
 )
 from homeassistant.core import HomeAssistant, callback
+from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.typing import ConfigType
 
@@ -30,10 +31,12 @@ from custom_components.powercalc.const import (
     CONF_ENERGY_SENSOR_PRECISION,
     CONF_ENERGY_SENSOR_UNIT_PREFIX,
     CONF_FORCE_ENERGY_SENSOR_CREATION,
+    CONF_FORCE_UPDATE_FREQUENCY,
     CONF_POWER_SENSOR_ID,
     DEFAULT_ENERGY_INTEGRATION_METHOD,
     UnitPrefix,
 )
+from custom_components.powercalc.device_binding import get_device_info
 from custom_components.powercalc.errors import SensorConfigurationError
 
 from .abstract import (
@@ -53,7 +56,7 @@ async def create_energy_sensor(
     hass: HomeAssistant,
     sensor_config: ConfigType,
     power_sensor: PowerSensor,
-    source_entity: SourceEntity,
+    source_entity: SourceEntity | None = None,
 ) -> EnergySensor:
     """Create the energy sensor entity."""
     # User specified an existing energy sensor with "energy_sensor_id" option. Just return that one
@@ -63,8 +66,7 @@ async def create_energy_sensor(
         entity_entry = ent_reg.async_get(energy_sensor_id)
         if entity_entry is None:
             raise SensorConfigurationError(
-                f"No energy sensor with id {energy_sensor_id} found in your HA instance. "
-                "Double check `energy_sensor_id` setting",
+                f"No energy sensor with id {energy_sensor_id} found in your HA instance. Double check `energy_sensor_id` setting",
             )
         return RealEnergySensor(
             entity_entry.entity_id,
@@ -79,10 +81,7 @@ async def create_energy_sensor(
     ):
         # User can force the energy sensor creation with "force_energy_sensor_creation" option.
         # If they did, don't look for an energy sensor
-        if (
-            CONF_FORCE_ENERGY_SENSOR_CREATION not in sensor_config
-            or not sensor_config.get(CONF_FORCE_ENERGY_SENSOR_CREATION)
-        ):
+        if CONF_FORCE_ENERGY_SENSOR_CREATION not in sensor_config or not sensor_config.get(CONF_FORCE_ENERGY_SENSOR_CREATION):
             real_energy_sensor = find_related_real_energy_sensor(hass, power_sensor)
             if real_energy_sensor:
                 _LOGGER.debug(
@@ -90,7 +89,7 @@ async def create_energy_sensor(
                     real_energy_sensor.entity_id,
                     power_sensor.entity_id,
                 )
-                return real_energy_sensor
+                return real_energy_sensor  # type: ignore
             _LOGGER.debug(
                 "No existing energy sensor found for the power sensor '%s'",
                 power_sensor.entity_id,
@@ -121,21 +120,24 @@ async def create_energy_sensor(
 
     unit_prefix = get_unit_prefix(hass, sensor_config, power_sensor)
 
-    _LOGGER.debug("Creating energy sensor: %s", name)
+    _LOGGER.debug(
+        "Creating energy sensor (entity_id=%s, source_entity=%s, unit_prefix=%s)",
+        entity_id,
+        power_sensor.entity_id,
+        unit_prefix,
+    )
+
     return VirtualEnergySensor(
         source_entity=power_sensor.entity_id,
         unique_id=unique_id,
         entity_id=entity_id,
         entity_category=entity_category,
         name=name,
-        round_digits=sensor_config.get(CONF_ENERGY_SENSOR_PRECISION),  # type: ignore
         unit_prefix=unit_prefix,
-        unit_time=TIME_HOURS,  # type: ignore
-        integration_method=sensor_config.get(CONF_ENERGY_INTEGRATION_METHOD)
-        or DEFAULT_ENERGY_INTEGRATION_METHOD,
-        powercalc_source_entity=source_entity.entity_id,
-        powercalc_source_domain=source_entity.domain,
+        powercalc_source_entity=source_entity.entity_id if source_entity else None,
+        powercalc_source_domain=source_entity.domain if source_entity else None,
         sensor_config=sensor_config,
+        device_info=get_device_info(hass, sensor_config, source_entity),
     )
 
 
@@ -149,7 +151,7 @@ def get_unit_prefix(
     power_unit = power_sensor.unit_of_measurement
     power_state = hass.states.get(power_sensor.entity_id)
     if power_unit is None and power_state:
-        power_unit = power_state.attributes.get(ATTR_UNIT_OF_MEASUREMENT)
+        power_unit = power_state.attributes.get(ATTR_UNIT_OF_MEASUREMENT)  # pragma: no cover
 
     # When the power sensor is in kW, we don't want to add an extra k prefix.
     # As this would result in an energy sensor having kkWh unit, which is obviously invalid
@@ -177,8 +179,7 @@ def find_related_real_energy_sensor(
             ent_reg,
             device_id=power_sensor.device_id,
         )
-        if entry.device_class == SensorDeviceClass.ENERGY
-        or entry.unit_of_measurement == UnitOfEnergy.KILO_WATT_HOUR
+        if entry.device_class == SensorDeviceClass.ENERGY or entry.unit_of_measurement == UnitOfEnergy.KILO_WATT_HOUR
     ]
     if not energy_sensors:
         return None
@@ -199,36 +200,46 @@ class VirtualEnergySensor(IntegrationSensor, EnergySensor):
     """Virtual energy sensor, totalling kWh."""
 
     _attr_state_class = SensorStateClass.TOTAL_INCREASING
+    _unrecorded_attributes = frozenset({ATTR_SOURCE_DOMAIN, ATTR_SOURCE_ENTITY})
 
     def __init__(
         self,
         source_entity: str,
-        unique_id: str | None,
         entity_id: str,
-        entity_category: EntityCategory | None,
-        name: str | None,
-        round_digits: int,
-        unit_prefix: str | None,
-        unit_time: UnitOfTime,
-        integration_method: str,
-        powercalc_source_entity: str,
-        powercalc_source_domain: str,
         sensor_config: ConfigType,
+        powercalc_source_entity: str | None = None,
+        powercalc_source_domain: str | None = None,
+        unique_id: str | None = None,
+        entity_category: EntityCategory | None = None,
+        name: str | None = None,
+        unit_prefix: str | None = None,
+        device_info: DeviceInfo | None = None,
     ) -> None:
-        super().__init__(
-            source_entity=source_entity,
-            name=name,
-            round_digits=round_digits,
-            unit_prefix=unit_prefix,
-            unit_time=unit_time,
-            integration_method=integration_method,
-            unique_id=unique_id,
-        )
+        round_digits: int = sensor_config.get(CONF_ENERGY_SENSOR_PRECISION, 2)
+        integration_method: str = sensor_config.get(CONF_ENERGY_INTEGRATION_METHOD, DEFAULT_ENERGY_INTEGRATION_METHOD)
+
+        params = {
+            "source_entity": source_entity,
+            "name": name,
+            "round_digits": round_digits,
+            "unit_prefix": unit_prefix,
+            "unit_time": UnitOfTime.HOURS,
+            "integration_method": integration_method,
+            "unique_id": unique_id,
+            "device_info": device_info,
+        }
+
+        signature = inspect.signature(IntegrationSensor.__init__)
+        if "max_sub_interval" in signature.parameters:
+            params["max_sub_interval"] = sensor_config.get(CONF_FORCE_UPDATE_FREQUENCY)
+
+        super().__init__(**params)  # type: ignore[arg-type]
 
         self._powercalc_source_entity = powercalc_source_entity
         self._powercalc_source_domain = powercalc_source_domain
         self._sensor_config = sensor_config
         self.entity_id = entity_id
+        self._attr_device_class = SensorDeviceClass.ENERGY
         if entity_category:
             self._attr_entity_category = EntityCategory(entity_category)
 
@@ -238,9 +249,12 @@ class VirtualEnergySensor(IntegrationSensor, EnergySensor):
         if self._sensor_config.get(CONF_DISABLE_EXTENDED_ATTRIBUTES):
             return super().extra_state_attributes
 
+        if self._powercalc_source_entity is None:
+            return None
+
         attrs = {
-            ATTR_SOURCE_ENTITY: self._powercalc_source_entity,
-            ATTR_SOURCE_DOMAIN: self._powercalc_source_domain,
+            ATTR_SOURCE_ENTITY: self._powercalc_source_entity or "",
+            ATTR_SOURCE_DOMAIN: self._powercalc_source_domain or "",
         }
         super_attrs = super().extra_state_attributes
         if super_attrs:
