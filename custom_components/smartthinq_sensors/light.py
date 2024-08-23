@@ -1,4 +1,5 @@
 """Support for ThinQ light devices."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -7,6 +8,7 @@ from typing import Any, Awaitable, Callable
 
 from homeassistant.components.light import (
     ATTR_EFFECT,
+    ColorMode,
     LightEntity,
     LightEntityDescription,
     LightEntityFeature,
@@ -111,6 +113,8 @@ class LGELight(CoordinatorEntity, LightEntity):
 
     entity_description: ThinQLightEntityDescription
     _attr_has_entity_name = True
+    _attr_supported_color_modes = set(ColorMode.ONOFF)
+    _attr_color_mode = ColorMode.ONOFF
 
     def __init__(
         self,
@@ -143,7 +147,7 @@ class LGELight(CoordinatorEntity, LightEntity):
         return self._api.available
 
     @property
-    def supported_features(self) -> int:
+    def supported_features(self) -> LightEntityFeature:
         """Return the list of supported features."""
         if self.effect_list and len(self.effect_list) > 1:
             return LightEntityFeature.EFFECT

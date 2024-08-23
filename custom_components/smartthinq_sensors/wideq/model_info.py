@@ -9,6 +9,8 @@ import json
 import logging
 from numbers import Number
 
+import xmltodict
+
 from .const import BIT_OFF, BIT_ON
 
 TYPE_BIT = "bit"
@@ -141,6 +143,14 @@ class ModelInfo(ABC):
 
         return [str(i) for i in range(values.min, values.max + 1, values.step)]
 
+    def reference_values(self, key) -> dict | None:
+        """Look up the reference section."""
+        if not (values := self.value(key, [TYPE_REFERENCE])):
+            return None
+
+        reference: dict = values.reference
+        return reference
+
     def reference_name(self, key, value, ref_key="_comment") -> str | None:
         """Look up the friendly name for an encoded reference value."""
         if not (values := self.value(key, [TYPE_REFERENCE])):
@@ -156,13 +166,28 @@ class ModelInfo(ABC):
             return ref_value.get("name")
         return None
 
-    def bit_name(self, key, bit_index, value) -> str | None:
-        """Look up the friendly name for an encoded bit value."""
+    def option_keys(self, subkey: str | None = None) -> list:
+        """Return a list of available option keys."""
+        return []
+
+    def bit_name(self, key, bit_index) -> str | None:
+        """Look up the friendly name for an encoded bit based on the bit index."""
         return None
 
-    def bit_value(self, key, values) -> str | None:
+    def bit_index(self, key, bit_name) -> str | None:
+        """Look up the start index for an encoded bit based on friendly name."""
+        return None
+
+    def bit_value(self, key, bit_name, value) -> int | None:
         """
         Look up the bit value for a specific key.
+        Not used in model V2.
+        """
+        return None
+
+    def option_bit_value(self, key, values, sub_key=None) -> str | None:
+        """
+        Look up the bit value for a specific option key.
         Not used in model V2.
         """
         return None
@@ -282,67 +307,107 @@ class ModelInfoV1(ModelInfo):
         """Get the default value, if it exists, for a given value."""
         return self._data.get("Value", {}).get(name, {}).get("default")
 
-    def bit_name(self, key, bit_index, value) -> str | None:
-        """Look up the friendly name for an encoded bit value."""
+    def option_keys(self, subkey: str | None = None) -> list:
+        """Return a list of available option keys."""
+        if not (data := self._data.get("Value")):
+            return []
+
+        opt_key = "Option"
+        if subkey:
+            opt_key = subkey + opt_key
+        ret_keys = []
+        for i in range(1, 4):
+            key_id = f"{opt_key}{str(i)}"
+            if key_id in data:
+                ret_keys.append(key_id)
+        return ret_keys
+
+    def bit_name(self, key, bit_index) -> str | None:
+        """Look up the friendly name for an encoded bit based on the bit index."""
         if not (values := self.value(key, [TYPE_BIT])):
-            return str(value)
+            return None
 
         options = values.options
-        if not self.value_type(options[bit_index]["value"]):
-            return str(value)
+        if not (bit_info := options.get(bit_index)):
+            return None
+        return bit_info["value"]
 
-        enum_options = self.value(options[bit_index]["value"]).options
-        return enum_options[value]
+    def bit_index(self, key, bit_name) -> str | None:
+        """Look up the start index for an encoded bit based on friendly name."""
+        if not (values := self.value(key, [TYPE_BIT])):
+            return None
 
-    def _get_bit_key(self, key):
-        """Get bit values for a specific key."""
+        options = values.options
+        for bit_index, bit_info in options.items():
+            if bit_info["value"] == bit_name:
+                return bit_index
 
-        def search_bit_key():
-            if not data:
-                return {}
-            for i in range(1, 4):
-                opt_key = f"Option{str(i)}"
-                option = data.get(opt_key)
-                if not option:
-                    continue
-                for opt in option.get("option", []):
-                    if key == opt.get("value", ""):
-                        start_bit = opt.get("startbit")
-                        length = opt.get("length", 1)
-                        if start_bit is None:
-                            return {}
-                        return {
-                            "option": opt_key,
-                            "startbit": start_bit,
-                            "length": length,
-                        }
-            return {}
+        return None
 
-        bit_key = self._bit_keys.get(key)
-        if bit_key is None:
-            data = self._data.get("Value")
-            bit_key = search_bit_key()
-            self._bit_keys[key] = bit_key
+    def bit_value(self, key, bit_name, value) -> int | None:
+        """Look up the bit value for a specific key."""
+        if not (values := self.value(key, [TYPE_BIT])):
+            return None
 
-        return bit_key
+        options = values.options
+        for bit_index, bit_info in options.items():
+            if bit_info["value"] == bit_name:
+                return self._get_bit_value(value, bit_index, bit_info["length"])
 
-    def bit_value(self, key, values) -> str | None:
-        """Look up the bit value for an specific key."""
-        bit_key = self._get_bit_key(key)
+        return None
+
+    def option_bit_value(self, key, values, sub_key=None) -> str | None:
+        """Look up the bit value for an specific option key."""
+        bit_key = self._get_bit_key(key, sub_key)
         if not bit_key:
             return None
         value = None if not values else values.get(bit_key["option"])
         if not value:
             return "0"
-        bit_value = int(value)
-        start_bit = bit_key["startbit"]
-        length = bit_key["length"]
+        bit_val = self._get_bit_value(
+            int(value), bit_key["startbit"], bit_key["length"]
+        )
+        return str(bit_val)
+
+    def _get_bit_key(self, key: str, sub_key: str | None = None):
+        """Get bit values for a specific key."""
+
+        def search_bit_key(option_keys: list, data: dict | None):
+            if not data:
+                return {}
+            for opt_key in option_keys:
+                if not (option := data.get(opt_key)):
+                    continue
+                for opt in option.get("option", []):
+                    if key != opt.get("value", ""):
+                        continue
+                    if (start_bit := opt.get("startbit")) is None:
+                        return {}
+                    return {
+                        "option": opt_key,
+                        "startbit": start_bit,
+                        "length": opt.get("length", 1),
+                    }
+
+            return {}
+
+        key_bit = sub_key + key if sub_key else key
+        if (bit_key := self._bit_keys.get(key_bit)) is None:
+            option_keys = self.option_keys(sub_key)
+            bit_key = search_bit_key(option_keys, self._data.get("Value"))
+            self._bit_keys[key_bit] = bit_key
+
+        return bit_key
+
+    @staticmethod
+    def _get_bit_value(value: int, start_bit: int, length: int = 1):
+        """Return bit value inside byte."""
         val = 0
         for i in range(0, length):
             bit_index = 2 ** (start_bit + i)
-            bit = 1 if bit_value & bit_index else 0
+            bit = 1 if value & bit_index else 0
             val += bit * (2**i)
-        return str(val)
+        return val
 
     @property
     def binary_control_data(self):
@@ -415,11 +480,52 @@ class ModelInfoV1(ModelInfo):
             decoded[key] = str(value)
         return decoded
 
-    @staticmethod
-    def decode_monitor_xml(data):
+    def decode_monitor_xml(self, data):
         """Decode a xml that encodes status data."""
-        _LOGGER.warning("Received XML data from device: %s", data)
-        return None
+
+        try:
+            xml_json = xmltodict.parse(data.decode("utf8"))
+        except Exception as ex:  # pylint: disable=broad-except
+            _LOGGER.warning("Failed to decode XML message: [%s] - error: %s", data, ex)
+            return None
+
+        main_tag: str | None = self._data["Monitoring"].get("tag")
+        if not main_tag or main_tag not in xml_json:
+            _LOGGER.warning(
+                "Invalid root tag [%s] for XML message: [%s]", main_tag, xml_json
+            )
+            return None
+
+        decoded = {}
+        dev_vals = xml_json[main_tag]
+        for item in self._data["Monitoring"]["protocol"]:
+            tags: str = item["tag"]
+            tag_list = tags.split(".")
+            tag_key = tag_list[0]
+            if len(tag_list) > 1:
+                value_dict: dict = dev_vals[tag_key]
+                tag_key = tag_list[1]
+            else:
+                value_dict: dict = dev_vals
+
+            if val := value_dict.get(tag_key):
+                key = item["value"]
+                if isinstance(key, list):
+                    if isinstance(val, str):
+                        sub_val = val.split(",")
+                    else:
+                        sub_val = []
+                    for sub_idx, sub_key in enumerate(key):
+                        if not isinstance(sub_key, str):
+                            continue
+                        decoded[sub_key] = (
+                            sub_val[sub_idx] if len(sub_val) > sub_idx else ""
+                        )
+
+                elif isinstance(key, str):
+                    decoded[key] = val
+
+        return decoded
 
     @staticmethod
     def decode_monitor_json(data, mon_type):

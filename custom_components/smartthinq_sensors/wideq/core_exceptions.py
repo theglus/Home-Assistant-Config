@@ -14,6 +14,13 @@ class APIError(Exception):
         super().__init__(msg)
 
 
+class ClientDisconnected(APIError):
+    """Client connection was closed."""
+
+    def __init__(self):
+        super().__init__("Client connection was closed")
+
+
 class NotLoggedInError(APIError):
     """The session is not valid or expired."""
 
@@ -39,6 +46,10 @@ class InvalidResponseError(APIError):
 
 class InvalidCredentialError(APIError):
     """The server rejected connection."""
+
+
+class DelayedResponseError(APIError):
+    """The device delay in the response."""
 
 
 class TokenError(APIError):
