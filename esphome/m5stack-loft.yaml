@@ -10,6 +10,8 @@ esphome:
 api:
   encryption:
     key: !secret m5stack_loft
+ota:
+  - platform: esphome
 
 
 wifi:
