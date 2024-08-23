@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from datetime import timedelta
+import json
 
 from cowayaio import CowayClient
 from cowayaio.exceptions import AuthError, CowayError, PasswordExpired
@@ -51,6 +52,8 @@ class CowayDataUpdateCoordinator(DataUpdateCoordinator):
         except CowayError as error:
             raise UpdateFailed(error) from error
 
+        nl = '\n'
+        LOGGER.debug(f'Found the following Coway devices: {nl}{json.dumps(data, default=vars, indent=4)}')
         if not data.purifiers:
             raise UpdateFailed("No Purifiers found")
 

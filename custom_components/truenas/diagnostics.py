@@ -1,4 +1,5 @@
 """Diagnostics support for TrueNAS."""
+
 from __future__ import annotations
 
 from typing import Any
@@ -20,6 +21,6 @@ async def async_get_config_entry_diagnostics(
             "options": async_redact_data(config_entry.options, TO_REDACT),
         },
         "data": async_redact_data(
-            hass.data[DOMAIN][config_entry.entry_id].data, TO_REDACT
+            hass.data[DOMAIN][config_entry.entry_id].ds, TO_REDACT
         ),
     }

@@ -1,4 +1,5 @@
 """API parser for JSON APIs."""
+
 from datetime import datetime
 from logging import getLogger
 
@@ -76,10 +77,7 @@ def from_entry_bool(entry, param, default=False, reverse=False) -> bool:
     if not isinstance(ret, bool):
         ret = default
 
-    if reverse:
-        return not ret
-
-    return ret
+    return not ret if reverse else ret
 
 
 # ---------------------------

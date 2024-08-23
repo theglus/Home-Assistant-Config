@@ -1,4 +1,5 @@
 """Platform for LGE climate integration."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -12,6 +13,11 @@ from homeassistant.components.climate.const import (
     ATTR_HVAC_MODE,
     DEFAULT_MAX_TEMP,
     DEFAULT_MIN_TEMP,
+    FAN_AUTO,
+    FAN_DIFFUSE,
+    FAN_HIGH,
+    FAN_LOW,
+    FAN_MEDIUM,
     PRESET_ECO,
     PRESET_NONE,
     ClimateEntityFeature,
@@ -28,11 +34,21 @@ from . import LGEDevice
 from .const import DOMAIN, LGE_DEVICES, LGE_DISCOVERY_NEW
 from .device_helpers import TEMP_UNIT_LOOKUP, LGERefrigeratorDevice
 from .wideq import AirConditionerFeatures, DeviceType, TemperatureUnit
-from .wideq.devices.ac import AWHP_MAX_TEMP, AWHP_MIN_TEMP, ACMode, AirConditionerDevice
+from .wideq.devices.ac import (
+    AWHP_MAX_TEMP,
+    AWHP_MIN_TEMP,
+    ACFanSpeed,
+    ACMode,
+    AirConditionerDevice,
+)
 
 # general ac attributes
 ATTR_FRIDGE = "fridge"
 ATTR_FREEZER = "freezer"
+ATTR_SWING_HORIZONTAL = "swing_mode_horizontal"
+ATTR_SWING_VERTICAL = "swing_mode_vertical"
+HVAC_MODE_NONE = "--"
+SWING_PREFIX = ["Vertical", "Horizontal"]
 
 # service definitions
 SERVICE_SET_SLEEP_TIME = "set_sleep_time"
@@ -46,15 +62,25 @@ HVAC_MODE_LOOKUP: dict[str, HVACMode] = {
     ACMode.ACO.name: HVACMode.HEAT_COOL,
 }
 
+FAN_MODE_LOOKUP: dict[str, str] = {
+    ACFanSpeed.AUTO.name: FAN_AUTO,
+    ACFanSpeed.HIGH.name: FAN_HIGH,
+    ACFanSpeed.LOW.name: FAN_LOW,
+    ACFanSpeed.MID.name: FAN_MEDIUM,
+    ACFanSpeed.NATURE.name: FAN_DIFFUSE,
+}
+FAN_MODE_REVERSE_LOOKUP = {v: k for k, v in FAN_MODE_LOOKUP.items()}
+
 PRESET_MODE_LOOKUP: dict[str, dict[str, HVACMode]] = {
     ACMode.ENERGY_SAVING.name: {"preset": PRESET_ECO, "hvac": HVACMode.COOL},
     ACMode.ENERGY_SAVER.name: {"preset": PRESET_ECO, "hvac": HVACMode.COOL},
 }
 
-HVAC_MODE_NONE = "--"
-ATTR_SWING_HORIZONTAL = "swing_mode_horizontal"
-ATTR_SWING_VERTICAL = "swing_mode_vertical"
-SWING_PREFIX = ["Vertical", "Horizontal"]
+DEFAULT_AC_FEATURES = (
+    ClimateEntityFeature.TARGET_TEMPERATURE
+    | ClimateEntityFeature.TURN_OFF
+    | ClimateEntityFeature.TURN_ON
+)
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -153,6 +179,8 @@ async def async_setup_entry(
 class LGEClimate(CoordinatorEntity, ClimateEntity):
     """Base climate device."""
 
+    _enable_turn_on_off_backwards_compatibility = False
+
     def __init__(self, api: LGEDevice):
         """Initialize the climate."""
         super().__init__(api.coordinator)
@@ -180,7 +208,9 @@ class LGEACClimate(LGEClimate):
         super().__init__(api)
         self._device: AirConditionerDevice = api.device
         self._attr_unique_id = f"{api.unique_id}-AC"
-        self._attr_fan_modes = self._device.fan_speeds
+        self._attr_fan_modes = [
+            FAN_MODE_LOOKUP.get(s, s) for s in self._device.fan_speeds
+        ]
         self._attr_swing_modes = [
             f"{SWING_PREFIX[0]}{mode}" for mode in self._device.vertical_step_modes
         ] + [f"{SWING_PREFIX[1]}{mode}" for mode in self._device.horizontal_step_modes]
@@ -234,9 +264,9 @@ class LGEACClimate(LGEClimate):
         return None
 
     @property
-    def supported_features(self) -> int:
+    def supported_features(self) -> ClimateEntityFeature:
         """Return the list of supported features."""
-        features = ClimateEntityFeature.TARGET_TEMPERATURE
+        features = DEFAULT_AC_FEATURES
         if len(self.fan_modes) > 0:
             features |= ClimateEntityFeature.FAN_MODE
         if self.preset_modes:
@@ -364,13 +394,15 @@ class LGEACClimate(LGEClimate):
     @property
     def fan_mode(self) -> str | None:
         """Return the fan setting."""
-        return self._api.state.fan_speed
+        speed = self._api.state.fan_speed
+        return FAN_MODE_LOOKUP.get(speed, speed)
 
     async def async_set_fan_mode(self, fan_mode: str) -> None:
         """Set new target fan mode."""
-        if fan_mode not in self.fan_modes:
+        lg_fan_mode = FAN_MODE_REVERSE_LOOKUP.get(fan_mode, fan_mode)
+        if lg_fan_mode not in self._device.fan_speeds:
             raise ValueError(f"Invalid fan mode [{fan_mode}]")
-        await self._device.set_fan_speed(fan_mode)
+        await self._device.set_fan_speed(lg_fan_mode)
         self._api.async_set_updated()
 
     @property
@@ -459,10 +491,10 @@ class LGERefrigeratorClimate(LGEClimate):
         self._attr_hvac_mode = HVACMode.AUTO
 
     @property
-    def supported_features(self) -> int:
+    def supported_features(self) -> ClimateEntityFeature:
         """Return the list of supported features."""
         if not self._wrap_device.device.set_values_allowed:
-            return 0
+            return ClimateEntityFeature(0)
         return ClimateEntityFeature.TARGET_TEMPERATURE
 
     @property

@@ -4,6 +4,7 @@ import asyncio
 import logging
 
 from aiohttp.client_exceptions import ClientConnectionError
+from cowayaio.constants import LightMode
 from cowayaio.exceptions import AuthError, CowayError
 
 from homeassistant.const import Platform
@@ -77,17 +78,29 @@ IOCARE_SMART_SENSITIVITY_TO_HASS = {
 }
 
 PRESET_MODE_AUTO = "Auto"
+PRESET_MODE_AUTO_ECO = "Auto (Eco)"
 PRESET_MODE_NIGHT = "Night"
 PRESET_MODE_ECO = "Eco"
+PRESET_MODE_RAPID = "Rapid"
 
 ORDERED_NAMED_FAN_SPEEDS = [IOCARE_FAN_LOW, IOCARE_FAN_MEDIUM, IOCARE_FAN_HIGH]
 PRESET_MODES = [PRESET_MODE_AUTO, PRESET_MODE_NIGHT]
+PRESET_MODES_WITH_ECO = [PRESET_MODE_AUTO, PRESET_MODE_AUTO_ECO, PRESET_MODE_NIGHT]
 # Model AP-1512HHS uses Eco mode instead of Night mode
 PRESET_MODES_AP = [PRESET_MODE_AUTO, PRESET_MODE_ECO]
+PRESET_MODES_250 = [PRESET_MODE_AUTO, PRESET_MODE_NIGHT, PRESET_MODE_RAPID]
+PRESET_MODES_250_WITH_ECO = [PRESET_MODE_AUTO, PRESET_MODE_AUTO_ECO, PRESET_MODE_NIGHT, PRESET_MODE_RAPID]
 
 IOCARE_FAN_SPEED_TO_HASS = {
     IOCARE_FAN_OFF: 0,
     IOCARE_FAN_LOW: ordered_list_item_to_percentage(ORDERED_NAMED_FAN_SPEEDS, IOCARE_FAN_LOW),
     IOCARE_FAN_MEDIUM: ordered_list_item_to_percentage(ORDERED_NAMED_FAN_SPEEDS, IOCARE_FAN_MEDIUM),
     IOCARE_FAN_HIGH: ordered_list_item_to_percentage(ORDERED_NAMED_FAN_SPEEDS, IOCARE_FAN_HIGH)
+}
+
+IOCARE_LIGHT_MODES = ["On", "Off", "AQI Off"]
+IOCARE_LIGHT_MODES_TO_HASS = {
+    LightMode.ON: "On",
+    LightMode.AQI_OFF: "AQI Off",
+    LightMode.OFF: "Off"
 }

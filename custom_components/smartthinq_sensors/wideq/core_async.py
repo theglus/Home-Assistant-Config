@@ -1,6 +1,7 @@
 """
 A low-level, general abstraction for the LG SmartThinQ API.
 """
+
 from __future__ import annotations
 
 import asyncio
@@ -26,7 +27,7 @@ from urllib.parse import (
 import uuid
 
 import aiohttp
-from charset_normalizer import detect
+from charset_normalizer import from_bytes
 import xmltodict
 
 from . import core_exceptions as exc
@@ -91,6 +92,7 @@ API2_ERRORS = {
     "0106": exc.NotConnectedError,
     "0100": exc.FailedRequestError,
     "0110": exc.InvalidCredentialError,
+    "0111": exc.DelayedResponseError,
     9000: exc.InvalidRequestError,  # Surprisingly, an integer (not a string).
     "9995": exc.FailedRequestError,  # This come as "other errors", we manage as not FailedRequestError.
     "9999": exc.FailedRequestError,  # This come as "other errors", we manage as not FailedRequestError.
@@ -163,6 +165,7 @@ class CoreAsync:
         timeout: int = DEFAULT_TIMEOUT,
         oauth_url: str | None = None,
         session: aiohttp.ClientSession | None = None,
+        client_id: str | None = None,
     ):
         """
         Create the CoreAsync object
@@ -178,7 +181,7 @@ class CoreAsync:
         self._language = language
         self._timeout = aiohttp.ClientTimeout(total=timeout)
         self._oauth_url = oauth_url
-        self._client_id = None
+        self._client_id = client_id
         self._lang_pack_url = None
 
         if session:
@@ -189,12 +192,12 @@ class CoreAsync:
             self._managed_session = True
 
     @property
-    def country(self):
+    def country(self) -> str:
         """Return the used country."""
         return self._country
 
     @property
-    def language(self):
+    def language(self) -> str:
         """Return the used language."""
         return self._language
 
@@ -202,6 +205,11 @@ class CoreAsync:
     def lang_pack_url(self):
         """Return the used language."""
         return self._lang_pack_url
+
+    @property
+    def client_id(self) -> str | None:
+        """Return the associated client_id."""
+        return self._client_id
 
     async def close(self):
         """Close the managed session on exit."""
@@ -1364,6 +1372,7 @@ class ClientAsync:
         # The three steps required to get access to call the API.
         self._auth: Auth = auth
         self._session: Session | None = session
+        self._connected = True
         self._last_device_update = datetime.utcnow()
         self._lock = asyncio.Lock()
         # The last list of devices we got from the server. This is the
@@ -1384,7 +1393,7 @@ class ClientAsync:
         env_emulation = os.environ.get("thinq2_emulation", "") == "ENABLED"
         self._emulation = env_emulation or enable_emulation
 
-    def _load_emul_devices(self):
+    def _load_emul_devices(self) -> dict | None:
         """This is used only for debug."""
         data_file = os.path.join(
             os.path.dirname(os.path.realpath(__file__)), "deviceV2.txt"
@@ -1405,7 +1414,7 @@ class ClientAsync:
                 return
             if self.emulation:
                 # for debug
-                if emul_device := self._load_emul_devices():
+                if emul_device := await asyncio.to_thread(self._load_emul_devices):
                     new_devices.extend(emul_device)
             self._devices = {
                 d[KEY_DEVICE_ID]: d for d in new_devices if KEY_DEVICE_ID in d
@@ -1424,8 +1433,16 @@ class ClientAsync:
         return self._auth
 
     @property
+    def client_id(self) -> str | None:
+        """Return the associated client_id."""
+        if not self._auth:
+            return None
+        return self._auth.gateway.core.client_id
+
+    @property
     def session(self) -> Session:
         """Return the Session object associated to this client."""
+        self._check_connected()
         if not self._session:
             self._session = self.auth.start_session()
         return self._session
@@ -1466,7 +1483,16 @@ class ClientAsync:
 
     async def close(self):
         """Close the active managed core http session."""
+        if not self._connected:
+            return
+        self._connected = False
+        self._session = None
         await self._auth.gateway.close()
+
+    def _check_connected(self):
+        """Check that client is in connected status."""
+        if not self._connected:
+            raise exc.ClientDisconnected()
 
     async def refresh_devices(self):
         """Refresh the devices' information for this client."""
@@ -1480,6 +1506,7 @@ class ClientAsync:
 
     async def refresh(self, refresh_gateway=False) -> None:
         """Refresh client connection."""
+        self._check_connected()
         if refresh_gateway:
             gateway = await Gateway.discover(self.auth.gateway.core)
             self.auth.refresh_gateway(gateway)
@@ -1504,6 +1531,7 @@ class ClientAsync:
         language: str = DEFAULT_LANGUAGE,
         oauth_url: str | None = None,
         aiohttp_session: aiohttp.ClientSession | None = None,
+        client_id: str | None = None,
         enable_emulation: bool = False,
     ) -> ClientAsync:
         """
@@ -1515,7 +1543,11 @@ class ClientAsync:
         """
 
         core = CoreAsync(
-            country, language, oauth_url=oauth_url, session=aiohttp_session
+            country,
+            language,
+            oauth_url=oauth_url,
+            session=aiohttp_session,
+            client_id=client_id,
         )
         try:
             gateway = await Gateway.discover(core)
@@ -1543,6 +1575,7 @@ class ClientAsync:
         language: str = DEFAULT_LANGUAGE,
         oauth_url: str | None = None,
         aiohttp_session: aiohttp.ClientSession | None = None,
+        client_id: str | None = None,
         enable_emulation: bool = False,
     ) -> ClientAsync:
         """
@@ -1554,7 +1587,11 @@ class ClientAsync:
         """
 
         core = CoreAsync(
-            country, language, oauth_url=oauth_url, session=aiohttp_session
+            country,
+            language,
+            oauth_url=oauth_url,
+            session=aiohttp_session,
+            client_id=client_id,
         )
         try:
             gateway = await Gateway.discover(core)
@@ -1626,32 +1663,36 @@ class ClientAsync:
 
     async def _load_json_info(self, info_url: str):
         """Load JSON data from specific url."""
+        self._check_connected()
         if not info_url:
             return {}
 
         content = await self._auth.gateway.core.http_get_bytes(info_url)
 
-        # we use charset_normalizer to detect correct encoding and convert to unicode string
-        encoding = detect(content)["encoding"]
-        try:
-            str_content = str(content, encoding, errors="replace")
-        except (LookupError, TypeError):
-            # A LookupError is raised if the encoding was not found which could
-            # indicate a misspelling or similar mistake.
-            #
-            # A TypeError can be raised if encoding is None
-            #
-            # So we try blindly encoding.
-            str_content = str(content, errors="replace")
+        def _load_json_content():
+            """Decode and load as json the received content."""
+            try:
+                # we use charset_normalizer to detect correct encoding and convert to unicode string
+                str_content = str(from_bytes(content).best(), errors="replace")
+            except (LookupError, TypeError):
+                # A LookupError is raised if the encoding was not found which could
+                # indicate a misspelling or similar mistake.
+                #
+                # A TypeError can be raised if encoding is None
+                #
+                # So we try blindly encoding.
+                str_content = str(content, errors="replace")
 
-        enc_resp = str_content.encode()
-        try:
-            return json.loads(enc_resp)
-        except json.JSONDecodeError as ex:
-            _LOGGER.warning(
-                "Failed to load json info file: %s - error: %s", info_url, ex
-            )
-            return None
+            enc_resp = str_content.encode()
+            try:
+                return json.loads(enc_resp)
+            except json.JSONDecodeError as ex:
+                _LOGGER.warning(
+                    "Failed to load json info file: %s - error: %s", info_url, ex
+                )
+                return None
+
+        return await asyncio.to_thread(_load_json_content)
 
     async def common_lang_pack(self):
         """Load JSON common lang pack from specific url."""
@@ -1663,25 +1704,29 @@ class ClientAsync:
             ).get("pack", {})
         return self._common_lang_pack
 
-    def local_lang_pack(self) -> dict[str, str]:
+    async def local_lang_pack(self) -> dict[str, str]:
         """Load JSON local lang pack from local."""
         if self._local_lang_pack is not None:
             return self._local_lang_pack
 
-        result = {}
-        data_file = os.path.join(
-            os.path.dirname(os.path.realpath(__file__)), _LOCAL_LANG_FILE
-        )
-        try:
-            with open(data_file, "r", encoding="utf-8") as lang_file:
-                lang_pack = json.load(lang_file)
-        except (FileNotFoundError, json.JSONDecodeError):
-            self._local_lang_pack = {}
-            return {}
+        def _load_local_lang_pack() -> dict[str, dict]:
+            """Load content of local lang pack."""
+            data_file = os.path.join(
+                os.path.dirname(os.path.realpath(__file__)), _LOCAL_LANG_FILE
+            )
+            try:
+                with open(data_file, "r", encoding="utf-8") as lang_file:
+                    return json.load(lang_file)
+            except (FileNotFoundError, json.JSONDecodeError):
+                return {}
+
+        lang_pack = await asyncio.to_thread(_load_local_lang_pack)
+
         if self._language in lang_pack:
             result = lang_pack[self._language]
         else:
             result = lang_pack.get(DEFAULT_LANGUAGE, {})
+
         self._local_lang_pack = result
         return result
 

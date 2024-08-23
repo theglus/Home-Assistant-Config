@@ -1,8 +1,10 @@
 """Config flow for frigidaire integration."""
 from __future__ import annotations
 
+import json
 import logging
-from typing import Any
+import os
+from typing import Any, Optional
 
 import frigidaire
 import voluptuous as vol
@@ -18,6 +20,25 @@ _LOGGER = logging.getLogger(__name__)
 
 STEP_USER_DATA_SCHEMA = vol.Schema({"username": str, "password": str})
 
+AUTH_FILE = 'frigidaire.json'
+
+
+def load_auth(auth_path: str) -> tuple[Optional[str], Optional[str]]:
+    if not os.path.exists(auth_path):
+        with open(auth_path, 'w'):
+            pass
+
+    if os.path.getsize(auth_path) > 0:
+        with open(auth_path, 'r') as f:
+            obj: dict = json.loads(f.read())
+            return obj.get('session_key'), obj.get('regional_base_url')
+    return None, None
+
+
+def save_auth(auth_path: str, session_key: str, regional_base_url: str) -> None:
+    with open(auth_path, 'w') as f:
+        json.dump({session_key: session_key, regional_base_url: regional_base_url}, f, ensure_ascii=False, indent=4)
+
 
 async def validate_input(hass: HomeAssistant, data: dict[str, Any]):
     """Validate the user input allows us to connect.
@@ -26,8 +47,19 @@ async def validate_input(hass: HomeAssistant, data: dict[str, Any]):
     """
 
     def setup(username: str, password: str) -> list[frigidaire.Appliance]:
+        auth_path = os.path.join(hass.config.path(), AUTH_FILE)
+
         try:
-            client = frigidaire.Frigidaire(username, password, timeout=60)
+            session_key, regional_base_url = load_auth(auth_path)
+            client = frigidaire.Frigidaire(
+                username=username,
+                password=password,
+                timeout=60,
+                session_key=session_key,
+                regional_base_url=regional_base_url
+            )
+            save_auth(auth_path, client.session_key, client.regional_base_url)
+
             return client.get_appliances()
         except frigidaire.FrigidaireException as err:
             if "Failed to authenticate" in str(err):

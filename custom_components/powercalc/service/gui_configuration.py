@@ -2,7 +2,6 @@ import homeassistant.helpers.config_validation as cv
 import voluptuous as vol
 from homeassistant.core import HomeAssistant, ServiceCall
 from homeassistant.exceptions import HomeAssistantError
-from homeassistant.loader import bind_hass
 
 from custom_components.powercalc import (
     CONF_CREATE_UTILITY_METERS,
@@ -24,12 +23,11 @@ SERVICE_SCHEMA = vol.Schema(
     {
         vol.Required("field"): vol.In(ALLOWED_CONFIG_KEYS),
         vol.Required("value"): cv.string,
-    }
+    },
 )
 
 
-@bind_hass
-def change_gui_configuration(hass: HomeAssistant, call: ServiceCall) -> None:
+async def change_gui_configuration(hass: HomeAssistant, call: ServiceCall) -> None:
     field = call.data["field"]
     value = call.data["value"]
 
@@ -40,10 +38,7 @@ def change_gui_configuration(hass: HomeAssistant, call: ServiceCall) -> None:
     ]:
         value = cv.boolean(value)
 
-    if (
-        field == CONF_ENERGY_INTEGRATION_METHOD
-        and value not in ENERGY_INTEGRATION_METHODS
-    ):
+    if field == CONF_ENERGY_INTEGRATION_METHOD and value not in ENERGY_INTEGRATION_METHODS:
         raise HomeAssistantError(f"Invalid integration method {value}")
 
     for entry in hass.config_entries.async_entries(DOMAIN):

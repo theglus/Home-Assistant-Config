@@ -2,6 +2,7 @@
 A high-level, convenient abstraction for interacting with
 the LG SmartThinQ API for most use cases.
 """
+
 from __future__ import annotations
 
 import asyncio
@@ -12,6 +13,7 @@ from enum import Enum
 import json
 import logging
 from numbers import Number
+import os
 from typing import Any
 
 import aiohttp
@@ -160,6 +162,7 @@ class Monitor:
         for iteration in range(MAX_RETRIES):
             _LOGGER.debug("Polling...")
             # Wait one second between iteration
+
             if iteration > 0:
                 await asyncio.sleep(SLEEP_BETWEEN_RETRIES)
 
@@ -181,6 +184,9 @@ class Monitor:
                 if iteration >= 1:  # just retry 2 times
                     raise
                 continue
+
+            except core_exc.ClientDisconnected:
+                return None
 
             except core_exc.FailedRequestError:
                 self._raise_error("Status update request failed", debug_count=2)
@@ -436,6 +442,11 @@ class Device:
         return self._model_info
 
     @property
+    def subkey_device(self) -> Device | None:
+        """Return the available sub device."""
+        return None
+
+    @property
     def available_features(self) -> dict:
         """Return available features."""
         return self._available_features
@@ -484,7 +495,7 @@ class Device:
 
         # load local language pack
         if self._local_lang_pack is None:
-            self._local_lang_pack = self._client.local_lang_pack()
+            self._local_lang_pack = await self._client.local_lang_pack()
 
         return True
 
@@ -705,6 +716,26 @@ class Device:
             except Exception as exc:  # pylint: disable=broad-except
                 _LOGGER.debug("Error calling additional poll V2 methods: %s", exc)
 
+    def _load_emul_v1_payload(self):
+        """
+        This is used only for debug.
+        Load the payload for V1 device from file "deviceV1.txt".
+        """
+        if not self._client.emulation:
+            return None
+
+        data_file = os.path.join(
+            os.path.dirname(os.path.realpath(__file__)), "deviceV1.txt"
+        )
+        try:
+            with open(data_file, "r", encoding="utf-8") as emu_payload:
+                device_v1 = json.load(emu_payload)
+        except (FileNotFoundError, json.JSONDecodeError):
+            return None
+        if ret_val := device_v1.get(self.device_info.device_id):
+            return str(ret_val).encode()
+        return None
+
     async def _device_poll(
         self,
         snapshot_key="",
@@ -744,7 +775,8 @@ class Device:
             return self._model_info.decode_snapshot(snapshot, snapshot_key)
 
         # ThinQ V1 - Monitor data must be polled """
-        data = await self._mon.refresh()
+        if not (data := self._load_emul_v1_payload()):
+            data = await self._mon.refresh()
         if not data:
             return None
 
@@ -910,9 +942,9 @@ class DeviceStatus:
         return bool(self._data)
 
     @property
-    def data(self):
+    def as_dict(self):
         """Return status raw data."""
-        return self._data
+        return deepcopy(self._data)
 
     @property
     def is_on(self) -> bool:
@@ -960,11 +992,11 @@ class DeviceStatus:
 
     def update_status(self, key, value) -> bool:
         """Update the status key to a specific value."""
-        if key in self._data:
-            self._data[key] = value
-            self._features_updated = False
-            return True
-        return False
+        if not (upd_key := self._get_data_key(key)):
+            return False
+        self._data[upd_key] = value
+        self._features_updated = False
+        return True
 
     def update_status_feat(self, key, value, upd_features=False) -> bool:
         """Update device status and features."""
@@ -1025,14 +1057,16 @@ class DeviceStatus:
             curr_key, self._data[curr_key], ref_key
         )
 
-    def lookup_bit_enum(self, key):
+    def lookup_bit_enum(self, key, *, sub_key=None):
         """Lookup value for a specific key of type bit enum."""
         if not self._data:
             str_val = ""
         else:
             str_val = self._data.get(key)
             if not str_val:
-                str_val = self._device.model_info.bit_value(key, self._data)
+                str_val = self._device.model_info.option_bit_value(
+                    key, self._data, sub_key
+                )
 
         if str_val is None:
             return None
@@ -1050,9 +1084,9 @@ class DeviceStatus:
 
         return ret_val
 
-    def lookup_bit(self, key, invert=False):
+    def lookup_bit(self, key, *, sub_key=None, invert=False):
         """Lookup bit value for a specific key of type enum."""
-        enum_val = self.lookup_bit_enum(key)
+        enum_val = self.lookup_bit_enum(key, sub_key=sub_key)
         if enum_val is None:
             return None
         bit_val = LOCAL_LANG_PACK.get(enum_val)
