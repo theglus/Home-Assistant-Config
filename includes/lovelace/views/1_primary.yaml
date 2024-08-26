@@ -197,11 +197,11 @@ cards:
                   entity: weather.climacell_nowcast
                   label: |
                     [[[
-                      return states['weather.climacell_nowcast'].attributes.temperature + '°F '
+                      return states['weather.climacell_hourly'].attributes.temperature + '°F'
                     ]]]
                   name: |
                     [[[
-                      return "Next hour " + states['weather.climacell_hourly'].attributes.forecast[1].temperature + '°F'
+                      return "Feels like " + states['sensor.climacell_feels_like'].state + '°F'
                     ]]]
                   template:
                     - weather_layout
