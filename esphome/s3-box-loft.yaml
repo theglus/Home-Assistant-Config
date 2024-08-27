@@ -1,0 +1,21 @@
+substitutions:
+  name: "s3-box-loft"
+  friendly_name: S3-Box Loft
+packages:
+  esphome.voice-assistant: github://esphome/wake-word-voice-assistants/esp32-s3-box-3/esp32-s3-box-3.yaml@main
+esphome:
+  name: ${name}
+  name_add_mac_suffix: false
+  friendly_name: ${friendly_name}
+api:
+  encryption:
+    key: !secret s3_box_loft
+
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  manual_ip:
+    static_ip: !secret s3_box_loft_ip
+    gateway: !secret gateway_ip
+    subnet: !secret subnet_ip
