@@ -19,24 +19,3 @@ wifi:
     static_ip: !secret s3_box_loft_ip
     gateway: !secret gateway_ip
     subnet: !secret subnet_ip
-
-
-i2c:
-  - id: bus_a
-    sda: GPIO08
-    scl: GPIO18
-    scan: true
-
-  - sda: GPIO41
-    scl: GPIO40
-    id: bus_b
-
-sensor:
-  - platform: aht10
-    i2c_id: bus_b
-    variant: AHT20
-    temperature:
-      name: "Temperature"
-    humidity:
-      name: "Humidity"
-    update_interval: 60s
