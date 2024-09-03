@@ -2,19 +2,18 @@
 from __future__ import annotations
 
 import logging
-from typing import List, Any, Mapping, Optional
+from typing import List, Any, Mapping, Optional, Dict
 
 import frigidaire
 import voluptuous as vol
 
-from homeassistant.components.humidifier import HumidifierEntity
+from homeassistant.components.humidifier import HumidifierEntity, HumidifierDeviceClass
 from homeassistant.components.humidifier.const import (
-    DEVICE_CLASS_DEHUMIDIFIER,
     MODE_BOOST,
     MODE_SLEEP,
     MODE_AUTO,
     MODE_NORMAL,
-    SUPPORT_MODES,
+    HumidifierEntityFeature,
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
@@ -92,12 +91,12 @@ class FrigidaireDehumidifier(HumidifierEntity):
 
         self._client: frigidaire.Frigidaire = client
         self._appliance: frigidaire.Appliance = appliance
-        self._details: Optional[frigidaire.ApplianceDetails] = None
+        self._details: Optional[Dict] = None
 
         # Entity Class Attributes
         self._attr_unique_id = self._appliance.appliance_id
         self._attr_name = self._appliance.nickname
-        self._attr_supported_features = SUPPORT_MODES
+        self._attr_supported_features = HumidifierEntityFeature.MODES
 
         # Although we can access the Frigidaire API to get updates, they are
         # not reflected immediately after making a request. To improve the UX
@@ -133,7 +132,7 @@ class FrigidaireDehumidifier(HumidifierEntity):
 
     @property
     def device_class(self):
-        return DEVICE_CLASS_DEHUMIDIFIER
+        return HumidifierDeviceClass.DEHUMIDIFIER
 
     @property
     def is_on(self):
@@ -156,7 +155,7 @@ class FrigidaireDehumidifier(HumidifierEntity):
 
     @property
     def mode(self):
-        """Return current operation ie. dry, continuous."""
+        """Return current operation i.e. dry, continuous."""
         frigidaire_mode = self._details.get(frigidaire.Detail.MODE)
 
         if frigidaire_mode == frigidaire.Mode.OFF:
@@ -178,8 +177,7 @@ class FrigidaireDehumidifier(HumidifierEntity):
         }
 
         # The following attributes only exist on some models of dehumidifier
-        if (alerts := self._details.get(frigidaire.Detail.ALERTS)
-                ) is not None:
+        if (alerts := self._details.get(frigidaire.Detail.ALERTS)) is not None:
             attrib["bin_full"] = frigidaire.Alert.BUCKET_FULL in alerts
 
         return attrib
