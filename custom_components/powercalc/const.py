@@ -6,8 +6,10 @@ from typing import Literal
 
 from homeassistant.components.utility_meter.const import DAILY, MONTHLY, WEEKLY
 from homeassistant.const import (
+    STATE_CLOSED,
     STATE_NOT_HOME,
     STATE_OFF,
+    STATE_OPEN,
     STATE_STANDBY,
     STATE_UNAVAILABLE,
 )
@@ -115,6 +117,7 @@ CONF_CALCULATION_ENABLED_CONDITION = "calculation_enabled_condition"
 CONF_DISABLE_STANDBY_POWER = "disable_standby_power"
 CONF_CUSTOM_MODEL_DIRECTORY = "custom_model_directory"
 CONF_UTILITY_METER_OFFSET = "utility_meter_offset"
+CONF_UTILITY_METER_NET_CONSUMPTION = "utility_meter_net_consumption"
 CONF_UTILITY_METER_TYPES = "utility_meter_types"
 CONF_UTILITY_METER_TARIFFS = "utility_meter_tariffs"
 CONF_OR = "or"
@@ -184,7 +187,7 @@ SERVICE_CHANGE_GUI_CONFIGURATION = "change_gui_config"
 
 SIGNAL_POWER_SENSOR_STATE_CHANGE = "powercalc_power_sensor_state_change"
 
-OFF_STATES = (STATE_OFF, STATE_NOT_HOME, STATE_STANDBY, STATE_UNAVAILABLE)
+OFF_STATES = (STATE_OFF, STATE_NOT_HOME, STATE_STANDBY, STATE_UNAVAILABLE, STATE_OPEN, STATE_CLOSED)
 
 
 class CalculationStrategy(StrEnum):
