@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import csv
+import gzip
 import logging
 import os
 from collections import deque
@@ -22,22 +23,29 @@ from custom_components.powercalc.const import (
     CONF_PLAYBOOKS,
     CONF_REPEAT,
     CONF_STATE_TRIGGER,
+    CONF_STATES_TRIGGER,
 )
 from custom_components.powercalc.errors import StrategyConfigurationError
 
 from .strategy_interface import PowerCalculationStrategyInterface
 
-CONFIG_SCHEMA = vol.Schema(
-    {
-        vol.Optional(CONF_PLAYBOOKS): vol.Schema(
-            {cv.string: cv.string},
-        ),
-        vol.Optional(CONF_AUTOSTART): cv.string,
-        vol.Optional(CONF_REPEAT, default=False): cv.boolean,
-        vol.Optional(CONF_STATE_TRIGGER): vol.Schema(
-            {cv.string: cv.string},
-        ),
-    },
+CONFIG_SCHEMA = vol.All(
+    cv.deprecated(CONF_STATES_TRIGGER, replacement_key=CONF_STATE_TRIGGER),
+    vol.Schema(
+        {
+            vol.Optional(CONF_PLAYBOOKS): vol.Schema(
+                {cv.string: cv.string},
+            ),
+            vol.Optional(CONF_AUTOSTART): cv.string,
+            vol.Optional(CONF_REPEAT, default=False): cv.boolean,
+            vol.Optional(CONF_STATE_TRIGGER): vol.Schema(
+                {cv.string: cv.string},
+            ),
+            vol.Optional(CONF_STATES_TRIGGER): vol.Schema(
+                {cv.string: cv.string},
+            ),
+        },
+    ),
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -60,12 +68,8 @@ class PlaybookStrategy(PowerCalculationStrategyInterface):
         self._repeat: bool = bool(config.get(CONF_REPEAT))
         self._autostart: str | None = config.get(CONF_AUTOSTART)
         self._power = Decimal(0)
-        self._states_trigger: dict[str, str] | None = config.get(CONF_STATE_TRIGGER)
-        if not playbook_directory:
-            self._playbook_directory: str = os.path.join(
-                hass.config.config_dir,
-                "powercalc/playbooks",
-            )
+        self._states_trigger: dict[str, str] | None = config.get(CONF_STATE_TRIGGER, config.get(CONF_STATES_TRIGGER))
+        self._playbook_directory = playbook_directory or os.path.join(hass.config.config_dir, "powercalc/playbooks")
 
     def set_update_callback(self, update_callback: Callable[[Decimal], None]) -> None:
         """
@@ -75,9 +79,12 @@ class PlaybookStrategy(PowerCalculationStrategyInterface):
         self._update_callback = update_callback
 
     async def calculate(self, entity_state: State) -> Decimal | None:
-        if self._states_trigger and entity_state.state in self._states_trigger:
-            playbook_id = self._states_trigger[entity_state.state]
-            await self.activate_playbook(playbook_id)
+        if self._states_trigger:
+            if entity_state.state in self._states_trigger:
+                playbook_id = self._states_trigger[entity_state.state]
+                await self.activate_playbook(playbook_id)
+            else:
+                await self.stop_playbook()
 
         return self._power
 
@@ -105,6 +112,7 @@ class PlaybookStrategy(PowerCalculationStrategyInterface):
 
         _LOGGER.debug("Stopping playbook")
         self._active_playbook = None
+        self._power = Decimal(0)
         if self._cancel_timer is not None:
             self._cancel_timer()
             self._cancel_timer = None
@@ -166,26 +174,27 @@ class PlaybookStrategy(PowerCalculationStrategyInterface):
             )
 
         file_path = os.path.join(self._playbook_directory, playbooks[playbook_id])
-        if not os.path.exists(file_path):
+        if not (os.path.exists(file_path) or os.path.exists(f"{file_path}.gz")):
             raise StrategyConfigurationError(
                 f"Playbook file '{file_path}' does not exist",
             )
 
         def _load_playbook_entries() -> list[PlaybookEntry]:
-            """Load playbook entries from CSV file"""
-            with open(file_path) as csv_file:
+            """Load playbook entries from a CSV file, with support for gzipped files"""
+            actual_path = file_path if os.path.exists(file_path) else f"{file_path}.gz"
+            open_func = gzip.open if actual_path.endswith(".gz") else open
+            with open_func(actual_path, mode="rt") as csv_file:
                 csv_reader = csv.reader(csv_file)
                 entries = []
                 for row in csv_reader:
                     if len(row) != 2:
                         raise StrategyConfigurationError(
-                            f"Playbook file '{file_path}' has invalid structure, please see the documentation.",
+                            f"Playbook file '{actual_path}' has invalid structure, please see the documentation.",
                         )
                     entries.append(PlaybookEntry(time=float(row[0]), power=Decimal(row[1])))
-
                 return entries
 
-        playbook_entries = await self._hass.async_add_executor_job(_load_playbook_entries)  # type: ignore
+        playbook_entries = await self._hass.async_add_executor_job(_load_playbook_entries)
 
         self._loaded_playbooks[playbook_id] = Playbook(
             key=playbook_id,
@@ -195,6 +204,11 @@ class PlaybookStrategy(PowerCalculationStrategyInterface):
 
     def can_calculate_standby(self) -> bool:
         return bool(self._states_trigger and STATE_OFF in self._states_trigger)
+
+    @property
+    def registered_playbooks(self) -> list[str]:
+        playbooks = dict(self._config.get(CONF_PLAYBOOKS, {}))
+        return list(playbooks.keys())
 
 
 class PlaybookQueue:

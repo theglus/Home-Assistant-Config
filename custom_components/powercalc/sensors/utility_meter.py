@@ -8,6 +8,7 @@ from typing import cast
 import homeassistant.helpers.entity_registry as er
 from homeassistant.components.select import DOMAIN as SELECT_DOMAIN
 from homeassistant.components.sensor import DOMAIN as SENSOR_DOMAIN
+from homeassistant.components.utility_meter import DEFAULT_OFFSET
 from homeassistant.components.utility_meter.const import (
     DATA_TARIFF_SENSORS,
     DATA_UTILITY,
@@ -189,7 +190,7 @@ async def create_tariff_select(
     tariff_select = TariffSelect(
         name,
         tariffs,
-        select_unique_id,
+        unique_id=select_unique_id,
     )
 
     await select_component.async_add_entities([tariff_select])
@@ -221,7 +222,7 @@ async def create_utility_meter(
         "source_entity": source_entity,
         "name": name,
         "meter_type": meter_type,
-        "meter_offset": sensor_config.get(CONF_UTILITY_METER_OFFSET),
+        "meter_offset": sensor_config.get(CONF_UTILITY_METER_OFFSET, DEFAULT_OFFSET),
         "net_consumption": bool(sensor_config.get(CONF_UTILITY_METER_NET_CONSUMPTION, False)),
         "tariff": tariff,
         "tariff_entity": tariff_entity,
@@ -242,7 +243,7 @@ async def create_utility_meter(
         params["sensor_always_available"] = sensor_config.get(CONF_IGNORE_UNAVAILABLE_STATE) or False
 
     utility_meter = VirtualUtilityMeter(**params)  # type: ignore[no-untyped-call]
-    utility_meter.rounding_digits = sensor_config.get(CONF_ENERGY_SENSOR_PRECISION)  # type: ignore
+    utility_meter.rounding_digits = int(sensor_config.get(CONF_ENERGY_SENSOR_PRECISION, DEFAULT_ENERGY_SENSOR_PRECISION))
     utility_meter.entity_id = entity_id
 
     return utility_meter
@@ -257,9 +258,10 @@ class VirtualUtilityMeter(UtilityMeterSensor, BaseEntity):
         return self._attr_unique_id
 
     @property
-    def native_value(self) -> Decimal | StateType:
+    def native_value(self) -> StateType | Decimal:
         """Return the state of the sensor."""
-        if self.rounding_digits and self._state is not None:
-            return round(self._state, self.rounding_digits)  # type: ignore
+        value = self._state if hasattr(self, "_state") else self._attr_native_value  # pre HA 2024.12 value was stored in _state
+        if self.rounding_digits and value is not None:
+            return Decimal(round(value, self.rounding_digits))  # type: ignore
 
-        return self._state
+        return value  # type: ignore

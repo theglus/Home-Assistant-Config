@@ -2,17 +2,20 @@ from __future__ import annotations
 
 import logging
 import re
+from collections.abc import Awaitable, Callable
+from datetime import timedelta
 from typing import Any
 
 import homeassistant.helpers.device_registry as dr
 import homeassistant.helpers.entity_registry as er
 from homeassistant.components.light import DOMAIN as LIGHT_DOMAIN
 from homeassistant.components.sensor import DOMAIN as SENSOR_DOMAIN
-from homeassistant.config_entries import SOURCE_INTEGRATION_DISCOVERY, SOURCE_USER
-from homeassistant.const import CONF_ENTITY_ID, CONF_PLATFORM
+from homeassistant.config_entries import SOURCE_INTEGRATION_DISCOVERY, SOURCE_USER, ConfigEntry
+from homeassistant.const import CONF_ENTITY_ID, CONF_PLATFORM, CONF_UNIQUE_ID
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers import discovery_flow
 from homeassistant.helpers.entity import EntityCategory
+from homeassistant.helpers.event import async_track_time_interval
 from homeassistant.helpers.typing import ConfigType
 
 from .common import SourceEntity, create_source_entity
@@ -22,20 +25,20 @@ from .const import (
     CONF_MODEL,
     CONF_SENSORS,
     DATA_DISCOVERY_MANAGER,
-    DISCOVERY_POWER_PROFILE,
+    DISCOVERY_POWER_PROFILES,
     DISCOVERY_SOURCE_ENTITY,
     DOMAIN,
+    DUMMY_ENTITY_ID,
+    MANUFACTURER_WLED,
     CalculationStrategy,
 )
-from .errors import ModelNotSupportedError
+from .group_include.filter import CategoryFilter, CompositeFilter, DomainFilter, FilterOperator, LambdaFilter, NotFilter, get_filtered_entity_list
 from .helpers import get_or_create_unique_id
 from .power_profile.factory import get_power_profile
-from .power_profile.library import ModelInfo
-from .power_profile.power_profile import DOMAIN_DEVICE_TYPE, DeviceType, PowerProfile
+from .power_profile.library import ModelInfo, ProfileLibrary
+from .power_profile.power_profile import SUPPORTED_DOMAINS, DeviceType, DiscoveryBy, PowerProfile
 
 _LOGGER = logging.getLogger(__name__)
-
-MANUFACTURER_WLED = "WLED"
 
 
 async def get_power_profile_by_source_entity(hass: HomeAssistant, source_entity: SourceEntity) -> PowerProfile | None:
@@ -44,7 +47,11 @@ async def get_power_profile_by_source_entity(hass: HomeAssistant, source_entity:
         discovery_manager: DiscoveryManager = hass.data[DOMAIN][DATA_DISCOVERY_MANAGER]
     except KeyError:
         discovery_manager = DiscoveryManager(hass, {})
-    return await get_power_profile(hass, {}, await discovery_manager.autodiscover_model(source_entity.entity_entry))
+    model_info = await discovery_manager.extract_model_info_from_device_info(source_entity.entity_entry)
+    if not model_info:
+        return None
+    profiles = await discovery_manager.find_power_profiles(model_info, source_entity, DiscoveryBy.ENTITY)
+    return profiles[0] if profiles else None
 
 
 class DiscoveryManager:
@@ -53,140 +60,271 @@ class DiscoveryManager:
     When entities are found it will dispatch a discovery flow, so the user can add them to their HA instance.
     """
 
-    def __init__(self, hass: HomeAssistant, ha_config: ConfigType) -> None:
+    def __init__(
+        self,
+        hass: HomeAssistant,
+        ha_config: ConfigType,
+        exclude_device_types: list[DeviceType] | None = None,
+    ) -> None:
         self.hass = hass
         self.ha_config = ha_config
         self.power_profiles: dict[str, PowerProfile | None] = {}
         self.manually_configured_entities: list[str] | None = None
         self.initialized_flows: set[str] = set()
+        self.library: ProfileLibrary | None = None
+        self._exclude_device_types = exclude_device_types or []
+
+    async def setup(self) -> None:
+        """Setup the discovery manager. Start initial discovery and setup interval based rediscovery."""
+        await self.start_discovery()
+
+        async def _rediscover(_: Any) -> None:  # noqa: ANN401
+            """Rediscover entities."""
+            await self.update_library_and_rediscover()
+
+        async_track_time_interval(
+            self.hass,
+            _rediscover,
+            timedelta(hours=2),
+        )
+
+    async def update_library_and_rediscover(self) -> None:
+        """Update the library and rediscover entities."""
+        library = await self._get_library()
+        await library.initialize()
+        await self.start_discovery()
 
     async def start_discovery(self) -> None:
         """Start the discovery procedure."""
+        await self.initialize_existing_entries()
 
-        existing_entries = self.hass.config_entries.async_entries(DOMAIN)
-        for entry in existing_entries:
-            if entry.unique_id:
-                self.initialized_flows.add(entry.unique_id)
+        _LOGGER.debug("Start auto discovery")
 
-        _LOGGER.debug("Start auto discovering entities")
-        entity_registry = er.async_get(self.hass)
-        for entity_entry in list(entity_registry.entities.values()):
-            model_info = await self.autodiscover_model(entity_entry)
-            if not model_info:
-                continue
-            power_profile = await self.get_power_profile(
-                entity_entry.entity_id,
-                model_info,
-            )
-            source_entity = await create_source_entity(
-                entity_entry.entity_id,
-                self.hass,
-            )
-            if not await self.is_entity_supported(entity_entry):
+        _LOGGER.debug("Start entity discovery")
+        await self.perform_discovery(self.get_entities, self.create_entity_source, DiscoveryBy.ENTITY)  # type: ignore[arg-type]
+
+        _LOGGER.debug("Start device discovery")
+        await self.perform_discovery(self.get_devices, self.create_device_source, DiscoveryBy.DEVICE)  # type: ignore[arg-type]
+
+        _LOGGER.debug("Done auto discovery")
+
+    async def initialize_existing_entries(self) -> None:
+        """Build a list of config entries which are already setup, to prevent duplicate discovery flows"""
+        for entry in self.hass.config_entries.async_entries(DOMAIN):
+            if not entry.unique_id:
                 continue
 
-            self._init_entity_discovery(source_entity, power_profile, {})
+            self.initialized_flows.add(entry.unique_id)
+            entity_id = entry.data.get(CONF_ENTITY_ID)
+            if not entity_id or entity_id == DUMMY_ENTITY_ID:
+                continue
 
-        _LOGGER.debug("Done auto discovering entities")
+            entity = await create_source_entity(str(entity_id), self.hass)
+            if entity and entity.device_entry:
+                self.initialized_flows.add(f"pc_{entity.device_entry.id}")
+            self.initialized_flows.add(entity_id)
 
-    async def get_power_profile(
+    def remove_initialized_flow(self, entry: ConfigEntry) -> None:
+        """Remove a flow from the initialized flows."""
+        if entry.unique_id:
+            self.initialized_flows.discard(entry.unique_id)
+        entity_id = entry.data.get(CONF_ENTITY_ID)
+        if entity_id:
+            self.initialized_flows.discard(entity_id)
+
+    async def perform_discovery(
         self,
-        entity_id: str,
-        model_info: ModelInfo,
-    ) -> PowerProfile | None:
-        if entity_id in self.power_profiles:
-            return self.power_profiles[entity_id]
+        source_provider: Callable[[], Awaitable[list]],
+        source_creator: Callable[[er.RegistryEntry | dr.DeviceEntry], Awaitable[SourceEntity]],
+        discovery_type: DiscoveryBy,
+    ) -> None:
+        """Generalized discovery procedure for entities and devices."""
+        for source in await source_provider():
+            log_identifier = source.entity_id if discovery_type == DiscoveryBy.ENTITY else source.id
+            try:
+                model_info = await self.extract_model_info_from_device_info(source)
+                if not model_info:
+                    continue
 
-        try:
-            self.power_profiles[entity_id] = await get_power_profile(
-                self.hass,
-                {},
-                model_info=model_info,
-            )
-            return self.power_profiles[entity_id]
-        except ModelNotSupportedError:
-            _LOGGER.debug(
-                "%s: Model not found in library, skipping discovery",
-                entity_id,
-            )
+                source_entity = await source_creator(source)
+
+                power_profiles = await self.discover_entity(source_entity, model_info, discovery_type)
+                if not power_profiles:
+                    _LOGGER.debug("%s: Model not found in library, skipping discovery", log_identifier)
+                    continue
+
+                unique_id = self.create_unique_id(
+                    source_entity,
+                    discovery_type,
+                    power_profiles[0] if power_profiles else None,
+                )
+
+                if self._is_already_discovered(source_entity, unique_id):
+                    _LOGGER.debug(
+                        "%s: Already setup with discovery, skipping new discovery (unique_id=%s)",
+                        log_identifier,
+                        unique_id,
+                    )
+                    continue
+
+                self._init_entity_discovery(model_info, unique_id, source_entity, log_identifier, power_profiles, {})
+            except Exception as err:  # noqa: BLE001
+                _LOGGER.error(
+                    "%s: Error during %s discovery: %s",
+                    log_identifier,
+                    discovery_type,
+                    err,
+                )
+
+    async def discover_entity(
+        self,
+        source_entity: SourceEntity,
+        model_info: ModelInfo,
+        discovery_type: DiscoveryBy = DiscoveryBy.ENTITY,
+    ) -> list[PowerProfile] | None:
+        if source_entity.entity_entry and self.is_wled_light(model_info, source_entity.entity_entry):
+            await self.init_wled_flow(model_info, source_entity)
             return None
 
-    async def is_entity_supported(self, entity_entry: er.RegistryEntry) -> bool:
-        if not self.should_process_entity(entity_entry):
-            return False
+        return await self.find_power_profiles(model_info, source_entity, discovery_type)
 
-        model_info = await self.autodiscover_model(entity_entry)
-        if not model_info or not model_info.manufacturer or not model_info.model:
-            return False
+    async def create_entity_source(self, entity_entry: er.RegistryEntry) -> SourceEntity:
+        """Create SourceEntity for an entity."""
+        return await create_source_entity(entity_entry.entity_id, self.hass)
 
-        source_entity = await create_source_entity(
-            entity_entry.entity_id,
-            self.hass,
+    @staticmethod
+    async def create_device_source(device_entry: dr.DeviceEntry) -> SourceEntity:
+        """Create SourceEntity for a device."""
+        return SourceEntity(
+            object_id=device_entry.name_by_user or device_entry.name or "",
+            name=device_entry.name,
+            entity_id=DUMMY_ENTITY_ID,
+            domain="sensor",
+            device_entry=device_entry,
         )
 
-        if (
-            model_info.manufacturer == MANUFACTURER_WLED
-            and entity_entry.domain == LIGHT_DOMAIN
-            and not re.search(
-                "master|segment",
-                str(entity_entry.original_name),
-                flags=re.IGNORECASE,
-            )
-        ):
-            self._init_entity_discovery(
-                source_entity,
-                power_profile=None,
-                extra_discovery_data={
-                    CONF_MODE: CalculationStrategy.WLED,
-                    CONF_MANUFACTURER: model_info.manufacturer,
-                    CONF_MODEL: model_info.model,
-                },
-            )
-            return False
+    @staticmethod
+    def create_unique_id(source: SourceEntity, discovery_type: DiscoveryBy, power_profile: PowerProfile | None) -> str:
+        """Generate a unique ID based on source and type."""
+        if discovery_type == DiscoveryBy.DEVICE:
+            device_id = source.object_id
+            if source.device_entry:
+                device_id = source.device_entry.id
+            return f"pc_{device_id}"
 
-        power_profile = await self.get_power_profile(entity_entry.entity_id, model_info)
-        if not power_profile:
-            return False
+        return get_or_create_unique_id({}, source, power_profile)
 
-        return power_profile.is_entity_domain_supported(source_entity)
-
-    def should_process_entity(self, entity_entry: er.RegistryEntry) -> bool:
-        """Do some validations on the registry entry to see if it qualifies for discovery."""
-        if entity_entry.disabled:
-            return False
-
-        if entity_entry.domain not in DOMAIN_DEVICE_TYPE:
-            return False
-
-        if DOMAIN_DEVICE_TYPE[entity_entry.domain] == DeviceType.PRINTER and entity_entry.unit_of_measurement:
-            return False
-
-        if entity_entry.entity_category in [
-            EntityCategory.CONFIG,
-            EntityCategory.DIAGNOSTIC,
-        ]:
-            return False
-
-        has_user_config = self._is_user_configured(entity_entry.entity_id)
-        if has_user_config:
-            _LOGGER.debug(
-                "%s: Entity is manually configured, skipping auto configuration",
-                entity_entry.entity_id,
-            )
-            return False
-
-        return True
-
-    async def autodiscover_model(self, entity_entry: er.RegistryEntry | None) -> ModelInfo | None:
-        """Try to auto discover manufacturer and model from the known device information."""
-        if not entity_entry or not entity_entry.device_id:
+    async def find_power_profiles(
+        self,
+        model_info: ModelInfo,
+        source_entity: SourceEntity,
+        discovery_type: DiscoveryBy,
+    ) -> list[PowerProfile] | None:
+        """Find power profiles for a given entity."""
+        library = await self._get_library()
+        models = await library.find_models(model_info)
+        if not models:
             return None
 
-        model_info = await self.get_model_information(entity_entry)
+        power_profiles = []
+        for model_info in models:
+            profile = await get_power_profile(self.hass, {}, model_info=model_info, process_variables=False)
+            if not profile or profile.discovery_by != discovery_type:  # pragma: no cover
+                continue
+            if discovery_type == DiscoveryBy.ENTITY and not profile.is_entity_domain_supported(
+                source_entity.entity_entry,  # type: ignore[arg-type]
+            ):
+                continue
+            if profile.device_type in self._exclude_device_types:
+                continue
+            power_profiles.append(profile)
+
+        return power_profiles
+
+    async def init_wled_flow(self, model_info: ModelInfo, source_entity: SourceEntity) -> None:
+        """Initialize the discovery flow for a WLED light."""
+        unique_id = f"pc_{source_entity.device_entry.id}" if source_entity.device_entry else get_or_create_unique_id({}, source_entity, None)
+        if self._is_already_discovered(source_entity, unique_id):
+            _LOGGER.debug(
+                "%s: Already setup with discovery, skipping new discovery (unique_id=%s)",
+                source_entity.entity_id,
+                unique_id,
+            )
+            return
+
+        self._init_entity_discovery(
+            model_info,
+            unique_id,
+            source_entity,
+            source_entity.entity_id,
+            power_profiles=None,
+            extra_discovery_data={
+                CONF_MODE: CalculationStrategy.WLED,
+            },
+        )
+
+    @staticmethod
+    def is_wled_light(model_info: ModelInfo, entity_entry: er.RegistryEntry) -> bool:
+        """Check if the entity is a WLED light."""
+        return (
+            model_info.manufacturer == MANUFACTURER_WLED
+            and entity_entry.domain == LIGHT_DOMAIN
+            and not re.search("master|segment", str(entity_entry.original_name), flags=re.IGNORECASE)
+            and not re.search("master|segment", str(entity_entry.entity_id), flags=re.IGNORECASE)
+        )
+
+    async def get_entities(self) -> list[er.RegistryEntry]:
+        """Get all entities from entity registry which qualifies for discovery."""
+
+        def _check_already_configured(entity: er.RegistryEntry) -> bool:
+            has_user_config = self._is_user_configured(entity.entity_id)
+            if has_user_config:
+                _LOGGER.debug(
+                    "%s: Entity is manually configured, skipping auto configuration",
+                    entity.entity_id,
+                )
+            return has_user_config
+
+        entity_filter = CompositeFilter(
+            [
+                CategoryFilter(
+                    [
+                        EntityCategory.CONFIG,
+                        EntityCategory.DIAGNOSTIC,
+                    ],
+                ),
+                LambdaFilter(_check_already_configured),
+                LambdaFilter(lambda entity: entity.device_id is None),
+                LambdaFilter(lambda entity: entity.platform == "mqtt" and "segment" in entity.entity_id),
+                LambdaFilter(lambda entity: entity.platform in ["powercalc", "switch_as_x"]),
+                NotFilter(DomainFilter(SUPPORTED_DOMAINS)),
+            ],
+            FilterOperator.OR,
+        )
+        return await get_filtered_entity_list(self.hass, NotFilter(entity_filter))
+
+    async def get_devices(self) -> list:
+        """Fetch device entries."""
+        return list(dr.async_get(self.hass).devices.values())
+
+    async def extract_model_info_from_device_info(
+        self,
+        entry: er.RegistryEntry | dr.DeviceEntry | None,
+    ) -> ModelInfo | None:
+        """Try to auto discover manufacturer and model from the known device information."""
+        if not entry:
+            return None
+
+        log_identifier = entry.entity_id if isinstance(entry, er.RegistryEntry) else entry.id
+
+        if isinstance(entry, er.RegistryEntry):
+            model_info = await self.get_model_information_from_entity(entry)
+        else:
+            model_info = await self.get_model_information_from_device(entry)
         if not model_info:
             _LOGGER.debug(
                 "%s: Cannot autodiscover model, manufacturer or model unknown from device registry",
-                entity_entry.entity_id,
+                log_identifier,
             )
             return None
 
@@ -201,21 +339,18 @@ class DiscoveryManager:
             )
 
         _LOGGER.debug(
-            "%s: Auto discovered model (manufacturer=%s, model=%s, model_id=%s)",
-            entity_entry.entity_id,
+            "%s: Found model information on device (manufacturer=%s, model=%s, model_id=%s)",
+            log_identifier,
             model_info.manufacturer,
             model_info.model,
             model_info.model_id,
         )
         return model_info
 
-    async def get_model_information(self, entity_entry: er.RegistryEntry) -> ModelInfo | None:
-        """See if we have enough information in device registry to automatically setup the power sensor."""
-        if entity_entry.device_id is None:
-            return None
-        device_registry = dr.async_get(self.hass)
-        device_entry = device_registry.async_get(entity_entry.device_id)
-        if device_entry is None or device_entry.manufacturer is None or device_entry.model is None:
+    @staticmethod
+    async def get_model_information_from_device(device_entry: dr.DeviceEntry) -> ModelInfo | None:
+        """See if we have enough information in device registry to automatically set up the power sensor."""
+        if device_entry.manufacturer is None or device_entry.model is None:
             return None
 
         manufacturer = str(device_entry.manufacturer)
@@ -227,41 +362,56 @@ class DiscoveryManager:
 
         return ModelInfo(manufacturer, model, model_id)
 
+    async def get_model_information_from_entity(self, entity_entry: er.RegistryEntry) -> ModelInfo | None:
+        """See if we have enough information in device registry to automatically setup the power sensor."""
+        if entity_entry.device_id is None:
+            return None
+        device_registry = dr.async_get(self.hass)
+        device_entry = device_registry.async_get(entity_entry.device_id)
+        if device_entry is None:
+            return None
+
+        return await self.get_model_information_from_device(device_entry)
+
     @callback
     def _init_entity_discovery(
         self,
+        model_info: ModelInfo,
+        unique_id: str,
         source_entity: SourceEntity,
-        power_profile: PowerProfile | None,
+        log_identifier: str,
+        power_profiles: list[PowerProfile] | None,
         extra_discovery_data: dict | None,
     ) -> None:
         """Dispatch the discovery flow for a given entity."""
 
-        unique_id = get_or_create_unique_id({}, source_entity, power_profile)
-        unique_ids_to_check = [unique_id]
-        if unique_id.startswith("pc_"):
-            unique_ids_to_check.append(unique_id[3:])
-
-        if any(unique_id in self.initialized_flows for unique_id in unique_ids_to_check):
-            _LOGGER.debug(
-                "%s: Already setup with discovery, skipping new discovery",
-                source_entity.entity_id,
-            )
-            return
-
         discovery_data: dict[str, Any] = {
             CONF_ENTITY_ID: source_entity.entity_id,
             DISCOVERY_SOURCE_ENTITY: source_entity,
+            CONF_UNIQUE_ID: unique_id,
         }
 
-        if power_profile:
-            discovery_data[DISCOVERY_POWER_PROFILE] = power_profile
-            discovery_data[CONF_MANUFACTURER] = power_profile.manufacturer
-            discovery_data[CONF_MODEL] = power_profile.model
+        if power_profiles:
+            discovery_data[DISCOVERY_POWER_PROFILES] = power_profiles
+            if len(power_profiles) == 1:
+                power_profile = power_profiles[0]
+                discovery_data[CONF_MANUFACTURER] = power_profile.manufacturer
+                discovery_data[CONF_MODEL] = power_profile.model
+
+        if CONF_MANUFACTURER not in discovery_data:
+            discovery_data[CONF_MANUFACTURER] = model_info.manufacturer
+        if CONF_MODEL not in discovery_data:
+            discovery_data[CONF_MODEL] = model_info.model or model_info.model_id
 
         if extra_discovery_data:
             discovery_data.update(extra_discovery_data)
 
         self.initialized_flows.add(unique_id)
+        if source_entity.entity_id != DUMMY_ENTITY_ID:
+            self.initialized_flows.add(source_entity.entity_id)
+
+        _LOGGER.debug("%s: Initiating discovery flow, unique_id=%s", log_identifier, unique_id)
+
         discovery_flow.async_create_flow(
             self.hass,
             DOMAIN,
@@ -327,3 +477,18 @@ class DiscoveryManager:
         for item in items:
             if isinstance(item, dict):
                 self._extract_entity_ids(item, found_entity_ids)
+
+    def _is_already_discovered(self, source_entity: SourceEntity, unique_id: str) -> bool:
+        """Prevent duplicate discovery flows."""
+        unique_ids_to_check = [unique_id, source_entity.entity_id, source_entity.unique_id]
+        if unique_id.startswith("pc_"):
+            unique_ids_to_check.append(unique_id[3:])
+        unique_ids_to_check.extend([f"pc_{uid}" for uid in unique_ids_to_check])
+
+        return any(unique_id in self.initialized_flows for unique_id in unique_ids_to_check)
+
+    async def _get_library(self) -> ProfileLibrary:
+        """Get the powercalc library instance."""
+        if not self.library:
+            self.library = await ProfileLibrary.factory(self.hass)
+        return self.library

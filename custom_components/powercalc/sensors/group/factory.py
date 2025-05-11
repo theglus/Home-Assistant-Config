@@ -1,5 +1,4 @@
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import CONF_UNIQUE_ID
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.typing import ConfigType
@@ -10,6 +9,7 @@ import custom_components.powercalc.sensors.group.standby as standby_group
 import custom_components.powercalc.sensors.group.subtract as subtract_group
 from custom_components.powercalc.const import CONF_GROUP_TYPE, GroupType
 from custom_components.powercalc.errors import SensorConfigurationError
+from custom_components.powercalc.sensors.group.tracked_untracked import TrackedPowerSensorFactory
 
 
 async def create_group_sensors(
@@ -47,18 +47,8 @@ async def create_group_sensors(
             config=sensor_config,
         )
 
+    if group_type == GroupType.TRACKED_UNTRACKED and config_entry:
+        factory = TrackedPowerSensorFactory(hass, config_entry, sensor_config)
+        return await factory.create_tracked_untracked_group_sensors()
+
     raise SensorConfigurationError(f"Group type {group_type} invalid")  # pragma: no cover
-
-
-def generate_unique_id(sensor_config: ConfigType) -> str:
-    """Generate a unique ID for a group sensor."""
-    if CONF_UNIQUE_ID in sensor_config:
-        return str(sensor_config[CONF_UNIQUE_ID])
-
-    group_type: GroupType = sensor_config.get(CONF_GROUP_TYPE, GroupType.CUSTOM)
-    if group_type == GroupType.DOMAIN:
-        return domain_group.generate_unique_id(sensor_config)
-    if group_type == GroupType.SUBTRACT:
-        return subtract_group.generate_unique_id(sensor_config)
-
-    return custom_group.generate_unique_id(sensor_config)

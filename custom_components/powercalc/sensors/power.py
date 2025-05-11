@@ -1,7 +1,9 @@
 from __future__ import annotations
 
+import asyncio
 import logging
-from datetime import datetime, timedelta
+from copy import copy
+from datetime import timedelta
 from decimal import Decimal
 from typing import Any, cast
 
@@ -29,6 +31,7 @@ from homeassistant.core import (
     callback,
 )
 from homeassistant.exceptions import HomeAssistantError
+from homeassistant.helpers import issue_registry as ir
 from homeassistant.helpers import start
 from homeassistant.helpers.dispatcher import async_dispatcher_send
 from homeassistant.helpers.entity import EntityCategory
@@ -38,7 +41,6 @@ from homeassistant.helpers.event import (
     async_call_later,
     async_track_state_change_event,
     async_track_template_result,
-    async_track_time_interval,
 )
 from homeassistant.helpers.template import Template
 from homeassistant.helpers.typing import ConfigType, StateType
@@ -50,30 +52,29 @@ from custom_components.powercalc.const import (
     ATTR_INTEGRATION,
     ATTR_SOURCE_DOMAIN,
     ATTR_SOURCE_ENTITY,
+    CALCULATION_STRATEGY_CONF_KEYS,
+    CONF_AVAILABILITY_ENTITY,
     CONF_CALCULATION_ENABLED_CONDITION,
-    CONF_COMPOSITE,
+    CONF_CUSTOM_MODEL_DIRECTORY,
     CONF_DELAY,
     CONF_DISABLE_EXTENDED_ATTRIBUTES,
     CONF_DISABLE_STANDBY_POWER,
-    CONF_FIXED,
     CONF_FORCE_UPDATE_FREQUENCY,
     CONF_IGNORE_UNAVAILABLE_STATE,
-    CONF_LINEAR,
     CONF_MODEL,
     CONF_MULTIPLY_FACTOR,
     CONF_MULTIPLY_FACTOR_STANDBY,
-    CONF_PLAYBOOK,
     CONF_POWER,
     CONF_POWER_SENSOR_CATEGORY,
     CONF_POWER_SENSOR_ID,
     CONF_POWER_SENSOR_PRECISION,
+    CONF_SELF_USAGE_INCLUDED,
     CONF_SLEEP_POWER,
     CONF_STANDBY_POWER,
     CONF_UNAVAILABLE_POWER,
-    CONF_WLED,
-    DATA_CALCULATOR_FACTORY,
     DATA_DISCOVERY_MANAGER,
     DATA_STANDBY_POWER_SENSORS,
+    DEFAULT_POWER_SENSOR_PRECISION,
     DOMAIN,
     DUMMY_ENTITY_ID,
     OFF_STATES,
@@ -89,6 +90,7 @@ from custom_components.powercalc.errors import (
 from custom_components.powercalc.helpers import evaluate_power
 from custom_components.powercalc.power_profile.factory import get_power_profile
 from custom_components.powercalc.power_profile.power_profile import (
+    DiscoveryBy,
     PowerProfile,
     SubProfileSelectConfig,
     SubProfileSelector,
@@ -143,6 +145,18 @@ async def create_virtual_power_sensor(
             if CONF_CALCULATION_ENABLED_CONDITION not in sensor_config and power_profile.calculation_enabled_condition:
                 sensor_config[CONF_CALCULATION_ENABLED_CONDITION] = power_profile.calculation_enabled_condition
 
+            if config_entry and await power_profile.requires_manual_sub_profile_selection and "/" not in sensor_config.get(CONF_MODEL, ""):
+                ir.async_create_issue(
+                    hass,
+                    DOMAIN,
+                    f"sub_profile_{config_entry.entry_id}",
+                    is_fixable=True,
+                    severity=ir.IssueSeverity.WARNING,
+                    translation_key="sub_profile",
+                    translation_placeholders={"entry": config_entry.title},
+                    data={"config_entry_id": config_entry.entry_id},
+                )
+
         name = generate_power_sensor_name(
             sensor_config,
             sensor_config.get(CONF_NAME),
@@ -157,7 +171,7 @@ async def create_virtual_power_sensor(
         )
         entity_category: str | None = sensor_config.get(CONF_POWER_SENSOR_CATEGORY) or None
         strategy = detect_calculation_strategy(sensor_config, power_profile)
-        calculation_strategy_factory: PowerCalculatorStrategyFactory = hass.data[DOMAIN][DATA_CALCULATOR_FACTORY]
+        calculation_strategy_factory = PowerCalculatorStrategyFactory.get_instance(hass)
 
         standby_power, standby_power_on = _get_standby_power(sensor_config, power_profile)
 
@@ -206,25 +220,27 @@ async def _get_power_profile(
 ) -> PowerProfile | None:
     """Retrieve the power profile based on auto-discovery or manual configuration."""
     discovery_manager: DiscoveryManager = hass.data[DOMAIN][DATA_DISCOVERY_MANAGER]
+    if is_manually_configured(sensor_config):
+        return None
+
     power_profile = None
-    if not is_manually_configured(sensor_config):
-        try:
-            model_info = await discovery_manager.autodiscover_model(source_entity.entity_entry)
-            power_profile = await get_power_profile(
-                hass,
-                sensor_config,
-                model_info=model_info,
+    try:
+        model_info = await discovery_manager.extract_model_info_from_device_info(source_entity.entity_entry)
+        power_profile = await get_power_profile(
+            hass,
+            sensor_config,
+            model_info=model_info,
+        )
+        if power_profile and power_profile.sub_profile_select:
+            await _select_sub_profile(hass, power_profile, power_profile.sub_profile_select, source_entity)
+    except ModelNotSupportedError as err:
+        if not is_fully_configured(sensor_config):
+            _LOGGER.error(
+                "%s: Skipping sensor setup: %s",
+                source_entity.entity_id,
+                err,
             )
-            if power_profile and power_profile.sub_profile_select:
-                await _select_sub_profile(hass, power_profile, power_profile.sub_profile_select, source_entity)
-        except ModelNotSupportedError as err:
-            if not is_fully_configured(sensor_config):
-                _LOGGER.error(
-                    "%s: Skipping sensor setup: %s",
-                    source_entity.entity_id,
-                    err,
-                )
-                raise err
+            raise err
     return power_profile
 
 
@@ -254,6 +270,8 @@ def _get_standby_power(
     """Retrieve standby power settings from sensor config or power profile."""
     standby_power: Template | Decimal = Decimal(0)
     standby_power_on = Decimal(0)
+    if sensor_config.get(CONF_SELF_USAGE_INCLUDED, False):
+        return standby_power, standby_power_on
 
     if not sensor_config.get(CONF_DISABLE_STANDBY_POWER):
         if sensor_config.get(CONF_STANDBY_POWER) is not None:
@@ -296,13 +314,15 @@ def is_manually_configured(sensor_config: ConfigType) -> bool:
     """Check if the user manually configured the sensor.
     We need to skip loading a power profile to make.
     """
+    if CONF_CUSTOM_MODEL_DIRECTORY in sensor_config:
+        return False
     if CONF_MODEL in sensor_config:
         return False
-    return any(key in sensor_config for key in [CONF_LINEAR, CONF_FIXED, CONF_PLAYBOOK, CONF_COMPOSITE])
+    return any(key in sensor_config for key in CALCULATION_STRATEGY_CONF_KEYS)
 
 
 def is_fully_configured(config: ConfigType) -> bool:
-    return any(key in config for key in [CONF_LINEAR, CONF_WLED, CONF_FIXED, CONF_PLAYBOOK])
+    return any(key in config for key in CALCULATION_STRATEGY_CONF_KEYS)
 
 
 class PowerSensor(BaseEntity):
@@ -348,10 +368,10 @@ class VirtualPowerSensor(SensorEntity, PowerSensor):
         self._multiply_factor = sensor_config.get(CONF_MULTIPLY_FACTOR)
         self._multiply_factor_standby = bool(sensor_config.get(CONF_MULTIPLY_FACTOR_STANDBY, False))
         self._ignore_unavailable_state = bool(sensor_config.get(CONF_IGNORE_UNAVAILABLE_STATE, False))
-        self._rounding_digits = int(sensor_config.get(CONF_POWER_SENSOR_PRECISION))  # type: ignore
+        self._rounding_digits = int(sensor_config.get(CONF_POWER_SENSOR_PRECISION, DEFAULT_POWER_SENSOR_PRECISION))
         self.entity_id = entity_id
         self._sensor_config = sensor_config
-        self._track_entities: list = []
+        self._track_entities: set[str] = set()
         self._sleep_power_timer: CALLBACK_TYPE | None = None
         if entity_category:
             self._attr_entity_category = EntityCategory(entity_category)
@@ -369,6 +389,7 @@ class VirtualPowerSensor(SensorEntity, PowerSensor):
         self._standby_sensors: dict = hass.data[DOMAIN][DATA_STANDBY_POWER_SENSORS]
         self.calculation_strategy_factory = calculation_strategy_factory
         self._strategy_instance: PowerCalculationStrategyInterface | None = None
+        self._availability_entity: str | None = sensor_config.get(CONF_AVAILABILITY_ENTITY)
         self._config_entry = config_entry
 
     async def validate(self) -> None:
@@ -410,10 +431,20 @@ class VirtualPowerSensor(SensorEntity, PowerSensor):
             async_dispatcher_send(self.hass, SIGNAL_POWER_SENSOR_STATE_CHANGE)
 
         async def initial_update(hass: HomeAssistant) -> None:
+            """Calculate initial value and push state"""
+
+            # When using reload service energy sensor became unavailable
+            # This is caused because state change listener of energy sensor is registered before power sensor pushes initial update
+            # Adding sleep 0 fixes this issue.
+            await asyncio.sleep(0)
             if self._strategy_instance:
                 await self._strategy_instance.on_start(hass)
-            for entity_id in self._track_entities:
-                new_state = self.hass.states.get(entity_id)
+
+            entities = self._track_entities
+            if (not entities and self._source_entity.entity_id == DUMMY_ENTITY_ID) or not entities:
+                entities.add(DUMMY_ENTITY_ID)
+            for entity_id in entities:
+                new_state = self.hass.states.get(entity_id) if entity_id != DUMMY_ENTITY_ID else State(entity_id, STATE_ON)
                 await self._handle_source_entity_state_change(
                     entity_id,
                     new_state,
@@ -421,31 +452,19 @@ class VirtualPowerSensor(SensorEntity, PowerSensor):
                 async_dispatcher_send(self.hass, SIGNAL_POWER_SENSOR_STATE_CHANGE)
 
         """Add listeners and get initial state."""
-        entities_to_track = self._strategy_instance.get_entities_to_track()
+        entities_to_track = self._get_tracking_entities()
 
-        track_entities = [entity for entity in entities_to_track if isinstance(entity, str)]
-        if not track_entities:
-            track_entities = [self._source_entity.entity_id]
-
-        if self._power_profile and self._power_profile.sub_profile_select:
-            self._sub_profile_selector = SubProfileSelector(
-                self.hass,
-                self._power_profile.sub_profile_select,
-                self._source_entity,
-            )
-            track_entities.extend(self._sub_profile_selector.get_tracking_entities())
-
-        self._track_entities = track_entities
+        self._track_entities = set({entity for entity in entities_to_track if isinstance(entity, str)})
+        track_templates = [template for template in entities_to_track if isinstance(template, TrackTemplate)]
 
         self.async_on_remove(
             async_track_state_change_event(
                 self.hass,
-                track_entities,
+                self._track_entities,
                 appliance_state_listener,
             ),
         )
 
-        track_templates = [template for template in entities_to_track if isinstance(template, TrackTemplate)]
         if isinstance(self._standby_power, Template):
             self._standby_power.hass = self.hass
             track_templates.append(TrackTemplate(self._standby_power, None, None))
@@ -454,6 +473,7 @@ class VirtualPowerSensor(SensorEntity, PowerSensor):
                 TrackTemplate(self._calculation_enabled_condition, None, None),
             )
         if track_templates:
+            self.remove_source_entity_from_track_templates(track_templates)
             async_track_template_result(
                 self.hass,
                 track_templates=track_templates,
@@ -462,15 +482,28 @@ class VirtualPowerSensor(SensorEntity, PowerSensor):
 
         self.async_on_remove(start.async_at_start(self.hass, initial_update))
 
-        if isinstance(self._strategy_instance, PlaybookStrategy):
+        if hasattr(self._strategy_instance, "set_update_callback"):
             self._strategy_instance.set_update_callback(self._update_power_sensor)
 
-        @callback
-        def async_update(__: datetime | None = None) -> None:
-            """Update the entity."""
-            self.async_schedule_update_ha_state(True)
+    def _get_tracking_entities(self) -> list[str | TrackTemplate]:
+        """Return entities and templates that should be tracked."""
+        entities_to_track = copy(self._strategy_instance.get_entities_to_track()) if self._strategy_instance else []
 
-        async_track_time_interval(self.hass, async_update, self._update_frequency)
+        if self._power_profile and self._power_profile.sub_profile_select:
+            self._sub_profile_selector = SubProfileSelector(
+                self.hass,
+                self._power_profile.sub_profile_select,
+                self._source_entity,
+            )
+            entities_to_track.extend(self._sub_profile_selector.get_tracking_entities())
+
+        if self._source_entity.entity_id != DUMMY_ENTITY_ID:
+            entities_to_track.append(self._source_entity.entity_id)
+
+        if self._availability_entity and self._availability_entity not in entities_to_track:
+            entities_to_track.append(self._availability_entity)
+
+        return entities_to_track
 
     def init_calculation_enabled_condition(self) -> None:
         if CONF_CALCULATION_ENABLED_CONDITION not in self._sensor_config:
@@ -478,7 +511,6 @@ class VirtualPowerSensor(SensorEntity, PowerSensor):
 
         template: Template | str = self._sensor_config.get(CONF_CALCULATION_ENABLED_CONDITION)  # type: ignore
         if isinstance(template, str):
-            template = template.replace("[[entity]]", self.source_entity)
             template = Template(template, self.hass)
 
         self._calculation_enabled_condition = template
@@ -494,7 +526,8 @@ class VirtualPowerSensor(SensorEntity, PowerSensor):
             self._sleep_power_timer()
             self._sleep_power_timer = None
 
-        if self.source_entity == DUMMY_ENTITY_ID:
+        discovery_by = self._power_profile.discovery_by if self._power_profile else DiscoveryBy.ENTITY
+        if self.source_entity == DUMMY_ENTITY_ID and discovery_by == DiscoveryBy.ENTITY:
             state = State(self.source_entity, STATE_ON)
 
         if not state or not self._has_valid_state(state):
@@ -538,39 +571,53 @@ class VirtualPowerSensor(SensorEntity, PowerSensor):
 
     async def calculate_power(self, state: State) -> Decimal | None:
         """Calculate power consumption using configured strategy."""
+        assert self._strategy_instance is not None
+
+        # Resolve the relevant entity state
         entity_state = state
         if (
             self._calculation_strategy != CalculationStrategy.MULTI_SWITCH
+            and self._source_entity.entity_id != DUMMY_ENTITY_ID
             and state.entity_id != self._source_entity.entity_id
             and (entity_state := self.hass.states.get(self._source_entity.entity_id)) is None
         ):
             return None
 
+        # Handle unavailable power
         unavailable_power = self._sensor_config.get(CONF_UNAVAILABLE_POWER)
         if entity_state.state == STATE_UNAVAILABLE and unavailable_power is not None:
             return Decimal(unavailable_power)
 
-        is_calculation_enabled = await self.is_calculation_enabled()
-        if entity_state.state in OFF_STATES or not is_calculation_enabled:
+        # Handle standby power
+        standby_power = None
+        if entity_state.state in OFF_STATES or not await self.is_calculation_enabled():
             if isinstance(self._strategy_instance, PlaybookStrategy):
                 await self._strategy_instance.stop_playbook()
             standby_power = await self.calculate_standby_power(entity_state)
             self._standby_sensors[self.entity_id] = standby_power
-            return standby_power
 
-        assert self._strategy_instance is not None
+            if self._strategy_instance.can_calculate_standby() or self._calculation_strategy != CalculationStrategy.MULTI_SWITCH:
+                return standby_power
+
+        # Calculate actual power using configured strategy
         power = await self._strategy_instance.calculate(entity_state)
         if power is None:
             return None
 
+        # Add standby power if available
+        if standby_power:
+            power += standby_power
+
+        # Apply multiply factor to power
         if self._multiply_factor:
             power *= Decimal(self._multiply_factor)
 
-        if self._standby_power_on:
-            standby_power = self._standby_power_on
+        # Add standby power-on adjustments if applicable
+        if self._standby_power_on and not standby_power:
+            additional_standby_power = self._standby_power_on
             if self._multiply_factor_standby and self._multiply_factor:
-                standby_power *= Decimal(self._multiply_factor)
-            power += standby_power
+                additional_standby_power *= Decimal(self._multiply_factor)
+            power += additional_standby_power
 
         return Decimal(power)
 
@@ -596,9 +643,9 @@ class VirtualPowerSensor(SensorEntity, PowerSensor):
     async def calculate_standby_power(self, state: State) -> Decimal:
         """Calculate the power of the device in OFF state."""
         assert self._strategy_instance is not None
-        sleep_power: ConfigType = self._sensor_config.get(CONF_SLEEP_POWER)  # type: ignore
+        sleep_power: dict[str, float] = self._sensor_config.get(CONF_SLEEP_POWER)  # type: ignore
         if sleep_power:
-            delay = sleep_power.get(CONF_DELAY)
+            delay = sleep_power.get(CONF_DELAY) or 0
 
             @callback
             def _update_sleep_power(*_: Any) -> None:  # noqa: ANN401
@@ -610,13 +657,13 @@ class VirtualPowerSensor(SensorEntity, PowerSensor):
 
             self._sleep_power_timer = async_call_later(
                 self.hass,
-                delay,  # type: ignore
+                delay,
                 _update_sleep_power,
             )
 
         standby_power = self._standby_power
         if self._strategy_instance.can_calculate_standby():
-            standby_power = await self._strategy_instance.calculate(state) or Decimal(0)
+            standby_power = await self._strategy_instance.calculate(state) or self._standby_power
 
         evaluated = await evaluate_power(standby_power)
         if evaluated is None:
@@ -648,6 +695,10 @@ class VirtualPowerSensor(SensorEntity, PowerSensor):
     @property
     def available(self) -> bool:
         """Return True if entity is available."""
+        if self._availability_entity:
+            state = self.hass.states.get(self._availability_entity)
+            return bool(state and state.state != STATE_UNAVAILABLE)
+
         return self._power is not None
 
     def set_energy_sensor_attribute(self, entity_id: str) -> None:
@@ -669,7 +720,7 @@ class VirtualPowerSensor(SensorEntity, PowerSensor):
         await strategy_instance.stop_playbook()
 
     def get_active_playbook(self) -> dict[str, str]:
-        """Stop an active playbook"""
+        """Get the active playbook"""
         strategy_instance = self._ensure_playbook_strategy()
         playbook = strategy_instance.get_active_playbook()
         if not playbook:
@@ -690,7 +741,8 @@ class VirtualPowerSensor(SensorEntity, PowerSensor):
                 "This is only supported for sensors having sub profiles, and no automatic profile selection",
             )
 
-        if profile not in await self._power_profile.get_sub_profiles():
+        known_profiles = [profile[0] for profile in await self._power_profile.get_sub_profiles()]
+        if profile not in known_profiles:
             raise HomeAssistantError(f"{profile} is not a possible sub profile")
 
         await self._select_new_sub_profile(profile)
@@ -707,6 +759,20 @@ class VirtualPowerSensor(SensorEntity, PowerSensor):
                 self._config_entry,
                 data={**self._config_entry.data, CONF_MODEL: new_model},
             )
+
+    def remove_source_entity_from_track_templates(self, track_templates: list[TrackTemplate]) -> None:
+        """
+        Remove the source entity from the track templates, to prevent duplicate tracking.
+        This would cause duplicate updates at the same time, which causes issues.
+        """
+        for index, track_template in enumerate(track_templates):
+            if self._source_entity.entity_id in track_template.template.template:
+                orig_template = track_template.template.template
+                orig_template = orig_template.replace(
+                    self._source_entity.entity_id,
+                    DUMMY_ENTITY_ID,
+                )
+                track_templates[index] = TrackTemplate(Template(orig_template, self.hass), None, None)
 
 
 class RealPowerSensor(PowerSensor):
