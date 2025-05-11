@@ -2,15 +2,16 @@
 
 from typing import Callable
 
-from libdyson import (
+from .vendor.libdyson import (
     DysonPureCoolLink,
     DysonPureHotCoolLink,
-    DysonPureHumidifyCool,
-    DysonPurifierHumidifyCoolFormaldehyde,
+    DysonPurifierHumidifyCool,
     HumidifyOscillationMode,
+    Tilt,
     WaterHardness,
+    DysonBigQuiet,
 )
-from libdyson.const import AirQualityTarget
+from .vendor.libdyson.const import AirQualityTarget
 
 from homeassistant.components.select import SelectEntity
 from homeassistant.config_entries import ConfigEntry
@@ -37,10 +38,22 @@ OSCILLATION_MODE_ENUM_TO_STR = {
     HumidifyOscillationMode.DEGREE_45: "45°",
     HumidifyOscillationMode.DEGREE_90: "90°",
     HumidifyOscillationMode.BREEZE: "Breeze",
+    HumidifyOscillationMode.CUST: "Custom",
 }
 
 OSCILLATION_MODE_STR_TO_ENUM = {
     value: key for key, value in OSCILLATION_MODE_ENUM_TO_STR.items()
+}
+
+TILT_ENUM_TO_STR = {
+    0: "0°",
+    25: "25°",
+    50: "50°",
+    359: "Breeze",
+}
+
+TILT_STR_TO_ENUM = {
+    value: key for key, value in TILT_ENUM_TO_STR.items()
 }
 
 
@@ -66,12 +79,17 @@ async def async_setup_entry(
         device, DysonPureCoolLink
     ):
         entities.append(DysonAirQualitySelect(device, name))
-    if isinstance(device, DysonPureHumidifyCool) or isinstance(
-        device, DysonPurifierHumidifyCoolFormaldehyde):
+    if isinstance(device, DysonPurifierHumidifyCool):
         entities.extend(
             [
                 DysonOscillationModeSelect(device, name),
                 DysonWaterHardnessSelect(device, name),
+            ]
+        )
+    if isinstance(device, DysonBigQuiet):
+        entities.extend(
+            [
+                DysonTiltSelect(device, name),
             ]
         )
     async_add_entities(entities)
@@ -128,6 +146,32 @@ class DysonOscillationModeSelect(DysonEntity, SelectEntity):
     def sub_unique_id(self):
         """Return the select's unique id."""
         return "oscillation_mode"
+
+class DysonTiltSelect(DysonEntity, SelectEntity):
+    """Tilt for supported models."""
+
+    _attr_entity_category = EntityCategory.CONFIG
+    _attr_icon = "mdi:acute-angle"
+    _attr_options = list(TILT_STR_TO_ENUM.keys())
+
+    @property
+    def current_option(self) -> str:
+        """Return the current selected option."""
+        return TILT_ENUM_TO_STR[self._device.tilt]
+
+    def select_option(self, option: str) -> None:
+        """Configure the new selected option."""
+        self._device.set_tilt(TILT_STR_TO_ENUM[option])
+
+    @property
+    def sub_name(self) -> str:
+        """Return the name of the select."""
+        return "Tilt"
+
+    @property
+    def sub_unique_id(self):
+        """Return the select's unique id."""
+        return "tilt"
 
 
 class DysonWaterHardnessSelect(DysonEntity, SelectEntity):

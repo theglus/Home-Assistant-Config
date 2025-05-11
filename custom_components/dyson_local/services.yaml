@@ -1,22 +1,34 @@
 set_angle:
+  name: Set Angle
   description: Set the oscillation angle of the selected fan(s).
   fields:
     entity_id:
+      name: Entity ID
       description: Name(s) of the entities for which to set the angle
       example: "fan.living_room"
     angle_low:
+      name: Angle Low
       description: The angle at which the oscillation should start
       example: 1
     angle_high:
+      name: Angle High
       description: The angle at which the oscillation should end
       example: 255
 
 set_timer:
-  description: Set the sleep timer.
+  name: Set Timer
+  description: Sets, or clears, the timer of a fan (in minutes).
+  target:
+    entity:
+      domain: fan
   fields:
-    entity_id:
-      description: Name(s) of the entities to set the sleep timer for
-      example: "fan.living_room"
     timer:
-      description: The value in minutes to set the timer to, 0 to disable it
-      example: 30
+      name: Minutes
+      description: How many minutes the timer should run for. Set to 0 to disable timer.
+      selector:
+        number:
+          min: 0
+          max: 540
+          step: 1
+          unit_of_measurement: "minutes"
+      required: true

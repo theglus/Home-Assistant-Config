@@ -2,10 +2,12 @@
 
 from typing import Any, Callable, List, Mapping
 
-from libdyson import (
+from .vendor.libdyson import (
     Dyson360Eye,
+    Dyson360VisNav,
     VacuumEyePowerMode,
     VacuumHeuristPowerMode,
+    VacuumVisNavPowerMode,
     VacuumState,
 )
 
@@ -15,13 +17,7 @@ from homeassistant.components.vacuum import (
     STATE_DOCKED,
     STATE_ERROR,
     STATE_RETURNING,
-    SUPPORT_BATTERY,
-    SUPPORT_FAN_SPEED,
-    SUPPORT_PAUSE,
-    SUPPORT_RETURN_HOME,
-    SUPPORT_START,
-    SUPPORT_STATE,
-    SUPPORT_STATUS,
+    VacuumEntityFeature,
     StateVacuumEntity,
 )
 from homeassistant.config_entries import ConfigEntry
@@ -32,13 +28,13 @@ from . import DysonEntity
 from .const import DATA_DEVICES, DOMAIN
 
 SUPPORTED_FEATURES = (
-    SUPPORT_START
-    | SUPPORT_PAUSE
-    | SUPPORT_RETURN_HOME
-    | SUPPORT_FAN_SPEED
-    | SUPPORT_STATUS
-    | SUPPORT_STATE
-    | SUPPORT_BATTERY
+    VacuumEntityFeature.START
+    | VacuumEntityFeature.PAUSE
+    | VacuumEntityFeature.RETURN_HOME
+    | VacuumEntityFeature.FAN_SPEED
+    | VacuumEntityFeature.STATUS
+    | VacuumEntityFeature.STATE
+    | VacuumEntityFeature.BATTERY
 )
 
 DYSON_STATUS = {
@@ -74,6 +70,7 @@ DYSON_STATUS = {
     VacuumState.MAPPING_NEEDS_CHARGE: "Mapping - Needs charging",
     VacuumState.MAPPING_PAUSED: "Mapping - Paused",
     VacuumState.MAPPING_RUNNING: "Mapping - Running",
+    VacuumState.MACHINE_OFF: "Off",
 }
 
 DYSON_STATES = {
@@ -109,6 +106,7 @@ DYSON_STATES = {
     VacuumState.MAPPING_NEEDS_CHARGE: STATE_RETURNING,
     VacuumState.MAPPING_PAUSED: STATE_PAUSED,
     VacuumState.MAPPING_RUNNING: STATE_CLEANING,
+    VacuumState.MACHINE_OFF: STATE_DOCKED,
 }
 
 EYE_POWER_MODE_ENUM_TO_STR = {
@@ -126,6 +124,15 @@ HEURIST_POWER_MODE_ENUM_TO_STR = {
 HEURIST_POWER_MODE_STR_TO_ENUM = {
     value: key for key, value in HEURIST_POWER_MODE_ENUM_TO_STR.items()
 }
+VIS_NAV_POWER_MODE_ENUM_TO_STR = {
+    VacuumVisNavPowerMode.AUTO: "Auto",
+    VacuumVisNavPowerMode.QUICK: "Quick",
+    VacuumVisNavPowerMode.QUIET: "Quiet",
+    VacuumVisNavPowerMode.BOOST: "Boost",
+}
+VIS_NAV_POWER_MODE_STR_TO_ENUM = {
+    value: key for key, value in VIS_NAV_POWER_MODE_ENUM_TO_STR.items()
+}
 
 ATTR_POSITION = "position"
 
@@ -138,6 +145,8 @@ async def async_setup_entry(
     name = config_entry.data[CONF_NAME]
     if isinstance(device, Dyson360Eye):
         entity = Dyson360EyeEntity(device, name)
+    elif isinstance(device, Dyson360VisNav):  # Dyson360VisNav
+        entity = Dyson360VisNavEntity(device, name)
     else:  # Dyson360Heurist
         entity = Dyson360HeuristEntity(device, name)
     async_add_entities([entity])
@@ -236,3 +245,21 @@ class Dyson360HeuristEntity(DysonVacuumEntity):
     def set_fan_speed(self, fan_speed: str, **kwargs) -> None:
         """Set fan speed."""
         self._device.set_default_power_mode(HEURIST_POWER_MODE_STR_TO_ENUM[fan_speed])
+
+
+class Dyson360VisNavEntity(Dyson360HeuristEntity):
+    """Dyson 360 Vis Nav robot vacuum entity."""
+
+    @property
+    def fan_speed(self) -> str:
+        """Return the fan speed of the vacuum cleaner."""
+        return VIS_NAV_POWER_MODE_ENUM_TO_STR[self._device.current_power_mode]
+
+    @property
+    def fan_speed_list(self) -> List[str]:
+        """Get the list of available fan speed steps of the vacuum cleaner."""
+        return list(VIS_NAV_POWER_MODE_STR_TO_ENUM.keys())
+
+    def set_fan_speed(self, fan_speed: str, **kwargs) -> None:
+        """Set fan speed."""
+        self._device.set_default_power_mode(VIS_NAV_POWER_MODE_STR_TO_ENUM[fan_speed])
