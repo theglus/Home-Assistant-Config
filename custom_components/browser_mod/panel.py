@@ -15,12 +15,11 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
     await async_setup_platform(hass, {}, async_add_entities)
 
 
-class BrowserSensor(BrowserModEntity, SensorEntity):
+class PanelSensor(BrowserModEntity, SensorEntity):
     def __init__(
         self,
         coordinator,
         browserID,
-        parameter,
         name,
         unit_of_measurement=None,
         device_class=None,
@@ -28,15 +27,12 @@ class BrowserSensor(BrowserModEntity, SensorEntity):
     ):
         BrowserModEntity.__init__(self, coordinator, browserID, name, icon)
         SensorEntity.__init__(self)
-        self.parameter = parameter
         self._device_class = device_class
         self._unit_of_measurement = unit_of_measurement
 
     @property
     def native_value(self):
-        if self.parameter == "browserID":
-            return self.browserID
-        val = self._data.get("browser", {}).get(self.parameter, None)
+        val = self._data.get("panel", {}).get("title", None)
         if len(str(val)) > 255:
             val = str(val)[:250] + "..."
         return val
@@ -57,15 +53,6 @@ class BrowserSensor(BrowserModEntity, SensorEntity):
     def extra_state_attributes(self):
         retval = super().extra_state_attributes
 
-        if self.parameter == "currentUser":
-            retval["userData"] = self._data.get("browser", {}).get("userData")
-
-        if self.parameter == "path":
-            retval["pathSegments"] = (
-                self._data.get("browser", {}).get("path", "").split("/")
-            )
-
-        if self.parameter == "userAgent":
-            retval["userAgent"] = self._data.get("browser", {}).get("userAgent")
+        retval.update(self._data.get("panel", {}).get("attributes", {}))
 
         return retval
