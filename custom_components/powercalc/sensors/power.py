@@ -229,10 +229,11 @@ async def _get_power_profile(
         power_profile = await get_power_profile(
             hass,
             sensor_config,
+            source_entity,
             model_info=model_info,
         )
-        if power_profile and power_profile.sub_profile_select:
-            await _select_sub_profile(hass, power_profile, power_profile.sub_profile_select, source_entity)
+        if power_profile and power_profile.has_sub_profile_select_matchers:
+            await _select_sub_profile(hass, power_profile, power_profile.sub_profile_select, source_entity)  # type: ignore
     except ModelNotSupportedError as err:
         if not is_fully_configured(sensor_config):
             _LOGGER.error(
@@ -369,6 +370,7 @@ class VirtualPowerSensor(SensorEntity, PowerSensor):
         self._multiply_factor_standby = bool(sensor_config.get(CONF_MULTIPLY_FACTOR_STANDBY, False))
         self._ignore_unavailable_state = bool(sensor_config.get(CONF_IGNORE_UNAVAILABLE_STATE, False))
         self._rounding_digits = int(sensor_config.get(CONF_POWER_SENSOR_PRECISION, DEFAULT_POWER_SENSOR_PRECISION))
+        self._attr_suggested_display_precision = self._rounding_digits
         self.entity_id = entity_id
         self._sensor_config = sensor_config
         self._track_entities: set[str] = set()
@@ -489,10 +491,10 @@ class VirtualPowerSensor(SensorEntity, PowerSensor):
         """Return entities and templates that should be tracked."""
         entities_to_track = copy(self._strategy_instance.get_entities_to_track()) if self._strategy_instance else []
 
-        if self._power_profile and self._power_profile.sub_profile_select:
+        if self._power_profile and self._power_profile.has_sub_profile_select_matchers:
             self._sub_profile_selector = SubProfileSelector(
                 self.hass,
-                self._power_profile.sub_profile_select,
+                self._power_profile.sub_profile_select,  # type: ignore
                 self._source_entity,
             )
             entities_to_track.extend(self._sub_profile_selector.get_tracking_entities())
@@ -520,7 +522,7 @@ class VirtualPowerSensor(SensorEntity, PowerSensor):
         trigger_entity_id: str,
         state: State | None,
     ) -> None:
-        """Update power sensor based on new dependant entity state."""
+        """Update power sensor based on new dependent entity state."""
         self._standby_sensors.pop(self.entity_id, None)
         if self._sleep_power_timer:
             self._sleep_power_timer()
@@ -590,7 +592,7 @@ class VirtualPowerSensor(SensorEntity, PowerSensor):
 
         # Handle standby power
         standby_power = None
-        if entity_state.state in OFF_STATES or not await self.is_calculation_enabled():
+        if entity_state.state in OFF_STATES or not await self.is_calculation_enabled(entity_state):
             if isinstance(self._strategy_instance, PlaybookStrategy):
                 await self._strategy_instance.stop_playbook()
             standby_power = await self.calculate_standby_power(entity_state)
@@ -675,10 +677,10 @@ class VirtualPowerSensor(SensorEntity, PowerSensor):
 
         return standby_power
 
-    async def is_calculation_enabled(self) -> bool:
+    async def is_calculation_enabled(self, entity_state: State) -> bool:
         template = self._calculation_enabled_condition
         if not template:
-            return True
+            return self._strategy_instance.is_enabled(entity_state)  # type: ignore
 
         return bool(template.async_render())
 

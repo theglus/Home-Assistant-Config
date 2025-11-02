@@ -20,6 +20,7 @@ from homeassistant.const import (
     CONF_DOMAIN,
     CONF_SCAN_INTERVAL,
     EVENT_HOMEASSISTANT_STARTED,
+    EntityCategory,
     Platform,
 )
 from homeassistant.const import __version__ as HA_VERSION  # noqa: N812
@@ -38,6 +39,7 @@ from .const import (
     CONF_DISABLE_EXTENDED_ATTRIBUTES,
     CONF_DISABLE_LIBRARY_DOWNLOAD,
     CONF_DISCOVERY_EXCLUDE_DEVICE_TYPES,
+    CONF_DISCOVERY_EXCLUDE_SELF_USAGE,
     CONF_ENABLE_AUTODISCOVERY,
     CONF_ENERGY_INTEGRATION_METHOD,
     CONF_ENERGY_SENSOR_CATEGORY,
@@ -204,6 +206,7 @@ CONFIG_SCHEMA = vol.Schema(
                         cv.ensure_list,
                         [cls.value for cls in DeviceType],
                     ),
+                    vol.Optional(CONF_DISCOVERY_EXCLUDE_SELF_USAGE, default=False): cv.boolean,
                 },
             ),
         ),
@@ -259,8 +262,14 @@ async def create_discovery_manager_instance(
     global_powercalc_config: ConfigType,
 ) -> DiscoveryManager:
     exclude_device_types = [DeviceType(device_type) for device_type in global_powercalc_config.get(CONF_DISCOVERY_EXCLUDE_DEVICE_TYPES, [])]
+    exclude_self_usage = global_powercalc_config.get(CONF_DISCOVERY_EXCLUDE_SELF_USAGE, False)
 
-    manager = DiscoveryManager(hass, ha_config, exclude_device_types=exclude_device_types)
+    manager = DiscoveryManager(
+        hass,
+        ha_config,
+        exclude_device_types=exclude_device_types,
+        exclude_self_usage_profiles=exclude_self_usage,
+    )
     if global_powercalc_config.get(CONF_ENABLE_AUTODISCOVERY):
         await manager.setup()
     return manager
@@ -303,6 +312,10 @@ def get_global_gui_configuration(config_entry: ConfigEntry) -> ConfigType:
         global_config[CONF_FORCE_UPDATE_FREQUENCY] = timedelta(seconds=global_config[CONF_FORCE_UPDATE_FREQUENCY])
     if CONF_UTILITY_METER_OFFSET in global_config:
         global_config[CONF_UTILITY_METER_OFFSET] = timedelta(days=global_config[CONF_UTILITY_METER_OFFSET])
+    if global_config.get(CONF_ENERGY_SENSOR_CATEGORY):
+        global_config[CONF_ENERGY_SENSOR_CATEGORY] = EntityCategory(global_config[CONF_ENERGY_SENSOR_CATEGORY])
+    if global_config.get(CONF_POWER_SENSOR_CATEGORY):
+        global_config[CONF_POWER_SENSOR_CATEGORY] = EntityCategory(global_config[CONF_POWER_SENSOR_CATEGORY])
     global_config[FLAG_HAS_GLOBAL_GUI_CONFIG] = True
 
     return global_config

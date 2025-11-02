@@ -48,7 +48,6 @@ from .const import (
     CONF_AND,
     CONF_AVAILABILITY_ENTITY,
     CONF_CALCULATION_ENABLED_CONDITION,
-    CONF_CALIBRATE,
     CONF_COMPOSITE,
     CONF_CREATE_ENERGY_SENSOR,
     CONF_CREATE_GROUP,
@@ -129,7 +128,7 @@ from .const import (
     SensorType,
     UnitPrefix,
 )
-from .device_binding import attach_entities_to_source_device, bind_config_entry_to_device
+from .device_binding import attach_entities_to_source_device
 from .errors import (
     PowercalcSetupError,
     SensorAlreadyConfiguredError,
@@ -310,8 +309,6 @@ async def async_setup_entry(
 
     sensor_config = convert_config_entry_to_sensor_config(entry, hass)
 
-    bind_config_entry_to_device(hass, entry)
-
     if CONF_UNIQUE_ID not in sensor_config:
         sensor_config[CONF_UNIQUE_ID] = entry.unique_id
 
@@ -347,6 +344,8 @@ async def _async_setup_entities(
     except SensorConfigurationError as err:
         _LOGGER.error(err)
         return
+
+    await attach_entities_to_source_device(config_entry, entities.new, hass, None)
 
     entities_to_add = [entity for entity in entities.new if isinstance(entity, SensorEntity)]
     for entity in entities_to_add:
@@ -424,19 +423,23 @@ def save_entity_ids_on_config_entry(
     """Save the power and energy sensor entity_id's on the config entry
     We need this in group sensor logic to differentiate between energy sensor and utility meters.
     """
+    _LOGGER.debug("Saving entity ids on config entry %s", config_entry.entry_id)
     power_entities = [e.entity_id for e in entities.all() if isinstance(e, VirtualPowerSensor)]
     new_data = config_entry.data.copy()
     if power_entities:
+        _LOGGER.debug("Setting power entity_id %s on config entry %s", power_entities[0], config_entry.entry_id)
         new_data.update({ENTRY_DATA_POWER_ENTITY: power_entities[0]})
 
-    if bool(config_entry.data.get(CONF_CREATE_ENERGY_SENSOR, False)):
+    if bool(config_entry.data.get(CONF_CREATE_ENERGY_SENSOR, True)):
         energy_entities = [e.entity_id for e in entities.all() if isinstance(e, EnergySensor)]
         if not energy_entities:
             raise SensorConfigurationError(  # pragma: no cover
                 f"No energy sensor created for config_entry {config_entry.entry_id}",
             )
         new_data.update({ENTRY_DATA_ENERGY_ENTITY: energy_entities[0]})
+        _LOGGER.debug("Setting energy entity_id %s on config entry %s", energy_entities[0], config_entry.entry_id)
     elif ENTRY_DATA_ENERGY_ENTITY in new_data:
+        _LOGGER.debug("Removing energy entity_id on config entry %s", config_entry.entry_id)
         new_data.pop(ENTRY_DATA_ENERGY_ENTITY)
 
     hass.config_entries.async_update_entry(
@@ -534,11 +537,7 @@ def convert_config_entry_to_sensor_config(config_entry: ConfigEntry, hass: HomeA
 
     def process_states_power(states_power: dict) -> dict:
         """Convert state power values to Template objects where necessary."""
-        return {key: Template(value) if isinstance(value, str) and "{{" in value else value for key, value in states_power.items()}
-
-    def process_calibrate(calibrate: dict) -> list[str]:
-        """Convert calibration dictionary to list of strings."""
-        return [f"{k} -> {v}" for k, v in calibrate.items()]
+        return {key: Template(value, hass) if isinstance(value, str) and "{{" in value else value for key, value in states_power.items()}
 
     def process_daily_fixed_energy() -> None:
         """Process daily fixed energy configuration."""
@@ -567,8 +566,6 @@ def convert_config_entry_to_sensor_config(config_entry: ConfigEntry, hass: HomeA
             return
 
         linear_config = copy.copy(sensor_config[CONF_LINEAR])
-        if CONF_CALIBRATE in linear_config:
-            linear_config[CONF_CALIBRATE] = process_calibrate(linear_config[CONF_CALIBRATE])
         sensor_config[CONF_LINEAR] = linear_config
 
     def process_calculation_enabled_condition() -> None:
