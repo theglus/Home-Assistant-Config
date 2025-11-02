@@ -21,6 +21,7 @@ COWAY_COORDINATOR = "coway_coordinator"
 POLLING_INTERVAL = "polling_interval"
 SKIP_PASSWORD_CHANGE = "skip_password_change"
 UPDATE_LISTENER = "update_listener"
+MAINTENANCE_COOLDOWN = "maintenance_cooldown"
 
 PLATFORMS = [
     Platform.FAN,
@@ -37,16 +38,16 @@ COWAY_ERRORS = (
 )
 
 IAQ_NAMED = {
-    "1": "Good",
-    "2": "Moderate",
-    "3": "Unhealthy",
-    "4": "Very Unhealthy"
+    1: "Good",
+    2: "Moderate",
+    3: "Unhealthy",
+    4: "Very Unhealthy"
 }
 
-IOCARE_FAN_OFF = "0"
-IOCARE_FAN_LOW = "1"
-IOCARE_FAN_MEDIUM = "2"
-IOCARE_FAN_HIGH = "3"
+IOCARE_FAN_OFF = 0
+IOCARE_FAN_LOW = 1
+IOCARE_FAN_MEDIUM = 2
+IOCARE_FAN_HIGH = 3
 
 IOCARE_TIMER_OFF = "0"
 IOCARE_TIMER_1H = "60"
@@ -99,8 +100,10 @@ IOCARE_FAN_SPEED_TO_HASS = {
 }
 
 IOCARE_LIGHT_MODES = ["On", "Off", "AQI Off"]
+IOCARE_LIGHT_MODES_EXTENDED = ["On", "Off", "AQI Off", "Half Off"]
 IOCARE_LIGHT_MODES_TO_HASS = {
     LightMode.ON: "On",
     LightMode.AQI_OFF: "AQI Off",
-    LightMode.OFF: "Off"
+    LightMode.OFF: "Off",
+    LightMode.HALF_OFF: "Half Off"
 }

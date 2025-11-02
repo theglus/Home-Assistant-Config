@@ -15,6 +15,7 @@ from homeassistant.components.sensor import (
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import(
     CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
+    LIGHT_LUX,
     PERCENTAGE,
 )
 from homeassistant.core import HomeAssistant
@@ -34,7 +35,7 @@ async def async_setup_entry(
     sensors = []
 
     for purifier_id, purifier_data in coordinator.data.purifiers.items():
-            if purifier_data.air_quality_index:
+            if purifier_data.air_quality_index is not None:
                 sensors.append(AirQualityIndex(coordinator, purifier_id))
 
             sensors.extend((
@@ -43,16 +44,16 @@ async def async_setup_entry(
                 TimerRemaining(coordinator, purifier_id),
             ))
 
-            # PM and Air Quality sensor availability depends on the purfier model
-            # COLUMBIA = 250S
+            # PM type and Air Quality sensor availability depends on the purfier model
             product_name = purifier_data.device_attr['product_name']
-            if product_name in ["AIRMEGA_ICONS", "COLUMBIA", "COLUMBIA_EU"]:
+            if purifier_data.particulate_matter_2_5 is not None and product_name != "AIRMEGA":
                 sensors.append(ParticulateMatter25(coordinator, purifier_id))
-            if product_name != "AIRMEGA_ICONS":
-                sensors.extend((
-                    ParticulateMatter10(coordinator, purifier_id),
-                    IndoorAQ(coordinator, purifier_id),
-                ))
+            if purifier_data.particulate_matter_10 is not None:
+                sensors.append(ParticulateMatter10(coordinator, purifier_id))
+            if purifier_data.aq_grade is not None:
+                sensors.append(IndoorAQ(coordinator, purifier_id))
+            if purifier_data.lux_sensor is not None:
+                sensors.append(Lux(coordinator, purifier_id))
 
 
     async_add_entities(sensors)
@@ -168,7 +169,11 @@ class PreFilter(CoordinatorEntity, SensorEntity):
     def name(self) -> str:
         """Return name of the entity."""
 
-        return "Pre filter"
+        # AP-1512HHS models in UK (02FMG), Europe (02FMF, 02FWN)
+        if self.purifier_data.device_attr['code'] in ['02FMG', '02FMF', '02FWN']:
+            return "Charcoal filter"
+        else:
+            return "Pre filter"
 
     @property
     def has_entity_name(self) -> bool:
@@ -180,7 +185,11 @@ class PreFilter(CoordinatorEntity, SensorEntity):
     def native_value(self) -> int:
         """Return current pre-filter percentage."""
 
-        return self.purifier_data.pre_filter_pct
+        # AP-1512HHS models in UK (02FMG), Europe (02FMF, 02FWN)
+        if self.purifier_data.device_attr['code'] in ['02FMG', '02FMF', '02FWN']:
+            return self.purifier_data.odor_filter_pct
+        else:
+            return self.purifier_data.pre_filter_pct
 
     @property
     def native_unit_of_measurement(self) -> str:
@@ -244,7 +253,11 @@ class MAX2Filter(CoordinatorEntity, SensorEntity):
     def name(self) -> str:
         """Return name of the entity."""
 
-        return "MAX2 filter"
+        # AP-1512HHS models in UK (02FMG), Europe (02FMF, 02FWN)
+        if self.purifier_data.device_attr['code'] in ['02FMG', '02FMF', '02FWN']:
+            return "HEPA filter"
+        else:
+            return "MAX2 filter"
 
     @property
     def has_entity_name(self) -> bool:
@@ -254,7 +267,7 @@ class MAX2Filter(CoordinatorEntity, SensorEntity):
 
     @property
     def native_value(self) -> int:
-        """Return current MAX2 filter percentage."""
+        """Return current MAX2/HEPA filter percentage."""
 
         return self.purifier_data.max2_pct
 
@@ -560,9 +573,9 @@ class IndoorAQ(CoordinatorEntity, SensorEntity):
     def native_value(self):
         """Return named air quality."""
 
-        dust_pollution = self.purifier_data.dust_pollution
-        if dust_pollution:
-            named_quality = IAQ_NAMED.get(dust_pollution, "Unknown air quality")
+        aq_grade = self.purifier_data.aq_grade
+        if aq_grade:
+            named_quality = IAQ_NAMED.get(aq_grade, "Unknown air quality")
             return named_quality
         else:
             return None
@@ -572,6 +585,93 @@ class IndoorAQ(CoordinatorEntity, SensorEntity):
         """Set icon for entity."""
 
         return 'mdi:air-filter'
+
+    @property
+    def available(self) -> bool:
+        """Return true if purifier is connected to Coway servers."""
+
+        if self.purifier_data.network_status:
+            return True
+        else:
+            return False
+
+
+class Lux(CoordinatorEntity, SensorEntity):
+    """Representation of Lux sensor for Airmega 400S."""
+
+    def __init__(self, coordinator, purifier_id):
+        super().__init__(coordinator)
+        self.purifier_id = purifier_id
+
+    @property
+    def purifier_data(self) -> CowayPurifier:
+        """Handle coordinator purifier data."""
+
+        return self.coordinator.data.purifiers[self.purifier_id]
+
+    @property
+    def device_info(self) -> dict[str, Any]:
+        """Return device registry information for this entity."""
+
+        return {
+            "identifiers": {(DOMAIN, self.purifier_data.device_attr['device_id'])},
+            "name": self.purifier_data.device_attr['name'],
+            "manufacturer": "Coway",
+            "model": self.purifier_data.device_attr['model'],
+        }
+
+    @property
+    def unique_id(self) -> str:
+        """Sets unique ID for this entity."""
+
+        return self.purifier_data.device_attr['device_id'] + '_lux'
+
+    @property
+    def name(self) -> str:
+        """Return name of the entity."""
+
+        return "Lux"
+
+    @property
+    def has_entity_name(self) -> bool:
+        """Indicate that entity has name defined."""
+
+        return True
+
+    @property
+    def native_value(self) -> int:
+        """Return current Lux measurement."""
+
+        if self.purifier_data.device_attr['model'] == 'Airmega 400S':
+            return self.purifier_data.lux_sensor
+        else:
+            # For 250S, 1022 is the value obtained while testing
+            # in a dark environment
+            return max(1022 - self.purifier_data.lux_sensor, 0)
+
+    @property
+    def native_unit_of_measurement(self) -> str:
+        """Return unit of measurement."""
+
+        return LIGHT_LUX
+
+    @property
+    def device_class(self) -> SensorDeviceClass:
+        """Return entity device class."""
+
+        return SensorDeviceClass.ILLUMINANCE
+
+    @property
+    def state_class(self) -> SensorStateClass:
+        """Return state class type."""
+
+        return SensorStateClass.MEASUREMENT
+
+    @property
+    def icon(self):
+        """Set icon for entity."""
+
+        return 'mdi:brightness-5'
 
     @property
     def available(self) -> bool:
