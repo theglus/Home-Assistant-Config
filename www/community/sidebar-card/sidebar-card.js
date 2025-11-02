@@ -1194,7 +1194,7 @@ const parts = new WeakMap();
  *     container. Render options must *not* change between renders to the same
  *     container, as those changes will not effect previously rendered DOM.
  */
-const render = (result, container, options) => {
+const render$1 = (result, container, options) => {
     let part = parts.get(container);
     if (part === undefined) {
         removeNodes(container, container.firstChild);
@@ -1499,7 +1499,7 @@ const prepareTemplateStyles = (scopeName, renderedDOM, template) => {
  * non-shorthand names (for example `border` and `border-width`) is not
  * supported.
  */
-const render$1 = (result, container, options) => {
+const render = (result, container, options) => {
     if (!options || typeof options !== 'object' || !options.scopeName) {
         throw new Error('The `scopeName` option is required.');
     }
@@ -1513,7 +1513,7 @@ const render$1 = (result, container, options) => {
     // On first scope render, render into a fragment; this cannot be a single
     // fragment that is reused since nested renders can occur synchronously.
     const renderContainer = firstScopeRender ? document.createDocumentFragment() : container;
-    render(result, renderContainer, Object.assign({ templateFactory: shadyTemplateFactory(scopeName) }, options));
+    render$1(result, renderContainer, Object.assign({ templateFactory: shadyTemplateFactory(scopeName) }, options));
     // When performing first scope render,
     // (1) We've rendered into a fragment so that there's a chance to
     // `prepareTemplateStyles` before sub-elements hit the DOM
@@ -1598,6 +1598,7 @@ const defaultConverter = {
                 return value === null ? null : Number(value);
             case Object:
             case Array:
+                // Type assert to adhere to Bazel's "must type assert JSON parse" rule.
                 return JSON.parse(value);
         }
         return value;
@@ -2162,8 +2163,29 @@ class UpdatingElement extends HTMLElement {
      *       await this._myChild.updateComplete;
      *     }
      *   }
+     * @deprecated Override `getUpdateComplete()` instead for forward
+     *     compatibility with `lit-element` 3.0 / `@lit/reactive-element`.
      */
     _getUpdateComplete() {
+        return this.getUpdateComplete();
+    }
+    /**
+     * Override point for the `updateComplete` promise.
+     *
+     * It is not safe to override the `updateComplete` getter directly due to a
+     * limitation in TypeScript which means it is not possible to call a
+     * superclass getter (e.g. `super.updateComplete.then(...)`) when the target
+     * language is ES5 (https://github.com/microsoft/TypeScript/issues/338).
+     * This method should be overridden instead. For example:
+     *
+     *   class MyElement extends LitElement {
+     *     async getUpdateComplete() {
+     *       await super.getUpdateComplete();
+     *       await this._myChild.updateComplete;
+     *     }
+     *   }
+     */
+    getUpdateComplete() {
         return this._updatePromise;
     }
     /**
@@ -2318,7 +2340,7 @@ const css = (strings, ...values) => {
 // This line will be used in regexes to search for LitElement usage.
 // TODO(justinfagnani): inject version number at build time
 (window['litElementVersions'] || (window['litElementVersions'] = []))
-    .push('2.4.0');
+    .push('2.5.1');
 /**
  * Sentinal value used to avoid calling lit-html's render function when
  * subclasses do not implement `render`
@@ -2418,7 +2440,7 @@ class LitElement extends UpdatingElement {
      * @returns {Element|DocumentFragment} Returns a node into which to render.
      */
     createRenderRoot() {
-        return this.attachShadow({ mode: 'open' });
+        return this.attachShadow(this.constructor.shadowRootOptions);
     }
     /**
      * Applies styling to the element shadowRoot using the [[`styles`]]
@@ -2524,7 +2546,9 @@ LitElement['finalized'] = true;
  *
  * @nocollapse
  */
-LitElement.render = render$1;
+LitElement.render = render;
+/** @nocollapse */
+LitElement.shadowRootOptions = { mode: 'open' };
 
 function hass() {
   if(document.querySelector('hc-main'))
@@ -2590,6 +2614,8 @@ async function _selectTree(root, path, all=false) {
   if(typeof(path) === "string") {
     path = path.split(/(\$| )/);
   }
+  if(path[path.length-1] === "")
+     path.pop();
   for(const [i, p] of path.entries()) {
     if(!p.trim().length) continue;
     if(!el) return null;
@@ -2662,7 +2688,7 @@ if(params.get('deviceID')) {
   setDeviceID(params.get('deviceID'));
 }
 
-function subscribeRenderTemplate(conn, onChange, params) {
+function subscribeRenderTemplate(conn, onChange, params, stringify=true) {
   // params = {template, entity_ids, variables}
   if(!conn)
     conn = hass().connection;
@@ -2677,11 +2703,15 @@ function subscribeRenderTemplate(conn, onChange, params) {
 
   return conn.subscribeMessage(
     (msg) => {
-      let res = msg.result;
-      // Localize "_(key)" if found in template results
-      const localize_function = /_\([^)]*\)/g;
-      res = res.replace(localize_function, (key) => hass().localize(key.substring(2, key.length-1)) || key);
-      onChange(res);
+      if(stringify) {
+        let res = String(msg.result);
+        // Localize "_(key)" if found in template results
+        const localize_function = /_\([^)]*\)/g;
+        res = res.replace(localize_function, (key) => hass().localize(key.substring(2, key.length-1)) || key);
+        onChange(res);
+      } else {
+        onChange(msg.result);
+      }
     },
     { type: "render_template",
       template,
@@ -2703,7 +2733,7 @@ function createCommonjsModule(fn, module) {
 
 var momentWithLocales = createCommonjsModule(function (module, exports) {
 (function (global, factory) {
-     module.exports = factory() ;
+    module.exports = factory() ;
 }(commonjsGlobal, (function () {
     var hookCallback;
 
@@ -17454,390 +17484,7 @@ var momentWithLocales = createCommonjsModule(function (module, exports) {
 })));
 });
 
-var token = /d{1,4}|M{1,4}|YY(?:YY)?|S{1,3}|Do|ZZ|Z|([HhMsDm])\1?|[aA]|"[^"]*"|'[^']*'/g;
-var twoDigitsOptional = "[1-9]\\d?";
-var twoDigits = "\\d\\d";
-var threeDigits = "\\d{3}";
-var fourDigits = "\\d{4}";
-var word = "[^\\s]+";
-var literal = /\[([^]*?)\]/gm;
-function shorten(arr, sLen) {
-    var newArr = [];
-    for (var i = 0, len = arr.length; i < len; i++) {
-        newArr.push(arr[i].substr(0, sLen));
-    }
-    return newArr;
-}
-var monthUpdate = function (arrName) { return function (v, i18n) {
-    var lowerCaseArr = i18n[arrName].map(function (v) { return v.toLowerCase(); });
-    var index = lowerCaseArr.indexOf(v.toLowerCase());
-    if (index > -1) {
-        return index;
-    }
-    return null;
-}; };
-function assign(origObj) {
-    var args = [];
-    for (var _i = 1; _i < arguments.length; _i++) {
-        args[_i - 1] = arguments[_i];
-    }
-    for (var _a = 0, args_1 = args; _a < args_1.length; _a++) {
-        var obj = args_1[_a];
-        for (var key in obj) {
-            // @ts-ignore ex
-            origObj[key] = obj[key];
-        }
-    }
-    return origObj;
-}
-var dayNames = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday"
-];
-var monthNames = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December"
-];
-var monthNamesShort = shorten(monthNames, 3);
-var dayNamesShort = shorten(dayNames, 3);
-var defaultI18n = {
-    dayNamesShort: dayNamesShort,
-    dayNames: dayNames,
-    monthNamesShort: monthNamesShort,
-    monthNames: monthNames,
-    amPm: ["am", "pm"],
-    DoFn: function (dayOfMonth) {
-        return (dayOfMonth +
-            ["th", "st", "nd", "rd"][dayOfMonth % 10 > 3
-                ? 0
-                : ((dayOfMonth - (dayOfMonth % 10) !== 10 ? 1 : 0) * dayOfMonth) % 10]);
-    }
-};
-var globalI18n = assign({}, defaultI18n);
-var setGlobalDateI18n = function (i18n) {
-    return (globalI18n = assign(globalI18n, i18n));
-};
-var regexEscape = function (str) {
-    return str.replace(/[|\\{()[^$+*?.-]/g, "\\$&");
-};
-var pad = function (val, len) {
-    if (len === void 0) { len = 2; }
-    val = String(val);
-    while (val.length < len) {
-        val = "0" + val;
-    }
-    return val;
-};
-var formatFlags = {
-    D: function (dateObj) { return String(dateObj.getDate()); },
-    DD: function (dateObj) { return pad(dateObj.getDate()); },
-    Do: function (dateObj, i18n) {
-        return i18n.DoFn(dateObj.getDate());
-    },
-    d: function (dateObj) { return String(dateObj.getDay()); },
-    dd: function (dateObj) { return pad(dateObj.getDay()); },
-    ddd: function (dateObj, i18n) {
-        return i18n.dayNamesShort[dateObj.getDay()];
-    },
-    dddd: function (dateObj, i18n) {
-        return i18n.dayNames[dateObj.getDay()];
-    },
-    M: function (dateObj) { return String(dateObj.getMonth() + 1); },
-    MM: function (dateObj) { return pad(dateObj.getMonth() + 1); },
-    MMM: function (dateObj, i18n) {
-        return i18n.monthNamesShort[dateObj.getMonth()];
-    },
-    MMMM: function (dateObj, i18n) {
-        return i18n.monthNames[dateObj.getMonth()];
-    },
-    YY: function (dateObj) {
-        return pad(String(dateObj.getFullYear()), 4).substr(2);
-    },
-    YYYY: function (dateObj) { return pad(dateObj.getFullYear(), 4); },
-    h: function (dateObj) { return String(dateObj.getHours() % 12 || 12); },
-    hh: function (dateObj) { return pad(dateObj.getHours() % 12 || 12); },
-    H: function (dateObj) { return String(dateObj.getHours()); },
-    HH: function (dateObj) { return pad(dateObj.getHours()); },
-    m: function (dateObj) { return String(dateObj.getMinutes()); },
-    mm: function (dateObj) { return pad(dateObj.getMinutes()); },
-    s: function (dateObj) { return String(dateObj.getSeconds()); },
-    ss: function (dateObj) { return pad(dateObj.getSeconds()); },
-    S: function (dateObj) {
-        return String(Math.round(dateObj.getMilliseconds() / 100));
-    },
-    SS: function (dateObj) {
-        return pad(Math.round(dateObj.getMilliseconds() / 10), 2);
-    },
-    SSS: function (dateObj) { return pad(dateObj.getMilliseconds(), 3); },
-    a: function (dateObj, i18n) {
-        return dateObj.getHours() < 12 ? i18n.amPm[0] : i18n.amPm[1];
-    },
-    A: function (dateObj, i18n) {
-        return dateObj.getHours() < 12
-            ? i18n.amPm[0].toUpperCase()
-            : i18n.amPm[1].toUpperCase();
-    },
-    ZZ: function (dateObj) {
-        var offset = dateObj.getTimezoneOffset();
-        return ((offset > 0 ? "-" : "+") +
-            pad(Math.floor(Math.abs(offset) / 60) * 100 + (Math.abs(offset) % 60), 4));
-    },
-    Z: function (dateObj) {
-        var offset = dateObj.getTimezoneOffset();
-        return ((offset > 0 ? "-" : "+") +
-            pad(Math.floor(Math.abs(offset) / 60), 2) +
-            ":" +
-            pad(Math.abs(offset) % 60, 2));
-    }
-};
-var monthParse = function (v) { return +v - 1; };
-var emptyDigits = [null, twoDigitsOptional];
-var emptyWord = [null, word];
-var amPm = [
-    "isPm",
-    word,
-    function (v, i18n) {
-        var val = v.toLowerCase();
-        if (val === i18n.amPm[0]) {
-            return 0;
-        }
-        else if (val === i18n.amPm[1]) {
-            return 1;
-        }
-        return null;
-    }
-];
-var timezoneOffset = [
-    "timezoneOffset",
-    "[^\\s]*?[\\+\\-]\\d\\d:?\\d\\d|[^\\s]*?Z?",
-    function (v) {
-        var parts = (v + "").match(/([+-]|\d\d)/gi);
-        if (parts) {
-            var minutes = +parts[1] * 60 + parseInt(parts[2], 10);
-            return parts[0] === "+" ? minutes : -minutes;
-        }
-        return 0;
-    }
-];
-var parseFlags = {
-    D: ["day", twoDigitsOptional],
-    DD: ["day", twoDigits],
-    Do: ["day", twoDigitsOptional + word, function (v) { return parseInt(v, 10); }],
-    M: ["month", twoDigitsOptional, monthParse],
-    MM: ["month", twoDigits, monthParse],
-    YY: [
-        "year",
-        twoDigits,
-        function (v) {
-            var now = new Date();
-            var cent = +("" + now.getFullYear()).substr(0, 2);
-            return +("" + (+v > 68 ? cent - 1 : cent) + v);
-        }
-    ],
-    h: ["hour", twoDigitsOptional, undefined, "isPm"],
-    hh: ["hour", twoDigits, undefined, "isPm"],
-    H: ["hour", twoDigitsOptional],
-    HH: ["hour", twoDigits],
-    m: ["minute", twoDigitsOptional],
-    mm: ["minute", twoDigits],
-    s: ["second", twoDigitsOptional],
-    ss: ["second", twoDigits],
-    YYYY: ["year", fourDigits],
-    S: ["millisecond", "\\d", function (v) { return +v * 100; }],
-    SS: ["millisecond", twoDigits, function (v) { return +v * 10; }],
-    SSS: ["millisecond", threeDigits],
-    d: emptyDigits,
-    dd: emptyDigits,
-    ddd: emptyWord,
-    dddd: emptyWord,
-    MMM: ["month", word, monthUpdate("monthNamesShort")],
-    MMMM: ["month", word, monthUpdate("monthNames")],
-    a: amPm,
-    A: amPm,
-    ZZ: timezoneOffset,
-    Z: timezoneOffset
-};
-// Some common format strings
-var globalMasks = {
-    default: "ddd MMM DD YYYY HH:mm:ss",
-    shortDate: "M/D/YY",
-    mediumDate: "MMM D, YYYY",
-    longDate: "MMMM D, YYYY",
-    fullDate: "dddd, MMMM D, YYYY",
-    isoDate: "YYYY-MM-DD",
-    isoDateTime: "YYYY-MM-DDTHH:mm:ssZ",
-    shortTime: "HH:mm",
-    mediumTime: "HH:mm:ss",
-    longTime: "HH:mm:ss.SSS"
-};
-var setGlobalDateMasks = function (masks) { return assign(globalMasks, masks); };
-/***
- * Format a date
- * @method format
- * @param {Date|number} dateObj
- * @param {string} mask Format of the date, i.e. 'mm-dd-yy' or 'shortDate'
- * @returns {string} Formatted date string
- */
-var format = function (dateObj, mask, i18n) {
-    if (mask === void 0) { mask = globalMasks["default"]; }
-    if (i18n === void 0) { i18n = {}; }
-    if (typeof dateObj === "number") {
-        dateObj = new Date(dateObj);
-    }
-    if (Object.prototype.toString.call(dateObj) !== "[object Date]" ||
-        isNaN(dateObj.getTime())) {
-        throw new Error("Invalid Date pass to format");
-    }
-    mask = globalMasks[mask] || mask;
-    var literals = [];
-    // Make literals inactive by replacing them with @@@
-    mask = mask.replace(literal, function ($0, $1) {
-        literals.push($1);
-        return "@@@";
-    });
-    var combinedI18nSettings = assign(assign({}, globalI18n), i18n);
-    // Apply formatting rules
-    mask = mask.replace(token, function ($0) {
-        return formatFlags[$0](dateObj, combinedI18nSettings);
-    });
-    // Inline literal values back into the formatted value
-    return mask.replace(/@@@/g, function () { return literals.shift(); });
-};
-/**
- * Parse a date string into a Javascript Date object /
- * @method parse
- * @param {string} dateStr Date string
- * @param {string} format Date parse format
- * @param {i18n} I18nSettingsOptional Full or subset of I18N settings
- * @returns {Date|null} Returns Date object. Returns null what date string is invalid or doesn't match format
- */
-function parse(dateStr, format, i18n) {
-    if (i18n === void 0) { i18n = {}; }
-    if (typeof format !== "string") {
-        throw new Error("Invalid format in fecha parse");
-    }
-    // Check to see if the format is actually a mask
-    format = globalMasks[format] || format;
-    // Avoid regular expression denial of service, fail early for really long strings
-    // https://www.owasp.org/index.php/Regular_expression_Denial_of_Service_-_ReDoS
-    if (dateStr.length > 1000) {
-        return null;
-    }
-    // Default to the beginning of the year.
-    var today = new Date();
-    var dateInfo = {
-        year: today.getFullYear(),
-        month: 0,
-        day: 1,
-        hour: 0,
-        minute: 0,
-        second: 0,
-        millisecond: 0,
-        isPm: null,
-        timezoneOffset: null
-    };
-    var parseInfo = [];
-    var literals = [];
-    // Replace all the literals with @@@. Hopefully a string that won't exist in the format
-    var newFormat = format.replace(literal, function ($0, $1) {
-        literals.push(regexEscape($1));
-        return "@@@";
-    });
-    var specifiedFields = {};
-    var requiredFields = {};
-    // Change every token that we find into the correct regex
-    newFormat = regexEscape(newFormat).replace(token, function ($0) {
-        var info = parseFlags[$0];
-        var field = info[0], regex = info[1], requiredField = info[3];
-        // Check if the person has specified the same field twice. This will lead to confusing results.
-        if (specifiedFields[field]) {
-            throw new Error("Invalid format. " + field + " specified twice in format");
-        }
-        specifiedFields[field] = true;
-        // Check if there are any required fields. For instance, 12 hour time requires AM/PM specified
-        if (requiredField) {
-            requiredFields[requiredField] = true;
-        }
-        parseInfo.push(info);
-        return "(" + regex + ")";
-    });
-    // Check all the required fields are present
-    Object.keys(requiredFields).forEach(function (field) {
-        if (!specifiedFields[field]) {
-            throw new Error("Invalid format. " + field + " is required in specified format");
-        }
-    });
-    // Add back all the literals after
-    newFormat = newFormat.replace(/@@@/g, function () { return literals.shift(); });
-    // Check if the date string matches the format. If it doesn't return null
-    var matches = dateStr.match(new RegExp(newFormat, "i"));
-    if (!matches) {
-        return null;
-    }
-    var combinedI18nSettings = assign(assign({}, globalI18n), i18n);
-    // For each match, call the parser function for that date part
-    for (var i = 1; i < matches.length; i++) {
-        var _a = parseInfo[i - 1], field = _a[0], parser = _a[2];
-        var value = parser
-            ? parser(matches[i], combinedI18nSettings)
-            : +matches[i];
-        // If the parser can't make sense of the value, return null
-        if (value == null) {
-            return null;
-        }
-        dateInfo[field] = value;
-    }
-    if (dateInfo.isPm === 1 && dateInfo.hour != null && +dateInfo.hour !== 12) {
-        dateInfo.hour = +dateInfo.hour + 12;
-    }
-    else if (dateInfo.isPm === 0 && +dateInfo.hour === 12) {
-        dateInfo.hour = 0;
-    }
-    var dateWithoutTZ = new Date(dateInfo.year, dateInfo.month, dateInfo.day, dateInfo.hour, dateInfo.minute, dateInfo.second, dateInfo.millisecond);
-    var validateFields = [
-        ["month", "getMonth"],
-        ["day", "getDate"],
-        ["hour", "getHours"],
-        ["minute", "getMinutes"],
-        ["second", "getSeconds"]
-    ];
-    for (var i = 0, len = validateFields.length; i < len; i++) {
-        // Check to make sure the date field is within the allowed range. Javascript dates allows values
-        // outside the allowed range. If the values don't match the value was invalid
-        if (specifiedFields[validateFields[i][0]] &&
-            dateInfo[validateFields[i][0]] !== dateWithoutTZ[validateFields[i][1]]()) {
-            return null;
-        }
-    }
-    if (dateInfo.timezoneOffset == null) {
-        return dateWithoutTZ;
-    }
-    return new Date(Date.UTC(dateInfo.year, dateInfo.month, dateInfo.day, dateInfo.hour, dateInfo.minute - dateInfo.timezoneOffset, dateInfo.second, dateInfo.millisecond));
-}
-var fecha = {
-    format: format,
-    parse: parse,
-    defaultI18n: defaultI18n,
-    setGlobalDateI18n: setGlobalDateI18n,
-    setGlobalDateMasks: setGlobalDateMasks
-};
-
-var a=function(){try{(new Date).toLocaleDateString("i");}catch(e){return "RangeError"===e.name}return !1}()?function(e,t){return e.toLocaleDateString(t,{year:"numeric",month:"long",day:"numeric"})}:function(t){return fecha.format(t,"mediumDate")},r=function(){try{(new Date).toLocaleString("i");}catch(e){return "RangeError"===e.name}return !1}()?function(e,t){return e.toLocaleString(t,{year:"numeric",month:"long",day:"numeric",hour:"numeric",minute:"2-digit"})}:function(t){return fecha.format(t,"haDateTime")},n=function(){try{(new Date).toLocaleTimeString("i");}catch(e){return "RangeError"===e.name}return !1}()?function(e,t){return e.toLocaleTimeString(t,{hour:"numeric",minute:"2-digit"})}:function(t){return fecha.format(t,"shortTime")};function f(e){return e.substr(0,e.indexOf("."))}var D=["closed","locked","off"],q=function(e,t,a,r){r=r||{},a=null==a?{}:a;var n=new Event(t,{bubbles:void 0===r.bubbles||r.bubbles,cancelable:Boolean(r.cancelable),composed:void 0===r.composed||r.composed});return n.detail=a,e.dispatchEvent(n),n};var B=function(e){q(window,"haptic",e);},U=function(e,t,a){void 0===a&&(a=!1),a?history.replaceState(null,"",t):history.pushState(null,"",t),q(window,"location-changed",{replace:a});},V=function(e,t,a){void 0===a&&(a=!0);var r,n=f(t),s="group"===n?"homeassistant":n;switch(n){case"lock":r=a?"unlock":"lock";break;case"cover":r=a?"open_cover":"close_cover";break;default:r=a?"turn_on":"turn_off";}return e.callService(s,r,{entity_id:t})},W=function(e,t){var a=D.includes(e.states[t].state);return V(e,t,a)};
+var t,r;!function(e){e.language="language",e.system="system",e.comma_decimal="comma_decimal",e.decimal_comma="decimal_comma",e.space_comma="space_comma",e.none="none";}(t||(t={})),function(e){e.language="language",e.system="system",e.am_pm="12",e.twenty_four="24";}(r||(r={}));function E(e){return e.substr(0,e.indexOf("."))}var Z=["closed","locked","off"],ne=function(e,t,r,n){n=n||{},r=null==r?{}:r;var i=new Event(t,{bubbles:void 0===n.bubbles||n.bubbles,cancelable:Boolean(n.cancelable),composed:void 0===n.composed||n.composed});return i.detail=r,e.dispatchEvent(i),i};var le=function(e){ne(window,"haptic",e);},de=function(e,t,r){void 0===r&&(r=!1),r?history.replaceState(null,"",t):history.pushState(null,"",t),ne(window,"location-changed",{replace:r});},fe=function(e,t,r){void 0===r&&(r=!0);var n,i=E(t),a="group"===i?"homeassistant":i;switch(i){case"lock":n=r?"unlock":"lock";break;case"cover":n=r?"open_cover":"close_cover";break;default:n=r?"turn_on":"turn_off";}return e.callService(a,n,{entity_id:t})},ge=function(e,t){var r=Z.includes(e.states[t].state);return fe(e,t,r)};
 
 // ------------------------------------------------------------------------------------------
 //  SIDEBAR-CARD
@@ -17848,7 +17495,7 @@ var a=function(){try{(new Date).toLocaleDateString("i");}catch(e){return "RangeE
 // ###   Global constants
 // ##########################################################################################
 const SIDEBAR_CARD_TITLE = 'SIDEBAR-CARD';
-const SIDEBAR_CARD_VERSION = '0.1.9.6.1';
+const SIDEBAR_CARD_VERSION = '0.1.9.8.0';
 // ##########################################################################################
 // ###   The actual Sidebar Card element
 // ##########################################################################################
@@ -17856,6 +17503,8 @@ class SidebarCard extends LitElement {
     /* **************************************** *
      *           Element constructor            *
      * **************************************** */
+    //Markus:
+    // Binds the location change handler to update the active menu item with a short delay
     constructor() {
         super();
         this.templateLines = [];
@@ -17869,6 +17518,15 @@ class SidebarCard extends LitElement {
         this.dateFormat = 'DD MMMM';
         this.bottomCard = null;
         this.CUSTOM_TYPE_PREFIX = 'custom:';
+        // Markus:
+        // Stores the setInterval handle for the periodic clock update
+        // Stores the setInterval handle for the periodic date update
+        // Stores the bound event handler function for the 'location-changed' event, used to update the active menu item with the correct `this` context
+        this._clockInterval = null;
+        this._dateInterval = null;
+        this._boundLocationChange = () => {
+            setTimeout(() => this._updateActiveMenu(), 50);
+        };
     }
     /* **************************************** *
      *        Element's public properties       *
@@ -17879,6 +17537,30 @@ class SidebarCard extends LitElement {
             config: {},
             active: {},
         };
+    }
+    connectedCallback() {
+        super.connectedCallback();
+        // Starts the observer for URL changes
+        window.addEventListener('location-changed', this._boundLocationChange);
+        const self = this;
+        // Start timers if they are configured and not already running.
+        if ((this.config.clock || this.config.digitalClock) && !this._clockInterval) {
+            const inc = 1000;
+            // Delay the first run slightly to ensure the DOM is ready.
+            setTimeout(() => self._runClock(), 50);
+            this._clockInterval = setInterval(function () {
+                self._runClock();
+            }, inc);
+        }
+        if (this.config.date && !this._dateInterval) {
+            const inc = 1000 * 60 * 60;
+            // Delay the first run slightly to ensure the DOM is ready.
+            setTimeout(() => self._runDate(), 50);
+            this._dateInterval = setInterval(function () {
+                self._runDate();
+            }, inc);
+        }
+        this._updateActiveMenu();
     }
     /* **************************************** *
      *   Element's HTML renderer (lit-element)  *
@@ -18045,8 +17727,8 @@ class SidebarCard extends LitElement {
     }
     updateSidebarSize(root) {
         const sidebarInner = this.shadowRoot.querySelector('.sidebar-inner');
-        const header = root.shadowRoot.querySelector('ch-header') || root.shadowRoot.querySelector('app-header');
-        const offParam = getParameterByName('sidebarOff');
+        root.shadowRoot.querySelector('ch-header') || root.shadowRoot.querySelector('app-header');
+        getParameterByName('sidebarOff');
         let headerHeightPx = getHeaderHeightPx();
         if (sidebarInner) {
             sidebarInner.style.width = this.offsetWidth + 'px';
@@ -18063,31 +17745,33 @@ class SidebarCard extends LitElement {
     firstUpdated() {
         provideHass(this);
         let root = getRoot();
-        root.shadowRoot.querySelectorAll('paper-tab').forEach((paperTab) => {
-            log2console('firstUpdated', 'Menu item found');
-            paperTab.addEventListener('click', () => {
-                this._updateActiveMenu();
-            });
-        });
+        // The clock and date interval logic is now moved to connectedCallback()
+        // to handle reloads correctly. This section can be removed.
+        /*
         const self = this;
         if (this.clock || this.digitalClock) {
-            const inc = 1000;
+          const inc = 1000;
+          self._runClock();
+          this._clockInterval = setInterval(function() {
             self._runClock();
-            setInterval(function () {
-                self._runClock();
-            }, inc);
+          }, inc);
         }
         if (this.date) {
-            const inc = 1000 * 60 * 60;
+          const inc = 1000 * 60 * 60;
+          self._runDate();
+          this._dateInterval = setInterval(function() {
             self._runDate();
-            setInterval(function () {
-                self._runDate();
-            }, inc);
+          }, inc);
         }
+        */
+        const self = this; // self is needed for the setTimeouts below
         setTimeout(() => {
             self.updateSidebarSize(root);
             self._updateActiveMenu();
-        }, 1);
+        }, 50);
+        setTimeout(() => {
+            self.updateSidebarSize(root);
+        }, 350);
         window.addEventListener('resize', function () {
             setTimeout(() => {
                 self.updateSidebarSize(root);
@@ -18149,7 +17833,9 @@ class SidebarCard extends LitElement {
         if ((e.target.dataset && e.target.dataset.menuitem) || (e.target.parentNode.dataset && e.target.parentNode.dataset.menuitem)) {
             const menuItem = JSON.parse(e.target.dataset.menuitem || e.target.parentNode.dataset.menuitem);
             this._customAction(menuItem);
-            this._updateActiveMenu();
+            // Markus:
+            // This line is commented out because the menu update is now triggered by the 'location-changed' event
+            //this._updateActiveMenu();
         }
     }
     _customAction(tapAction) {
@@ -18161,7 +17847,7 @@ class SidebarCard extends LitElement {
                 break;
             case 'navigate':
                 if (tapAction.navigation_path) {
-                    U(window, tapAction.navigation_path);
+                    de(window, tapAction.navigation_path);
                 }
                 break;
             case 'url':
@@ -18171,18 +17857,18 @@ class SidebarCard extends LitElement {
                 break;
             case 'toggle':
                 if (tapAction.entity) {
-                    W(this.hass, tapAction.entity);
-                    B('success');
+                    ge(this.hass, tapAction.entity);
+                    le('success');
                 }
                 break;
             case 'call-service': {
                 if (!tapAction.service) {
-                    B('failure');
+                    le('failure');
                     return;
                 }
                 const [domain, service] = tapAction.service.split('.', 2);
                 this.hass.callService(domain, service, tapAction.service_data);
-                B('success');
+                le('success');
             }
         }
     }
@@ -18693,7 +18379,7 @@ function updateStyling(appLayout, sidebarConfig) {
     const root = getRoot();
     const hassHeader = root.shadowRoot.querySelector('.header');
     log2console('updateStyling', hassHeader ? 'Home Assistant header found!' : 'Home Assistant header not found!');
-    const hassFooter = root.shadowRoot.querySelector('ch-footer' || root.shadowRoot.querySelector('app-footer'));
+    const hassFooter = root.shadowRoot.querySelector('ch-footer' );
     log2console('updateStyling', hassFooter ? 'Home Assistant footer found!' : 'Home Assistant footer not found!');
     const offParam = getParameterByName('sidebarOff');
     const view = root.shadowRoot.getElementById('view');
