@@ -13,15 +13,11 @@ from homeassistant.components.climate.const import (
     FAN_LOW,
     FAN_MEDIUM,
     FAN_OFF,
-    HVAC_MODE_AUTO,
-    HVAC_MODE_COOL,
-    HVAC_MODE_FAN_ONLY,
-    HVAC_MODE_OFF,
-    SUPPORT_FAN_MODE,
-    SUPPORT_TARGET_TEMPERATURE,
+    HVACMode,
+    ClimateEntityFeature,
 )
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import ATTR_TEMPERATURE, TEMP_CELSIUS, TEMP_FAHRENHEIT
+from homeassistant.const import ATTR_TEMPERATURE, UnitOfTemperature
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
@@ -54,15 +50,15 @@ async def async_setup_entry(
 
 
 FRIGIDAIRE_TO_HA_UNIT = {
-    frigidaire.Unit.FAHRENHEIT: TEMP_FAHRENHEIT,
-    frigidaire.Unit.CELSIUS: TEMP_CELSIUS,
+    frigidaire.Unit.FAHRENHEIT: UnitOfTemperature.FAHRENHEIT,
+    frigidaire.Unit.CELSIUS: UnitOfTemperature.CELSIUS,
 }
 
 FRIGIDAIRE_TO_HA_MODE = {
-    frigidaire.Mode.OFF: HVAC_MODE_OFF,
-    frigidaire.Mode.COOL: HVAC_MODE_COOL,
-    frigidaire.Mode.FAN: HVAC_MODE_FAN_ONLY,
-    frigidaire.Mode.ECO: HVAC_MODE_AUTO,
+    frigidaire.Mode.OFF: HVACMode.OFF,
+    frigidaire.Mode.COOL: HVACMode.COOL,
+    frigidaire.Mode.FAN: HVACMode.FAN_ONLY,
+    frigidaire.Mode.ECO: HVACMode.AUTO,
 }
 
 FRIGIDAIRE_TO_HA_FAN_SPEED = {
@@ -70,6 +66,11 @@ FRIGIDAIRE_TO_HA_FAN_SPEED = {
     frigidaire.FanSpeed.LOW: FAN_LOW,
     frigidaire.FanSpeed.MEDIUM: FAN_MEDIUM,
     frigidaire.FanSpeed.HIGH: FAN_HIGH,
+}
+
+HA_TO_FRIGIDAIRE_UNIT = {
+    UnitOfTemperature.FAHRENHEIT: frigidaire.Unit.FAHRENHEIT,
+    UnitOfTemperature.CELSIUS: frigidaire.Unit.CELSIUS,
 }
 
 HA_TO_FRIGIDAIRE_FAN_MODE = {
@@ -80,10 +81,10 @@ HA_TO_FRIGIDAIRE_FAN_MODE = {
 }
 
 HA_TO_FRIGIDAIRE_HVAC_MODE = {
-    HVAC_MODE_AUTO: frigidaire.Mode.ECO,
-    HVAC_MODE_FAN_ONLY: frigidaire.Mode.FAN,
-    HVAC_MODE_COOL: frigidaire.Mode.COOL,
-    HVAC_MODE_OFF: frigidaire.Mode.OFF,
+    HVACMode.AUTO: frigidaire.Mode.ECO,
+    HVACMode.FAN_ONLY: frigidaire.Mode.FAN,
+    HVACMode.COOL: frigidaire.Mode.COOL,
+    HVACMode.OFF: frigidaire.Mode.OFF,
 }
 
 
@@ -105,7 +106,10 @@ class FrigidaireClimate(ClimateEntity):
         # Entity Class Attributes
         self._attr_unique_id = self._appliance.appliance_id
         self._attr_name = self._appliance.nickname
-        self._attr_supported_features = SUPPORT_TARGET_TEMPERATURE | SUPPORT_FAN_MODE
+        self._attr_supported_features = (ClimateEntityFeature.TARGET_TEMPERATURE |
+                                         ClimateEntityFeature.FAN_MODE |
+                                         ClimateEntityFeature.TURN_OFF |
+                                         ClimateEntityFeature.TURN_ON)
         self._attr_target_temperature_step = 1
 
         # Although we can access the Frigidaire API to get updates, they are
@@ -121,10 +125,10 @@ class FrigidaireClimate(ClimateEntity):
         ]
 
         self._attr_hvac_modes = [
-            HVAC_MODE_OFF,
-            HVAC_MODE_COOL,
-            HVAC_MODE_AUTO,
-            HVAC_MODE_FAN_ONLY,
+            HVACMode.OFF,
+            HVACMode.COOL,
+            HVACMode.AUTO,
+            HVACMode.FAN_ONLY,
         ]
 
     @property
@@ -174,7 +178,7 @@ class FrigidaireClimate(ClimateEntity):
     @property
     def target_temperature(self):
         """Return the temperature we try to reach."""
-        if self.temperature_unit == TEMP_FAHRENHEIT:
+        if self.temperature_unit == UnitOfTemperature.FAHRENHEIT:
             return self._details.get(frigidaire.Detail.TARGET_TEMPERATURE_F)
         else:
             return self._details.get(frigidaire.Detail.TARGET_TEMPERATURE_C)
@@ -189,7 +193,10 @@ class FrigidaireClimate(ClimateEntity):
     @property
     def current_temperature(self):
         """Return the current temperature."""
-        return self._details.get(frigidaire.Detail.AMBIENT_TEMPERATURE_F)
+        if self.temperature_unit == UnitOfTemperature.FAHRENHEIT:
+            return self._details.get(frigidaire.Detail.AMBIENT_TEMPERATURE_F)
+        else:
+            return self._details.get(frigidaire.Detail.AMBIENT_TEMPERATURE_C)
 
     @property
     def fan_mode(self):
@@ -204,7 +211,7 @@ class FrigidaireClimate(ClimateEntity):
     @property
     def min_temp(self):
         """Return the minimum temperature."""
-        if self.temperature_unit == TEMP_FAHRENHEIT:
+        if self.temperature_unit == UnitOfTemperature.FAHRENHEIT:
             return 60
 
         return 16
@@ -212,7 +219,7 @@ class FrigidaireClimate(ClimateEntity):
     @property
     def max_temp(self):
         """Return the maximum temperature."""
-        if self.temperature_unit == TEMP_FAHRENHEIT:
+        if self.temperature_unit == UnitOfTemperature.FAHRENHEIT:
             return 90
 
         return 32
@@ -231,9 +238,11 @@ class FrigidaireClimate(ClimateEntity):
         if temperature is None:
             return
         temperature = int(temperature)
+        temperature_unit = HA_TO_FRIGIDAIRE_UNIT[self.temperature_unit]
 
+        _LOGGER.debug("Setting temperature to int({}) {}".format(temperature, self.temperature_unit))
         self._client.execute_action(
-            self._appliance, frigidaire.Action.set_temperature(temperature)
+            self._appliance, frigidaire.Action.set_temperature(temperature, temperature_unit)
         )
 
     def set_fan_mode(self, fan_mode):
@@ -247,7 +256,7 @@ class FrigidaireClimate(ClimateEntity):
 
     def set_hvac_mode(self, hvac_mode):
         """Set new target operation mode."""
-        if hvac_mode == HVAC_MODE_OFF:
+        if hvac_mode == HVACMode.OFF:
             self._client.execute_action(
                 self._appliance, frigidaire.Action.set_power(frigidaire.Power.OFF)
             )
@@ -266,7 +275,7 @@ class FrigidaireClimate(ClimateEntity):
             # temperature reverts to default when the device is turned on
             self._client.execute_action(
                 self._appliance,
-                frigidaire.Action.set_temperature(self.target_temperature)
+                frigidaire.Action.set_temperature(int(self.target_temperature))
             )
 
         self._client.execute_action(

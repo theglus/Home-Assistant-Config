@@ -5,6 +5,7 @@ from decimal import Decimal
 
 import voluptuous as vol
 from homeassistant.components.sensor import SensorDeviceClass
+from homeassistant.const import STATE_UNAVAILABLE, STATE_UNKNOWN
 from homeassistant.core import HomeAssistant, State
 from homeassistant.helpers import entity_registry
 from homeassistant.helpers.event import TrackTemplate
@@ -17,7 +18,7 @@ from custom_components.powercalc.const import (
     OFF_STATES,
 )
 from custom_components.powercalc.errors import StrategyConfigurationError
-from custom_components.powercalc.helpers import evaluate_power
+from custom_components.powercalc.helpers import evaluate_power, get_related_entity_by_device_class
 
 from .strategy_interface import PowerCalculationStrategyInterface
 
@@ -55,6 +56,14 @@ class WledStrategy(PowerCalculationStrategyInterface):
         if entity_state.entity_id != self._estimated_current_entity:
             entity_state = self._hass.states.get(self._estimated_current_entity)
 
+        if entity_state.state in [STATE_UNAVAILABLE, STATE_UNKNOWN]:
+            _LOGGER.warning(
+                "%s: Estimated current entity %s is not available",
+                self._light_entity.entity_id,
+                self._estimated_current_entity,
+            )
+            return None
+
         _LOGGER.debug(
             "%s: Estimated current %s (voltage=%d, power_factor=%.2f)",
             self._light_entity.entity_id,
@@ -73,20 +82,11 @@ class WledStrategy(PowerCalculationStrategyInterface):
             return entry.entity_id
 
         if self._light_entity.entity_entry:
-            device_id = self._light_entity.entity_entry.device_id
-            if device_id:
-                estimated_current_entities = [
-                    entity_entry.entity_id
-                    for entity_entry in entity_registry.async_entries_for_device(
-                        entity_reg,
-                        device_id,
-                    )
-                    if (entity_entry.device_class or entity_entry.original_device_class) == SensorDeviceClass.CURRENT
-                ]
-                if estimated_current_entities:
-                    return estimated_current_entities[0]
+            entity = get_related_entity_by_device_class(self._hass, self._light_entity.entity_entry, SensorDeviceClass.CURRENT)
+            if entity:
+                return entity
 
-        raise StrategyConfigurationError("{No estimated current entity found")
+        raise StrategyConfigurationError("No estimated current entity found. Probably brightness limiter not enabled. See documentation")
 
     def get_entities_to_track(self) -> list[str | TrackTemplate]:
         if self._estimated_current_entity:

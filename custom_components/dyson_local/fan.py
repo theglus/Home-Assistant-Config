@@ -10,10 +10,7 @@ import voluptuous as vol
 from homeassistant.components.fan import (
     DIRECTION_FORWARD,
     DIRECTION_REVERSE,
-    SUPPORT_DIRECTION,
-    SUPPORT_OSCILLATE,
-    SUPPORT_PRESET_MODE,
-    SUPPORT_SET_SPEED,
+    FanEntityFeature,
     FanEntity,
     NotValidPresetModeError,
 )
@@ -49,12 +46,19 @@ SET_TIMER_SCHEMA = {
 }
 
 PRESET_MODE_AUTO = "Auto"
+PRESET_MODE_NORMAL = "Normal"
 
-SUPPORTED_PRESET_MODES = [PRESET_MODE_AUTO]
+SUPPORTED_PRESET_MODES = [PRESET_MODE_AUTO, PRESET_MODE_NORMAL]
 
 SPEED_RANGE = (1, 10)
 
-COMMON_FEATURES = SUPPORT_OSCILLATE | SUPPORT_SET_SPEED | SUPPORT_PRESET_MODE
+COMMON_FEATURES = (
+    FanEntityFeature.OSCILLATE
+    | FanEntityFeature.SET_SPEED
+    | FanEntityFeature.PRESET_MODE
+    | FanEntityFeature.TURN_ON
+    | FanEntityFeature.TURN_OFF
+)
 
 
 async def async_setup_entry(
@@ -67,8 +71,8 @@ async def async_setup_entry(
         entity = DysonPureCoolLinkEntity(device, name)
     elif isinstance(device, DysonPureCool):
         entity = DysonPureCoolEntity(device, name)
-    else:  # DysonPureHumidityCool
-        entity = DysonPureHumidifyCoolEntity(device, name)
+    else:  # DysonPurifierHumidifyCool
+        entity = DysonPurifierHumidifyCoolEntity(device, name)
     async_add_entities([entity])
 
     platform = entity_platform.current_platform.get()
@@ -83,6 +87,8 @@ async def async_setup_entry(
 
 class DysonFanEntity(DysonEntity, FanEntity):
     """Dyson fan entity base class."""
+
+    _enable_turn_on_off_backwards_compatibility = False
 
     _MESSAGE_TYPE = MessageType.STATE
 
@@ -130,12 +136,15 @@ class DysonFanEntity(DysonEntity, FanEntity):
         """Return the current selected preset mode."""
         if self._device.auto_mode:
             return PRESET_MODE_AUTO
-        return None
+        else:
+            return PRESET_MODE_NORMAL
 
     def set_preset_mode(self, preset_mode: str) -> None:
         """Configure the preset mode."""
         if preset_mode == PRESET_MODE_AUTO:
             self._device.enable_auto_mode()
+        elif preset_mode == PRESET_MODE_NORMAL:
+            self._device.disable_auto_mode()
         else:
             raise NotValidPresetModeError(f"Invalid preset mode: {preset_mode}")
 
@@ -195,7 +204,7 @@ class DysonPureCoolEntity(DysonFanEntity):
     @property
     def supported_features(self) -> int:
         """Flag supported features."""
-        return COMMON_FEATURES | SUPPORT_DIRECTION
+        return COMMON_FEATURES | FanEntityFeature.DIRECTION
 
     @property
     def current_direction(self) -> str:
@@ -243,13 +252,13 @@ class DysonPureCoolEntity(DysonFanEntity):
         self._device.enable_oscillation(angle_low, angle_high)
 
 
-class DysonPureHumidifyCoolEntity(DysonFanEntity):
+class DysonPurifierHumidifyCoolEntity(DysonFanEntity):
     """Dyson Pure Humidify+Cool entity."""
 
     @property
     def supported_features(self) -> int:
         """Flag supported features."""
-        return COMMON_FEATURES | SUPPORT_DIRECTION
+        return COMMON_FEATURES | FanEntityFeature.DIRECTION
 
     @property
     def current_direction(self) -> str:

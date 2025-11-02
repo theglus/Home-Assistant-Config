@@ -24,6 +24,7 @@ from homeassistant.const import (
     UnitOfPower,
 )
 from homeassistant.core import HomeAssistant, callback
+from homeassistant.exceptions import TemplateError
 from homeassistant.helpers.event import async_track_time_interval
 from homeassistant.helpers.restore_state import RestoreEntity
 from homeassistant.helpers.template import Template
@@ -41,6 +42,7 @@ from custom_components.powercalc.const import (
     CONF_START_TIME,
     CONF_UPDATE_FREQUENCY,
     CONF_VALUE,
+    DEFAULT_ENERGY_SENSOR_PRECISION,
     UnitPrefix,
 )
 
@@ -112,12 +114,12 @@ async def create_daily_fixed_energy_sensor(
         name,
         entity_id,
         mode_config.get(CONF_VALUE),  # type: ignore
-        mode_config.get(CONF_UNIT_OF_MEASUREMENT),  # type: ignore
-        mode_config.get(CONF_UPDATE_FREQUENCY),  # type: ignore
+        str(mode_config.get(CONF_UNIT_OF_MEASUREMENT)),
+        int(mode_config.get(CONF_UPDATE_FREQUENCY, DEFAULT_DAILY_UPDATE_FREQUENCY)),
         sensor_config,
         on_time=on_time,
         start_time=mode_config.get(CONF_START_TIME),
-        rounding_digits=sensor_config.get(CONF_ENERGY_SENSOR_PRECISION),  # type: ignore
+        rounding_digits=int(sensor_config.get(CONF_ENERGY_SENSOR_PRECISION, DEFAULT_ENERGY_SENSOR_PRECISION)),
     )
 
 
@@ -132,7 +134,7 @@ async def create_daily_fixed_energy_power_sensor(
         return None
 
     power_value: float = mode_config.get(CONF_VALUE)  # type: ignore
-    if mode_config.get(CONF_UNIT_OF_MEASUREMENT) == UnitOfEnergy.KILO_WATT_HOUR:
+    if mode_config.get(CONF_UNIT_OF_MEASUREMENT) == UnitOfEnergy.KILO_WATT_HOUR and not isinstance(power_value, Template):
         power_value = power_value * 1000 / 24
 
     power_sensor_config = sensor_config.copy()
@@ -186,6 +188,7 @@ class DailyEnergySensor(RestoreEntity, SensorEntity, EnergySensor):
         self._on_time = on_time or timedelta(days=1)
         self._start_time = start_time
         self._rounding_digits = rounding_digits
+        self._attr_suggested_display_precision = self._rounding_digits
         self._attr_unique_id = sensor_config.get(CONF_UNIQUE_ID)
         self.entity_id = entity_id
         self._last_updated: float = dt_util.utcnow().timestamp()
@@ -253,7 +256,16 @@ class DailyEnergySensor(RestoreEntity, SensorEntity, EnergySensor):
         value = self._value
         if isinstance(value, Template):
             value.hass = self.hass
-            value = float(value.async_render())
+            try:
+                value = float(value.async_render())
+            except TemplateError as ex:
+                _LOGGER.error(
+                    "%s: Could not render value template %s: %s",
+                    self.entity_id,
+                    value,
+                    ex,
+                )
+                return Decimal(0)
 
         wh_per_day = value * (self._on_time.total_seconds() / 3600) if self._user_unit_of_measurement == UnitOfPower.WATT else value * 1000
 

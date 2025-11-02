@@ -1,18 +1,16 @@
-"""Sensor platform for Google Home"""
+"""Sensor platform for Google Home."""
 
 from __future__ import annotations
 
 import logging
+from typing import TYPE_CHECKING
 
 import voluptuous as vol
 
 from homeassistant.components.sensor import SensorDeviceClass
-from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import STATE_UNAVAILABLE
-from homeassistant.core import HomeAssistant, ServiceCall
 from homeassistant.helpers import config_validation as cv, entity_platform
 from homeassistant.helpers.entity import Entity, EntityCategory
-from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .const import (
     ALARM_AND_TIMER_ID_LENGTH,
@@ -36,25 +34,35 @@ from .const import (
 )
 from .entity import GoogleHomeBaseEntity
 from .models import GoogleHomeAlarmStatus, GoogleHomeDevice, GoogleHomeTimerStatus
-from .types import (
-    AlarmsAttributes,
-    DeviceAttributes,
-    GoogleHomeAlarmDict,
-    GoogleHomeTimerDict,
-    TimersAttributes,
-)
+
+if TYPE_CHECKING:
+    from homeassistant.core import HomeAssistant, ServiceCall
+    from homeassistant.helpers.entity_platform import AddEntitiesCallback
+    from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
+
+    from .api import GlocaltokensApiClient
+    from .types import (
+        AlarmsAttributes,
+        DeviceAttributes,
+        GoogleHomeAlarmDict,
+        GoogleHomeConfigEntry,
+        GoogleHomeTimerDict,
+        TimersAttributes,
+    )
 
 _LOGGER: logging.Logger = logging.getLogger(__package__)
 
 
 async def async_setup_entry(
     hass: HomeAssistant,
-    entry: ConfigEntry,
+    entry: GoogleHomeConfigEntry,
     async_add_devices: AddEntitiesCallback,
 ) -> bool:
-    """Setup sensor platform."""
-    client = hass.data[DOMAIN][entry.entry_id][DATA_CLIENT]
-    coordinator = hass.data[DOMAIN][entry.entry_id][DATA_COORDINATOR]
+    """Set up sensor platform."""
+    client: GlocaltokensApiClient = hass.data[DOMAIN][entry.entry_id][DATA_CLIENT]
+    coordinator: DataUpdateCoordinator[list[GoogleHomeDevice]] = hass.data[DOMAIN][
+        entry.entry_id
+    ][DATA_COORDINATOR]
     sensors: list[Entity] = []
     for device in coordinator.data:
         sensors.append(
@@ -91,10 +99,8 @@ async def async_setup_entry(
     platform.async_register_entity_service(
         SERVICE_DELETE_ALARM,
         {
-            vol.Required(SERVICE_ATTR_ALARM_ID): cv.string,  # type: ignore[dict-item]
-            vol.Optional(
-                SERVICE_ATTR_SKIP_REFRESH
-            ): cv.boolean,  # type: ignore[dict-item]
+            vol.Required(SERVICE_ATTR_ALARM_ID): cv.string,
+            vol.Optional(SERVICE_ATTR_SKIP_REFRESH): cv.boolean,
         },
         GoogleHomeAlarmsSensor.async_delete_alarm,
     )
@@ -102,10 +108,8 @@ async def async_setup_entry(
     platform.async_register_entity_service(
         SERVICE_DELETE_TIMER,
         {
-            vol.Required(SERVICE_ATTR_TIMER_ID): cv.string,  # type: ignore[dict-item]
-            vol.Optional(
-                SERVICE_ATTR_SKIP_REFRESH
-            ): cv.boolean,  # type: ignore[dict-item]
+            vol.Required(SERVICE_ATTR_TIMER_ID): cv.string,
+            vol.Optional(SERVICE_ATTR_SKIP_REFRESH): cv.boolean,
         },
         GoogleHomeTimersSensor.async_delete_timer,
     )
@@ -138,6 +142,7 @@ class GoogleHomeDeviceSensor(GoogleHomeBaseEntity):
 
     @property
     def state(self) -> str | None:
+        """Return device IP address if any."""
         device = self.get_device()
         return device.ip_address if device else None
 
@@ -156,7 +161,7 @@ class GoogleHomeDeviceSensor(GoogleHomeBaseEntity):
 
     @staticmethod
     def get_device_attributes(device: GoogleHomeDevice) -> DeviceAttributes:
-        """Device representation as dictionary"""
+        """Device representation as dictionary."""
         return {
             "device_id": device.device_id,
             "device_name": device.name,
@@ -193,6 +198,7 @@ class GoogleHomeAlarmsSensor(GoogleHomeBaseEntity):
 
     @property
     def state(self) -> str | None:
+        """Return next alarm if available."""
         device = self.get_device()
         if not device:
             return None
@@ -215,7 +221,7 @@ class GoogleHomeAlarmsSensor(GoogleHomeBaseEntity):
         }
 
     def _get_next_alarm_status(self) -> str:
-        """Update next alarm status from coordinator"""
+        """Update next alarm status from coordinator."""
         device = self.get_device()
         next_alarm = device.get_next_alarm() if device else None
         return (
@@ -225,13 +231,13 @@ class GoogleHomeAlarmsSensor(GoogleHomeBaseEntity):
         )
 
     def _get_alarm_volume(self) -> float:
-        """Update alarm volume status from coordinator"""
+        """Update alarm volume status from coordinator."""
         device = self.get_device()
         alarm_volume = device.get_alarm_volume() if device else None
         return alarm_volume if alarm_volume else GOOGLE_HOME_ALARM_DEFAULT_VALUE
 
     def _get_alarms_data(self) -> list[GoogleHomeAlarmDict]:
-        """Update alarms data extracting it from coordinator"""
+        """Update alarms data extracting it from coordinator."""
         device = self.get_device()
         return (
             [alarm.as_dict() for alarm in device.get_sorted_alarms()] if device else []
@@ -239,13 +245,13 @@ class GoogleHomeAlarmsSensor(GoogleHomeBaseEntity):
 
     @staticmethod
     def is_valid_alarm_id(alarm_id: str) -> bool:
-        """Checks if the alarm id provided is valid."""
+        """Check if the alarm id provided is valid."""
         return (
             alarm_id.startswith("alarm/") and len(alarm_id) == ALARM_AND_TIMER_ID_LENGTH
         )
 
     async def async_delete_alarm(self, call: ServiceCall) -> None:
-        """Service call to delete alarm on device"""
+        """Service call to delete alarm on device."""
         device = self.get_device()
 
         if device is None:
@@ -278,6 +284,7 @@ class GoogleHomeTimersSensor(GoogleHomeBaseEntity):
 
     @property
     def state(self) -> str | None:
+        """Return next timer if available."""
         device = self.get_device()
         if not device:
             return None
@@ -297,7 +304,7 @@ class GoogleHomeTimersSensor(GoogleHomeBaseEntity):
         }
 
     def _get_next_timer_status(self) -> str:
-        """Update next timer status from coordinator"""
+        """Update next timer status from coordinator."""
         device = self.get_device()
         next_timer = device.get_next_timer() if device else None
         return (
@@ -307,7 +314,7 @@ class GoogleHomeTimersSensor(GoogleHomeBaseEntity):
         )
 
     def _get_timers_data(self) -> list[GoogleHomeTimerDict]:
-        """Update timers data extracting it from coordinator"""
+        """Update timers data extracting it from coordinator."""
         device = self.get_device()
         return (
             [timer.as_dict() for timer in device.get_sorted_timers()] if device else []
@@ -315,13 +322,13 @@ class GoogleHomeTimersSensor(GoogleHomeBaseEntity):
 
     @staticmethod
     def is_valid_timer_id(timer_id: str) -> bool:
-        """Checks if the timer id provided is valid."""
+        """Check if the timer id provided is valid."""
         return (
             timer_id.startswith("timer/") and len(timer_id) == ALARM_AND_TIMER_ID_LENGTH
         )
 
     async def async_delete_timer(self, call: ServiceCall) -> None:
-        """Service call to delete alarm on device"""
+        """Service call to delete alarm on device."""
         device = self.get_device()
 
         if device is None:

@@ -410,8 +410,6 @@ class HacsRepository:
     @property
     def pending_update(self) -> bool:
         """Return True if pending update."""
-        if not self.can_download:
-            return False
         if self.data.installed:
             if self.data.selected_tag is not None:
                 if self.data.selected_tag == self.data.default_branch:
@@ -928,9 +926,6 @@ class HacsRepository:
         if self.content.path.local is None:
             raise HacsException("repository.content.path.local is None")
         self.validate.errors.clear()
-
-        if not self.can_download:
-            raise HacsException("The version of Home Assistant is not compatible with this version")
 
         version_to_install = version or self.version_to_download()
         if version_to_install == self.data.default_branch:

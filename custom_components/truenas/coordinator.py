@@ -78,11 +78,12 @@ class TrueNASCoordinator(DataUpdateCoordinator[None]):
         self._is_scale = False
         self._is_virtual = False
         self._version_major = 0
+        self._version_minor = 0
 
     # ---------------------------
     #   connected
     # ---------------------------
-    def connected(self) -> str:
+    def connected(self) -> bool:
         """Return connected state."""
         return self.api.connected()
 
@@ -207,14 +208,25 @@ class TrueNASCoordinator(DataUpdateCoordinator[None]):
         self._is_scale = bool(
             self.ds["system_info"]["version"].startswith("TrueNAS-SCALE-")
         )
-        if not self._version_major:
-            self._version_major = int(
-                self.ds["system_info"]
-                .get("version")
-                .removeprefix("TrueNAS-")
-                .removeprefix("SCALE-")
-                .split(".")[0]
-            )
+
+        if self._is_scale:
+            if not self._version_major:
+                self._version_major = int(
+                    self.ds["system_info"]
+                    .get("version")
+                    .removeprefix("TrueNAS-")
+                    .removeprefix("SCALE-")
+                    .split(".")[0]
+                )
+
+            if not self._version_minor:
+                self._version_minor = int(
+                    self.ds["system_info"]
+                    .get("version")
+                    .removeprefix("TrueNAS-")
+                    .removeprefix("SCALE-")
+                    .split(".")[1]
+                )
 
         self._is_virtual = self.ds["system_info"]["system_manufacturer"] in [
             "QEMU",
@@ -289,6 +301,12 @@ class TrueNASCoordinator(DataUpdateCoordinator[None]):
 
         if not self.api.connected():
             return
+
+        if (
+            self.ds["system_info"]["update_version"] == "unknown"
+            and self.ds["system_info"]["version"]
+        ):
+            self.ds["system_info"]["update_version"] = self.ds["system_info"]["version"]
 
         self.ds["system_info"]["update_available"] = (
             self.ds["system_info"]["update_status"] == "AVAILABLE"
@@ -1123,23 +1141,65 @@ class TrueNASCoordinator(DataUpdateCoordinator[None]):
         if not self._is_scale:
             return
 
-        self.ds["app"] = parse_api(
-            data=self.ds["app"],
-            source=self.api.query("chart/release"),
-            key="id",
-            vals=[
-                {"name": "id", "default": 0},
-                {"name": "name", "default": "unknown"},
-                {"name": "human_version", "default": "unknown"},
-                {"name": "update_available", "default": "unknown"},
-                {"name": "container_images_update_available", "default": "unknown"},
-                {"name": "portal", "source": "portals/open", "default": "unknown"},
-                {"name": "status", "default": "unknown"},
-            ],
-            ensure_vals=[
-                {"name": "running", "type": "bool", "default": False},
-            ],
-        )
+        if self._version_major <= 23 or (
+            self._version_major == 24 and self._version_minor < 10
+        ):
+            self.ds["app"] = parse_api(
+                data=self.ds["app"],
+                source=self.api.query("chart/release"),
+                key="id",
+                vals=[
+                    {"name": "id", "default": 0},
+                    {"name": "name", "default": "unknown"},
+                    {"name": "human_version", "type": "bool", "default": False},
+                    {"name": "update_available", "type": "bool", "default": False},
+                    {
+                        "name": "image_updates_available",
+                        "source": "container_images_update_available",
+                        "default": "unknown",
+                    },
+                    {"name": "portal", "source": "portals/open", "default": "unknown"},
+                    {"name": "status", "default": "unknown"},
+                ],
+                ensure_vals=[
+                    {"name": "running", "type": "bool", "default": False},
+                ],
+            )
 
-        for uid, vals in self.ds["app"].items():
-            self.ds["app"][uid]["running"] = vals["status"] == "ACTIVE"
+            for uid, vals in self.ds["app"].items():
+                self.ds["app"][uid]["running"] = vals["status"] == "ACTIVE"
+
+        else:
+            self.ds["app"] = parse_api(
+                data=self.ds["app"],
+                source=self.api.query("app"),
+                key="id",
+                vals=[
+                    {"name": "id", "default": 0},
+                    {"name": "name", "default": "unknown"},
+                    {"name": "human_version", "default": "unknown"},
+                    {
+                        "name": "update_available",
+                        "source": "upgrade_available",
+                        "type": "bool",
+                        "default": False,
+                    },
+                    {
+                        "name": "image_updates_available",
+                        "type": "bool",
+                        "default": False,
+                    },
+                    {
+                        "name": "portal",
+                        "source": "portals/Web UI",
+                        "default": "unknown",
+                    },
+                    {"name": "state", "default": "unknown"},
+                ],
+                ensure_vals=[
+                    {"name": "running", "type": "bool", "default": False},
+                ],
+            )
+
+            for uid, vals in self.ds["app"].items():
+                self.ds["app"][uid]["running"] = vals["state"] == "RUNNING"

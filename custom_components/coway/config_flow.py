@@ -4,7 +4,14 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import Any
 
-from cowayaio.exceptions import AuthError, PasswordExpired
+from cowayaio.exceptions import (
+    AuthError,
+    NoPlaces,
+    NoPurifiers,
+    PasswordExpired,
+    ServerMaintenance,
+    RateLimited
+)
 import voluptuous as vol
 
 from homeassistant import config_entries
@@ -14,15 +21,21 @@ from homeassistant.data_entry_flow import FlowResult
 from homeassistant.helpers.aiohttp_client import async_create_clientsession
 import homeassistant.helpers.config_validation as cv
 
-from .const import DEFAULT_NAME, DOMAIN, SKIP_PASSWORD_CHANGE
-from .util import async_validate_api, NoPurifiersError
+from .const import (
+    DEFAULT_NAME,
+    DOMAIN,
+    MAINTENANCE_COOLDOWN,
+    POLLING_INTERVAL,
+    SKIP_PASSWORD_CHANGE
+)
+from .util import async_validate_api
 
 
 DATA_SCHEMA = vol.Schema(
     {
         vol.Required(CONF_USERNAME): cv.string,
         vol.Required(CONF_PASSWORD): cv.string,
-        vol.Optional(SKIP_PASSWORD_CHANGE): bool,
+#        vol.Optional(SKIP_PASSWORD_CHANGE): bool,
     }
 )
 
@@ -30,7 +43,7 @@ DATA_SCHEMA = vol.Schema(
 class CowayConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     """Handle a config flow for Coway integration."""
 
-    VERSION = 3
+    VERSION = 5
 
     entry: config_entries.ConfigEntry | None
 
@@ -40,7 +53,7 @@ class CowayConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         config_entry: config_entries.ConfigEntry,
     ) -> CowayOptionsFlowHandler:
         """Get the options flow for this handler."""
-        return CowayOptionsFlowHandler(config_entry)
+        return CowayOptionsFlowHandler()
 
     async def async_step_reauth(self, entry_data: Mapping[str, Any]) -> FlowResult:
         """Handle re-authentication with Coway."""
@@ -58,7 +71,7 @@ class CowayConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         if user_input:
             username = user_input[CONF_USERNAME]
             password = user_input[CONF_PASSWORD]
-            skip_password_change = user_input[SKIP_PASSWORD_CHANGE] if SKIP_PASSWORD_CHANGE in user_input else False
+            skip_password_change = True
             try:
                 session = async_create_clientsession(self.hass)
                 await async_validate_api(self.hass, username, password, skip_password_change, session)
@@ -66,21 +79,31 @@ class CowayConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 errors["base"] = "invalid_auth"
             except ConnectionError:
                 errors["base"] = "cannot_connect"
-            except NoPurifiersError:
+            except NoPlaces:
+                errors["base"] = "no_places"
+            except NoPurifiers:
                 errors["base"] = "no_purifiers"
             except PasswordExpired:
                 errors["base"] = "password_expired"
+            except ServerMaintenance:
+                errors["base"] = "server_maintenance"
+            except RateLimited:
+                errors["base"] = "rate_limited"
             else:
                 assert self.entry is not None
 
                 self.hass.config_entries.async_update_entry(
                     self.entry,
+                    title=username,
                     data={
                         **self.entry.data,
                         CONF_USERNAME: username,
                         CONF_PASSWORD: password,
                     },
-                    options={SKIP_PASSWORD_CHANGE: skip_password_change},
+                    options={
+                        SKIP_PASSWORD_CHANGE: skip_password_change,
+                        POLLING_INTERVAL: self.entry.options[POLLING_INTERVAL],
+                    },
                 )
                 await self.hass.config_entries.async_reload(self.entry.entry_id)
                 return self.async_abort(reason="reauth_successful")
@@ -101,7 +124,7 @@ class CowayConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         if user_input:
             username = user_input[CONF_USERNAME]
             password = user_input[CONF_PASSWORD]
-            skip_password_change = user_input[SKIP_PASSWORD_CHANGE] if SKIP_PASSWORD_CHANGE in user_input else False
+            skip_password_change = True
             try:
                 session = async_create_clientsession(self.hass)
                 await async_validate_api(self.hass, username, password, skip_password_change, session)
@@ -109,21 +132,31 @@ class CowayConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 errors["base"] = "invalid_auth"
             except ConnectionError:
                 errors["base"] = "cannot_connect"
-            except NoPurifiersError:
+            except NoPlaces:
+                errors["base"] = "no_places"
+            except NoPurifiers:
                 errors["base"] = "no_purifiers"
             except PasswordExpired:
                 errors["base"] = "password_expired"
+            except ServerMaintenance:
+                errors["base"] = "server_maintenance"
+            except RateLimited:
+                errors["base"] = "rate_limited"
             else:
                 await self.async_set_unique_id(username)
                 self._abort_if_unique_id_configured()
 
                 return self.async_create_entry(
-                    title=DEFAULT_NAME,
+                    title=username,
                     data={
                         CONF_USERNAME: username,
                         CONF_PASSWORD: password,
+                        MAINTENANCE_COOLDOWN: None,
                     },
-                    options={SKIP_PASSWORD_CHANGE: skip_password_change},
+                    options={
+                        SKIP_PASSWORD_CHANGE: skip_password_change,
+                        POLLING_INTERVAL: 120,
+                    },
                 )
 
         return self.async_show_form(
@@ -136,10 +169,6 @@ class CowayConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 class CowayOptionsFlowHandler(config_entries.OptionsFlow):
     """ Handle Coway account options. """
 
-    def __init__(self, config_entry: config_entries.ConfigEntry) -> None:
-        """Initialize options flow."""
-        self.config_entry = config_entry
-
     async def async_step_init(self, user_input=None):
         """ Manage options. """
         return await self.async_step_coway_account_settings()
@@ -150,12 +179,18 @@ class CowayOptionsFlowHandler(config_entries.OptionsFlow):
             return self.async_create_entry(title="", data=user_input)
 
         options = {
+#            vol.Required(
+#                SKIP_PASSWORD_CHANGE,
+#                default=self.config_entry.options.get(
+#                    SKIP_PASSWORD_CHANGE, False
+#                ),
+#            ): bool,
             vol.Required(
-                SKIP_PASSWORD_CHANGE,
+                POLLING_INTERVAL,
                 default=self.config_entry.options.get(
-                    SKIP_PASSWORD_CHANGE, False
+                    POLLING_INTERVAL, 120
                 ),
-            ): bool,
+            ): int,
         }
 
         return self.async_show_form(step_id="coway_account_settings", data_schema=vol.Schema(options))

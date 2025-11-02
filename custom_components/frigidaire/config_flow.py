@@ -37,7 +37,7 @@ def load_auth(auth_path: str) -> tuple[Optional[str], Optional[str]]:
 
 def save_auth(auth_path: str, session_key: str, regional_base_url: str) -> None:
     with open(auth_path, 'w') as f:
-        json.dump({session_key: session_key, regional_base_url: regional_base_url}, f, ensure_ascii=False, indent=4)
+        json.dump({'session_key': session_key, 'regional_base_url': regional_base_url}, f, ensure_ascii=False, indent=4)
 
 
 async def validate_input(hass: HomeAssistant, data: dict[str, Any]):
