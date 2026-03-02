@@ -1,20 +1,21 @@
 from __future__ import annotations
 
-import logging
-import re
 from collections.abc import Awaitable, Callable
 from datetime import timedelta
+from enum import StrEnum
+import logging
+import re
 from typing import Any
 
-import homeassistant.helpers.device_registry as dr
-import homeassistant.helpers.entity_registry as er
 from homeassistant.components.light import DOMAIN as LIGHT_DOMAIN
 from homeassistant.components.sensor import DOMAIN as SENSOR_DOMAIN
 from homeassistant.config_entries import SOURCE_INTEGRATION_DISCOVERY, SOURCE_USER, ConfigEntry
 from homeassistant.const import CONF_ENTITY_ID, CONF_PLATFORM, CONF_UNIQUE_ID
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers import discovery_flow
+import homeassistant.helpers.device_registry as dr
 from homeassistant.helpers.entity import EntityCategory
+import homeassistant.helpers.entity_registry as er
 from homeassistant.helpers.event import async_track_time_interval
 from homeassistant.helpers.typing import ConfigType
 
@@ -54,6 +55,13 @@ async def get_power_profile_by_source_entity(hass: HomeAssistant, source_entity:
     return profiles[0] if profiles else None
 
 
+class DiscoveryStatus(StrEnum):
+    DISABLED = "disabled"
+    NOT_STARTED = "not_started"
+    IN_PROGRESS = "in_progress"
+    FINISHED = "finished"
+
+
 class DiscoveryManager:
     """This class is responsible for scanning the HA instance for entities and their manufacturer / model info
     It checks if any of these devices is supported in the powercalc library
@@ -66,6 +74,7 @@ class DiscoveryManager:
         ha_config: ConfigType,
         exclude_device_types: list[DeviceType] | None = None,
         exclude_self_usage_profiles: bool = False,
+        enabled: bool = True,
     ) -> None:
         self.hass = hass
         self.ha_config = ha_config
@@ -75,9 +84,14 @@ class DiscoveryManager:
         self.library: ProfileLibrary | None = None
         self._exclude_device_types = exclude_device_types or []
         self._exclude_self_usage_profiles = exclude_self_usage_profiles or False
+        self._status = DiscoveryStatus.NOT_STARTED if enabled else DiscoveryStatus.DISABLED
 
     async def setup(self) -> None:
         """Setup the discovery manager. Start initial discovery and setup interval based rediscovery."""
+        if self._status == DiscoveryStatus.DISABLED:
+            _LOGGER.debug("Discovery manager is disabled, skipping setup")
+            return
+
         await self.start_discovery()
 
         async def _rediscover(_: Any) -> None:  # noqa: ANN401
@@ -98,6 +112,10 @@ class DiscoveryManager:
 
     async def start_discovery(self) -> None:
         """Start the discovery procedure."""
+        if self._status == DiscoveryStatus.IN_PROGRESS:
+            _LOGGER.debug("Discovery already in progress, skipping new discovery run")
+            return
+        self._status = DiscoveryStatus.IN_PROGRESS
         await self.initialize_existing_entries()
 
         _LOGGER.debug("Start auto discovery")
@@ -109,12 +127,13 @@ class DiscoveryManager:
         await self.perform_discovery(self.get_devices, self.create_device_source, DiscoveryBy.DEVICE)  # type: ignore[arg-type]
 
         _LOGGER.debug("Done auto discovery")
+        self._status = DiscoveryStatus.FINISHED
 
     async def initialize_existing_entries(self) -> None:
         """Build a list of config entries which are already setup, to prevent duplicate discovery flows"""
         for entry in self.hass.config_entries.async_entries(DOMAIN):
             if not entry.unique_id:
-                continue
+                continue  # pragma: no cover
 
             self.initialized_flows.add(entry.unique_id)
             entity_id = entry.data.get(CONF_ENTITY_ID)
@@ -241,12 +260,22 @@ class DiscoveryManager:
                 continue
             if self._exclude_self_usage_profiles and profile.only_self_usage:
                 continue
+            # Check if the entity's integration is compatible with the profile
+            if (
+                discovery_type == DiscoveryBy.ENTITY
+                and source_entity.entity_entry
+                and profile.compatible_integrations
+                and source_entity.entity_entry.platform not in profile.compatible_integrations
+            ):
+                continue
             power_profiles.append(profile)
 
         return power_profiles
 
     async def init_wled_flow(self, model_info: ModelInfo, source_entity: SourceEntity) -> None:
         """Initialize the discovery flow for a WLED light."""
+        if DeviceType.LIGHT in self._exclude_device_types:
+            return
         unique_id = f"pc_{source_entity.device_entry.id}" if source_entity.device_entry else get_or_create_unique_id({}, source_entity, None)
         if self._is_already_discovered(source_entity, unique_id):
             _LOGGER.debug(
@@ -310,6 +339,21 @@ class DiscoveryManager:
     async def get_devices(self) -> list:
         """Fetch device entries."""
         return list(dr.async_get(self.hass).devices.values())
+
+    def enable(self) -> None:
+        """Enable the discovery."""
+        self._status = DiscoveryStatus.NOT_STARTED
+
+    async def disable(self) -> None:
+        """Disable the discovery."""
+        self._status = DiscoveryStatus.DISABLED
+        self.initialized_flows = set()
+        flows = self.hass.config_entries.flow.async_progress_by_handler(DOMAIN)
+        for flow in flows:
+            if flow["context"]["source"] != SOURCE_INTEGRATION_DISCOVERY:
+                continue  # pragma: no cover
+            self.hass.config_entries.flow.async_abort(flow["flow_id"])
+        return
 
     async def extract_model_info_from_device_info(
         self,
@@ -422,6 +466,11 @@ class DiscoveryManager:
             context={"source": SOURCE_INTEGRATION_DISCOVERY},
             data=discovery_data,
         )
+
+    @property
+    def status(self) -> DiscoveryStatus:
+        """Get the discovery status"""
+        return self._status
 
     def _is_user_configured(self, entity_id: str) -> bool:
         """Check if user have setup powercalc sensors for a given entity_id.

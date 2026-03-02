@@ -2,16 +2,18 @@ import logging
 
 from awesomeversion import AwesomeVersion
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import CONF_DEVICE
-from homeassistant.const import __version__ as HA_VERSION  # noqa
+from homeassistant.const import (
+    CONF_DEVICE,
+    __version__ as HA_VERSION,  # noqa
+)
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers import device_registry
 from homeassistant.helpers.device_registry import DeviceEntry, DeviceInfo
 from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.typing import ConfigType
 
-from custom_components.powercalc import CONF_SENSOR_TYPE, SensorType
 from custom_components.powercalc.common import SourceEntity
+from custom_components.powercalc.const import CONF_SENSOR_TYPE, SensorType
 from custom_components.powercalc.sensors.abstract import BaseEntity
 
 _LOGGER = logging.getLogger(__name__)

@@ -5,6 +5,7 @@ import os
 import re
 from typing import Any, NamedTuple, cast
 
+from homeassistant.components.binary_sensor import BinarySensorDeviceClass
 from homeassistant.components.sensor import SensorDeviceClass
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.singleton import singleton
@@ -49,7 +50,7 @@ class ProfileLibrary:
         return library
 
     @staticmethod
-    def create_loader(hass: HomeAssistant) -> Loader:
+    def create_loader(hass: HomeAssistant, skip_remote_loader: bool = False) -> Loader:
         loaders: list[Loader] = [
             LocalLoader(hass, data_dir)
             for data_dir in [
@@ -63,7 +64,7 @@ class ProfileLibrary:
         domain_config = hass.data.get(DOMAIN, {})
         global_config = domain_config.get(DOMAIN_CONFIG, {})
         disable_library_download: bool = bool(global_config.get(CONF_DISABLE_LIBRARY_DOWNLOAD, False))
-        if not disable_library_download:
+        if not disable_library_download and not skip_remote_loader:
             loaders.append(RemoteLoader(hass))
 
         return CompositeLoader(loaders)
@@ -73,24 +74,24 @@ class ProfileLibrary:
         manufacturers = await self._loader.get_manufacturer_listing(device_types)
         return sorted(manufacturers)
 
-    async def get_model_listing(self, manufacturer: str, device_types: set[DeviceType] | None = None) -> set[str]:
+    async def get_model_listing(self, manufacturer: str, device_types: set[DeviceType] | None = None) -> list[str]:
         """Get listing of available models for a given manufacturer."""
 
         resolved_manufacturers = await self._loader.find_manufacturers(manufacturer)
         if not resolved_manufacturers:
-            return set()
-        all_models: set[str] = set()
+            return []
+        all_models: list[str] = []
         for manufacturer in resolved_manufacturers:
             cache_key = f"{manufacturer}/{device_types}"
             cached_models = self._manufacturer_models.get(cache_key)
             if cached_models:
-                all_models.update(cached_models)
+                all_models.extend(cached_models)
                 continue
             models = await self._loader.get_model_listing(manufacturer, device_types)
             self._manufacturer_models[cache_key] = models
-            all_models.update(models)
+            all_models.extend(models)
 
-        return set(sorted(all_models))  # noqa: C414
+        return sorted(all_models)
 
     async def get_profile(
         self,
@@ -106,6 +107,12 @@ class ProfileLibrary:
         if "/" in model_info.model:
             (model, sub_profile) = model_info.model.split("/", 1)
             model_info = ModelInfo(model_info.manufacturer, model, model_info.model_id)
+
+        if not custom_directory:
+            models = await self.find_models(model_info)
+            if not models:
+                raise LibraryError(f"Model {model_info.manufacturer} {model_info.model} not found")
+            model_info = next(iter(models))
 
         profile = await self.create_power_profile(model_info, source_entity, custom_directory, variables, process_variables)
 
@@ -123,12 +130,6 @@ class ProfileLibrary:
         process_variables: bool = True,
     ) -> PowerProfile:
         """Create a power profile object from the model JSON data."""
-
-        if not custom_directory:
-            models = await self.find_models(model_info)
-            if not models:
-                raise LibraryError(f"Model {model_info.manufacturer} {model_info.model} not found")
-            model_info = next(iter(models))
 
         json_data, directory = await self._load_model_data(model_info.manufacturer, model_info.model, custom_directory)
 
@@ -159,7 +160,10 @@ class ProfileLibrary:
             # If ANY namespaced entity:* placeholder is present, check if the specific one for device_class is needed
             for key in {p for p in placeholders if p.startswith("entity_by_device_class:")}:
                 _, device_class = key.split(":", 1)
-                device_class = SensorDeviceClass(device_class)
+                try:
+                    device_class = SensorDeviceClass(device_class)
+                except ValueError:
+                    device_class = cast(SensorDeviceClass, BinarySensorDeviceClass(device_class))
                 related_entity = get_related_entity_by_device_class(self._hass, source_entity.entity_entry, device_class)  # type: ignore
                 if not related_entity:
                     raise LibraryError(f"Could not find related entity for device class {device_class} of entity {source_entity.entity_id}")
@@ -185,7 +189,7 @@ class ProfileLibrary:
         """Resolve the manufacturer, either from the model info or by loading it."""
         return await self._loader.find_manufacturers(manufacturer)
 
-    async def find_models(self, model_info: ModelInfo) -> set[ModelInfo]:
+    async def find_models(self, model_info: ModelInfo) -> list[ModelInfo]:
         """Resolve the model identifier, searching for it if no custom directory is provided."""
         search: set[str] = set()
         for model_identifier in (model_info.model_id, model_info.model):
@@ -202,16 +206,16 @@ class ProfileLibrary:
                     search.update(model_identifier.split("/"))
 
         manufacturers = await self._loader.find_manufacturers(model_info.manufacturer)
-        found_models: set[ModelInfo] = set()
         if not manufacturers:
-            return found_models
+            return []
 
+        found_models: list[ModelInfo] = []
         for manufacturer in manufacturers:
             models = await self._loader.find_model(manufacturer, search)
             if models:
-                found_models.update(ModelInfo(manufacturer, model) for model in models)
+                found_models.extend(ModelInfo(manufacturer, model) for model in models)
 
-        return found_models
+        return list(dict.fromkeys(found_models))
 
     async def _load_model_data(self, manufacturer: str, model: str, custom_directory: str | None) -> tuple[dict, str]:
         """Load the model data from the appropriate directory."""
