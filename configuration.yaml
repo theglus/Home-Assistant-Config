@@ -23,8 +23,13 @@ prometheus:
 ## Lovelace Resources
 #################################################################
 lovelace:
-  mode: yaml
-  resource_mode:
+  resource_mode: yaml
+  dashboards:
+    lovelace:
+      mode: yaml
+      filename: ui-lovelace.yaml
+      title: Loft
+  resources:
     # Bar Card
     # https://github.com/custom-cards/bar-card
     - url: /hacsfiles/bar-card/bar-card.js
