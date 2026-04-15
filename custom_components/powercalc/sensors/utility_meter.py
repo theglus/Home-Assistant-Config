@@ -18,6 +18,7 @@ from homeassistant.helpers.dispatcher import async_dispatcher_send
 from homeassistant.helpers.entity import async_generate_entity_id
 import homeassistant.helpers.entity_registry as er
 from homeassistant.helpers.typing import StateType
+from homeassistant.util import slugify
 
 from custom_components.powercalc.const import (
     CONF_CREATE_UTILITY_METERS,
@@ -108,7 +109,7 @@ async def create_meters_for_type(
 ) -> list[VirtualUtilityMeter]:
     """Create meters for a specific meter type."""
     name = f"{energy_sensor.name} {meter_type}"
-    entity_id = f"{energy_sensor.entity_id}_{meter_type}"
+    entity_id = f"{energy_sensor.entity_id}_{slugify(meter_type)}"
 
     tariff_sensors = []
     utility_meters = []
@@ -229,7 +230,7 @@ async def create_utility_meter(
     parent_meter = entity_id
     if tariff:
         name = f"{name} {tariff}"
-        entity_id = f"{entity_id}_{tariff}"
+        entity_id = f"{entity_id}_{slugify(tariff)}"
         if unique_id:
             unique_id = f"{unique_id}_{tariff}"
 
