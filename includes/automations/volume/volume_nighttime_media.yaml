@@ -16,7 +16,7 @@ trigger:
       minutes: 0
       seconds: 2
     id: Loft Bathroom
-    alias: Whem Loft Bathroom media player Off  for 2 seconds
+    alias: Whem Loft Bathroom media player 'Off' for 2 seconds
   - platform: state
     entity_id:
       - media_player.loft_nest_hub
@@ -26,7 +26,7 @@ trigger:
       minutes: 0
       seconds: 2
     id: Loft Nest Hub
-    alias: When Loft Nest Hub media player Off  for 2 seconds
+    alias: When Loft Nest Hub media player 'Off' for 2 seconds
 condition:
   - condition: state
     entity_id: binary_sensor.volume_schedule
