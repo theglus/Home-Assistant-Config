@@ -1,26 +1,34 @@
 from __future__ import annotations
 
-import logging
 from collections.abc import Callable
 from dataclasses import dataclass
 from decimal import Decimal
 from enum import StrEnum
+import logging
 from typing import Any
 
-import homeassistant.helpers.config_validation as cv
-import voluptuous as vol
 from homeassistant.const import CONF_ATTRIBUTE, CONF_CONDITION, CONF_ENTITY_ID, STATE_OFF
 from homeassistant.core import HomeAssistant, State
 from homeassistant.helpers.condition import ConditionCheckerType
+import homeassistant.helpers.config_validation as cv
 from homeassistant.helpers.event import TrackTemplate
 from homeassistant.helpers.template import Template
+import voluptuous as vol
 
-from custom_components.powercalc.const import CONF_FIXED, CONF_LINEAR, CONF_MODE, CONF_MULTI_SWITCH, CONF_PLAYBOOK, CONF_STRATEGIES, CONF_WLED
+from custom_components.powercalc.const import (
+    CONF_FIXED,
+    CONF_LINEAR,
+    CONF_LUT,
+    CONF_MODE,
+    CONF_MULTI_SWITCH,
+    CONF_PLAYBOOK,
+    CONF_STRATEGIES,
+    CONF_WLED,
+)
 from custom_components.powercalc.strategy.fixed import CONFIG_SCHEMA as FIXED_SCHEMA
 from custom_components.powercalc.strategy.linear import CONFIG_SCHEMA as LINEAR_SCHEMA
 from custom_components.powercalc.strategy.multi_switch import CONFIG_SCHEMA as MULTI_SWITCH_SCHEMA
-from custom_components.powercalc.strategy.playbook import CONFIG_SCHEMA as PLAYBOOK_SCHEMA
-from custom_components.powercalc.strategy.playbook import PlaybookStrategy
+from custom_components.powercalc.strategy.playbook import CONFIG_SCHEMA as PLAYBOOK_SCHEMA, PlaybookStrategy
 from custom_components.powercalc.strategy.strategy_interface import PowerCalculationStrategyInterface
 from custom_components.powercalc.strategy.wled import CONFIG_SCHEMA as WLED_SCHEMA
 
@@ -91,11 +99,15 @@ CONDITION_SCHEMA: vol.Schema = vol.Schema(
     ),
 )
 
+LUT_SCHEMA = vol.Schema({})
+
+
 ITEM_SCHEMA = vol.Schema(
     {
         vol.Optional(CONF_CONDITION): CONDITION_SCHEMA,
         vol.Optional(CONF_FIXED): FIXED_SCHEMA,
         vol.Optional(CONF_LINEAR): LINEAR_SCHEMA,
+        vol.Optional(CONF_LUT): LUT_SCHEMA,
         vol.Optional(CONF_WLED): WLED_SCHEMA,
         vol.Optional(CONF_PLAYBOOK): PLAYBOOK_SCHEMA,
         vol.Optional(CONF_MULTI_SWITCH): MULTI_SWITCH_SCHEMA,
@@ -191,7 +203,9 @@ class CompositeStrategy(PowerCalculationStrategyInterface):
                     sub_strategy.condition_config,
                     track_templates,
                 )
-        return track_templates
+
+        track_entities = [entity for sub_strategy in self.strategies for entity in sub_strategy.strategy.get_entities_to_track()]
+        return track_templates + track_entities
 
     def can_calculate_standby(self) -> bool:
         """Return if this strategy can calculate standby power."""

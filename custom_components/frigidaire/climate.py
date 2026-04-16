@@ -26,6 +26,13 @@ from .const import DOMAIN
 _LOGGER = logging.getLogger(__name__)
 
 
+def _normalize_enum_value(value):
+    """Normalize API values to uppercase for enum comparison."""
+    if isinstance(value, str):
+        return value.upper()
+    return value
+
+
 async def async_setup_entry(
     hass: HomeAssistant, entry: ConfigEntry, async_add_entities: AddEntitiesCallback
 ) -> None:
@@ -59,6 +66,8 @@ FRIGIDAIRE_TO_HA_MODE = {
     frigidaire.Mode.COOL: HVACMode.COOL,
     frigidaire.Mode.FAN: HVACMode.FAN_ONLY,
     frigidaire.Mode.ECO: HVACMode.AUTO,
+    frigidaire.Mode.AUTO: HVACMode.AUTO,
+    frigidaire.Mode.DRY: HVACMode.DRY,
 }
 
 FRIGIDAIRE_TO_HA_FAN_SPEED = {
@@ -85,6 +94,7 @@ HA_TO_FRIGIDAIRE_HVAC_MODE = {
     HVACMode.FAN_ONLY: frigidaire.Mode.FAN,
     HVACMode.COOL: frigidaire.Mode.COOL,
     HVACMode.OFF: frigidaire.Mode.OFF,
+    HVACMode.DRY: frigidaire.Mode.DRY,
 }
 
 
@@ -129,6 +139,7 @@ class FrigidaireClimate(ClimateEntity):
             HVACMode.COOL,
             HVACMode.AUTO,
             HVACMode.FAN_ONLY,
+            HVACMode.DRY,
         ]
 
     @property
@@ -169,9 +180,9 @@ class FrigidaireClimate(ClimateEntity):
     @property
     def temperature_unit(self):
         """Return the unit of measurement which this thermostat uses."""
-        unit = self._details.get(
+        unit = _normalize_enum_value(self._details.get(
             frigidaire.Detail.TEMPERATURE_REPRESENTATION
-        )
+        ))
 
         return FRIGIDAIRE_TO_HA_UNIT[unit]
 
@@ -186,7 +197,7 @@ class FrigidaireClimate(ClimateEntity):
     @property
     def hvac_mode(self):
         """Return current operation i.e. heat, cool, idle."""
-        frigidaire_mode = self._details.get(frigidaire.Detail.MODE)
+        frigidaire_mode = _normalize_enum_value(self._details.get(frigidaire.Detail.MODE))
 
         return FRIGIDAIRE_TO_HA_MODE[frigidaire_mode]
 
@@ -201,7 +212,7 @@ class FrigidaireClimate(ClimateEntity):
     @property
     def fan_mode(self):
         """Return the fan setting."""
-        fan_speed = self._details.get(frigidaire.Detail.FAN_SPEED)
+        fan_speed = _normalize_enum_value(self._details.get(frigidaire.Detail.FAN_SPEED))
 
         if not fan_speed:
             return FAN_OFF
@@ -228,7 +239,7 @@ class FrigidaireClimate(ClimateEntity):
     def extra_state_attributes(self) -> Mapping[str, Any] | None:
         return {
             "check_filter": bool(
-                self._details.get(frigidaire.Detail.FILTER_STATE) == "CHANGE"
+                _normalize_enum_value(self._details.get(frigidaire.Detail.FILTER_STATE)) == "CHANGE"
             ),
         }
 
@@ -267,7 +278,7 @@ class FrigidaireClimate(ClimateEntity):
             return
 
         # Turn on if not currently on.
-        if self._details.get(frigidaire.Detail.MODE) == frigidaire.Mode.OFF:
+        if _normalize_enum_value(self._details.get(frigidaire.Detail.MODE)) == frigidaire.Mode.OFF:
             self._client.execute_action(
                 self._appliance, frigidaire.Action.set_power(frigidaire.Power.ON)
             )
@@ -293,7 +304,7 @@ class FrigidaireClimate(ClimateEntity):
                 _LOGGER.error("Failed to connect to Frigidaire servers")
             self._attr_available = False
         else:
-            self._attr_available = (
-                self._details.get("connectivityState")
-                == "connected"
-            )
+            # If we successfully retrieved details, the appliance is available
+            # Check that we have a valid applianceState
+            appliance_state = self._details.get(frigidaire.Detail.APPLIANCE_STATE)
+            self._attr_available = appliance_state is not None

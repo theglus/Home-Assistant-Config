@@ -8,7 +8,7 @@ badges:
     label: false
   - entity: !secret person_primary
   - entity: !secret person_secondary
-  - entity: camera.security
+  - entity: sensor.nibbler_plug_power
 cards:
   - type: vertical-stack
     cards:
@@ -600,6 +600,13 @@ cards:
                   name: Dyson
                   template:
                     - icon_dyson
+                  variables:
+                    circle_input: >
+                      [[[
+                        return entity === undefined || entity.attributes.percentage === null ?
+                          null :
+                          entity.attributes.percentage;
+                      ]]]
           #################################################################
           ## Loft Controls
           #################################################################
@@ -669,6 +676,13 @@ cards:
                   name: Dyson
                   template:
                     - icon_dyson
+                  variables:
+                    circle_input: >
+                      [[[
+                        return entity === undefined || entity.attributes.percentage === null ?
+                          null :
+                          entity.attributes.percentage;
+                      ]]]
                 #----------------------------------------------------------------
                 ## Upstairs Speakers
                 #----------------------------------------------------------------

@@ -1,23 +1,26 @@
 from __future__ import annotations
 
+from datetime import timedelta
+from decimal import Decimal
 import inspect
 import logging
-from decimal import Decimal
+from typing import Any
 
-import homeassistant.helpers.entity_registry as er
 from homeassistant.components.integration.sensor import IntegrationSensor
-from homeassistant.components.sensor import DOMAIN as SENSOR_DOMAIN
-from homeassistant.components.sensor import SensorDeviceClass, SensorStateClass
+from homeassistant.components.sensor import DOMAIN as SENSOR_DOMAIN, SensorDeviceClass, SensorStateClass
 from homeassistant.const import (
     ATTR_UNIT_OF_MEASUREMENT,
     CONF_NAME,
+    STATE_UNAVAILABLE,
+    STATE_UNKNOWN,
     UnitOfEnergy,
     UnitOfPower,
     UnitOfTime,
 )
-from homeassistant.core import HomeAssistant, callback
+from homeassistant.core import HomeAssistant, State, callback
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity import EntityCategory
+import homeassistant.helpers.entity_registry as er
 from homeassistant.helpers.typing import ConfigType
 
 from custom_components.powercalc.common import SourceEntity
@@ -25,20 +28,24 @@ from custom_components.powercalc.const import (
     ATTR_SOURCE_DOMAIN,
     ATTR_SOURCE_ENTITY,
     CONF_DISABLE_EXTENDED_ATTRIBUTES,
+    CONF_ENERGY_FILTER_OUTLIER_ENABLED,
+    CONF_ENERGY_FILTER_OUTLIER_MAX,
     CONF_ENERGY_INTEGRATION_METHOD,
     CONF_ENERGY_SENSOR_CATEGORY,
     CONF_ENERGY_SENSOR_ID,
     CONF_ENERGY_SENSOR_PRECISION,
     CONF_ENERGY_SENSOR_UNIT_PREFIX,
+    CONF_ENERGY_UPDATE_INTERVAL,
     CONF_FORCE_ENERGY_SENSOR_CREATION,
-    CONF_FORCE_UPDATE_FREQUENCY,
     CONF_POWER_SENSOR_ID,
     DEFAULT_ENERGY_INTEGRATION_METHOD,
     DEFAULT_ENERGY_SENSOR_PRECISION,
+    DEFAULT_ENERGY_UPDATE_INTERVAL,
     UnitPrefix,
 )
 from custom_components.powercalc.device_binding import get_device_info
 from custom_components.powercalc.errors import SensorConfigurationError
+from custom_components.powercalc.filter.outlier import OutlierFilter
 
 from .abstract import (
     BaseEntity,
@@ -262,7 +269,7 @@ class VirtualEnergySensor(IntegrationSensor, EnergySensor):
             "integration_method": integration_method,
             "unique_id": unique_id,
             "device_info": device_info,
-            "max_sub_interval": sensor_config.get(CONF_FORCE_UPDATE_FREQUENCY),
+            "max_sub_interval": timedelta(seconds=sensor_config.get(CONF_ENERGY_UPDATE_INTERVAL, DEFAULT_ENERGY_UPDATE_INTERVAL)),
         }
 
         signature = inspect.signature(IntegrationSensor.__init__)
@@ -279,6 +286,34 @@ class VirtualEnergySensor(IntegrationSensor, EnergySensor):
         self._attr_suggested_display_precision = round_digits
         if entity_category:
             self._attr_entity_category = EntityCategory(entity_category)
+        self._filter_outliers = bool(sensor_config.get(CONF_ENERGY_FILTER_OUTLIER_ENABLED, False))
+        self._outlier_filter = OutlierFilter(
+            window_size=30,
+            min_samples=5,
+            max_z_score=3.5,
+            max_expected_step=sensor_config.get(CONF_ENERGY_FILTER_OUTLIER_MAX, 1000),
+        )
+
+    def _integrate_on_state_change(self, *args: Any, **kwargs: Any) -> None:  # noqa: ANN401
+        """Override to add outlier filtering."""
+
+        new_state: State | None = kwargs.get("new_state")
+        if new_state is None and args:
+            last_arg = args[-1]
+            if isinstance(last_arg, State):
+                new_state = last_arg
+
+        if self._filter_outliers and new_state is not None:
+            valid_state = new_state.state not in (STATE_UNKNOWN, STATE_UNAVAILABLE)
+            if valid_state and not self._outlier_filter.accept(float(new_state.state)):
+                _LOGGER.debug(
+                    "%s: Rejecting power value %s as outlier for energy integration",
+                    self.entity_id,
+                    new_state.state,
+                )
+                return
+
+        super()._integrate_on_state_change(*args, **kwargs)
 
     @property
     def extra_state_attributes(self) -> dict[str, str] | None:

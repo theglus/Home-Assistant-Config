@@ -20,6 +20,7 @@ from custom_components.powercalc.const import (
     CONF_POWER_OFF,
     CONF_POWER_TEMPLATE,
     CONF_STANDBY_POWER,
+    CONF_STATE,
     CONF_STATES_POWER,
     CONF_STRATEGIES,
     CalculationStrategy,
@@ -118,6 +119,9 @@ class PowerCalculatorStrategyFactory:
 
         states_power = fixed_config.get(CONF_STATES_POWER)
         if states_power:
+            # Handle both list format (config flow) and dict format (YAML)
+            if isinstance(states_power, list):
+                states_power = {item[CONF_STATE]: item[CONF_POWER] for item in states_power}
             states_power = {state: self._resolve_template(value) for state, value in states_power.items()}
 
         return FixedStrategy(source_entity, power, states_power)
@@ -149,7 +153,7 @@ class PowerCalculatorStrategyFactory:
         playbook_config = self._get_strategy_config(CalculationStrategy.PLAYBOOK, config, power_profile)
 
         directory = None
-        if power_profile and power_profile.calculation_strategy == CalculationStrategy.PLAYBOOK:
+        if power_profile:
             directory = power_profile.get_model_directory()
 
         return PlaybookStrategy(self._hass, playbook_config, directory)
@@ -194,7 +198,7 @@ class PowerCalculatorStrategyFactory:
                 power_profile,
                 source_entity,
             )
-            return SubStrategy(condition_config, condition_instance, strategy_instance)
+            return SubStrategy(condition_config, condition_instance, strategy_instance)  # type: ignore
 
         strategies = [await _create_sub_strategy(config) for config in sub_strategies]
         return CompositeStrategy(self._hass, strategies, mode)
