@@ -5,6 +5,7 @@ conversation:
   intents:
     aqi:
       - "What's the AQI?"
+      - "What's the AQI"
       - "What's the air quality?"
       - "What is the AQI?"
       - "What is the air quality?"
@@ -34,9 +35,12 @@ conversation:
       - "What's the Office temperature?"
     weather_now:
       - "What's the weather?"
+      - "What's the weather"
     weather_today:
       - "What's the weather today?"
+      - "What's the weather today"
       - "What's todays weather"
+      - "What's the weather today"
     music:
       - "What's playing?"
       - "Who is this?"
