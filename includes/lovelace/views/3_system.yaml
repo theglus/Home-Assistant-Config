@@ -3,13 +3,13 @@ path: ha
 panel: false
 icon: "mdi:home-assistant"
 badges:
-  - entity: binary_sensor.m5stack_living_room_assist_in_progress
+  - entity: assist_satellite.m5stack_living_room_assist_in_progress
     name: "Living"
     label: false
-  - entity: binary_sensor.m5stack_loft_assist_in_progress
+  - entity: assist_satellite.m5stack_loft_assist_in_progress
     name: "Loft"
     label: false
-  - entity: binary_sensor.m5stack_office_assist_in_progress
+  - entity: assist_satellite.m5stack_office_assist_in_progress
     name: "Office"
     label: false
 cards:
@@ -135,7 +135,7 @@ cards:
                     - entity: binary_sensor.home_assistant_versions_beta_update_available
                       name: Installed Version
                       icon: mdi:home-assistant
-                    - entity: sensor.hacs
+                    # - entity: sensor.hacs
                     - entity: sensor.time_online
                     - type: custom:hui-horizontal-stack-card
                       cards:
