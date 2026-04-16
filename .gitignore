@@ -22,9 +22,12 @@ known_devices.yaml
 *.pyc
 
 _pycache_
+.cache/*
+.ha_run.lock
 .HA_VERSION
 aircast.xml
 deps/
+esphome/archive/*
 esphome/trash/*
 homeassistant
 home-assistant.log.*
