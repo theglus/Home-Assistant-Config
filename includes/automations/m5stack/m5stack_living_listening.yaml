@@ -1,0 +1,31 @@
+#################################################################
+## M5Stack Living Room Listening
+#
+## TODO
+#################################################################
+id: "1707166774937"
+alias: M5 Living Listening
+description: ""
+triggers:
+  - alias: M5Stack Living Room starts listening
+    trigger: state
+    entity_id:
+      - assist_satellite.m5stack_living_room_assist_in_progress
+    to: listening
+conditions: []
+actions:
+  - metadata: {}
+    data:
+      snapshot_entities:
+        - light.yumi_lamp
+      scene_id: yumi_state
+    alias: Scene 'Create' snapshot yumi_state
+    action: scene.create
+  - alias: Change Yumi Light to Blue
+    metadata: {}
+    data:
+      color_name: blue
+    target:
+      entity_id: light.yumi_lamp
+    action: light.turn_on
+mode: single

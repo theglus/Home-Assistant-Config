@@ -1,0 +1,28 @@
+#################################################################
+## M5Stack Living Room Stop Listening
+#
+## TODO
+#################################################################
+id: "1707178296658"
+alias: M5 Living Stop Listening
+description: ""
+triggers:
+  - trigger: state
+    entity_id:
+      - assist_satellite.m5stack_living_room_assist_in_progress
+    to: idle
+    alias: M5Stack Living Room stops listening
+conditions: []
+actions:
+  - target:
+      entity_id: light.yumi_lamp
+    data:
+      color_temp: 370
+    alias: Return Yumi Light to 370 color temp
+    action: light.turn_on
+  - metadata: {}
+    target:
+      entity_id: scene.yumi_state
+    action: scene.turn_on
+    data: {}
+mode: single
