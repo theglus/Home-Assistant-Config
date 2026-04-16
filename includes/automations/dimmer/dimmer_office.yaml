@@ -13,6 +13,7 @@ trigger:
     type: short_release
     subtype: 1
     unique_id: 4093fdb5-8fda-4e21-9a68-b0beeede00e1
+    alias: Short press 'Office Dimmer'
 condition: []
 action:
   - choose:
@@ -20,10 +21,7 @@ action:
           - condition: state
             entity_id: light.office
             state: "off"
-            for:
-              hours: 0
-              minutes: 0
-              seconds: 0
+            alias: Confirm Office is 'Off'
         sequence:
           - service: switch.turn_off
             data: {}
@@ -31,10 +29,13 @@ action:
               entity_id:
                 - switch.thruple_lamp
                 - switch.thumb_lamp
+            alias: Turn 'Off' Thruple + Thumb lamp
+        alias: Turn 'Off' all Office lights
       - conditions:
           - condition: state
             entity_id: light.office
             state: "on"
+            alias: Confirm Office is 'On'
         sequence:
           - service: switch.turn_on
             data: {}
@@ -42,5 +43,6 @@ action:
               entity_id:
                 - switch.thruple_lamp
                 - switch.thumb_lamp
-    default: []
+            alias: Turn 'On' Thruple + Thumb lamp
+        alias: Turn 'On' all Office lights 
 mode: single

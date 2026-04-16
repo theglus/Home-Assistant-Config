@@ -28,7 +28,8 @@ lovelace:
     lovelace:
       mode: yaml
       filename: ui-lovelace.yaml
-      title: Loft
+      title: Overview
+      icon: mdi:home-assistant
   resources:
     # Bar Card
     # https://github.com/custom-cards/bar-card
