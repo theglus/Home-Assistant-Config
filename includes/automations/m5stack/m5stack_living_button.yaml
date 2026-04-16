@@ -1,0 +1,22 @@
+#################################################################
+## M5Stack Living Button
+#
+## Press button on M5Stack Living to mute/unmute wake word.
+#################################################################
+id: "1764369394258"
+alias: M5 Living Button
+description: Press button on M5Stack Living to mute/unmute wake word.
+triggers:
+  - type: turned_on
+    device_id: 3bb3c33455c31c794a4c2971f59d8a38
+    entity_id: 613129b75d52661d020be4950cdeaf53
+    domain: binary_sensor
+    trigger: device
+conditions: []
+actions:
+  - action: switch.toggle
+    metadata: {}
+    target:
+      entity_id: switch.m5stack_living_room_wake_toggle
+    data: {}
+mode: single
