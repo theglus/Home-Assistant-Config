@@ -1,0 +1,22 @@
+#################################################################
+## Notify Entry
+#
+## Notify Telegram when door is opened.
+#################################################################
+id: "1707613758336"
+alias: Notify Entry
+description: "Notify Telegram when door is opened."
+trigger:
+  - type: opened
+    platform: device
+    device_id: a13166182e71a12ccc046137e74cde66
+    entity_id: 24174dae83a6502e6eb51505d10794ae
+    domain: binary_sensor
+condition: []
+action:
+  - service: notify.telegram
+    metadata: {}
+    data:
+      message: Someone had opened the door!
+      title: "\U0001F6AA Front Door"
+mode: single

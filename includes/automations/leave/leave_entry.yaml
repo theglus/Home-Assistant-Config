@@ -1,0 +1,74 @@
+#################################################################
+## Leave Entry
+#
+## Enable Notify Entry automation.
+#################################################################
+id: "1707613618063"
+alias: Leave Entry
+description: "Enable Notify Entry automation."
+trigger:
+  - device_id: 1a4f22d3b5ce47a298a90508301c8c29
+    alias: Long press 'Door Button'
+    domain: zha
+    platform: device
+    type: remote_button_long_release
+    subtype: remote_button_long_release
+condition: []
+action:
+  - choose:
+      - conditions:
+          - type: is_not_open
+            condition: device
+            device_id: a13166182e71a12ccc046137e74cde66
+            entity_id: 24174dae83a6502e6eb51505d10794ae
+            domain: binary_sensor
+            for:
+              hours: 0
+              minutes: 0
+              seconds: 1
+          - condition: state
+            alias: Confirm 'Notify Entry' is Off
+            entity_id: automation.leave_notify
+            state: "off"
+        sequence:
+          - service: automation.turn_on
+            alias: Enable 'Notify Entry' automation
+            metadata: {}
+            data: {}
+            target:
+              entity_id: automation.leave_notify
+          - alias: Send Telegram notification
+            service: notify.telegram
+            metadata: {}
+            data:
+              message: "\U0001F435 Entry detection enabled. "
+        alias: Enable entry detection
+      - conditions:
+          - type: is_not_open
+            condition: device
+            device_id: a13166182e71a12ccc046137e74cde66
+            entity_id: 24174dae83a6502e6eb51505d10794ae
+            domain: binary_sensor
+            for:
+              hours: 0
+              minutes: 0
+              seconds: 1
+          - condition: state
+            entity_id: automation.leave_notify
+            state: "on"
+            alias: Confirm 'Leave Notify' is On
+        sequence:
+          - service: automation.turn_off
+            target:
+              entity_id:
+                - automation.leave_notify
+            data:
+              stop_actions: true
+            alias: Disable 'Leave Notify' automation
+          - alias: Send Telegram notification
+            service: notify.telegram
+            metadata: {}
+            data:
+              message: "\U0001F649 Entry detection disabled. "
+        alias: Disable entry detection
+mode: single
