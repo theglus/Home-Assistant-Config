@@ -1,4 +1,4 @@
 #################################################################
-## This handles the loading of my sensors.
+## This handles the loading of my template sensors and switches.
 #################################################################
-sensor: !include_dir_merge_list ../includes/sensors
+template: !include_dir_merge_list ../includes/templates
