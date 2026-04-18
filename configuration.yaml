@@ -139,3 +139,5 @@ lovelace:
 ######## INCLUDES ########
 homeassistant:
   packages: !include_dir_named integrations
+
+telegram_bot: !include integrations/telegram_bot.yaml
