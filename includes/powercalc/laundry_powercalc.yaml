@@ -2,8 +2,7 @@
 ## Powercalc Sensors
 #################################################################
 # Laundry
-- platform: powercalc
-  create_group: Laundry
+- create_group: Laundry
   unique_id: e18cad98-0485-4a9a-b759-add6b30c9806
   entities:
     # Washer
