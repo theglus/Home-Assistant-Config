@@ -1,0 +1,14 @@
+#################################################################
+## Denon Volume Sensors
+#################################################################
+- sensor:
+    - name: "Receiver Volume Level"
+      unique_id: 7e487060-c7ad-4672-bb04-0b6b3a69ec86
+      state: >-
+        {% if is_state('media_player.dennis', 'on') %}
+          {% set n = state_attr('media_player.dennis', 'volume_level') | float(0) %}
+          {{ '%.1f' % (n * 100.0) }}
+        {% else %}
+          0
+        {% endif %}
+      icon: mdi:volume-medium
