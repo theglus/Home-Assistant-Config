@@ -19,6 +19,7 @@ condition: []
 action:
   - service: telegram_bot.send_message
     data:
+      chat_id: "{{ trigger.event.data.chat_id }}"
       title: 🚌 Next bus home
       message:
         '{{states[''sensor.muni_outbound''].attributes.upcoming + " minutes
