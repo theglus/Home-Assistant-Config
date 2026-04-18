@@ -55,6 +55,24 @@ async def get_power_profile_by_source_entity(hass: HomeAssistant, source_entity:
     return profiles[0] if profiles else None
 
 
+async def get_power_profile_by_source_device(hass: HomeAssistant, source_entity: SourceEntity) -> PowerProfile | None:
+    """Look up a device-discovered power profile for a source entity's device."""
+    if not source_entity.device_entry or not source_entity.entity_entry:
+        return None
+
+    try:
+        discovery_manager: DiscoveryManager = hass.data[DOMAIN][DATA_DISCOVERY_MANAGER]
+    except KeyError:
+        discovery_manager = DiscoveryManager(hass, {})
+
+    model_info = await discovery_manager.extract_model_info_from_device_info(source_entity.entity_entry)
+    if not model_info:
+        return None
+
+    profiles = await discovery_manager.find_power_profiles(model_info, source_entity, DiscoveryBy.DEVICE)
+    return profiles[0] if profiles else None
+
+
 class DiscoveryStatus(StrEnum):
     DISABLED = "disabled"
     NOT_STARTED = "not_started"
@@ -401,9 +419,11 @@ class DiscoveryManager:
         if device_entry.manufacturer is None or device_entry.model is None:
             return None
 
-        manufacturer = str(device_entry.manufacturer)
-        model = str(device_entry.model)
-        model_id = device_entry.model_id if hasattr(device_entry, "model_id") else None
+        # Strip whitespace: some integrations include trailing spaces
+        # see https://github.com/home-assistant/core/pull/166187
+        manufacturer = str(device_entry.manufacturer).strip()
+        model = str(device_entry.model).strip()
+        model_id = str(device_entry.model_id).strip() if hasattr(device_entry, "model_id") and device_entry.model_id else None
 
         if len(manufacturer) == 0 or len(model) == 0:
             return None

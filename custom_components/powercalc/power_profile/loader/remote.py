@@ -32,6 +32,7 @@ TIMEOUT_SECONDS = 30
 
 class LibraryModel(TypedDict):
     id: str
+    name: NotRequired[str]
     aliases: NotRequired[list[str]]
     hash: str
     device_type: NotRequired[DeviceType]
@@ -184,15 +185,14 @@ class RemoteLoader(Loader):
         return self.manufacturer_lookup.get(search, set())
 
     @async_cache
-    async def get_model_listing(self, manufacturer: str, device_types: set[DeviceType] | None) -> set[str]:
-        """Get listing of available models for a given manufacturer."""
-
+    async def get_model_listing(self, manufacturer: str, device_types: set[DeviceType] | None) -> set[tuple[str, str]]:
+        """Get listing of available models and display names for a given manufacturer."""
         models = self.manufacturer_models.get(manufacturer)
         if not models:
             return set()
 
         return {
-            model["id"]
+            (model["id"], str(model.get("name") or model["id"]))
             for model in self.manufacturer_models.get(manufacturer, [])
             if not device_types or any(device_type in model.get("device_type", [DeviceType.LIGHT]) for device_type in device_types)
         }
