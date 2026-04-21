@@ -15,10 +15,9 @@ The user will provide questions describing what they need. Ask follow-up questio
 ## Structure
 
 - `configuration.yaml` — root config, uses `!include` and `!include_dir_*` to split files
-- `integrations/` — points to `../includes/` for modular integration configs
+- `integrations/` — one file per HA domain; each contains a domain key and an `!include` or `!include_dir_*` pointing into `includes/`. This directory is loaded as packages via `homeassistant.packages: !include_dir_named integrations` in `configuration.yaml`.
 - `includes/` — split YAML files for automations, scripts, sensors, templates, etc.
 - `blueprints/` — blueprint YAML files
-- `packages/` — package files loaded via `homeassistant.packages`
 
 ## Validation
 
