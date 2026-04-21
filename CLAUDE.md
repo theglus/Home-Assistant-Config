@@ -41,7 +41,15 @@ Config is validated using the **Check Configuration** button in the Home Assista
 
 - Follow existing `!include` and `!include_dir_merge_list` patterns when adding new split files
 - Place new integration configs in `includes/` and reference them from `integrations/`
-- Match the naming style of existing entities in the repo (e.g. `sensor.living_room_temp`)
+- Match the naming style of existing entities in the repo — device-name-based (e.g. `sensor.kirby_temperature`, `vacuum.winston`) or descriptive (e.g. `switch.major_laser_printer`, `fan.air_circulator`)
 - When writing Jinja2 templates, prefer readability and test edge cases (unavailable states, None values)
 - `automations.yaml`, `scripts.yaml`, and `scenes.yaml` at the repo root are GUI-generated — they use numeric timestamp IDs and should not be edited manually. New automations, scripts, and scenes belong in `includes/automations/`, `includes/scripts/`, and `includes/scenes/` respectively, using UUID-style IDs.
 - When adding a new automation or script, identify the appropriate thematic sub-folder under `includes/automations/` or `includes/scripts/` (e.g. `climate/`, `notify/`, `shutoff/`, `vacuum/`, `leave/`, `dimmer/`, `m5stack/`) and confirm with the user before creating the file.
+- Every split file must begin with the standard header comment block:
+  ```yaml
+  #################################################################
+  ## Automation Name
+  #
+  ## One-line description matching the description: field.
+  #################################################################
+  ```
