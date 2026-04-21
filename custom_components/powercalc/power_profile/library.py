@@ -1,18 +1,21 @@
 from __future__ import annotations
 
-import logging
 import os
 import re
 from typing import Any, NamedTuple, cast
 
-from homeassistant.components.binary_sensor import BinarySensorDeviceClass
-from homeassistant.components.sensor import SensorDeviceClass
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.singleton import singleton
 
 from custom_components.powercalc.common import SourceEntity
 from custom_components.powercalc.const import CONF_DISABLE_LIBRARY_DOWNLOAD, DOMAIN, DOMAIN_CONFIG
-from custom_components.powercalc.helpers import collect_placeholders, get_related_entity_by_device_class, replace_placeholders
+from custom_components.powercalc.helpers import (
+    build_related_entity_placeholder_not_found_message,
+    collect_placeholders,
+    iter_related_entity_placeholders,
+    replace_placeholders,
+    resolve_related_entity_placeholder,
+)
 
 from .error import LibraryError
 from .loader.composite import CompositeLoader
@@ -24,15 +27,13 @@ from .power_profile import DeviceType, PowerProfile
 LEGACY_CUSTOM_DATA_DIRECTORY = "powercalc-custom-models"
 CUSTOM_DATA_DIRECTORY = "powercalc/profiles"
 
-_LOGGER = logging.getLogger(__name__)
-
 
 class ProfileLibrary:
     def __init__(self, hass: HomeAssistant, loader: Loader) -> None:
         self._hass = hass
         self._loader = loader
         self._profiles: dict[str, list[PowerProfile]] = {}
-        self._manufacturer_models: dict[str, set[str]] = {}
+        self._manufacturer_models: dict[str, set[tuple[str, str]]] = {}
         self._manufacturer_device_types: dict[str, list] = {}
 
     async def initialize(self) -> None:
@@ -74,24 +75,25 @@ class ProfileLibrary:
         manufacturers = await self._loader.get_manufacturer_listing(device_types)
         return sorted(manufacturers)
 
-    async def get_model_listing(self, manufacturer: str, device_types: set[DeviceType] | None = None) -> list[str]:
-        """Get listing of available models for a given manufacturer."""
+    async def get_model_listing(self, manufacturer: str, device_types: set[DeviceType] | None = None) -> list[tuple[str, str]]:
+        """Get listing of available models and display names for a given manufacturer."""
 
         resolved_manufacturers = await self._loader.find_manufacturers(manufacturer)
         if not resolved_manufacturers:
             return []
-        all_models: list[str] = []
+
+        all_models: list[tuple[str, str]] = []
         for manufacturer in resolved_manufacturers:
             cache_key = f"{manufacturer}/{device_types}"
             cached_models = self._manufacturer_models.get(cache_key)
             if cached_models:
-                all_models.extend(cached_models)
+                all_models.extend(sorted(cached_models))
                 continue
             models = await self._loader.get_model_listing(manufacturer, device_types)
             self._manufacturer_models[cache_key] = models
-            all_models.extend(models)
+            all_models.extend(sorted(models))
 
-        return sorted(all_models)
+        return sorted(all_models, key=lambda model: model[0])
 
     async def get_profile(
         self,
@@ -157,18 +159,15 @@ class ProfileLibrary:
             if "entity" in placeholders:
                 variables["entity"] = source_entity.entity_id
 
-            # If ANY namespaced entity:* placeholder is present, check if the specific one for device_class is needed
-            if source_entity.entity_entry:
-                for key in {p for p in placeholders if p.startswith("entity_by_device_class:")}:
-                    _, device_class = key.split(":", 1)
-                    try:
-                        device_class = SensorDeviceClass(device_class)
-                    except ValueError:
-                        device_class = cast(SensorDeviceClass, BinarySensorDeviceClass(device_class))
-                    related_entity = get_related_entity_by_device_class(self._hass, source_entity.entity_entry, device_class)
-                    if not related_entity:
-                        raise LibraryError(f"Could not find related entity for device class {device_class} of entity {source_entity.entity_id}")
-                    variables[key] = related_entity
+            for placeholder in iter_related_entity_placeholders(placeholders):
+                related_entity = resolve_related_entity_placeholder(
+                    self._hass,
+                    placeholder,
+                    source_entity=source_entity,
+                )
+                if not related_entity:
+                    raise LibraryError(build_related_entity_placeholder_not_found_message(placeholder, source_entity.entity_id))
+                variables[placeholder] = related_entity
 
         return variables
 

@@ -2,8 +2,7 @@
 ## Appliance Powercalc Sensors
 #################################################################
 # Appliance
-- platform: powercalc
-  create_group: Appliance
+- create_group: Appliance
   unique_id: 843c602a-9167-401c-a33e-149ae8a18598
   entities:
     # Refrigerator

@@ -1,4 +1,5 @@
 #################################################################
-## This handles the loading of my sensors.
+## This handles the loading of my powercalc sensors.
 #################################################################
-sensor: !include_dir_merge_list ../includes/sensors
+powercalc:
+  sensors: !include_dir_merge_list ../includes/powercalc

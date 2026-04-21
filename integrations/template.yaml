@@ -1,7 +1,4 @@
 #################################################################
-## Time sensor
+## This handles the loading of my template sensors and switches.
 #################################################################
-- platform: time_date
-  display_options:
-    - "time"
-    - "date"
+template: !include_dir_merge_list ../includes/templates

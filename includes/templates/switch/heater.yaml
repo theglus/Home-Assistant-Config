@@ -2,21 +2,20 @@
 ## Switches for Heater.
 #################################################################
 # Heater switch with status
-- platform: template
-  switches:
-    heat:
+- switch:
+    - name: "Heat"
       unique_id: 8b0b1a49-4c2d-4b8f-86cd-af9569b6a1c4
-      friendly_name: "Heat"
+      state: "{{ is_state('switch.switchbot_heat', 'on') }}"
       turn_on:
-        service: switch.turn_on
+        action: switch.turn_on
         target:
           entity_id: switch.switchbot_heat
       turn_off:
-        service: switch.turn_off
+        action: switch.turn_off
         target:
           entity_id: switch.switchbot_heat
-      icon_template: >-
-        {% if is_state('switch.heat', 'on') %}
+      icon: >-
+        {% if is_state('switch.switchbot_heat', 'on') %}
           mdi:radiator
         {% else %}
           mdi:radiator-disabled

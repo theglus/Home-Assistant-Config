@@ -74,6 +74,7 @@ class CustomField:
     label: str
     selector: dict[str, Any]
     description: str | None = None
+    default: Any = None
 
 
 DEVICE_TYPE_DOMAIN: dict[DeviceType, str | set[str]] = {
@@ -301,6 +302,11 @@ class PowerProfile:
     def custom_fields(self) -> list[CustomField]:
         """Get the custom fields of this profile."""
         return [CustomField(key=key, **field) for key, field in self._json_data.get("fields", {}).items()]
+
+    @property
+    def documentation_url(self) -> str | None:
+        """Get the documentation URL for this profile."""
+        return self._json_data.get("documentation_url")
 
     @property
     def config_flow_discovery_remarks(self) -> str | None:

@@ -2,8 +2,7 @@
 ## Media Powercalc Sensors
 #################################################################
 # Media group
-- platform: powercalc
-  create_group: Media Hub
+- create_group: Media Hub
   unique_id: 03ef1af0-c214-4d07-9b3a-c9bc5f4030bd
   entities:
     - entity_id: media_player.shield_tv

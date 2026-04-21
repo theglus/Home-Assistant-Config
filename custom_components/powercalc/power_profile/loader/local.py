@@ -49,17 +49,17 @@ class LocalLoader(Loader):
 
         return set()
 
-    async def get_model_listing(self, manufacturer: str, device_types: set[DeviceType] | None) -> set[str]:
+    async def get_model_listing(self, manufacturer: str, device_types: set[DeviceType] | None) -> set[tuple[str, str]]:
         """Get listing of available models for a given manufacturer.
 
         param manufacturer: manufacturer always handled in lower case
         param device_type:  models of the manufacturer will be filtered by DeviceType, models
                             without assigned device_type will be handled as DeviceType.LIGHT.
                             None will return all models of a manufacturer.
-        returns:            Set[str] of models
+        returns:            Set[tuple[str, str]] of (model_id, model_name)
         """
 
-        found_models: set[str] = set()
+        found_models: set[tuple[str, str]] = set()
         models = self._manufacturer_model_listing.get(manufacturer.lower())
         if not models:
             return found_models
@@ -67,7 +67,7 @@ class LocalLoader(Loader):
         for profile in models.values():
             if device_types and profile.device_type not in device_types:
                 continue
-            found_models.add(profile.model)
+            found_models.add((profile.model, profile.name or profile.model))
 
         return found_models
 

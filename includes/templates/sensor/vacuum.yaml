@@ -1,0 +1,24 @@
+#################################################################
+## Vacuums sensors.
+#################################################################
+- sensor:
+    # Vacuum Filter
+    - name: "Filter"
+      unique_id: 18a7147f-8cf7-4a8e-bbec-a2dc8b16443e
+      unit_of_measurement: "%"
+      state: "{{ (states('sensor.winston_filter') | float / 5372) | round }}"
+    # Vacuum Mainbrush
+    - name: "Mainbrush"
+      unique_id: 1168bcd6-3a2b-4c7f-9bb1-3f6029efefb7
+      unit_of_measurement: "%"
+      state: "{{ (states('sensor.winston_main_brush') | float / 10680) | round }}"
+    # Vacuum Sensors
+    - name: "Sensors"
+      unique_id: 77fd9b65-6e37-41d4-ac1b-660291da824c
+      unit_of_measurement: "%"
+      state: "{{ (states('sensor.winston_sensors') | float / 1073) | round }}"
+    # Vacuum Sidebrush
+    - name: "Sidebrush"
+      unique_id: e30b897a-8063-4faf-87ac-be769f515135
+      unit_of_measurement: "%"
+      state: "{{ (states('sensor.winston_side_brush') | float / 7170) | round }}"

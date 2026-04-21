@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import math
 import re
 from typing import NamedTuple
 
@@ -8,7 +9,6 @@ from homeassistant.const import CONF_ENTITY_ID, CONF_NAME, CONF_UNIQUE_ID
 from homeassistant.core import HomeAssistant, split_entity_id
 import homeassistant.helpers.device_registry as dr
 import homeassistant.helpers.entity_registry as er
-from homeassistant.helpers.template import is_number
 import voluptuous as vol
 
 from .const import (
@@ -35,6 +35,15 @@ class SourceEntity(NamedTuple):
     supported_color_modes: list[ColorMode] | None = None
     entity_entry: er.RegistryEntry | None = None
     device_entry: dr.DeviceEntry | None = None
+
+
+def is_number(value: str) -> bool:
+    """Return whether the value can be converted to a finite float."""
+    try:
+        fvalue = float(value)
+    except (TypeError, ValueError):
+        return False
+    return math.isfinite(fvalue)
 
 
 async def create_source_entity(entity_id: str, hass: HomeAssistant) -> SourceEntity:
@@ -162,6 +171,6 @@ def validate_name_pattern(value: str) -> str:
 
 def validate_is_number(value: str) -> str:
     """Validate value is a number."""
-    if is_number(value):  # type: ignore[no-untyped-call]
+    if is_number(value):
         return value
     raise vol.Invalid("Value is not a number")

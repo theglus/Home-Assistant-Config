@@ -1,8 +1,7 @@
 #################################################################
 ## Powercalc Sensors
 #################################################################
-- platform: powercalc
-  unique_id: 474eb1bc-b00d-4e33-8fc0-1e5ec78576d8
+- unique_id: 474eb1bc-b00d-4e33-8fc0-1e5ec78576d8
   name: Grid
   entity_id: sensor.dummy
   fixed:

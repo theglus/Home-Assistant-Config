@@ -2,8 +2,7 @@
 ## Air Circulator Powercalc Sensors
 #################################################################
 # Air Circulaors
-- platform: powercalc
-  create_group: Fan
+- create_group: Fan
   unique_id: adf0994d-51b4-4ce1-87e2-f7420dcf5cce
   entities:
     # Air Circulator

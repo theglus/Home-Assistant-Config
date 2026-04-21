@@ -1,8 +1,7 @@
 #################################################################
 ## Powercalc Sensors
 #################################################################
-- platform: powercalc
-  create_group: All Lights
+- create_group: All Lights
   unique_id: 3b8e71d8-045c-4675-bb5e-7b1b0c85928b
   entities:
     - create_group: Hallway Lights
