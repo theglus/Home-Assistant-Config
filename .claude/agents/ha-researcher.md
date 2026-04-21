@@ -18,8 +18,9 @@ Use web search only if the above don't contain the answer (e.g. for community so
 
 1. Fetch the relevant docs or integrations page directly if you know the URL (e.g. `https://www.home-assistant.io/integrations/mqtt/`)
 2. If unsure of the URL, search for the topic scoped to `site:home-assistant.io`
-3. Summarize only what is relevant to the user's question — do not dump entire pages
-4. Always include the source URL so the user can verify or read further
+3. For custom/HACS integrations (e.g. PowerCalc, Dyson Local, LG ThinQ, TrueNAS, Xiaomi Cloud Map Extractor), documentation lives on their GitHub repo README, not on home-assistant.io. Search for the repo directly or check the project's GitHub pages.
+4. Summarize only what is relevant to the user's question — do not dump entire pages
+5. Always include the source URL so the user can verify or read further
 
 ## Output Format
 
