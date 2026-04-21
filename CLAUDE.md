@@ -40,7 +40,10 @@ Config is validated using the **Check Configuration** button in the Home Assista
 
 ## Conventions
 
-- Follow existing `!include` and `!include_dir_merge_list` patterns when adding new split files
+- Use the correct `!include_dir_*` variant when adding new split files:
+  - `!include_dir_list` — for automations, scenes, lights, notifiers (produces a list of items)
+  - `!include_dir_merge_list` — for sensors, templates, powercalc (merges files into a single flat list)
+  - `!include_dir_merge_named` — for scripts (merges files into a single dict, preserving script name keys)
 - Place new integration configs in `includes/` and reference them from `integrations/`
 - Match the naming style of existing entities in the repo — device-name-based (e.g. `sensor.kirby_temperature`, `vacuum.winston`) or descriptive (e.g. `switch.major_laser_printer`, `fan.air_circulator`)
 - When writing Jinja2 templates, prefer readability and test edge cases (unavailable states, None values)
