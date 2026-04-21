@@ -18,6 +18,7 @@ The user will provide questions describing what they need. Ask follow-up questio
 - `integrations/` — one file per HA domain; each contains a domain key and an `!include` or `!include_dir_*` pointing into `includes/`. This directory is loaded as packages via `homeassistant.packages: !include_dir_named integrations` in `configuration.yaml`.
 - `includes/` — split YAML files for automations, scripts, sensors, templates, etc.
 - `blueprints/` — blueprint YAML files
+- `esphome/` — ESPHome device configs (M5Stack Atom Echo wake word devices, Bluetooth proxies); use `!secret` for API keys and WiFi credentials
 
 ## Validation
 
