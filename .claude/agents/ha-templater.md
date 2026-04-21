@@ -26,7 +26,14 @@ Match the repo style when writing template values:
 
 ## Common Patterns to Follow
 
-**Safe state access:**
+**Choosing the right defensive style:**
+
+For simple numeric reads, the filter default is sufficient and matches repo style:
+```jinja2
+{{ states('sensor.my_sensor') | float(0) }}
+```
+
+Reserve the full guard for cases where the branch logic itself depends on the state being valid — i.e. you need to behave differently when unavailable, not just return a safe default:
 ```jinja2
 {% set val = states('sensor.my_sensor') %}
 {% if val not in ['unknown', 'unavailable', 'none', ''] %}
