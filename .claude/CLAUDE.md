@@ -2,7 +2,13 @@
 
 This is a personal Home Assistant configuration repository for a heavily customized smart home setup. It is not an application codebase — there is no build step, no tests to run, and no deployment pipeline. Changes are applied by validating via the HA UI config check, then restarting Home Assistant.
 
-**Always read `README.md` at the start of every session.** It describes the physical smart home setup (devices, areas, integrations) and how it maps to the codebase. This context is essential for understanding the config.
+## Home Layout
+
+- **Rooms:** Entryway, Office, Living Room, Kitchen, Loft
+- **Named devices:** Winston (Roborock S4 vacuum), Kirby (Dyson TP04 fan/purifier, loft), Ice Bear (Frigidaire portable AC, living room)
+- **Lighting:** Primarily Philips Hue via the Hue bridge — not ZHA. Non-Hue devices (Sengled LED strip, Sengled plugs) are on ZHA.
+- **Presence:** Aqara Mini Switch at the front door (single/double/long press), not motion sensors
+- **Hardware:** Raspberry Pi 4 (4GB) + Home Assistant Connect ZBT-1 Zigbee coordinator
 
 ## Collaboration Style
 
@@ -19,6 +25,14 @@ The user will provide questions describing what they need. Ask follow-up questio
 - `includes/` — split YAML files for automations, scripts, sensors, templates, etc.
 - `blueprints/` — blueprint YAML files
 - `esphome/` — ESPHome device configs (M5Stack Atom Echo wake word devices, Bluetooth proxies); use `!secret` for API keys and WiFi credentials
+
+## Context Files
+
+Pre-built context files live in `.claude/context/`. Load them when relevant rather than exploring the codebase.
+
+- `integrations-list.md` — Load when writing automations, scripts, or templates to understand what integrations and services are available.
+- `integrations-reference.md` — Load on-demand when looking up integration options or services. Pass relevant URLs directly to the ha-researcher agent rather than searching from scratch.
+- `lovelace-reference.md` — Load on-demand for UI layout work. Contains dashboard screenshots by room.
 
 ## Validation
 
