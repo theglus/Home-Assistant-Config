@@ -40,7 +40,6 @@ I routinely stream games via Moonlight from my desktop computer (in the Office) 
  
 - [Air Visual](https://www.home-assistant.io/integrations/airvisual)
 - [ClimaCell](https://www.home-assistant.io/integrations/climacell)
-- [deCONZ](https://www.home-assistant.io/integrations/deconz)
 - [Denon AVR Network Receiver](https://www.home-assistant.io/integrations/denonavr)
 - [Denon HEOS](https://www.home-assistant.io/integrations/heos)
 - [DLNA](https://www.home-assistant.io/integrations/dlna_dmr)
@@ -53,6 +52,7 @@ I routinely stream games via Moonlight from my desktop computer (in the Office) 
 - [Tile](https://www.home-assistant.io/integrations/tile)
 - [TP-Link Kasa Smart](https://www.home-assistant.io/integrations/tplink)
 - [Xiaomi Miio](https://www.home-assistant.io/integrations/xiaomi_miio)
+- [Zigbee Home Automation (ZHA)](https://www.home-assistant.io/integrations/zha)
  
 </details>
 
