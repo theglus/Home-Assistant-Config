@@ -149,7 +149,7 @@ cards:
                 name: false
                 icon: "mdi:toilet"
                 state_styles:
-                  Loft:
+                  Loft Bathroom:
                     template: nav_button
                 template: nav_styles
                 tap_action:
