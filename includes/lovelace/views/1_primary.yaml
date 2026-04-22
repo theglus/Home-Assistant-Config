@@ -51,7 +51,7 @@ cards:
                 name: false
                 icon: "mdi:coat-rack"
                 state_styles:
-                  Entrway:
+                  Entryway:
                     template: nav_button
                 template: nav_styles
                 tap_action:
