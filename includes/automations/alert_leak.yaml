@@ -69,7 +69,6 @@ action:
                 - light.jeffreys_lamp
                 - light.kitchen_track
                 - light.loft_bed_light
-                - light.loft_bed_light
                 - light.loft_desk_lamp
                 - light.nanoleaf
                 - light.overhead
@@ -107,7 +106,6 @@ action:
                 - light.hallway_runner
                 - light.jeffreys_lamp
                 - light.kitchen_track
-                - light.loft_bed_light
                 - light.loft_bed_light
                 - light.loft_desk_lamp
                 - light.nanoleaf
