@@ -187,7 +187,6 @@ cards:
                     # TODO: #312 Format Dekstop + HA system control buttons.
                     - type: custom:hui-element
                       card_type: horizontal-stack
-                      card_mod:
                       cards:
                         - type: custom:button-card
                           name: RESTART
@@ -430,7 +429,6 @@ cards:
                     # TODO: #312 Format Dekstop + HA system control buttons.
                     - type: custom:hui-element
                       card_type: horizontal-stack
-                      card_mod:
                       cards:
                         - type: custom:button-card
                           name: HEIMDALL
