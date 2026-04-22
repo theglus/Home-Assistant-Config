@@ -178,8 +178,8 @@ cards:
                 background: rgba(0,0,0,.3); 
                 padding: 10px; 
                 border-radius: 35px; 
-                border-style: none
-                margin-top: none; 
+                border-style: none;
+                margin-top: none;
                 }
             card:
               type: grid
@@ -289,8 +289,8 @@ cards:
                 background: rgba(0,0,0,.3); 
                 padding: 10px; 
                 border-radius: 35px; 
-                border-style: none
-                margin-top: none; 
+                border-style: none;
+                margin-top: none;
                 }
             card:
               type: grid
@@ -356,8 +356,8 @@ cards:
                 background: rgba(0,0,0,.3); 
                 padding: 10px; 
                 border-radius: 35px; 
-                border-style: none
-                margin-top: none; 
+                border-style: none;
+                margin-top: none;
                 }
             card:
               type: grid
@@ -389,8 +389,8 @@ cards:
                 background: rgba(0,0,0,.3); 
                 padding: 10px; 
                 border-radius: 35px; 
-                border-style: none
-                margin-top: none; 
+                border-style: none;
+                margin-top: none;
                 }
             card:
               type: grid
@@ -467,8 +467,8 @@ cards:
                 background: rgba(0,0,0,.3); 
                 padding: 10px; 
                 border-radius: 35px; 
-                border-style: none
-                margin-top: none; 
+                border-style: none;
+                margin-top: none;
                 }
             card:
               type: grid
@@ -559,8 +559,8 @@ cards:
                 background: rgba(0,0,0,.3); 
                 padding: 10px; 
                 border-radius: 35px; 
-                border-style: none
-                margin-top: none; 
+                border-style: none;
+                margin-top: none;
                 }
             card:
               type: grid
@@ -617,8 +617,8 @@ cards:
                 background: rgba(0,0,0,.3); 
                 padding: 10px; 
                 border-radius: 35px; 
-                border-style: none
-                margin-top: none; 
+                border-style: none;
+                margin-top: none;
                 }
             card:
               type: grid
@@ -719,8 +719,8 @@ cards:
                 background: rgba(0,0,0,.3); 
                 padding: 10px; 
                 border-radius: 35px; 
-                border-style: none
-                margin-top: none; 
+                border-style: none;
+                margin-top: none;
                 }
             card:
               type: grid
