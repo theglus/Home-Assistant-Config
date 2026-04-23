@@ -29,7 +29,8 @@ action:
             target:
               entity_id:
                 - automation.charge_toothbrushes
-                - automation.climate_aqi
+                # automation.climate_aqi was here but does not exist.
+                # Consider adding automation.notify_aqi to suppress AQI alerts while away.
                 - automation.climate_loft
                 - automation.climate_purifier
                 - automation.office_energy
@@ -63,7 +64,8 @@ action:
             target:
               entity_id:
                 - automation.charge_toothbrushes
-                - automation.climate_aqi
+                # automation.climate_aqi was here but does not exist.
+                # Consider adding automation.notify_aqi to suppress AQI alerts while away.
                 - automation.climate_loft
                 - automation.climate_purifier
                 - automation.office_energy
