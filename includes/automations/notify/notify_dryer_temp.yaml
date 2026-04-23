@@ -16,7 +16,7 @@ trigger:
       minutes: 0
       seconds: 5
 condition:
-  - condition: or
+  - condition: and
     conditions:
       - condition: not
         conditions:
