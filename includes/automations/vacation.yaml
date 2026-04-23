@@ -33,7 +33,7 @@ action:
                 # Consider adding automation.notify_aqi to suppress AQI alerts while away.
                 - automation.climate_loft
                 - automation.climate_purifier
-                - automation.office_energy
+                - automation.energy_office
                 - automation.vacuum_schedule
             alias: Turn off automations.
           - service: fan.turn_off
@@ -68,7 +68,7 @@ action:
                 # Consider adding automation.notify_aqi to suppress AQI alerts while away.
                 - automation.climate_loft
                 - automation.climate_purifier
-                - automation.office_energy
+                - automation.energy_office
                 - automation.vacuum_schedule
             alias: Turn on automations.
           - service: switch.turn_on
