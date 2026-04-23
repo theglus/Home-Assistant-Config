@@ -1,7 +1,7 @@
 #################################################################
 ## Denon Menu Off
 #################################################################
-av_meno_off:
+av_menu_off:
   alias: Denon Menu Off
   sequence:
     - service: denonavr.get_command
