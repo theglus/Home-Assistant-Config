@@ -12,7 +12,7 @@ trigger:
 condition:
   - condition: numeric_state
     entity_id: weather.climacell_daily
-    attribute: forecast[0].temperature
+    attribute: forecast[1].temperature
     above: "75"
 action:
   - service: notify.smartphones
@@ -20,7 +20,7 @@ action:
       title: 🥵 Heat Wave
       message: >-
         Tomorrow's high is
-        {{states.weather.climacell_daily.attributes.forecast[0].temperature}}
+        {{states.weather.climacell_daily.attributes.forecast[1].temperature}}
         °F.
   - wait_for_trigger:
       - platform: time
@@ -30,5 +30,5 @@ action:
       title: 🥵 Heat Wave
       message: >-
         Today's high is
-        {{states.weather.climacell_daily.attributes.forecast.temperature}} °F.
+        {{states.weather.climacell_daily.attributes.forecast[1].temperature}} °F.
 mode: single

@@ -69,7 +69,6 @@ action:
                 - light.jeffreys_lamp
                 - light.kitchen_track
                 - light.loft_bed_light
-                - light.loft_bed_light
                 - light.loft_desk_lamp
                 - light.nanoleaf
                 - light.overhead
@@ -108,7 +107,6 @@ action:
                 - light.jeffreys_lamp
                 - light.kitchen_track
                 - light.loft_bed_light
-                - light.loft_bed_light
                 - light.loft_desk_lamp
                 - light.nanoleaf
                 - light.overhead
@@ -130,32 +128,18 @@ action:
               message: Dishwasher is leaking!
               title: "🚨 WATER ALERT:"
       - conditions:
-          - condition: and
-            conditions:
-              - condition: state
-                entity_id: binary_sensor.kitchen_water
-                state: "off"
-                for:
-                  hours: 0
-                  minutes: 0
-                  seconds: 5
-                  milliseconds: 0
+          - condition: state
+            entity_id: binary_sensor.kitchen_water
+            state: "off"
         sequence:
           - service: scene.turn_on
             data: {}
             target:
               entity_id: scene.scene_lights_before
       - conditions:
-          - condition: and
-            conditions:
-              - condition: state
-                entity_id: binary_sensor.dishwasher_water
-                state: "off"
-                for:
-                  hours: 0
-                  minutes: 0
-                  seconds: 5
-                  milliseconds: 0
+          - condition: state
+            entity_id: binary_sensor.dishwasher_water
+            state: "off"
         sequence:
           - service: scene.turn_on
             data: {}

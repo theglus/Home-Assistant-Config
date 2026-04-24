@@ -8,7 +8,8 @@ pc_wake:
       data: {}
       target:
         entity_id: switch.switchbot_pc
-    - service: script.wake_on_lan
-      data: {}
+    - action: button.press
+      target:
+        entity_id: button.wake_on_lan
   mode: single
   icon: mdi:monitor-dashboard

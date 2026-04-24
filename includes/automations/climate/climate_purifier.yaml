@@ -10,11 +10,21 @@ description: "Trigger 'Kirby + Airmega: Daymode' @ 8 am + 'Kirby + Airmega: Nigh
 trigger:
   - platform: time
     at: input_datetime.purifier_morning
+    id: morning
   - platform: time
     at: input_datetime.purifier_night
+    id: night
 action:
   - choose:
       - conditions:
+          - condition: trigger
+            id: morning
+        sequence:
+          - scene: scene.kirby_daymode
+          - service: script.airmega_daymode
+      - conditions:
+          - condition: trigger
+            id: night
           - condition: state
             entity_id: binary_sensor.purifier_schedule
             state: "on"
@@ -25,10 +35,4 @@ action:
               entity_id:
                 - fan.kitchen
           - service: script.airmega_nightmode
-    default:
-      - service: fan.turn_off
-        target:
-          entity_id:
-            - fan.kirby
-      - service: script.airmega_daymode
 mode: single
