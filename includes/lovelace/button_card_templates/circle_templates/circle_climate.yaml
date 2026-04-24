@@ -14,7 +14,7 @@ custom_fields:
   circle: >
     [[[
       const input = variables.circle_input;
-      const stroke_color = variables.state === 'cool' ? '#b2b2b2' : '#b2b2b2';
+      const stroke_color = '#b2b2b2'; // if stroke needs to vary by state, restore the ternary like fill_color below
       const fill_color = variables.state === 'cool' ? 'none' : '#FFFFFF08';
       return `
         <svg viewBox="0 0 50 50">
