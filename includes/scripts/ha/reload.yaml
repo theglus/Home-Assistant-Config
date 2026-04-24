@@ -1,7 +1,7 @@
 #################################################################
 ## Reload various Home Assistant services.
 #################################################################
-reload:
+ha_reload:
   alias: "Reload"
   icon: mdi:reload-alert
   sequence:
