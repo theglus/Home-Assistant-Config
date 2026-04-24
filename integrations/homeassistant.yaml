@@ -1,7 +1,6 @@
 #################################################################
-## This handles the loading of my customziations.
-################################################################# 
+## This handles the loading of my customizations.
+#################################################################
 homeassistant:
   # Lets me customize individual entities
   customize: !include ../includes/customize.yaml
-  #customize split: !include_dir_merge_named ../includes/customize
