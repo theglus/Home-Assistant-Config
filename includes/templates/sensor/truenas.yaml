@@ -16,9 +16,9 @@
     - name: "TrueNAS Upload"
       unique_id: 38e48d20-f53b-496c-87a5-dd413f11ba70
       unit_of_measurement: "MiB"
-      state: "{{ (states('sensor.truenas_enp4s0_tx') | float / 10024) | round(2) }}"
+      state: "{{ (states('sensor.truenas_enp4s0_tx') | float / 1024) | round(2) }}"
     # TrueNAS Download
     - name: "TrueNAS Download"
       unique_id: b3f26047-93e1-44a9-8d9a-3e3f786da98d
       unit_of_measurement: "MiB"
-      state: "{{ (states('sensor.truenas_enp4s0_rx') | float / 10024) | round(2) }}"
+      state: "{{ (states('sensor.truenas_enp4s0_rx') | float / 1024) | round(2) }}"
