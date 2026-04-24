@@ -44,6 +44,7 @@ Configured via the Home Assistant UI (config flow). No YAML required.
 - Telegram Bot
 - Tile
 - Tomorrow.io
+- Google Translate Text-to-Speech
 - TP-Link Smart Home
 - TrueNAS
 - Twinkly
@@ -64,7 +65,6 @@ Configured via YAML package files in `integrations/`. Each domain has a correspo
 - Notify (`integrations/notify.yaml`)
 - RESTful Command (`integrations/rest_command.yaml`)
 - Template (`integrations/template.yaml`)
-- TTS (`integrations/tts.yaml`)
 - Utility Meter (`integrations/utility_meter.yaml`)
 
 ## HACS Integrations
