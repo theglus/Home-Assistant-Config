@@ -617,7 +617,7 @@ Living Room:
 #### Icons
 - [Spotlight Icon](includes/lovelace/button_card_templates/icon_templates/icon_light/icon_spot.yaml)
 - [Nanoleaf Icon](includes/lovelace/button_card_templates/icon_templates/icon_light/icon_dinopanel.yaml)
-- [Google Nest Mini Icon](/Users/Glusman/Home-Assistant-Config/includes/lovelace/button_card_templates/icon_templates/icon_media/icon_nest_mini.yaml)
+- [Google Nest Mini Icon](includes/lovelace/button_card_templates/icon_templates/icon_media/icon_nest_mini.yaml)
 - [Dyson Icon](includes/lovelace/button_card_templates/icon_templates/icon_media/icon_dyson.yaml)
 
 <details>
