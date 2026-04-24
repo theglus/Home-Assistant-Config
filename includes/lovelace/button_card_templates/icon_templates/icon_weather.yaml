@@ -23,8 +23,6 @@ state:
     value: lightning
   - icon: "mdi:weather-lightning-rainy"
     value: lightning-rainy
-  - icon: "mdi:weather-partly-cloudy"
-    value: partlycloudy
   - icon: "mdi:weather-pouring"
     value: pouring
   - icon: "mdi:weather-rainy"
