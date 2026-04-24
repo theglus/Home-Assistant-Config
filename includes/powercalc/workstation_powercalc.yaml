@@ -3,4 +3,4 @@
 #################################################################
 - entity_id: switch.workstation_plug
   fixed:
-    power: "{{(states('sensor.workstation_plug_power_gross')|float - states('sensor.pinkie_lamp_power')|float)|round(3)}}"
+    power: "{{(states('sensor.workstation_plug_power_gross')|float(0) - states('sensor.pinkie_lamp_power')|float(0))|round(3)}}"
