@@ -762,15 +762,32 @@ Lutton Aurora dimmers have been a game changer in my home automations setup. The
 - [Dimmer Office](includes/automations/dimmer_office.yaml): Trigger office lights with Lutron Aurora switch.
 </details>
 
+### 📡 M5Stack
+The [M5Stack Atom Echo](https://shop.m5stack.com/products/atom-echo-smart-speaker-dev-kit) devices serve dual duty as voice assistants and physical buttons. Each room's button is mapped to a contextual action — toggling lights, switching inputs, or controlling the wake word. The Living Room device also provides visual feedback via the Yumi lamp when it's actively listening.
+<details>
+  <summary>Automations</summary>
+
+- [M5Stack Loft Button](includes/automations/m5stack/m5stack_loft_button.yaml): Toggle Loft desk lamp.
+- [M5Stack Office Button](includes/automations/m5stack/m5stack_office_button.yaml): Toggle PC KVM switch.
+- [M5Stack Living Button](includes/automations/m5stack/m5stack_living_button.yaml): Mute/unmute Living Room wake word.
+- [M5Stack Living Listening](includes/automations/m5stack/m5stack_living_listening.yaml): Change Yumi lamp to blue when M5Stack starts listening.
+- [M5Stack Living Stop Listening](includes/automations/m5stack/m5stack_living_stop_listening.yaml): Return Yumi lamp to default when M5Stack stops listening.
+</details>
+
 ### 📬  Notifications
 I currently have notifications set to be delivered via one of two channels [Telegram](includes/notifiers/telegram.yaml) or the [Smartphone Group](includes/notifiers/smartphones.yaml). Telegram is used to notify about server boot up to aid with troubleshooting while the Smartphone Group leverages the companion app to surface in-app notifications.
 <details>
   <summary>Automations</summary>
 
 - [Notify AQI](includes/automations/notify_aqi.yaml): Notify Smartphones when AQI is >75.
+- [Notify Air Filters](includes/automations/notify/notify_filter_maintenance.yaml): Notify smartphones when Airmega or Dyson air filters need cleaning or replacement.
+- [Notify Bus Home](includes/automations/notify/notify_bus_home.yaml): Telegram command to report the next bus home.
+- [Notify Bus Work](includes/automations/notify/notify_bus_work.yaml): Telegram command to report the next bus to work.
 - [Notify Dryer](includes/automations/notify_dryer.yaml): Notify smartphones when dryer is complete.
+- [Notify Entry](includes/automations/notify/notify_entry.yaml): Notify Telegram when the front door is opened.
 - [Notify Heat Wave](includes/automations/notify_heatwave.yaml): Notify smartphones when tomorrows high is  >75 °F.
 - [Notify Printer](includes/automations/notify/notify_printer.yaml): Notify Smartphones when Major Laser Printer is ready.
+- [Notify Vacuum Maintenance](includes/automations/notify/notify_vacuum_maintenance.yaml): Notify smartphones when Winston's sensors, filter, or brushes need attention.
 - [Notify Washer](includes/automations/notify_washer.yaml): Notify smartphones when washer is complete.
 - [Peak Usage Alerts](includes/automations/peak_usage_alerts.yaml): Notify Smartphones when AC, Washer, or Dryer is on during peak usage. 
 - [Server Boot Up](includes/automations/notify/notify_server_boot_up.yaml): Notify via Telegram when server has booted up.
@@ -810,17 +827,20 @@ Winston my trusty robot vacuum is scheduled to clean the most trafficed areas of
 </details>
 
 ### 🎰 Various
-The remaining automations are super useful, but don't fit into any specific category. This includes alerts for water leaks, scheduled volume controls for Google Home devices, and an `on air` light to indicate when a video call is in progress.
+The remaining automations are super useful, but don't fit into any specific category. This includes alerts for water leaks, scheduled volume controls for Google Home devices, Nanoleaf mood lighting, vacation mode, and an `on air` light to indicate when a video call is in progress.
 <details>
   <summary>Automations</summary>
 
 - [Alert Leak](includes/automations/alert_leak.yaml): Alert when water is detected under the sink or dishwasher.
+- [Mood Music](includes/automations/mood_music.yaml): Set Nanoleaf to Meteor Shower effect when Denon HEOS is playing, Northern Lights otherwise.
 - [Mood Television](includes/automations/mood_television.yaml): Television scene + Denon Nighttime quick select.
 - [Mood Theater](includes/automations/mood_theater.yaml): Theater scene + Denon Theater quick select.
 - [Office Available](includes/automations/office_available.yaml): Turn Potter light magenta when webcam turns off.
 - [Office Busy](includes/automations/office_busy.yaml): Turn Potter light red when webcam turns on.
 - [Set Theme](includes/automations/set_theme.yaml): Set theme at Home Assistant start.
-- [Volume Home](includes/automations/volume_home.yaml): Turn down volume of Google Home device at 10 pm.
+- [Vacation](includes/automations/vacation.yaml): Telegram commands to enable/disable vacation mode — disables automations and turns off fans to conserve energy.
+- [Volume Home](includes/automations/volume/volume_home.yaml): Adjust Google Home device volumes on a morning/night schedule.
+- [Volume Nighttime Media](includes/automations/volume/volume_nighttime_media.yaml): Turn down Loft speaker volumes after media stops playing at night.
 </details>
 
 # 📢 Shoutouts and Inspirition
