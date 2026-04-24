@@ -748,7 +748,7 @@ Before Home Assistant, I had several schedules setup for my two air purifiers in
 <details>
   <summary>Automations</summary>
 
-- [Climate Kirby](includes/automations/climate_kirby.yaml): Trigger [Kirby: Daytime](includes/scenes/kirby_daymode.yaml) @ 8 am + [Kirby: Nighttime](includes/scenes/kirby_nightmode.yaml) @ 9 pm.
+- [Climate Kirby](includes/automations/climate/climate_purifier.yaml): Trigger [Kirby: Daytime](includes/scenes/kirby_daymode.yaml) @ 8 am + [Kirby: Nighttime](includes/scenes/kirby_nightmode.yaml) @ 9 pm.
 - [Climate Loft](includes/automations/climate_loft.yaml): Turn on fan when Loft is ≥72° and off when ≤71°.
 - [Climate Office Off](includes/automations/climate_office_off.yaml): Turn fan OFF based off of Overhead light group.
 - [Climate Office On](includes/automations/climate_office_on.yaml): Turn fan ON based off of Overhead light group.
@@ -771,11 +771,11 @@ I currently have notifications set to be delivered via one of two channels [Tele
 - [Notify AQI](includes/automations/notify_aqi.yaml): Notify Smartphones when AQI is >75.
 - [Notify Dryer](includes/automations/notify_dryer.yaml): Notify smartphones when dryer is complete.
 - [Notify Heat Wave](includes/automations/notify_heatwave.yaml): Notify smartphones when tomorrows high is  >75 °F.
-- [Notify Printer](includes/automations/notification_printer.yaml): Notify Smartphones when Major Laser Printer is ready.
+- [Notify Printer](includes/automations/notify/notify_printer.yaml): Notify Smartphones when Major Laser Printer is ready.
 - [Notify Washer](includes/automations/notify_washer.yaml): Notify smartphones when washer is complete.
 - [Peak Usage Alerts](includes/automations/peak_usage_alerts.yaml): Notify Smartphones when AC, Washer, or Dryer is on during peak usage. 
-- [Server Boot Up](includes/automations/server_boot_up.yaml): Notify via Telegram when server has booted up.
-- [Server Reboot](includes/automations/server_reboot.yaml): Telegram notification that alerts of server reboot, restart, or shutdown.
+- [Server Boot Up](includes/automations/notify/notify_server_boot_up.yaml): Notify via Telegram when server has booted up.
+- [Server Reboot](includes/automations/notify/notify_server_reboot.yaml): Telegram notification that alerts of server reboot, restart, or shutdown.
 </details>
 
 ### 🚪 Presence
@@ -793,9 +793,9 @@ Vampire drain is a problem, especially when your power company charges different
 <details>
   <summary>Automations</summary>
 
-- [Charge Toothbrushes](includes/automations/charge_toothbrushes.yaml): Start charging toothbrushes at 12 am and stop at 4 am.
-- [Printer Shutoff](includes/automations/shutoff_printer.yaml): Shutoff plug to printer 15-minutes after device has been switched on.
-- [Shutdown Shredder](includes/automations/shutoff_shredder.yaml): Shutoff plug to paper shredder 2-minutes after device has been switched on.
+- [Charge Toothbrushes](includes/automations/shutoff/shutoff_toothbrushes.yaml): Start charging toothbrushes at 12 am and stop at 4 am.
+- [Printer Shutoff](includes/automations/shutoff/shutoff_printer.yaml): Shutoff plug to printer 15-minutes after device has been switched on.
+- [Shutdown Shredder](includes/automations/shutoff/shutoff_shredder.yaml): Shutoff plug to paper shredder 2-minutes after device has been switched on.
 </details>
 
 ### 🧹 Vacuum
