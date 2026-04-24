@@ -38,8 +38,7 @@ I routinely stream games via Moonlight from my desktop computer (in the Office) 
 <details>
   <summary>See details</summary>
  
-- [Air Visual](https://www.home-assistant.io/integrations/airvisual)
-- [ClimaCell](https://www.home-assistant.io/integrations/climacell)
+- [Tomorrow.io](https://www.home-assistant.io/integrations/tomorrowio)
 - [Denon AVR Network Receiver](https://www.home-assistant.io/integrations/denonavr)
 - [Denon HEOS](https://www.home-assistant.io/integrations/heos)
 - [DLNA](https://www.home-assistant.io/integrations/dlna_dmr)
