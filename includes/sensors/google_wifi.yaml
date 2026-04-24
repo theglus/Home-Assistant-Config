@@ -1,8 +1,0 @@
-#################################################################
-## Google WiFi Sensors
-#################################################################
-- platform: google_wifi
-  host: !secret router
-  monitored_conditions:
-    - uptime
-    - status
