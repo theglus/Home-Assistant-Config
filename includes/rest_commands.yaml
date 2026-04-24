@@ -1,15 +1,3 @@
-eco_on:
-  # /goform/formiPhoneAppDirect.xml?ECOON
-  url: !secret denon_eco_on_url
-eco_off:
-  # /goform/formiPhoneAppDirect.xml?ECOOFF
-  url: !secret denon_eco_off_url
-av_menu_on:
-  # /goform/formiPhoneAppDirect.xml?MNMEN%20ON
-  url: !secret denon_av_menu_on_url
-av_menu_off:
-  # /goform/formiPhoneAppDirect.xml?MNMEN%20OFF
-  url: !secret denon_av_menu_off_url
 set_volume:
   # /goform/formiPhoneAppDirect.xml?MV<volume> — IP hardcoded; !secret unsupported in Jinja2 URL templates
   url: 'http://192.168.86.187/goform/formiPhoneAppDirect.xml?MV{{states("input_number.denon_volume").replace(".", "") }}'
