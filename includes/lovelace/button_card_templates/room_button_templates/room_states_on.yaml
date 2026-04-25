@@ -4,7 +4,7 @@
   state:
     - styles:
         card:
-          - background-color: "var(--bc-card-bg-on)"
+          - background-color: "var(--bc-card-bg-on, rgba(255, 255, 255, 0.8))"
         custom_fields:
           s2:
             - color: Grey
