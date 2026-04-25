@@ -153,3 +153,12 @@ hypnotoad:
   # Panel layout (views)
   bc-panel-radius: "35px"
   bc-panel-padding: "10px"
+
+  # Fix: select/input text visibility (explicit overrides for newer HA)
+  mdc-select-ink-color: "#FFFFFF"
+  mdc-select-fill-color: "rgba(25, 25, 25, 0.9)"
+  mdc-select-label-ink-color: "rgba(255, 255, 255, 0.6)"
+  mdc-select-dropdown-icon-color: "#FFFFFF"
+  mdc-text-field-ink-color: "#FFFFFF"
+  mdc-text-field-fill-color: "rgba(25, 25, 25, 0.9)"
+  mdc-text-field-label-ink-color: "rgba(255, 255, 255, 0.6)"
