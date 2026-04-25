@@ -6,13 +6,13 @@
   styles:
     card:
       [
-        font-family: "var(--bc-font-family)",
-        letter-spacing: "var(--bc-letter-spacing)",
-        font-weight: "var(--bc-font-weight)",
-        color: "var(--bc-text-dim)",
-        font-size: "var(--bc-font-size)",
-        background-color: "var(--bc-card-bg)",
-        border-radius: "var(--bc-border-radius)",
+        font-family: "var(--bc-font-family, Sf Display)",
+        letter-spacing: "var(--bc-letter-spacing, 0.05em)",
+        font-weight: "var(--bc-font-weight, 400)",
+        color: "var(--bc-text-dim, rgba(255, 255, 255, 0.3))",
+        font-size: "var(--bc-font-size, 1em)",
+        background-color: "var(--bc-card-bg, rgba(115, 115, 115, 0.2))",
+        border-radius: "var(--bc-border-radius, 2em)",
         border-style: none,
         box-shadow: none,
         transition: none,
