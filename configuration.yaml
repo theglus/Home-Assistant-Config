@@ -20,8 +20,7 @@ lovelace:
       mode: yaml
       filename: ui-lovelace.yaml
       title: Overview
-      icon: mdi:view-dashboard
-      show_in_sidebar: true
+      icon: mdi:home-assistant
   resources:
     # Bar Card
     # https://github.com/custom-cards/bar-card
