@@ -24,9 +24,9 @@
             var entity_picture = entity === undefined || entity.attributes.entity_picture;
             if (variables.state === 'off' || variables.state === 'idle' || variables.state === 'standby' ||
               variables.state === 'unknown' || variables.state === 'unavailable' || entity === undefined) {
-              return 'var(--bc-text-dim)';
+              return 'var(--bc-text-dim, rgba(255, 255, 255, 0.3))';
             }
-            return (variables.state != 'off' && variables.state != 'idle' && variables.state != 'standby') && (entity_picture == null) ? 'var(--bc-text-on)' : '#efefef';
+            return (variables.state != 'off' && variables.state != 'idle' && variables.state != 'standby') && (entity_picture == null) ? 'var(--bc-text-on, rgba(0, 0, 0, 0.6))' : '#efefef';
           ]]]
       - text-shadow: >
           [[[
