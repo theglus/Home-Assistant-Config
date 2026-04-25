@@ -2,12 +2,12 @@
 ## Generic Icon Template
 #################################################################
 show_name: false
-color: "var(--bc-icon-color)"
+color: "var(--bc-icon-color, #9da0a2)"
 styles:
   card:
-    - color: "var(--bc-icon-color)"
-    - border-radius: "var(--bc-border-radius-sm)"
+    - color: "var(--bc-icon-color, #9da0a2)"
+    - border-radius: "var(--bc-border-radius-sm, 0.6em)"
     - border-style: none
     - width: 4em
     - height: 3.7em
-    - background: "var(--bc-icon-bg)"
+    - background: "var(--bc-icon-bg, #FFFFFF10)"
