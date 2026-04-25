@@ -14,29 +14,29 @@ variables:
 state:
   - value: "on"
     styles:
-      card: [background-color: "rgba(255, 255, 255, 0.8)"]
-      name: [color: "rgba(0, 0, 0, 0.6)"]
-      state: [color: "rgba(0, 0, 0, 0.6)"]
+      card: [background-color: "var(--bc-card-bg-on)"]
+      name: [color: "var(--bc-text-on)"]
+      state: [color: "var(--bc-text-on)"]
   - value: "playing"
     styles:
-      card: [background-color: "rgba(255, 255, 255, 0.8)"]
-      name: [color: "rgba(0, 0, 0, 0.6)"]
-      state: [color: "rgba(0, 0, 0, 0.6)"]
+      card: [background-color: "var(--bc-card-bg-on)"]
+      name: [color: "var(--bc-text-on)"]
+      state: [color: "var(--bc-text-on)"]
   - value: "idle"
     styles:
-      card: [background-color: "rgba(255, 255, 255, 0.8)"]
-      name: [color: "rgba(0, 0, 0, 0.6)"]
-      state: [color: "rgba(0, 0, 0, 0.6)"]
+      card: [background-color: "var(--bc-card-bg-on)"]
+      name: [color: "var(--bc-text-on)"]
+      state: [color: "var(--bc-text-on)"]
   - value: "cool"
     styles:
-      card: [background-color: "rgba(255, 255, 255, 0.8)"]
-      name: [color: "rgba(0, 0, 0, 0.6)"]
-      state: [color: "rgba(0, 0, 0, 0.6)"]
+      card: [background-color: "var(--bc-card-bg-on)"]
+      name: [color: "var(--bc-text-on)"]
+      state: [color: "var(--bc-text-on)"]
   - value: "auto"
     styles:
-      card: [background-color: "rgba(255, 255, 255, 0.8)"]
-      name: [color: "rgba(0, 0, 0, 0.6)"]
-      state: [color: "rgba(0, 0, 0, 0.6)"]
+      card: [background-color: "var(--bc-card-bg-on)"]
+      name: [color: "var(--bc-text-on)"]
+      state: [color: "var(--bc-text-on)"]
 tap_action:
   action: toggle
   haptic: light
@@ -61,13 +61,13 @@ styles:
     - justify-self: start
     - line-height: 115%
   card:
-    - font-family: Sf Display
-    - border-radius: 2em
+    - font-family: "var(--bc-font-family)"
+    - border-radius: "var(--bc-border-radius)"
     - border-style: none
-    - font-size: 1em
+    - font-size: "var(--bc-font-size)"
     - box-shadow: none
     - transition: none
     - padding: 10%
-    - background-color: "rgba(115, 115, 115, 0.2)"
-    - color: "rgba(255, 255, 255, 0.3)"
-    - letter-spacing: 0.05em
+    - background-color: "var(--bc-card-bg)"
+    - color: "var(--bc-text-dim)"
+    - letter-spacing: "var(--bc-letter-spacing)"
