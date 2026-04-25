@@ -77,7 +77,6 @@ hypnotoad:
   paper-dialog-background-color: rgba(55, 55, 55, 0.8) # e.g., background of more-info
   paper-item-icon-color: white # also should mini-media-player icon white (but doesn't work by itself)
   more-info-header-background: rgba(25, 25, 25, 0.5)
-  lumo-body-text-color: var(--primary-text-color) # see https://github.com/basnijholt/lovelace-ios-dark-mode-theme/issues/42
   app-header-background-color: rgba(155, 155, 155, 0.8)
   markdown-code-background-color: "#464646"
   # Custom
