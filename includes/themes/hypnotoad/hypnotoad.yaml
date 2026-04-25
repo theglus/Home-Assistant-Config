@@ -153,3 +153,19 @@ hypnotoad:
   mdc-text-field-ink-color: "#FFFFFF"
   mdc-text-field-fill-color: "rgba(25, 25, 25, 0.9)"
   mdc-text-field-label-ink-color: "rgba(255, 255, 255, 0.6)"
+
+  # Fix: Lumo (Vaadin) dark mode — sets the base background so text is readable
+  lumo-base-color: "#1c1c1e"
+  lumo-body-text-color: "#FFFFFF"
+  lumo-primary-text-color: "#FFFFFF"
+  lumo-secondary-text-color: "rgba(255, 255, 255, 0.7)"
+  lumo-disabled-text-color: "rgba(255, 255, 255, 0.3)"
+  lumo-header-text-color: "#FFFFFF"
+
+  # Fix: Material Web 3 (md-item) combo box list item text colors
+  card-mod-theme: |
+    ha-combo-box-item {
+      --md-list-item-label-text-color: #FFFFFF;
+      --md-list-item-supporting-text-color: rgba(255, 255, 255, 0.7);
+      --md-list-item-trailing-supporting-text-color: rgba(255, 255, 255, 0.7);
+    }
