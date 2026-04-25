@@ -6,13 +6,13 @@
   styles:
     card:
       [
-        font-family: Sf Display,
-        letter-spacing: 0.05em,
-        font-weight: 400,
-        color: "rgba(255, 255, 255, 0.3)",
-        font-size: 1em,
-        background-color: "rgba(115, 115, 115, 0.2)",
-        border-radius: 2em,
+        font-family: "var(--bc-font-family)",
+        letter-spacing: "var(--bc-letter-spacing)",
+        font-weight: "var(--bc-font-weight)",
+        color: "var(--bc-text-dim)",
+        font-size: "var(--bc-font-size)",
+        background-color: "var(--bc-card-bg)",
+        border-radius: "var(--bc-border-radius)",
         border-style: none,
         box-shadow: none,
         transition: none,
