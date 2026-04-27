@@ -191,3 +191,6 @@ hypnotoad:
     md-item {
       --md-list-item-container-color: var(--primary-background-color);
     }
+    ha-dropdown-item {
+      --md-list-item-container-color: var(--primary-background-color);
+    }
