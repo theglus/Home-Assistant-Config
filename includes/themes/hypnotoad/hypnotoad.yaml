@@ -186,9 +186,3 @@ hypnotoad:
       --md-list-item-supporting-text-color: rgba(255, 255, 255, 0.7);
       --md-list-item-trailing-supporting-text-color: rgba(255, 255, 255, 0.7);
     }
-    ha-dropdown-item[selected],
-    ha-dropdown-item[aria-selected="true"] {
-      --md-list-item-label-text-color: #FF9F09;
-      --md-list-item-supporting-text-color: rgba(255, 159, 9, 0.7);
-      --md-list-item-trailing-supporting-text-color: rgba(255, 159, 9, 0.7);
-    }
