@@ -188,3 +188,6 @@ hypnotoad:
       --md-list-item-supporting-text-color: rgba(255, 255, 255, 0.7);
       --md-list-item-trailing-supporting-text-color: rgba(255, 255, 255, 0.7);
     }
+    md-item {
+      --md-list-item-container-color: var(--primary-background-color);
+    }
