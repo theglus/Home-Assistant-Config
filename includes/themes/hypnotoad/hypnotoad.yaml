@@ -153,6 +153,19 @@ hypnotoad:
   mdc-text-field-fill-color: "rgba(25, 25, 25, 0.9)"
   mdc-text-field-label-ink-color: "rgba(255, 255, 255, 0.6)"
 
+  # Fix: MDC surface baseline — without this, mwc-select/input fill defaults to white
+  mdc-theme-surface: "#2c2c2e"
+  mdc-theme-on-surface: "#FFFFFF"
+
+  # Fix: MD3 surface tokens — used by entity pickers, combo-box, profile page dropdowns
+  md-sys-color-surface: "#2c2c2e"
+  md-sys-color-surface-container: "#3a3a3c"
+  md-sys-color-surface-container-low: "#2c2c2e"
+  md-sys-color-surface-container-high: "#48484a"
+  md-sys-color-surface-container-highest: "#636366"
+  md-sys-color-on-surface: "#FFFFFF"
+  md-sys-color-on-surface-variant: "rgba(255, 255, 255, 0.6)"
+
   # Fix: Lumo (Vaadin) dark mode — sets the base background so text is readable
   lumo-base-color: "#1c1c1e"
   lumo-body-text-color: "#FFFFFF"
