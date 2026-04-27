@@ -153,6 +153,11 @@ hypnotoad:
   mdc-text-field-fill-color: "rgba(25, 25, 25, 0.9)"
   mdc-text-field-label-ink-color: "rgba(255, 255, 255, 0.6)"
 
+  # Fix: Form/input/select backgrounds — HA 2026.4+ (ha-select / ha-input replaced mwc-select / mwc-textfield)
+  ha-color-form-background: var(--md-sys-color-surface-container)
+  ha-color-form-background-hover: var(--md-sys-color-surface-container-high)
+  ha-color-form-background-disabled: var(--primary-background-color)
+
   # Fix: MDC surface baseline — without this, mwc-select/input fill defaults to white
   mdc-theme-surface: "#2c2c2e"
   mdc-theme-on-surface: "#FFFFFF"
