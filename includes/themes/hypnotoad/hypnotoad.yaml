@@ -157,9 +157,6 @@ hypnotoad:
   ha-color-form-background: var(--md-sys-color-surface-container)
   ha-color-form-background-hover: var(--md-sys-color-surface-container-high)
   ha-color-form-background-disabled: var(--primary-background-color)
-  ha-color-fill-neutral-quiet-active: var(--md-sys-color-surface-container-high)
-  ha-color-fill-neutral-normal-active: var(--md-sys-color-surface-container)
-  ha-color-fill-primary-quiet-active: "rgba(255, 159, 9, 0.15)"
 
   # Fix: MDC surface baseline — without this, mwc-select/input fill defaults to white
   mdc-theme-surface: "#2c2c2e"
@@ -188,10 +185,4 @@ hypnotoad:
       --md-list-item-label-text-color: #FFFFFF;
       --md-list-item-supporting-text-color: rgba(255, 255, 255, 0.7);
       --md-list-item-trailing-supporting-text-color: rgba(255, 255, 255, 0.7);
-    }
-    md-item {
-      --md-list-item-container-color: var(--primary-background-color);
-    }
-    ha-dropdown-item {
-      --md-list-item-container-color: var(--primary-background-color);
     }
