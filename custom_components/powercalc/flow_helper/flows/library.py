@@ -21,6 +21,7 @@ from custom_components.powercalc.const import (
     CONF_SELF_USAGE_INCLUDED,
     CONF_SUB_PROFILE,
     CONF_VARIABLES,
+    DUMMY_ENTITY_ID,
     LIBRARY_URL,
     CalculationStrategy,
 )
@@ -72,10 +73,12 @@ class LibraryFlow:
         async def _create_schema() -> vol.Schema:
             """Create manufacturer schema."""
             library = await ProfileLibrary.factory(self.flow.hass)
-            device_types = DOMAIN_DEVICE_TYPE_MAPPING.get(self.flow.source_entity.domain, set()) if self.flow.source_entity else None
             manufacturers = [
                 selector.SelectOptionDict(value=manufacturer[0], label=manufacturer[1])
-                for manufacturer in await library.get_manufacturer_listing(device_types)
+                for manufacturer in await library.get_manufacturer_listing(
+                    self._get_library_device_types(),
+                    self._get_library_discovery_by(),
+                )
             ]
             return vol.Schema(
                 {
@@ -128,10 +131,13 @@ class LibraryFlow:
             """Create model schema."""
             manufacturer = str(self.flow.sensor_config.get(CONF_MANUFACTURER))
             library = await ProfileLibrary.factory(self.flow.hass)
-            device_types = DOMAIN_DEVICE_TYPE_MAPPING.get(self.flow.source_entity.domain, set()) if self.flow.source_entity else None
             models = [
                 selector.SelectOptionDict(value=model_id, label=_build_model_label(model_id, model_name))
-                for model_id, model_name in await library.get_model_listing(manufacturer, device_types)
+                for model_id, model_name in await library.get_model_listing(
+                    manufacturer,
+                    self._get_library_device_types(),
+                    self._get_library_discovery_by(),
+                )
             ]
             model = self.flow.selected_profile.model if self.flow.selected_profile else self.flow.sensor_config.get(CONF_MODEL)
             return vol.Schema(
@@ -344,6 +350,22 @@ class LibraryFlow:
             )
             if entity:
                 return entity
+        return None
+
+    def _get_library_device_types(self) -> set[DeviceType] | None:
+        """Determine which device types should be shown in the library selectors."""
+        if self._get_library_discovery_by() == DiscoveryBy.DEVICE:
+            return None
+
+        if self.flow.source_entity:
+            return DOMAIN_DEVICE_TYPE_MAPPING.get(self.flow.source_entity.domain, set())
+
+        return None  # pragma: no cover
+
+    def _get_library_discovery_by(self) -> DiscoveryBy | None:
+        """Determine whether listing should be filtered by discovery mode."""
+        if self.flow.source_entity and self.flow.source_entity.entity_id == DUMMY_ENTITY_ID:
+            return DiscoveryBy.DEVICE
         return None
 
 

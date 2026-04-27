@@ -33,7 +33,7 @@ custom_fields:
             @keyframes state {
               0% {
                 transform: none;
-                fill: #9da0a2;
+                fill: var(--bc-icon-color, #9da0a2);
               }
               100% {
                 transform: skewY(10deg) translate(4.5%, -3.9%) scaleX(0.8);
@@ -83,7 +83,7 @@ custom_fields:
           @keyframes state {
             0% {
               transform: none;
-              fill: #9da0a2;
+              fill: var(--bc-icon-color, #9da0a2);
             }
             100% {
               transform: skewY(10deg) translate(4.5%, -3.9%) scaleX(0.8);

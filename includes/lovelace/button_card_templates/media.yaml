@@ -13,7 +13,7 @@
               return entity_picture == null ? 1 : 0;
             ]]]
     card:
-      - background-color: "rgba(115, 115, 115, 0.2)"
+      - background-color: "var(--bc-card-bg)"
       - background-size: cover
       - background-image: >
           [[[

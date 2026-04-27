@@ -14,7 +14,7 @@ sidebar:
     desktop: 25
   sidebarMenu:
     - action: navigate
-      navigation_path: "/lovelace/default_view"
+      navigation_path: "/lovelace/home"
       name: "Home"
       icon: "mdi:home"
       active: true

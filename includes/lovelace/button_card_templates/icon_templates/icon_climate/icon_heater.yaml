@@ -34,13 +34,13 @@ custom_fields:
           .start {
             animation: rotate 2.8s ease-in;
             transform-origin: center;
-            fill: #ff6a00;
+            fill: var(--bc-color-heat, #ff6a00);
             visibility: hidden;
           }
           .on_delay {
             animation: rotate 1.8s linear infinite;
             transform-origin: center;
-            fill: #ff6a00;
+            fill: var(--bc-color-heat, #ff6a00);
             animation-delay: 2.8s;
             visibility: hidden;
             will-change: transform;
@@ -48,13 +48,13 @@ custom_fields:
           .on_no_delay {
             animation: rotate 1.8s linear infinite;
             transform-origin: center;
-            fill: #ff6a00;
+            fill: var(--bc-color-heat, #ff6a00);
             will-change: transform;
           }
           .on {
             animation: rotate 1.8s linear forwards;
             transform-origin: center;
-            fill: #ff6a00;
+            fill: var(--bc-color-heat, #ff6a00);
             visibility: hidden;
             will-change: transform;
           }

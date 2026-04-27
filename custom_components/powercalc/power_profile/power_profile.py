@@ -4,7 +4,6 @@ from collections import defaultdict
 from collections.abc import Mapping
 from dataclasses import dataclass
 from enum import StrEnum
-import json
 import logging
 import os
 from typing import Any, cast
@@ -120,6 +119,7 @@ class PowerProfile:
         model: str,
         directory: str,
         json_data: ConfigType,
+        sub_profiles: list[tuple[str, dict]] | None = None,
     ) -> None:
         self._manufacturer = manufacturer
         self._model = model.replace("#slash#", "/")
@@ -128,7 +128,7 @@ class PowerProfile:
         self._json_data = json_data
         self.sub_profile: str | None = None
         self._sub_profile_dir: str | None = None
-        self._sub_profiles: list[tuple[str, dict]] | None = None
+        self._sub_profiles = sub_profiles or []
 
     def get_model_directory(self, root_only: bool = False) -> str:
         """Get the model directory containing the data files."""
@@ -345,28 +345,6 @@ class PowerProfile:
 
     async def get_sub_profiles(self) -> list[tuple[str, dict]]:
         """Get listing of possible sub profiles and their corresponding JSON data."""
-
-        if self._sub_profiles:
-            return self._sub_profiles
-
-        def _get_sub_dirs_and_json() -> list[tuple[str, dict]]:
-            base_dir = self.get_model_directory(True)
-            sub_dirs = next(os.walk(base_dir))[1]
-            result = []
-            for sub_dir in sub_dirs:
-                json_path = os.path.join(base_dir, sub_dir, "model.json")
-                if os.path.isfile(json_path):
-                    with open(json_path, encoding="utf-8") as f:
-                        json_data = json.load(f)
-                else:
-                    json_data = {}
-                result.append((sub_dir, json_data))
-            return result
-
-        self._sub_profiles = sorted(
-            await self._hass.async_add_executor_job(_get_sub_dirs_and_json),
-            key=lambda x: x[0],  # Sort by directory name
-        )
         return self._sub_profiles
 
     @property

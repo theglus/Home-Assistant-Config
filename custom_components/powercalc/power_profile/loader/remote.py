@@ -20,7 +20,7 @@ from custom_components.powercalc.const import API_URL, BUILT_IN_LIBRARY_DIR, DOM
 from custom_components.powercalc.helpers import async_cache
 from custom_components.powercalc.power_profile.error import LibraryLoadingError, ProfileDownloadError
 from custom_components.powercalc.power_profile.loader.protocol import Loader
-from custom_components.powercalc.power_profile.power_profile import DeviceType
+from custom_components.powercalc.power_profile.power_profile import DeviceType, DiscoveryBy
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -34,8 +34,10 @@ class LibraryModel(TypedDict):
     id: str
     name: NotRequired[str]
     aliases: NotRequired[list[str]]
+    legacy_ids: NotRequired[list[str]]
     hash: str
     device_type: NotRequired[DeviceType]
+    discovery_by: NotRequired[DiscoveryBy]
     min_version: NotRequired[str]
 
 
@@ -170,13 +172,17 @@ class RemoteLoader(Loader):
             return await self.hass.async_add_executor_job(_load_local_library_json)
 
     @async_cache
-    async def get_manufacturer_listing(self, device_types: set[DeviceType] | None) -> set[tuple[str, str]]:
+    async def get_manufacturer_listing(
+        self,
+        device_types: set[DeviceType] | None,
+        discovery_by: DiscoveryBy | None = None,
+    ) -> set[tuple[str, str]]:
         """Get listing of available manufacturers."""
 
         return {
             (manufacturer["dir_name"], manufacturer["full_name"])
             for manufacturer in self.library_contents.get("manufacturers", [])
-            if not device_types or any(device_type in manufacturer.get("device_types", []) for device_type in device_types)
+            if any(self._model_matches_filters(model, device_types, discovery_by) for model in manufacturer.get("models", []))
         }
 
     @async_cache
@@ -185,7 +191,12 @@ class RemoteLoader(Loader):
         return self.manufacturer_lookup.get(search, set())
 
     @async_cache
-    async def get_model_listing(self, manufacturer: str, device_types: set[DeviceType] | None) -> set[tuple[str, str]]:
+    async def get_model_listing(
+        self,
+        manufacturer: str,
+        device_types: set[DeviceType] | None,
+        discovery_by: DiscoveryBy | None = None,
+    ) -> set[tuple[str, str]]:
         """Get listing of available models and display names for a given manufacturer."""
         models = self.manufacturer_models.get(manufacturer)
         if not models:
@@ -194,14 +205,44 @@ class RemoteLoader(Loader):
         return {
             (model["id"], str(model.get("name") or model["id"]))
             for model in self.manufacturer_models.get(manufacturer, [])
-            if not device_types or any(device_type in model.get("device_type", [DeviceType.LIGHT]) for device_type in device_types)
+            if self._model_matches_filters(model, device_types, discovery_by)
         }
+
+    @staticmethod
+    def _model_matches_filters(
+        model: LibraryModel,
+        device_types: set[DeviceType] | None,
+        discovery_by: DiscoveryBy | None,
+    ) -> bool:
+        model_device_type = DeviceType(model.get("device_type", DeviceType.LIGHT))
+        if device_types and model_device_type not in device_types:
+            return False
+
+        model_discovery_by = DiscoveryBy(model.get("discovery_by", DiscoveryBy.ENTITY))
+        return not discovery_by or model_discovery_by == discovery_by
 
     @async_cache
     async def find_model(self, manufacturer: str, search: set[str]) -> list[str]:
         """Find matching model IDs in the library."""
         models = self.model_lookup.get(manufacturer, {})
         return [model["id"] for phrase in search if (phrase_lower := phrase.lower()) in models for model in models[phrase_lower]]
+
+    @async_cache
+    async def find_model_migration(self, manufacturer: str, model: str) -> str | None:
+        """Find the canonical model id for a legacy profile id."""
+        model_lower = model.lower()
+        matches = {
+            str(model_data.get("id"))
+            for manufacturer_data in self.library_contents.get("manufacturers", [])
+            if str(manufacturer_data.get("dir_name", "")).lower() == manufacturer
+            for model_data in manufacturer_data.get("models", []) or []
+            if model_lower in {str(legacy_id).lower() for legacy_id in model_data.get("legacy_ids", []) or []}
+        }
+
+        if len(matches) != 1:
+            return None
+
+        return next(iter(matches))
 
     @async_cache
     async def load_model(

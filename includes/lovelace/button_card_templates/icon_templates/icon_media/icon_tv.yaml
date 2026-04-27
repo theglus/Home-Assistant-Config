@@ -12,7 +12,7 @@ styles:
       - margin-left: 1%
       - fill: >
           [[[
-            return variables.state === 'on' ? '#616161' : '#9da0a2';
+            return variables.state === 'on' ? '#616161' : 'var(--bc-icon-color, #9da0a2)';
           ]]]
 custom_fields:
   icon: >

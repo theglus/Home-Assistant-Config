@@ -13,6 +13,7 @@ from custom_components.powercalc.errors import PowercalcSetupError
 class SubProfileMatcherType(StrEnum):
     ATTRIBUTE = "attribute"
     ENTITY_ID = "entity_id"
+    ENTITY_REGISTRY = "entity_registry"
     ENTITY_STATE = "entity_state"
     INTEGRATION = "integration"
     MODEL_ID = "model_id"
@@ -57,6 +58,7 @@ class SubProfileSelector:
             SubProfileMatcherType.ATTRIBUTE: AttributeMatcher,
             SubProfileMatcherType.ENTITY_STATE: EntityStateMatcher,
             SubProfileMatcherType.ENTITY_ID: EntityIdMatcher,
+            SubProfileMatcherType.ENTITY_REGISTRY: EntityRegistryMatcher,
             SubProfileMatcherType.INTEGRATION: IntegrationMatcher,
             SubProfileMatcherType.MODEL_ID: ModelIdMatcher,
         }
@@ -179,6 +181,43 @@ class IntegrationMatcher(SubProfileMatcher):
 
     def get_tracking_entities(self) -> list[str]:
         return []
+
+
+class EntityRegistryMatcher(SubProfileMatcher):
+    def __init__(self, property_name: str, value: object, profile: str) -> None:
+        self._property_name = property_name
+        self._value = value
+        self._profile = profile
+
+    def match(self, entity_state: State, source_entity: SourceEntity) -> str | None:
+        registry_entry = source_entity.entity_entry
+        if not registry_entry or not hasattr(registry_entry, self._property_name):
+            return None
+
+        registry_value = getattr(registry_entry, self._property_name)
+        if registry_value is None:
+            return None
+
+        if self._matches_registry_value(registry_value):
+            return self._profile
+
+        return None
+
+    @classmethod
+    def from_config(cls, config: dict, **kwargs: Any) -> EntityRegistryMatcher:  # noqa: ANN401
+        return cls(config["property"], config["value"], config["profile"])
+
+    def get_tracking_entities(self) -> list[str]:
+        return []
+
+    def _matches_registry_value(self, registry_value: object) -> bool:
+        if registry_value == self._value:
+            return True
+
+        if isinstance(registry_value, list | set | tuple | frozenset):
+            return self._value in registry_value
+
+        return str(registry_value) == str(self._value)
 
 
 class ModelIdMatcher(SubProfileMatcher):
