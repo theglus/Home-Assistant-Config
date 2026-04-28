@@ -269,9 +269,9 @@ cards:
                 }
             entity: vacuum.winston
             map_source:
-              camera: image.xiaomi_cloud_map_extractor
+              image: image.winston_live_map
             calibration_source:
-              camera: true
+              image: true
             map_locked: true
             map_modes:
               - template: vacuum_clean_zone_predefined
