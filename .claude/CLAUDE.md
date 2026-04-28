@@ -44,6 +44,13 @@ Config is validated using the **Check Configuration** button in the Home Assista
 - Jinja2 templates used heavily in automations, templates, and scripts
 - No JSON configuration files
 
+## Git Commits
+
+- **Always draft the commit message and wait for user approval before running `git commit`**
+- With a linked issue: `(#NNN) Past tense summary.`
+- Without a linked issue: concise past-tense summary ending with a period
+- No body, no bullet points, no `Co-Authored-By` trailer
+
 ## Rules
 
 - **NEVER edit `secrets.yaml`** under any circumstances
