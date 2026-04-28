@@ -271,7 +271,9 @@ cards:
             map_source:
               image: image.winston_live_map
             calibration_source:
-              image: true
+              attribute:
+                entity: image.winston_live_map
+                attribute: calibration_points
             map_locked: true
             map_modes:
               - template: vacuum_clean_zone_predefined
