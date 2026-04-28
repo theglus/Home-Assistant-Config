@@ -40,4 +40,11 @@ custom_components/mail_and_packages/
 image/
 images/
 
-
+# Exceptions for UI Helpers
+!/.storage/counter
+!/.storage/input_boolean
+!/.storage/input_button
+!/.storage/input_datetime
+!/.storage/input_number
+!/.storage/input_select
+!/.storage/schedule
