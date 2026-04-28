@@ -269,7 +269,7 @@ cards:
                 }
             entity: vacuum.winston
             map_source:
-              camera: camera.xiaomi_cloud_map_extractor
+              camera: image.winston_live_map
             calibration_source:
               camera: true
             map_locked: true
