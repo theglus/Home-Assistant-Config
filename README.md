@@ -33,7 +33,9 @@ I routinely stream games via Moonlight from my desktop computer (in the Office) 
 * [Lovelace Resources](#lovelace-resources)
 * [Voice Assistant](#voice-assistant) 
 ### Architecture
-![My Home Assistant Architecture](www/readme/architecture.png) 
+![My Home Assistant Architecture](www/readme/architecture.png)
+
+Helpers (`input_boolean`, `input_number`, `input_select`, `input_datetime`, `input_button`, `counter`, `schedule`) are managed via the Home Assistant UI (Settings → Devices & Services → Helpers) and stored as runtime state in `.storage/` — they are not tracked in this repo's YAML files. YAML-defined helpers are reserved for cases where the UI falls short, such as setting a startup `initial:` value or adding `input_text` constraints.
 ### Integrations
 <details>
   <summary>See details</summary>
