@@ -51,6 +51,14 @@ Config is validated using the **Check Configuration** button in the Home Assista
 - Without a linked issue: concise past-tense summary ending with a period
 - No body, no bullet points, no `Co-Authored-By` trailer
 
+## Helpers
+
+- **NEVER edit files in `.storage/`** — HA-managed runtime state, not human-editable
+- Read `.storage/input_boolean`, `.storage/input_number`, etc. to discover UI-created Helpers with no YAML counterpart
+- When a Helper needs to be created/modified, give the user UI steps (Settings → Devices & Services → Helpers) — do not write YAML unless the UI can't do it
+- Only recommend YAML for: `initial:` startup values on `input_number`/`input_datetime`; `input_text` length/pattern/password constraints; entity ID stability; version-control needs
+- If YAML is needed, ask the user which `includes/` subfolder to place it in, then reference it from `integrations/`
+
 ## Rules
 
 - **NEVER edit `secrets.yaml`** under any circumstances
