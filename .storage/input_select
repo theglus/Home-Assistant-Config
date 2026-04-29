@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "minor_version": 2,
+  "key": "input_select",
+  "data": {
+    "items": [
+      {
+        "id": "lighttoggle",
+        "options": [
+          "Entryway",
+          "Office",
+          "Living Room",
+          "Kitchen",
+          "Loft",
+          "General",
+          "Laundry",
+          "Loft Bathroom"
+        ],
+        "name": "Main Toggle"
+      },
+      {
+        "id": "vacuum_speed",
+        "name": "Vacuum Speed",
+        "icon": "mdi:fan",
+        "options": [
+          "Gentle",
+          "Silent",
+          "Standard",
+          "Medium",
+          "Turbo",
+          "Auto"
+        ]
+      },
+      {
+        "id": "system_toggle",
+        "name": "System Toggle",
+        "options": [
+          "Home Assistant",
+          "Nibbler",
+          "Leela",
+          "Desktop"
+        ]
+      },
+      {
+        "id": "vacuum_toggle",
+        "name": "Vacuum Toggle",
+        "options": [
+          "Map",
+          "Maintenance",
+          "Controls"
+        ]
+      }
+    ]
+  }
+}
