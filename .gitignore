@@ -12,7 +12,7 @@ known_devices.yaml
 .cloud
 .DS_Store
 .ssh
-.storage
+.storage/*
 
 # DB, Log, and Cache
 *.db
