@@ -1,16 +1,13 @@
 #################################################################
 ## Kirby: Daymode
 #
-## Nightmode: false | Auto: true | Oscillate: True
+## Nightmode: false | State: off
 #################################################################
 id: "1632520995390"
 name: "Kirby: Daymode"
 entities:
   fan.kirby:
-    oscillating: true
-    preset_mode: Auto
-    air_quality_target: very sensitive
-    state: "on"
+    state: "off"
   switch.kirby_night_mode:
     state: "off"
 icon: mdi:weather-sunset
