@@ -6,5 +6,5 @@
       unique_id: fc7cf187-cd11-4846-bb50-cbde3719d962
       state: >
         {% set last = as_datetime(states('sensor.winston_last_clean_start')) %}
-        {{ last is not none and now().date() == last.date() }}
+        {{ last is not none and now().date() == (last | as_local).date() }}
       icon: mdi:calendar-clock
