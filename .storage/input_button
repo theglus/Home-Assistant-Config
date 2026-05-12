@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "minor_version": 1,
+  "key": "input_button",
+  "data": {
+    "items": [
+      {
+        "name": "Front Door",
+        "icon": "mdi:door-open",
+        "id": "door_icon"
+      },
+      {
+        "id": "quick_search",
+        "name": "Quick Search"
+      }
+    ]
+  }
+}

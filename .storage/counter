@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "minor_version": 1,
+  "key": "counter",
+  "data": {
+    "items": [
+      {
+        "name": "Winston",
+        "maximum": null,
+        "step": 1,
+        "restore": true,
+        "initial": 0,
+        "minimum": null,
+        "id": "winston"
+      }
+    ]
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "version": 1,
+  "minor_version": 1,
+  "key": "schedule",
+  "data": {
+    "items": [
+      {
+        "monday": [
+          {
+            "from": "00:00:00",
+            "to": "24:00:00"
+          }
+        ],
+        "name": "Clean Partial ",
+        "saturday": [],
+        "tuesday": [],
+        "thursday": [],
+        "wednesday": [
+          {
+            "from": "00:00:00",
+            "to": "24:00:00"
+          }
+        ],
+        "friday": [
+          {
+            "from": "00:00:00",
+            "to": "24:00:00"
+          }
+        ],
+        "sunday": [],
+        "id": "sdfasfa",
+        "icon": "mdi:vacuum-outline"
+      },
+      {
+        "name": "Clean Apt",
+        "tuesday": [
+          {
+            "from": "00:00:00",
+            "to": "24:00:00"
+          }
+        ],
+        "thursday": [
+          {
+            "from": "00:00:00",
+            "to": "24:00:00"
+          }
+        ],
+        "icon": "mdi:vacuum-outline",
+        "saturday": [],
+        "wednesday": [],
+        "monday": [],
+        "friday": [],
+        "sunday": [],
+        "id": "clean_apt"
+      }
+    ]
+  }
+}

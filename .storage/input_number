@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "minor_version": 1,
+  "key": "input_number",
+  "data": {
+    "items": [
+      {
+        "min": 1.0,
+        "max": 10.0,
+        "name": "Speed",
+        "mode": "slider",
+        "step": 1.0,
+        "id": "speed",
+        "icon": "mdi:calculator"
+      },
+      {
+        "min": 0.0,
+        "max": 85.0,
+        "name": "Media Volume",
+        "icon": "mdi:volume-medium",
+        "unit_of_measurement": "%",
+        "mode": "slider",
+        "step": 0.5,
+        "id": "media_volume"
+      },
+      {
+        "id": "cube",
+        "min": 0.0,
+        "max": 6.0,
+        "name": "Magic Cube Last Active Face",
+        "step": 1.0,
+        "mode": "box"
+      }
+    ]
+  }
+}

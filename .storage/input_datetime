@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "minor_version": 1,
+  "key": "input_datetime",
+  "data": {
+    "items": [
+      {
+        "id": "purifier_morning",
+        "has_date": false,
+        "name": "Purifier Morning",
+        "has_time": true,
+        "icon": "mdi:air-purifier"
+      },
+      {
+        "id": "purifier",
+        "name": "Purifier Night",
+        "has_date": false,
+        "icon": "mdi:air-purifier-off",
+        "has_time": true
+      },
+      {
+        "id": "clean_schedule",
+        "name": "Clean Schedule",
+        "has_date": false,
+        "icon": "mdi:vacuum-outline",
+        "has_time": true
+      },
+      {
+        "id": "volume_morning",
+        "has_time": true,
+        "has_date": false,
+        "name": "Volume Morning",
+        "icon": "mdi:weather-sunset-up"
+      },
+      {
+        "id": "volume_night",
+        "name": "Volume Night",
+        "has_date": false,
+        "icon": "mdi:weather-sunset-down",
+        "has_time": true
+      }
+    ]
+  }
+}

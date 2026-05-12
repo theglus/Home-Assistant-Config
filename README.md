@@ -33,7 +33,8 @@ I routinely stream games via Moonlight from my desktop computer (in the Office) 
 * [Lovelace Resources](#lovelace-resources)
 * [Voice Assistant](#voice-assistant) 
 ### Architecture
-![My Home Assistant Architecture](www/readme/architecture.png) 
+![My Home Assistant Architecture](www/readme/architecture.png)
+
 ### Integrations
 <details>
   <summary>See details</summary>
@@ -54,7 +55,6 @@ I routinely stream games via Moonlight from my desktop computer (in the Office) 
 - [Zigbee Home Automation (ZHA)](https://www.home-assistant.io/integrations/zha)
  
 </details>
-
 
 ### Custom Components
 <details>
@@ -103,6 +103,14 @@ I routinely stream games via Moonlight from my desktop computer (in the Office) 
 - [Vertical Stack in Card](https://github.com/ofekashery/vertical-stack-in-card)
  
 </details> 
+
+### Helpers
+<details>
+  <summary>See details</summary>
+
+Helpers (`input_boolean`, `input_number`, `input_select`, `input_datetime`, `input_button`, `counter`, `schedule`) are managed via the Home Assistant UI (Settings → Devices & Services → Helpers) and stored as runtime state in `.storage/` — they are not tracked in this repo's YAML files. YAML-defined helpers are reserved for cases where the UI falls short, such as setting a startup `initial:` value or adding `input_text` constraints.
+
+</details>
 
 ### Voice Assistant
 I'm currently utilizing Nabu Casa to leverage Google Assistant via the aforementioned Google Home devices to enable voice controls. I mainly use voice commands to trigger the lights, music, and theater system. I would like to setup voice commands for Winston and Kirby in the near future. 
