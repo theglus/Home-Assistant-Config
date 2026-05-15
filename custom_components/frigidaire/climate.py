@@ -1,10 +1,10 @@
 """ClimateEntity for frigidaire integration."""
+
 from __future__ import annotations
 
 import logging
-from typing import Optional, List, Mapping, Any, Dict
-
-import frigidaire
+from collections.abc import Mapping
+from typing import Any
 
 from homeassistant.components.climate import ClimateEntity
 from homeassistant.components.climate.const import (
@@ -13,13 +13,15 @@ from homeassistant.components.climate.const import (
     FAN_LOW,
     FAN_MEDIUM,
     FAN_OFF,
-    HVACMode,
     ClimateEntityFeature,
+    HVACMode,
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import ATTR_TEMPERATURE, UnitOfTemperature
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
+
+import frigidaire
 
 from .const import DOMAIN
 
@@ -33,18 +35,14 @@ def _normalize_enum_value(value):
     return value
 
 
-async def async_setup_entry(
-    hass: HomeAssistant, entry: ConfigEntry, async_add_entities: AddEntitiesCallback
-) -> None:
+async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_entities: AddEntitiesCallback) -> None:
     """Set up frigidaire from a config entry."""
     client = hass.data[DOMAIN][entry.entry_id]
 
-    def get_entities(username: str, password: str) -> List[frigidaire.Appliance]:
+    def get_entities(username: str, password: str) -> list[frigidaire.Appliance]:
         return client.get_appliances()
 
-    appliances = await hass.async_add_executor_job(
-        get_entities, entry.data["username"], entry.data["password"]
-    )
+    appliances = await hass.async_add_executor_job(get_entities, entry.data["username"], entry.data["password"])
 
     async_add_entities(
         [
@@ -111,15 +109,17 @@ class FrigidaireClimate(ClimateEntity):
 
         self._client: frigidaire.Frigidaire = client
         self._appliance: frigidaire.Appliance = appliance
-        self._details: Optional[Dict] = None
+        self._details: dict | None = None
 
         # Entity Class Attributes
         self._attr_unique_id = self._appliance.appliance_id
         self._attr_name = self._appliance.nickname
-        self._attr_supported_features = (ClimateEntityFeature.TARGET_TEMPERATURE |
-                                         ClimateEntityFeature.FAN_MODE |
-                                         ClimateEntityFeature.TURN_OFF |
-                                         ClimateEntityFeature.TURN_ON)
+        self._attr_supported_features = (
+            ClimateEntityFeature.TARGET_TEMPERATURE
+            | ClimateEntityFeature.FAN_MODE
+            | ClimateEntityFeature.TURN_OFF
+            | ClimateEntityFeature.TURN_ON
+        )
         self._attr_target_temperature_step = 1
 
         # Although we can access the Frigidaire API to get updates, they are
@@ -180,9 +180,7 @@ class FrigidaireClimate(ClimateEntity):
     @property
     def temperature_unit(self):
         """Return the unit of measurement which this thermostat uses."""
-        unit = _normalize_enum_value(self._details.get(
-            frigidaire.Detail.TEMPERATURE_REPRESENTATION
-        ))
+        unit = _normalize_enum_value(self._details.get(frigidaire.Detail.TEMPERATURE_REPRESENTATION))
 
         return FRIGIDAIRE_TO_HA_UNIT[unit]
 
@@ -238,9 +236,7 @@ class FrigidaireClimate(ClimateEntity):
     @property
     def extra_state_attributes(self) -> Mapping[str, Any] | None:
         return {
-            "check_filter": bool(
-                _normalize_enum_value(self._details.get(frigidaire.Detail.FILTER_STATE)) == "CHANGE"
-            ),
+            "check_filter": bool(_normalize_enum_value(self._details.get(frigidaire.Detail.FILTER_STATE)) == "CHANGE"),
         }
 
     def set_temperature(self, **kwargs):
@@ -251,10 +247,8 @@ class FrigidaireClimate(ClimateEntity):
         temperature = int(temperature)
         temperature_unit = HA_TO_FRIGIDAIRE_UNIT[self.temperature_unit]
 
-        _LOGGER.debug("Setting temperature to int({}) {}".format(temperature, self.temperature_unit))
-        self._client.execute_action(
-            self._appliance, frigidaire.Action.set_temperature(temperature, temperature_unit)
-        )
+        _LOGGER.debug(f"Setting temperature to int({temperature}) {self.temperature_unit}")
+        self._client.execute_action(self._appliance, frigidaire.Action.set_temperature(temperature, temperature_unit))
 
     def set_fan_mode(self, fan_mode):
         """Set new target fan mode."""
@@ -268,9 +262,7 @@ class FrigidaireClimate(ClimateEntity):
     def set_hvac_mode(self, hvac_mode):
         """Set new target operation mode."""
         if hvac_mode == HVACMode.OFF:
-            self._client.execute_action(
-                self._appliance, frigidaire.Action.set_power(frigidaire.Power.OFF)
-            )
+            self._client.execute_action(self._appliance, frigidaire.Action.set_power(frigidaire.Power.OFF))
             return
 
         # Guard against unexpected hvac modes
@@ -279,14 +271,11 @@ class FrigidaireClimate(ClimateEntity):
 
         # Turn on if not currently on.
         if _normalize_enum_value(self._details.get(frigidaire.Detail.MODE)) == frigidaire.Mode.OFF:
-            self._client.execute_action(
-                self._appliance, frigidaire.Action.set_power(frigidaire.Power.ON)
-            )
+            self._client.execute_action(self._appliance, frigidaire.Action.set_power(frigidaire.Power.ON))
 
             # temperature reverts to default when the device is turned on
             self._client.execute_action(
-                self._appliance,
-                frigidaire.Action.set_temperature(int(self.target_temperature))
+                self._appliance, frigidaire.Action.set_temperature(int(self.target_temperature))
             )
 
         self._client.execute_action(

@@ -1,24 +1,27 @@
 """ClimateEntity for frigidaire integration."""
+
 from __future__ import annotations
 
 import logging
-from typing import List, Any, Mapping, Optional, Dict
+from collections.abc import Mapping
+from typing import Any
 
-import frigidaire
 import voluptuous as vol
-
-from homeassistant.components.humidifier import HumidifierEntity, HumidifierDeviceClass
+from homeassistant.components.humidifier import HumidifierDeviceClass, HumidifierEntity
 from homeassistant.components.humidifier.const import (
-    MODE_BOOST,
-    MODE_SLEEP,
     MODE_AUTO,
+    MODE_BOOST,
     MODE_NORMAL,
+    MODE_SLEEP,
     HumidifierEntityFeature,
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers import config_validation as cv, entity_platform
+from homeassistant.helpers import config_validation as cv
+from homeassistant.helpers import entity_platform
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
+
+import frigidaire
 
 from .const import DOMAIN
 
@@ -37,9 +40,7 @@ FAN_MEDIUM = "medium"
 FAN_HIGH = "high"
 
 
-async def async_setup_entry(
-    hass: HomeAssistant, entry: ConfigEntry, async_add_entities: AddEntitiesCallback
-) -> None:
+async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_entities: AddEntitiesCallback) -> None:
     """Set up frigidaire from a config entry."""
     platform = entity_platform.async_get_current_platform()
     platform.async_register_entity_service(
@@ -50,12 +51,10 @@ async def async_setup_entry(
 
     client = hass.data[DOMAIN][entry.entry_id]
 
-    def get_entities(username: str, password: str) -> List[frigidaire.Appliance]:
+    def get_entities(username: str, password: str) -> list[frigidaire.Appliance]:
         return client.get_appliances()
 
-    appliances = await hass.async_add_executor_job(
-        get_entities, entry.data["username"], entry.data["password"]
-    )
+    appliances = await hass.async_add_executor_job(get_entities, entry.data["username"], entry.data["password"])
 
     async_add_entities(
         [
@@ -98,7 +97,7 @@ class FrigidaireDehumidifier(HumidifierEntity):
 
         self._client: frigidaire.Frigidaire = client
         self._appliance: frigidaire.Appliance = appliance
-        self._details: Optional[Dict] = None
+        self._details: dict | None = None
 
         # Entity Class Attributes
         self._attr_unique_id = self._appliance.appliance_id
@@ -143,7 +142,10 @@ class FrigidaireDehumidifier(HumidifierEntity):
 
     @property
     def is_on(self):
-        return _normalize_enum_value(self._details.get(frigidaire.Detail.APPLIANCE_STATE)) == frigidaire.ApplianceState.RUNNING
+        return (
+            _normalize_enum_value(self._details.get(frigidaire.Detail.APPLIANCE_STATE))
+            == frigidaire.ApplianceState.RUNNING
+        )
 
     @property
     def supported_features(self):
@@ -216,14 +218,10 @@ class FrigidaireDehumidifier(HumidifierEntity):
         return 85
 
     def turn_on(self, **kwargs: Any) -> None:
-        self._client.execute_action(
-            self._appliance, frigidaire.Action.set_power(frigidaire.Power.ON)
-        )
+        self._client.execute_action(self._appliance, frigidaire.Action.set_power(frigidaire.Power.ON))
 
     def turn_off(self, **kwargs: Any) -> None:
-        self._client.execute_action(
-            self._appliance, frigidaire.Action.set_power(frigidaire.Power.OFF)
-        )
+        self._client.execute_action(self._appliance, frigidaire.Action.set_power(frigidaire.Power.OFF))
 
     def set_humidity(self, humidity: int):
         """Set new target humidity."""
@@ -233,9 +231,7 @@ class FrigidaireDehumidifier(HumidifierEntity):
         humidity = 5 * round(humidity / 5)
         # We have to be in dry mode to set a target humidity
         self.set_mode(MODE_NORMAL)
-        self._client.execute_action(
-            self._appliance, frigidaire.Action.set_humidity(humidity)
-        )
+        self._client.execute_action(self._appliance, frigidaire.Action.set_humidity(humidity))
 
     def set_fan_mode(self, fan_mode):
         """Set new target fan mode."""
@@ -257,9 +253,7 @@ class FrigidaireDehumidifier(HumidifierEntity):
         if _normalize_enum_value(self._details.get(frigidaire.Detail.APPLIANCE_STATE)) == frigidaire.ApplianceState.OFF:
             self.turn_on()
 
-        self._client.execute_action(
-            self._appliance, frigidaire.Action.set_mode(HA_TO_FRIGIDAIRE_MODE[mode])
-        )
+        self._client.execute_action(self._appliance, frigidaire.Action.set_mode(HA_TO_FRIGIDAIRE_MODE[mode]))
 
     def update(self):
         """Retrieve latest state and updates the details."""
