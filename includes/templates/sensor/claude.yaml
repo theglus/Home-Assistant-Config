@@ -13,4 +13,4 @@
         {% else %}
           Unknown
         {% endif %}
-      icon: mdi:calendar-week
+      icon: mdi:calendar-refresh
