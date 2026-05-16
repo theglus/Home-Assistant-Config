@@ -100,7 +100,7 @@ cards:
               #################################################################
               - entity: input_select.systemtoggle
                 name: false
-                icon: "mdi:robot"
+                icon: "mdi:head-cog"
                 state_styles:
                   Claude:
                     template: nav_button
@@ -601,7 +601,7 @@ cards:
                   entities:
                     - entity: sensor.claude_session_reset_time
                       name: Session Reset
-                    - entity: sensor.claude_weekly_reset_time
+                    - entity: sensor.claude_weekly_reset_day
                       name: Week Reset
                     - type: custom:bar-card
                       width: 55%
