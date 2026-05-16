@@ -483,7 +483,7 @@ class TrueNASCoordinator(DataUpdateCoordinator[None]):
                     tmp_graph[i]["legend"] = [
                         tmp.replace("if_octets_", "") for tmp in tmp_graph[i]["legend"]
                     ]
-                    if self._is_scale:
+                    if self._is_scale and self._version_major >= 23:
                         tmp_graph[i]["legend"] = [
                             tmp.replace("received", "rx")
                             for tmp in tmp_graph[i]["legend"]
@@ -491,15 +491,14 @@ class TrueNASCoordinator(DataUpdateCoordinator[None]):
                         tmp_graph[i]["legend"] = [
                             tmp.replace("sent", "tx") for tmp in tmp_graph[i]["legend"]
                         ]
-                        if self._version_major >= 23:
-                            tmp_graph[i]["aggregations"]["mean"] = {
-                                k.replace("received", "rx"): v
-                                for k, v in tmp_graph[i]["aggregations"]["mean"].items()
-                            }
-                            tmp_graph[i]["aggregations"]["mean"] = {
-                                k.replace("sent", "tx"): v
-                                for k, v in tmp_graph[i]["aggregations"]["mean"].items()
-                            }
+                        tmp_graph[i]["aggregations"]["mean"] = {
+                            k.replace("received", "rx"): v
+                            for k, v in tmp_graph[i]["aggregations"]["mean"].items()
+                        }
+                        tmp_graph[i]["aggregations"]["mean"] = {
+                            k.replace("sent", "tx"): v
+                            for k, v in tmp_graph[i]["aggregations"]["mean"].items()
+                        }
 
                     tmp_arr = ("rx", "tx")
                     if "aggregations" in tmp_graph[i]:
