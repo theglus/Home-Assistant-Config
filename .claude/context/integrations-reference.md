@@ -64,6 +64,7 @@ Native integrations with official documentation on home-assistant.io.
 | Integration | GitHub |
 |---|---|
 | Browser Mod | https://github.com/thomasloven/hass-browser_mod |
+| Claude Usage | https://github.com/trickv/hass-claude-usage |
 | Coway IoCare | https://github.com/RobertD502/home-assistant-iocare |
 | Dyson | https://github.com/libdyson-wg/ha-dyson |
 | Frigidaire | https://github.com/bm1549/home-assistant-frigidaire |
