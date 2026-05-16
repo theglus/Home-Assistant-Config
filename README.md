@@ -62,6 +62,7 @@ I routinely stream games via Moonlight from my desktop computer (in the Office) 
  
 - [HACS](https://github.com/hacs/integration): Allows for the installation and management of the various custom components.
 - [BrowserMod](https://github.com/thomasloven/hass-browser_mod): Supports various customizations within Home Assistant.
+- [Claude Usage](https://github.com/trickv/hass-claude-usage): Monitors Anthropic Claude subscription usage, including session and weekly usage stats.
 - [Coway IoCare](https://github.com/RobertD502/home-assistant-iocare): Adds support for Coway Airmega to HA.
 - [Drivvo Integration](https://github.com/theglus/sensor.drivvo): Utilized to pull in Vespa milage + fuel economy from [Drivvo](https://github.com/theglus/sensor.drivvo).
 - [Dyson Local/Cloud](https://github.com/shenxn/ha-dyson): Add support for Dyson air purifiers to HA.
