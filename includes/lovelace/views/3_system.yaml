@@ -621,13 +621,11 @@ cards:
                     - color: "#6d2525"
                       from: 75
                       to: 100
-                  card_mod:
-                    style: |
-                      ha-card {
-                        border-style: none;
-                        background: none;
-                      }
                   style: |
+                    ha-card {
+                      border-style: none;
+                      background: none;
+                    }
                     bar-card-value {
                       font-size: 1em;
                       font-weight: 400;
