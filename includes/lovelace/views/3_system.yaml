@@ -100,7 +100,7 @@ cards:
               #################################################################
               - entity: input_select.systemtoggle
                 name: false
-                icon: "mdi:head-cog"
+                icon: "mdi:chart-areaspline"
                 state_styles:
                   Claude:
                     template: nav_button
