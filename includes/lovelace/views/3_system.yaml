@@ -601,7 +601,7 @@ cards:
                   entities:
                     - entity: sensor.claude_session_reset_time
                       name: Session Reset
-                    - entity: sensor.claude_weekly_reset_day
+                    - entity: sensor.claude_weekly_reset_time
                       name: Week Reset
                     - type: custom:bar-card
                       width: 55%
