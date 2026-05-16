@@ -11,6 +11,7 @@ Configured via the Home Assistant UI (config flow). No YAML required.
 - AirVisual Cloud
 - Android TV Remote
 - Browser Mod
+- Claude Usage
 - Coway IoCare
 - Denon AVR Network Receivers
 - Denon HEOS
@@ -72,6 +73,7 @@ Configured via YAML package files in `integrations/`. Each domain has a correspo
 Custom integrations installed via HACS.
 
 - Browser Mod
+- Claude Usage
 - Coway IoCare
 - Dyson
 - Frigidaire
