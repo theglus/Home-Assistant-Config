@@ -1,0 +1,16 @@
+#################################################################
+## Claude Usage Sensors
+#
+## Template sensors for Claude API usage display.
+#################################################################
+- sensor:
+    - name: "Claude Weekly Reset Day"
+      unique_id: b3e91f2a-4c07-4d88-9b16-7f2a1e3c85d0
+      state: >-
+        {% set dt = states('sensor.claude_weekly_reset_time') %}
+        {% if dt not in ['unknown', 'unavailable', ''] %}
+          {{ dt | as_datetime | as_timestamp | timestamp_custom('%A') }}
+        {% else %}
+          Unknown
+        {% endif %}
+      icon: mdi:calendar-refresh

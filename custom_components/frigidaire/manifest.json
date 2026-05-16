@@ -10,7 +10,7 @@
   "iot_class": "cloud_polling",
   "issue_tracker": "https://github.com/bm1549/home-assistant-frigidaire/issues",
   "requirements": [
-    "frigidaire==0.18.30"
+    "frigidaire==0.18.44"
   ],
-  "version": "0.1.10"
+  "version": "0.1.17"
 }

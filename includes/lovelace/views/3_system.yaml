@@ -95,6 +95,22 @@ cards:
                   service_data:
                     entity_id: input_select.systemtoggle
                     option: Desktop
+              #################################################################
+              ## Claude Button
+              #################################################################
+              - entity: input_select.systemtoggle
+                name: false
+                icon: "mdi:chart-areaspline"
+                state_styles:
+                  Claude:
+                    template: nav_button
+                template: nav_styles
+                tap_action:
+                  action: call-service
+                  service: input_select.select_option
+                  service_data:
+                    entity_id: input_select.systemtoggle
+                    option: Claude
       #################################################################
       #----------------------------------------------------------------
       ## Expanded
@@ -258,6 +274,7 @@ cards:
                             icon: outside
                             indicator: "off"
                             name: outside
+                            value: inside
                           max: 15.5
                           severity: &bar_card_severity_nibbler
                             - color: "#303435"
@@ -555,3 +572,90 @@ cards:
                             action: toggle
                             haptic: light
                           template: icon_name
+          #################################################################
+          ## Claude Controls
+          #################################################################
+          Claude:
+            type: "custom:mod-card"
+            style: |
+              ha-card {
+                background: rgba(0,0,0,.3);
+                padding: 10px;
+                border-radius: 35px;
+                border-style: none
+                margin-top: none;
+                }
+            card:
+              type: grid
+              columns: 1
+              square: false
+              cards:
+                - type: entities
+                  title: Claude Usage
+                  card_mod:
+                    style: |
+                      ha-card {
+                        border-style: none;
+                        background: none;
+                      }
+                  entities:
+                    - entity: sensor.claude_session_reset_time
+                      name: Session Reset
+                    - entity: sensor.claude_weekly_reset_day
+                      name: Week Reset
+                    - type: custom:bar-card
+                      width: 55%
+                      height: 2em
+                      decimal: 0
+                      unit_of_measurement: "%"
+                      positions:
+                        icon: outside
+                        indicator: "off"
+                        name: outside
+                        value: inside
+                      max: 100
+                      severity:
+                        - color: "#303435"
+                          from: 0
+                          to: 75
+                        - color: "#6d2525"
+                          from: 75
+                          to: 100
+                      entity_row: true
+                      style: |
+                        ha-card {
+                          border-style: none;
+                        }
+                        bar-card-value {
+                          font-size: 1em;
+                          font-weight: 400;
+                          color: #e0e1e1;
+                          letter-spacing: 0.01em;
+                          text-shadow: none;
+                          margin-right: auto;
+                          margin-left: auto;
+                          margin-top: 5px;
+                        }
+                        bar-card-name {
+                          padding-left: 0.25em;
+                        }
+                        bar-card-iconbar {
+                          padding-left: 0.23em;
+                        }
+                        bar-card-backgroundbar {
+                          background: none;
+                        }
+                        bar-card-currentbar {
+                          border-radius: 0.3em;
+                        }
+                        bar-card-background {
+                          background: radial-gradient(circle, rgba(52, 57, 58, 0.1) 0%, rgba(17, 18, 18, 0.2) 75%);
+                          box-shadow: inset 0 0 25px #00000045;
+                          border-radius: 0.3em;
+                          overflow: hidden;
+                        }
+                      entities:
+                        - entity: sensor.claude_session_usage
+                          name: Session Usage
+                        - entity: sensor.claude_week_usage
+                          name: Week Usage
