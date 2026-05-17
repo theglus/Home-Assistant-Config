@@ -6,12 +6,10 @@ badges:
   - type: entity
     entity: vacuum.winston
     color: orange
-    state_color: false
   - type: entity
     entity: sensor.winston_last_clean_end
     name: Last Clean
     color: orange
-    state_color: false
 cards:
   - type: vertical-stack
     cards:
@@ -205,104 +203,103 @@ cards:
                 margin-top: none;
                 }
             card:
-              type: vertical-stack
-              cards:
-                - type: entities
-                  title: Overview
-                  card_mod:
-                    class: header
-                    style: |
-                      .card-header {
-                        font-family: SF Text;
-                        letter-spacing: 0.005em;
-                        font-size: 1.6em;
-                        font-weight: 500;
-                        line-height: initial;
-                        padding: 0.75em 0em 1em 1.1em;
-                        cursor: default;
-                        border-style: none;
-                      }
-                      ha-card {
-                        padding-right: 0.75em;
-                        border-style: none;
-                        background: none;
-                      }
+              type: entities
+              title: Overview
+              card_mod:
+                class: header
+                style: |
+                  .card-header {
+                    font-family: SF Text;
+                    letter-spacing: 0.005em;
+                    font-size: 1.6em;
+                    font-weight: 500;
+                    line-height: initial;
+                    padding: 0.75em 0em 1em 1.1em;
+                    cursor: default;
+                    border-style: none;
+                  }
+                  ha-card {
+                    padding-right: 0.75em;
+                    border-style: none;
+                    background: none;
+                  }
+                  ha-card $ #states > *:last-child {
+                    padding-top: 0.75em;
+                  }
+              entities:
+                - type: custom:bar-card
+                  width: 55%
+                  height: 2em
+                  decimal: 0
+                  unit_of_measurement: "%"
+                  positions:
+                    icon: outside
+                    indicator: "off"
+                    name: outside
+                  severity:
+                    - color: "#303435"
+                      from: 11
+                      to: 10000
+                    - color: "#6d2525"
+                      from: -10000
+                      to: 10
+                  entity_row: true
+                  style: |
+                    ha-card {
+                      border-style: none;
+                    }
+                    bar-card-value {
+                      font-size: 1em;
+                      font-weight: 400;
+                      color: #e0e1e1;
+                      letter-spacing: 0.01em;
+                      text-shadow: none;
+                      margin-right: auto;
+                      margin-left: auto;
+                      margin-top: 5px;
+                    }
+                    bar-card-name {
+                      padding-left: 0.25em;
+                    }
+                    bar-card-iconbar {
+                      padding-left: 0.23em;
+                    }
+                    bar-card-backgroundbar {
+                      background: none;
+                    }
+                    bar-card-currentbar {
+                      border-radius: 0.3em;
+                    }
+                    bar-card-background {
+                      background: radial-gradient(circle, rgba(52, 57, 58, 0.1) 0%, rgba(17, 18, 18, 0.2) 75%);
+                      box-shadow: inset 0 0 25px #00000045;
+                      border-radius: 0.3em;
+                      overflow: hidden;
+                    }
                   entities:
-                    - type: custom:bar-card
-                      width: 55%
-                      height: 2em
-                      decimal: 0
-                      unit_of_measurement: "%"
-                      positions:
-                        icon: outside
-                        indicator: "off"
-                        name: outside
-                      severity:
-                        - color: "#303435"
-                          from: 11
-                          to: 10000
-                        - color: "#6d2525"
-                          from: -10000
-                          to: 10
-                      entity_row: true
-                      style: |
-                        ha-card {
-                          border-style: none;
-                        }
-                        bar-card-value {
-                          font-size: 1em;
-                          font-weight: 400;
-                          color: #e0e1e1;
-                          letter-spacing: 0.01em;
-                          text-shadow: none;
-                          margin-right: auto;
-                          margin-left: auto;
-                          margin-top: 5px;
-                        }
-                        bar-card-name {
-                          padding-left: 0.25em;
-                        }
-                        bar-card-iconbar {
-                          padding-left: 0.23em;
-                        }
-                        bar-card-backgroundbar {
-                          background: none;
-                        }
-                        bar-card-currentbar {
-                          border-radius: 0.3em;
-                        }
-                        bar-card-background {
-                          background: radial-gradient(circle, rgba(52, 57, 58, 0.1) 0%, rgba(17, 18, 18, 0.2) 75%);
-                          box-shadow: inset 0 0 25px #00000045;
-                          border-radius: 0.3em;
-                          overflow: hidden;
-                        }
-                      entities:
-                        - entity: vacuum.winston
-                          attribute: battery_level
-                          name: Battery
-                          icon: mdi:battery
+                    - entity: vacuum.winston
+                      attribute: battery_level
+                      name: Battery
+                      icon: mdi:battery
 
-                        - entity: sensor.vacuum_filter
-                          name: Filter
-                          icon: custom:vacuum-filter
+                    - entity: sensor.vacuum_filter
+                      name: Filter
+                      icon: custom:vacuum-filter
 
-                        - entity: sensor.vacuum_mainbrush
-                          name: Main Brush
-                          icon: custom:vacuum-mainbrush
+                    - entity: sensor.vacuum_mainbrush
+                      name: Main Brush
+                      icon: custom:vacuum-mainbrush
 
-                        - entity: sensor.vacuum_sidebrush
-                          name: Side Brush
-                          icon: custom:vacuum-sidebrush
+                    - entity: sensor.vacuum_sidebrush
+                      name: Side Brush
+                      icon: custom:vacuum-sidebrush
 
-                        - entity: sensor.vacuum_sensors
-                          name: Sensors
-                          icon: custom:vacuum-sensor
+                    - entity: sensor.vacuum_sensors
+                      name: Sensors
+                      icon: custom:vacuum-sensor
 
-                #----------------------------------------------------------------
-                ## Action Buttons
-                #----------------------------------------------------------------
-                - type: custom:hui-horizontal-stack-card
+                - type: custom:hui-element
+                  card_type: horizontal-stack
                   cards:
                     #----------------------------------------------------------------
                     ## Reset Filter
@@ -319,6 +316,9 @@ cards:
                         service_data:
                           entity_id: button.winston_reset_filter
                       template: icon_only
+                      styles:
+                        card:
+                          - width: auto
                     #----------------------------------------------------------------
                     ## Reset Main Brush
                     #----------------------------------------------------------------
@@ -334,6 +334,9 @@ cards:
                         service_data:
                           entity_id: button.winston_reset_main_brush
                       template: icon_only
+                      styles:
+                        card:
+                          - width: auto
                     #----------------------------------------------------------------
                     ## Reset Side Brush
                     #----------------------------------------------------------------
@@ -349,6 +352,9 @@ cards:
                         service_data:
                           entity_id: button.winston_reset_side_brush
                       template: icon_only
+                      styles:
+                        card:
+                          - width: auto
                     #----------------------------------------------------------------
                     ## Reset Sensors
                     #----------------------------------------------------------------
@@ -364,6 +370,9 @@ cards:
                         service_data:
                           entity_id: button.winston_reset_sensor_dirty
                       template: icon_only
+                      styles:
+                        card:
+                          - width: auto
                     #----------------------------------------------------------------
                     ## Empty
                     #----------------------------------------------------------------
@@ -377,3 +386,6 @@ cards:
                           command: app_goto_target
                           params: [30750, 22150]
                       template: icon_only
+                      styles:
+                        card:
+                          - width: auto
