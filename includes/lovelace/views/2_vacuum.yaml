@@ -228,6 +228,9 @@ cards:
                   ha-card $ #states > *:last-child {
                     padding-top: 0.75em;
                   }
+                  ha-card $ hui-horizontal-stack-card {
+                    justify-content: space-between;
+                  }
               entities:
                 - type: custom:bar-card
                   width: 55%
