@@ -129,7 +129,6 @@ cards:
                         padding: 0;
                         letter-spacing: normal;
                       }
-                      ha-card $ xvmc-tiles-wrapper,
                       ha-card $ #map-zoomer-overlay {
                         display: none;
                       }
@@ -155,6 +154,7 @@ cards:
                   calibration_source:
                     camera: true
                   map_locked: true
+                  tiles: []
                   map_modes:
                     - template: vacuum_clean_segment
                       predefined_selections:
