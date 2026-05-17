@@ -317,7 +317,10 @@ cards:
                         service: button.press
                         service_data:
                           entity_id: button.winston_reset_filter
-                      template: icon_only_full
+                      template: icon_only
+                      styles:
+                        card:
+                          - width: 100%
                     #----------------------------------------------------------------
                     ## Reset Main Brush
                     #----------------------------------------------------------------
@@ -332,7 +335,10 @@ cards:
                         service: button.press
                         service_data:
                           entity_id: button.winston_reset_main_brush
-                      template: icon_only_full
+                      template: icon_only
+                      styles:
+                        card:
+                          - width: 100%
                     #----------------------------------------------------------------
                     ## Reset Side Brush
                     #----------------------------------------------------------------
@@ -347,7 +353,10 @@ cards:
                         service: button.press
                         service_data:
                           entity_id: button.winston_reset_side_brush
-                      template: icon_only_full
+                      template: icon_only
+                      styles:
+                        card:
+                          - width: 100%
                     #----------------------------------------------------------------
                     ## Reset Sensors
                     #----------------------------------------------------------------
@@ -362,7 +371,10 @@ cards:
                         service: button.press
                         service_data:
                           entity_id: button.winston_reset_sensor_dirty
-                      template: icon_only_full
+                      template: icon_only
+                      styles:
+                        card:
+                          - width: 100%
                     #----------------------------------------------------------------
                     ## Empty
                     #----------------------------------------------------------------
@@ -375,4 +387,7 @@ cards:
                           entity_id: vacuum.winston
                           command: app_goto_target
                           params: [30750, 22150]
-                      template: icon_only_full
+                      template: icon_only
+                      styles:
+                        card:
+                          - width: 100%
