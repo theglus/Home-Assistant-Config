@@ -2,7 +2,10 @@ title: Winston
 path: winston
 icon: "mdi:robot-vacuum-variant"
 panel: false
-badges: []
+badges:
+  - entity: vacuum.winston
+  - entity: sensor.winston_last_clean_end
+    name: Last Clean
 cards:
   - type: vertical-stack
     cards:
@@ -214,13 +217,9 @@ cards:
                   ha-card {
                     padding-right: 0.75em;
                     border-style: none;
+                    background: none;
                   }
               entities:
-                - entity: vacuum.winston
-
-                - entity: sensor.winston_last_clean_end
-                  name: Last Clean
-
                 - type: custom:bar-card
                   width: 55%
                   height: 2em
@@ -292,42 +291,68 @@ cards:
                       name: Sensors
                       icon: custom:vacuum-sensor
 
-                - entity: input_select.vacuum_speed
-                  name: Speed
-
                 - type: custom:hui-element
                   card_type: horizontal-stack
                   cards:
                     #----------------------------------------------------------------
-                    ## Play / Pause
+                    ## Reset Filter
                     #----------------------------------------------------------------
                     - type: custom:button-card
-                      entity: vacuum.winston
-                      icon: mdi:play-pause
+                      entity: button.winston_reset_filter
                       tap_action:
+                        action: none
+                      double_tap_action:
+                        action: none
+                      hold_action:
                         action: call-service
-                        service: >
-                          [[[
-                            return entity.state === 'docked' || entity.state === 'paused'
-                              ? 'vacuum.start'
-                              : 'vacuum.pause';
-                          ]]]
+                        service: button.press
                         service_data:
-                          entity_id: >
-                            [[[ return entity.entity_id; ]]]
+                          entity_id: button.winston_reset_filter
                       template: icon_only
                     #----------------------------------------------------------------
-                    ## Return to Dock
+                    ## Reset Main Brush
                     #----------------------------------------------------------------
                     - type: custom:button-card
-                      entity: vacuum.winston
-                      icon: mdi:battery-charging
+                      entity: button.winston_reset_main_brush
                       tap_action:
+                        action: none
+                      double_tap_action:
+                        action: none
+                      hold_action:
                         action: call-service
-                        service: vacuum.return_to_base
+                        service: button.press
                         service_data:
-                          entity_id: >
-                            [[[ return entity.entity_id; ]]]
+                          entity_id: button.winston_reset_main_brush
+                      template: icon_only
+                    #----------------------------------------------------------------
+                    ## Reset Side Brush
+                    #----------------------------------------------------------------
+                    - type: custom:button-card
+                      entity: button.winston_reset_side_brush
+                      tap_action:
+                        action: none
+                      double_tap_action:
+                        action: none
+                      hold_action:
+                        action: call-service
+                        service: button.press
+                        service_data:
+                          entity_id: button.winston_reset_side_brush
+                      template: icon_only
+                    #----------------------------------------------------------------
+                    ## Reset Sensors
+                    #----------------------------------------------------------------
+                    - type: custom:button-card
+                      entity: button.winston_reset_sensor_dirty
+                      tap_action:
+                        action: none
+                      double_tap_action:
+                        action: none
+                      hold_action:
+                        action: call-service
+                        service: button.press
+                        service_data:
+                          entity_id: button.winston_reset_sensor_dirty
                       template: icon_only
                     #----------------------------------------------------------------
                     ## Empty
