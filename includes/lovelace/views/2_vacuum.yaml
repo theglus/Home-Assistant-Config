@@ -80,12 +80,19 @@ cards:
             card:
               type: custom:xiaomi-vacuum-map-card
               card_mod:
+                class: header
                 style: |
                   ha-card {
                     --map-card-primary-color: #FFFFFF10;
                     --map-card-secondary-color: none;
                     --map-card-secondary-text-color: #9da0a2;
                     --map-card-zoomer-background: none;
+                    --map-card-predefined-rectangle-fill-color: none;
+                    --map-card-predefined-rectangle-line-color: none;
+                    --map-card-predefined-rectangle-line-color-selected: rgba(255, 255, 255, 0.5);
+                    --map-card-predefined-rectangle-fill-color-selected: rgba(42, 124, 194, 0.1);
+                    --map-card-predefined-rectangle-icon-background-color-selected: rgb(42, 124, 194);
+                    --map-card-internal-big-radius: 0.6em !important;
                     border: none;
                     background: none;
                   }
@@ -95,8 +102,21 @@ cards:
                     padding-bottom: 0;
                     letter-spacing: normal;
                   }
-                  div.tiles-wrapper, div.vacuum-controls, #map-zoomer-overlay {
+                  div.tiles-wrapper, #map-zoomer-overlay {
                     display: none;
+                  }
+                  div.map-controls-wrapper {
+                    padding-top: 7px;
+                    padding-bottom: 7px;
+                    padding-right: 4em;
+                  }
+                  paper-button.map-actions-item.main {
+                    border-radius: 0.6em;
+                  }
+                  paper-button {
+                    --mdc-icon-size: 2em;
+                    color: #9da0a2 !important;
+                    padding: 0.44em 0.67em 0.44em 0.67em;
                   }
               entity: vacuum.winston
               map_source:
@@ -104,6 +124,64 @@ cards:
               calibration_source:
                 camera: true
               map_locked: true
+              map_modes:
+                - template: vacuum_clean_segment
+                  predefined_selections:
+                    # Hallway - 18
+                    - id: 18
+                      outline:
+                        - [21050, 23950]
+                        - [26500, 23950]
+                        - [26500, 25950]
+                        - [21050, 25950]
+                      icon:
+                        name: mdi:coat-rack
+                        x: 23775
+                        y: 24950
+                    # Living Room - 19
+                    - id: 19
+                      outline:
+                        - [26550, 23350]
+                        - [32000, 23350]
+                        - [32000, 25950]
+                        - [26550, 25950]
+                      icon:
+                        name: mdi:sofa
+                        x: 29275
+                        y: 24650
+                    # Kitchen - 20
+                    - id: 20
+                      outline:
+                        - [26300, 20600]
+                        - [32000, 20600]
+                        - [32000, 23350]
+                        - [26300, 23350]
+                      icon:
+                        name: mdi:fridge
+                        x: 29150
+                        y: 21975
+                    # Office - 17
+                    - id: 17
+                      outline:
+                        - [23450, 20650]
+                        - [27100, 20650]
+                        - [27100, 24000]
+                        - [23450, 24000]
+                      icon:
+                        name: mdi:desk
+                        x: 25275
+                        y: 22325
+                    # Bathroom - 16
+                    - id: 16
+                      outline:
+                        - [21200, 21400]
+                        - [23200, 21400]
+                        - [23200, 24050]
+                        - [21200, 24050]
+                      icon:
+                        name: mdi:washing-machine
+                        x: 22200
+                        y: 22700
           #################################################################
           ## Controls
           #################################################################
@@ -118,106 +196,104 @@ cards:
                 margin-top: none;
                 }
             card:
-              type: vertical-stack
-              cards:
-                - type: entities
-                  title: Overview
-                  card_mod:
-                    class: header
-                    style: |
-                      .card-header {
-                        font-family: SF Text;
-                        letter-spacing: 0.005em;
-                        font-size: 1.6em;
-                        font-weight: 500;
-                        line-height: initial;
-                        padding: 0.75em 0em 1em 1.1em;
-                        cursor: default;
-                        border-style: none;
-                      }
-                      ha-card {
-                        padding-right: 0.75em;
-                        border-style: none;
-                      }
+              type: entities
+              title: Overview
+              card_mod:
+                class: header
+                style: |
+                  .card-header {
+                    font-family: SF Text;
+                    letter-spacing: 0.005em;
+                    font-size: 1.6em;
+                    font-weight: 500;
+                    line-height: initial;
+                    padding: 0.75em 0em 1em 1.1em;
+                    cursor: default;
+                    border-style: none;
+                  }
+                  ha-card {
+                    padding-right: 0.75em;
+                    border-style: none;
+                  }
+              entities:
+                - entity: vacuum.winston
+
+                - entity: sensor.winston_last_clean_end
+                  name: Last Clean
+
+                - type: custom:bar-card
+                  width: 55%
+                  height: 2em
+                  decimal: 0
+                  unit_of_measurement: "%"
+                  positions:
+                    icon: outside
+                    indicator: "off"
+                    name: outside
+                  severity:
+                    - color: "#303435"
+                      from: 11
+                      to: 100
+                    - color: "#6d2525"
+                      from: 0
+                      to: 10
+                  entity_row: true
+                  style: |
+                    ha-card {
+                      border-style: none;
+                    }
+                    bar-card-value {
+                      font-size: 1em;
+                      font-weight: 400;
+                      color: #e0e1e1;
+                      letter-spacing: 0.01em;
+                      text-shadow: none;
+                      margin-right: auto;
+                      margin-left: auto;
+                      margin-top: 5px;
+                    }
+                    bar-card-name {
+                      padding-left: 0.25em;
+                    }
+                    bar-card-iconbar {
+                      padding-left: 0.23em;
+                    }
+                    bar-card-backgroundbar {
+                      background: none;
+                    }
+                    bar-card-currentbar {
+                      border-radius: 0.3em;
+                    }
+                    bar-card-background {
+                      background: radial-gradient(circle, rgba(52, 57, 58, 0.1) 0%, rgba(17, 18, 18, 0.2) 75%);
+                      box-shadow: inset 0 0 25px #00000045;
+                      border-radius: 0.3em;
+                      overflow: hidden;
+                    }
                   entities:
                     - entity: vacuum.winston
+                      attribute: battery_level
+                      name: Battery
+                      icon: mdi:battery
 
-                    - entity: sensor.winston_last_clean_end
-                      name: Last Clean
+                    - entity: sensor.vacuum_filter
+                      name: Filter
+                      icon: custom:vacuum-filter
 
-                    - type: custom:bar-card
-                      width: 55%
-                      height: 2em
-                      decimal: 0
-                      unit_of_measurement: "%"
-                      positions:
-                        icon: outside
-                        indicator: "off"
-                        name: outside
-                      severity:
-                        - color: "#303435"
-                          from: 11
-                          to: 100
-                        - color: "#6d2525"
-                          from: 0
-                          to: 10
-                      entity_row: true
-                      style: |
-                        ha-card {
-                          border-style: none;
-                        }
-                        bar-card-value {
-                          font-size: 1em;
-                          font-weight: 400;
-                          color: #e0e1e1;
-                          letter-spacing: 0.01em;
-                          text-shadow: none;
-                          margin-right: auto;
-                          margin-left: auto;
-                          margin-top: 5px;
-                        }
-                        bar-card-name {
-                          padding-left: 0.25em;
-                        }
-                        bar-card-iconbar {
-                          padding-left: 0.23em;
-                        }
-                        bar-card-backgroundbar {
-                          background: none;
-                        }
-                        bar-card-currentbar {
-                          border-radius: 0.3em;
-                        }
-                        bar-card-background {
-                          background: radial-gradient(circle, rgba(52, 57, 58, 0.1) 0%, rgba(17, 18, 18, 0.2) 75%);
-                          box-shadow: inset 0 0 25px #00000045;
-                          border-radius: 0.3em;
-                          overflow: hidden;
-                        }
-                      entities:
-                        - entity: vacuum.winston
-                          attribute: battery_level
-                          name: Battery
-                          icon: mdi:battery
+                    - entity: sensor.vacuum_mainbrush
+                      name: Main Brush
+                      icon: custom:vacuum-mainbrush
 
-                        - entity: sensor.vacuum_filter
-                          name: Filter
-                          icon: custom:vacuum-filter
+                    - entity: sensor.vacuum_sidebrush
+                      name: Side Brush
+                      icon: custom:vacuum-sidebrush
 
-                        - entity: sensor.vacuum_mainbrush
-                          name: Main Brush
-                          icon: custom:vacuum-mainbrush
+                    - entity: sensor.vacuum_sensors
+                      name: Sensors
+                      icon: custom:vacuum-sensor
 
-                        - entity: sensor.vacuum_sidebrush
-                          name: Side Brush
-                          icon: custom:vacuum-sidebrush
-
-                        - entity: sensor.vacuum_sensors
-                          name: Sensors
-                          icon: custom:vacuum-sensor
-
-                    - entity: input_select.vacuum_speed
-                      name: Speed
+                - entity: input_select.vacuum_speed
+                  name: Speed
 
                 - type: custom:mod-card
                   card_mod:
@@ -225,7 +301,7 @@ cards:
                       hui-horizontal-stack-card$: |
                         #root {
                           justify-content: space-evenly !important;
-                          padding: 0.5em 2em 1.5em 2em;
+                          padding: 0.1em 2em 1.8em 2em;
                         }
                   card:
                     type: horizontal-stack
