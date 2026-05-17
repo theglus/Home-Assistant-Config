@@ -303,12 +303,6 @@ cards:
                 ## Action Buttons
                 #----------------------------------------------------------------
                 - type: custom:hui-horizontal-stack-card
-                  card_mod:
-                    style: |
-                      :host {
-                        justify-content: space-between;
-                        padding: 0.75em 0.75em 0.75em;
-                      }
                   cards:
                     #----------------------------------------------------------------
                     ## Reset Filter
