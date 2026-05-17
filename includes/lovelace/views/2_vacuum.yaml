@@ -278,79 +278,90 @@ cards:
                           name: Sensors
                           icon: custom:vacuum-sensor
 
-                    - type: custom:hui-element
-                      card_type: horizontal-stack
-                      cards:
-                        #----------------------------------------------------------------
-                        ## Reset Filter
-                        #----------------------------------------------------------------
-                        - type: custom:button-card
-                          entity: button.winston_reset_filter
-                          tap_action:
-                            action: none
-                          double_tap_action:
-                            action: none
-                          hold_action:
-                            action: call-service
-                            service: button.press
-                            service_data:
-                              entity_id: button.winston_reset_filter
-                          template: icon_only
-                        #----------------------------------------------------------------
-                        ## Reset Main Brush
-                        #----------------------------------------------------------------
-                        - type: custom:button-card
-                          entity: button.winston_reset_main_brush
-                          tap_action:
-                            action: none
-                          double_tap_action:
-                            action: none
-                          hold_action:
-                            action: call-service
-                            service: button.press
-                            service_data:
-                              entity_id: button.winston_reset_main_brush
-                          template: icon_only
-                        #----------------------------------------------------------------
-                        ## Reset Side Brush
-                        #----------------------------------------------------------------
-                        - type: custom:button-card
-                          entity: button.winston_reset_side_brush
-                          tap_action:
-                            action: none
-                          double_tap_action:
-                            action: none
-                          hold_action:
-                            action: call-service
-                            service: button.press
-                            service_data:
-                              entity_id: button.winston_reset_side_brush
-                          template: icon_only
-                        #----------------------------------------------------------------
-                        ## Reset Sensors
-                        #----------------------------------------------------------------
-                        - type: custom:button-card
-                          entity: button.winston_reset_sensor_dirty
-                          tap_action:
-                            action: none
-                          double_tap_action:
-                            action: none
-                          hold_action:
-                            action: call-service
-                            service: button.press
-                            service_data:
-                              entity_id: button.winston_reset_sensor_dirty
-                          template: icon_only
-                        #----------------------------------------------------------------
-                        ## Empty
-                        #----------------------------------------------------------------
-                        - type: custom:button-card
-                          icon: mdi:delete-empty
-                          tap_action:
-                            action: call-service
-                            service: vacuum.send_command
-                            service_data:
-                              entity_id: vacuum.winston
-                              command: app_goto_target
-                              params: [30750, 22150]
-                          template: icon_only
+              #################################################################
+              ## Action Buttons
+              #################################################################
+              - type: grid
+                columns: 5
+                square: false
+                card_mod:
+                  style: |
+                    ha-card {
+                      border-style: none;
+                      background: none;
+                      box-shadow: none;
+                    }
+                cards:
+                  #----------------------------------------------------------------
+                  ## Reset Filter
+                  #----------------------------------------------------------------
+                  - type: custom:button-card
+                    entity: button.winston_reset_filter
+                    tap_action:
+                      action: none
+                    double_tap_action:
+                      action: none
+                    hold_action:
+                      action: call-service
+                      service: button.press
+                      service_data:
+                        entity_id: button.winston_reset_filter
+                    template: icon_only
+                  #----------------------------------------------------------------
+                  ## Reset Main Brush
+                  #----------------------------------------------------------------
+                  - type: custom:button-card
+                    entity: button.winston_reset_main_brush
+                    tap_action:
+                      action: none
+                    double_tap_action:
+                      action: none
+                    hold_action:
+                      action: call-service
+                      service: button.press
+                      service_data:
+                        entity_id: button.winston_reset_main_brush
+                    template: icon_only
+                  #----------------------------------------------------------------
+                  ## Reset Side Brush
+                  #----------------------------------------------------------------
+                  - type: custom:button-card
+                    entity: button.winston_reset_side_brush
+                    tap_action:
+                      action: none
+                    double_tap_action:
+                      action: none
+                    hold_action:
+                      action: call-service
+                      service: button.press
+                      service_data:
+                        entity_id: button.winston_reset_side_brush
+                    template: icon_only
+                  #----------------------------------------------------------------
+                  ## Reset Sensors
+                  #----------------------------------------------------------------
+                  - type: custom:button-card
+                    entity: button.winston_reset_sensor_dirty
+                    tap_action:
+                      action: none
+                    double_tap_action:
+                      action: none
+                    hold_action:
+                      action: call-service
+                      service: button.press
+                      service_data:
+                        entity_id: button.winston_reset_sensor_dirty
+                    template: icon_only
+                  #----------------------------------------------------------------
+                  ## Empty
+                  #----------------------------------------------------------------
+                  - type: custom:button-card
+                    icon: mdi:delete-empty
+                    tap_action:
+                      action: call-service
+                      service: vacuum.send_command
+                      service_data:
+                        entity_id: vacuum.winston
+                        command: app_goto_target
+                        params: [30750, 22150]
+                    template: icon_only
