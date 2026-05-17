@@ -102,43 +102,42 @@ cards:
                   entities: []
                 - type: custom:xiaomi-vacuum-map-card
                   card_mod:
-                    class: header
                     style: |
                       ha-card {
                         --map-card-primary-color: #FFFFFF10;
                         --map-card-secondary-color: none;
                         --map-card-secondary-text-color: #9da0a2;
                         --map-card-zoomer-background: none;
-                        --map-card-predefined-rectangle-fill-color: none;
-                        --map-card-predefined-rectangle-line-color: none;
-                        --map-card-predefined-rectangle-line-color-selected: rgba(255, 255, 255, 0.5);
-                        --map-card-predefined-rectangle-fill-color-selected: rgba(42, 124, 194, 0.1);
-                        --map-card-predefined-rectangle-icon-background-color-selected: rgb(42, 124, 194);
-                        --map-card-internal-big-radius: 0.6em !important;
+                        --map-card-big-radius: 0.6em;
+                        --map-card-small-radius: 0.6em;
+                        --map-card-room-outline-line-color: transparent;
+                        --map-card-room-outline-fill-color: transparent;
+                        --map-card-room-outline-line-color-selected: rgba(255, 255, 255, 0.5);
+                        --map-card-room-outline-fill-color-selected: rgba(42, 124, 194, 0.1);
+                        --map-card-room-icon-background-color-selected: rgb(42, 124, 194);
                         border: none;
                         background: none;
                       }
-                      div.map-wrapper, div.controls-wrapper {
-                        padding: 1.4em 2.2em 1.6em 1.5em;
-                        padding-top: 0;
-                        padding-bottom: 0;
+                      ha-card $ div.controls-wrapper {
+                        padding: 0;
                         letter-spacing: normal;
                       }
-                      div.tiles-wrapper, #map-zoomer-overlay {
+                      ha-card $ xvmc-tiles-wrapper,
+                      ha-card $ #map-zoomer-overlay {
                         display: none;
                       }
-                      div.map-controls-wrapper {
-                        padding: 0.5em 1em 0.3em 1em;
+                      ha-card $ div.map-controls-wrapper {
+                        padding: 0.5em 1.5em 0.3em 1.5em;
                         justify-content: space-between;
                       }
-                      div.vacuum-controls {
+                      ha-card $ div.vacuum-controls {
                         justify-content: space-evenly;
                         padding: 0.3em 2em 1em 2em;
                       }
-                      paper-button.map-actions-item.main {
+                      ha-card $ paper-button.map-actions-item.main {
                         border-radius: 0.6em;
                       }
-                      paper-button {
+                      ha-card $ paper-button {
                         --mdc-icon-size: 2em;
                         color: #9da0a2 !important;
                         padding: 0.5em 0.75em;
@@ -182,6 +181,7 @@ cards:
                             name: mdi:washing-machine
                             x: 22200
                             y: 22700
+                    - template: vacuum_clean_zone
           #################################################################
           ## Controls
           #################################################################
