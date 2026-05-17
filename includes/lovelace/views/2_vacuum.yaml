@@ -6,10 +6,12 @@ badges:
   - type: entity
     entity: vacuum.winston
     color: orange
+    state_color: false
   - type: entity
     entity: sensor.winston_last_clean_end
     name: Last Clean
     color: orange
+    state_color: false
 cards:
   - type: vertical-stack
     cards:
@@ -318,7 +320,7 @@ cards:
                       template: icon_only
                       styles:
                         card:
-                          - width: auto
+                          - width: 100%
                     #----------------------------------------------------------------
                     ## Reset Main Brush
                     #----------------------------------------------------------------
@@ -336,7 +338,7 @@ cards:
                       template: icon_only
                       styles:
                         card:
-                          - width: auto
+                          - width: 100%
                     #----------------------------------------------------------------
                     ## Reset Side Brush
                     #----------------------------------------------------------------
@@ -354,7 +356,7 @@ cards:
                       template: icon_only
                       styles:
                         card:
-                          - width: auto
+                          - width: 100%
                     #----------------------------------------------------------------
                     ## Reset Sensors
                     #----------------------------------------------------------------
@@ -372,7 +374,7 @@ cards:
                       template: icon_only
                       styles:
                         card:
-                          - width: auto
+                          - width: 100%
                     #----------------------------------------------------------------
                     ## Empty
                     #----------------------------------------------------------------
@@ -388,4 +390,4 @@ cards:
                       template: icon_only
                       styles:
                         card:
-                          - width: auto
+                          - width: 100%
