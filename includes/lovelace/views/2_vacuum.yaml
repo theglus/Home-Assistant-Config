@@ -290,6 +290,7 @@ cards:
                         border-style: none;
                         background: none;
                         box-shadow: none;
+                        padding: 0 16px 8px;
                       }
                   cards:
                     #----------------------------------------------------------------
