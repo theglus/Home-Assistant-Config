@@ -302,7 +302,7 @@ cards:
                 #----------------------------------------------------------------
                 ## Action Buttons
                 #----------------------------------------------------------------
-                - type: horizontal-stack
+                - type: custom:hui-horizontal-stack-card
                   card_mod:
                     style: |
                       :host {
