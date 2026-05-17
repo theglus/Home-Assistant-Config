@@ -3,9 +3,13 @@ path: winston
 icon: "mdi:robot-vacuum-variant"
 panel: false
 badges:
-  - entity: vacuum.winston
-  - entity: sensor.winston_last_clean_end
+  - type: entity
+    entity: vacuum.winston
+    color: orange
+  - type: entity
+    entity: sensor.winston_last_clean_end
     name: Last Clean
+    color: orange
 cards:
   - type: vertical-stack
     cards:
@@ -46,7 +50,7 @@ cards:
               #################################################################
               - entity: input_select.vacuum_toggle
                 name: false
-                icon: "mdi:play-circle"
+                icon: "mdi:robot-vacuum-variant"
                 state_styles:
                   Controls:
                     template: nav_button
@@ -219,6 +223,9 @@ cards:
                     border-style: none;
                     background: none;
                   }
+                  ha-card $ #states > *:last-child {
+                    padding-top: 0.75em;
+                  }
               entities:
                 - type: custom:bar-card
                   width: 55%
@@ -232,9 +239,9 @@ cards:
                   severity:
                     - color: "#303435"
                       from: 11
-                      to: 100
+                      to: 10000
                     - color: "#6d2525"
-                      from: 0
+                      from: -10000
                       to: 10
                   entity_row: true
                   style: |
@@ -309,6 +316,9 @@ cards:
                         service_data:
                           entity_id: button.winston_reset_filter
                       template: icon_only
+                      styles:
+                        card:
+                          - width: auto
                     #----------------------------------------------------------------
                     ## Reset Main Brush
                     #----------------------------------------------------------------
@@ -324,6 +334,9 @@ cards:
                         service_data:
                           entity_id: button.winston_reset_main_brush
                       template: icon_only
+                      styles:
+                        card:
+                          - width: auto
                     #----------------------------------------------------------------
                     ## Reset Side Brush
                     #----------------------------------------------------------------
@@ -339,6 +352,9 @@ cards:
                         service_data:
                           entity_id: button.winston_reset_side_brush
                       template: icon_only
+                      styles:
+                        card:
+                          - width: auto
                     #----------------------------------------------------------------
                     ## Reset Sensors
                     #----------------------------------------------------------------
@@ -354,6 +370,9 @@ cards:
                         service_data:
                           entity_id: button.winston_reset_sensor_dirty
                       template: icon_only
+                      styles:
+                        card:
+                          - width: auto
                     #----------------------------------------------------------------
                     ## Empty
                     #----------------------------------------------------------------
@@ -367,3 +386,6 @@ cards:
                           command: app_goto_target
                           params: [30750, 22150]
                       template: icon_only
+                      styles:
+                        card:
+                          - width: auto
