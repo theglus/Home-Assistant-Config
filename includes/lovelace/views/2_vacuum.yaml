@@ -318,9 +318,6 @@ cards:
                         service_data:
                           entity_id: button.winston_reset_filter
                       template: icon_only
-                      styles:
-                        card:
-                          - width: 100%
                     #----------------------------------------------------------------
                     ## Reset Main Brush
                     #----------------------------------------------------------------
