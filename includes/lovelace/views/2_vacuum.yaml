@@ -290,6 +290,8 @@ cards:
                         border-style: none;
                         background: none;
                         box-shadow: none;
+                      }
+                      #root {
                         padding: 0 16px 8px;
                       }
                   cards:
