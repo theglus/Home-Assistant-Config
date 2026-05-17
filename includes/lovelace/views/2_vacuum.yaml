@@ -102,13 +102,16 @@ cards:
                     padding-bottom: 0;
                     letter-spacing: normal;
                   }
-                  div.tiles-wrapper, div.vacuum-controls, #map-zoomer-overlay {
+                  div.tiles-wrapper, #map-zoomer-overlay {
                     display: none;
                   }
                   div.map-controls-wrapper {
-                    padding-top: 7px;
-                    padding-bottom: 7px;
-                    padding-right: 4em;
+                    padding: 0.5em 1em 0.3em 1em;
+                    justify-content: flex-end;
+                  }
+                  div.vacuum-controls {
+                    justify-content: space-evenly;
+                    padding: 0.3em 2em 1em 2em;
                   }
                   paper-button.map-actions-item.main {
                     border-radius: 0.6em;
@@ -116,7 +119,7 @@ cards:
                   paper-button {
                     --mdc-icon-size: 2em;
                     color: #9da0a2 !important;
-                    padding: 0.44em 0.67em 0.44em 0.67em;
+                    padding: 0.5em 0.75em;
                   }
               entity: vacuum.winston
               map_source:
