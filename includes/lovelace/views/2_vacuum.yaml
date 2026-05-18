@@ -292,7 +292,7 @@ cards:
                         box-shadow: none;
                       }
                       #root {
-                        padding: 0 16px 8px;
+                        padding: 0 16px 16px;
                       }
                   cards:
                     #----------------------------------------------------------------
