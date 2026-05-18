@@ -283,7 +283,7 @@ cards:
                 #################################################################
                 - type: grid
                   columns: 5
-                  square: false
+                  square: true
                   card_mod:
                     style: |
                       ha-card {
