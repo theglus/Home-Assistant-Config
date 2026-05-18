@@ -222,6 +222,19 @@ hypnotoad:
   lumo-disabled-text-color: "rgba(255, 255, 255, 0.3)"
   lumo-header-text-color: "#FFFFFF"
 
+  # Xiaomi Vacuum Map Card
+  map-card-primary-color: "#FFFFFF10"
+  map-card-secondary-color: "none"
+  map-card-secondary-text-color: "#9da0a2"
+  map-card-zoomer-background: "none"
+  map-card-big-radius: "0.6em"
+  map-card-small-radius: "0.6em"
+  map-card-room-outline-line-color: "transparent"
+  map-card-room-outline-fill-color: "transparent"
+  map-card-room-outline-line-color-selected: "rgba(255, 255, 255, 0.5)"
+  map-card-room-outline-fill-color-selected: "rgba(42, 124, 194, 0.1)"
+  map-card-room-icon-background-color-selected: "rgb(42, 124, 194)"
+
   # Fix: Material Web 3 (md-item) combo box list item text colors
   card-mod-theme: |
     ha-combo-box-item {
