@@ -519,7 +519,7 @@ class TrueNASCoordinator(DataUpdateCoordinator[None]):
                                 else:
                                     tmp_val = (
                                         tmp_graph[i]["aggregations"]["mean"][e] or 0.0
-                                        if e in tmp_graph[i]["aggregations"]["mean"]
+                                        if e < len(tmp_graph[i]["aggregations"]["mean"])
                                         else 0.0
                                     )
                                     self.ds["interface"][tmp_etc][tmp_var] = round(
