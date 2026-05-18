@@ -97,8 +97,8 @@ cards:
                         border-style: none;
                         background: none;
                       }
-                      ha-card $ #states {
-                        display: none;
+                      #states {
+                        display: none !important;
                       }
                   entities: []
                 - type: custom:xiaomi-vacuum-map-card
