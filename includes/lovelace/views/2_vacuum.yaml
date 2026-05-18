@@ -102,9 +102,9 @@ cards:
                       }
                   entities: []
                 - type: custom:xiaomi-vacuum-map-card
+                  # --map-card-* color/radius variables → includes/themes/hypnotoad/hypnotoad.yaml
                   card_mod:
                     style: |
-                      /* --map-card-* color/radius variables → hypnotoad.yaml */
                       ha-card {
                         border: none;
                         background: none;
