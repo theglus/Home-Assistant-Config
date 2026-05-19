@@ -266,6 +266,66 @@ cards:
                           icon: mdi:nas
                         - entity: sensor.truenas_uptime
                           name: Uptime
+                        - type: custom:bar-card
+                          width: 55%
+                          height: 2em
+                          decimal: 2
+                          unit_of_measurement: "TiB"
+                          positions: &bar_card_positions_nibbler
+                            icon: outside
+                            indicator: "off"
+                            name: outside
+                            value: inside
+                          max: 18.03
+                          severity: &bar_card_severity_nibbler
+                            - color: "#303435"
+                              from: 0
+                              to: 13.52
+                            - color: "#6d2525"
+                              from: 75
+                              to: 18.03
+                          entity_row: true
+                          style: |
+                            ha-card {
+                              border-style: none;
+                            }
+                            bar-card-value {
+                              font-size: 1em;
+                              font-weight: 400;
+                              color: #e0e1e1;
+                              letter-spacing: 0.01em;
+                              text-shadow: none;
+                              margin-right: auto;
+                              margin-left: auto;
+                              margin-top: 5px;
+                            }
+                            bar-card-name {
+                              padding-left: 0.25em;
+                            }
+                            bar-card-iconbar {
+                              padding-left: 0.23em;
+                            }
+                            bar-card-backgroundbar {
+                              background: none;
+                            }
+                            bar-card-currentbar {
+                              border-radius: 0.3em;
+                            }
+                            bar-card-background {
+                              background: radial-gradient(circle, rgba(52, 57, 58, 0.1) 0%, rgba(17, 18, 18, 0.2) 75%);
+                              box-shadow: inset 0 0 25px #00000045;
+                              border-radius: 0.3em;
+                              overflow: hidden;
+                            }
+                          entities:
+                            #----------------------------------------------------------------
+                            ## Nibbler Memory Bar
+                            #----------------------------------------------------------------
+                            - entity: sensor.truenas_nibbler
+                              name: Storage Used
+                              icon: mdi:harddisk
+                            # - entity: sensor.truenas_ram_free
+                            #   name: Memory Free
                         #----------------------------------------------------------------
                         ## Nibbler CPU Utilization Graph
                         #----------------------------------------------------------------
@@ -310,25 +370,6 @@ cards:
                                 - name2: Upload
                                 - data1: Down
                                 - data2: Up
-                    #----------------------------------------------------------------
-                    ## Nibbler Storage Bar
-                    #----------------------------------------------------------------
-                    - type: custom:entity-progress-card
-                      entity: sensor.truenas_nibbler
-                      name: Storage Used
-                      icon: mdi:harddisk
-                      unit: TiB
-                      decimal: 2
-                      min_value: 0
-                      max_value: 18.03
-                      frameless: true
-                      custom_theme:
-                        - min: 0
-                          max: 75
-                          bar_color: "#303435"
-                        - min: 75
-                          max: 100
-                          bar_color: "#6d2525"
 
           #################################################################
           ## Leela Controls
