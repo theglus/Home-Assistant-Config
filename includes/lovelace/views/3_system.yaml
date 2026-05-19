@@ -396,6 +396,16 @@ cards:
                         background: none;
                       }
                   entities:
+                    - entity: binary_sensor.leela_plex_updates
+                      name: Plex Version
+                      icon: mdi:plex
+                      tap_action:
+                        action: more-info
+                        entity: update.plex_media_server_leela
+                    - entity: sensor.leela_new_episode
+                      name: New Episode
+                      tap_action:
+                        action: none
                     - type: custom:hui-horizontal-stack-card
                       cards:
                         #----------------------------------------------------------------
