@@ -263,26 +263,27 @@ cards:
                           name: Updates
                         - entity: binary_sensor.truenas_nibbler_healthy
                           name: NAS Health
+                          icon: mdi:nas
                         - entity: sensor.truenas_uptime
                           name: Uptime
                         - type: custom:bar-card
                           width: 55%
                           height: 2em
-                          decimal: 0
-                          unit_of_measurement: "GiB"
+                          decimal: 2
+                          unit_of_measurement: "TiB"
                           positions: &bar_card_positions_nibbler
                             icon: outside
                             indicator: "off"
                             name: outside
                             value: inside
-                          max: 15.5
+                          max: 18.03
                           severity: &bar_card_severity_nibbler
                             - color: "#303435"
                               from: 0
-                              to: 15.5
-                            # - color: "#6d2525"
-                            #   from: 75
-                            #   to: 100
+                              to: 13.52
+                            - color: "#6d2525"
+                              from: 75
+                              to: 18.03
                           entity_row: true
                           style: |
                             ha-card {
@@ -327,8 +328,9 @@ cards:
                             #----------------------------------------------------------------
                             ## Nibbler Memory Bar
                             #----------------------------------------------------------------
-                            - entity: sensor.truenas_arc_size
-                              name: ZFS Cache
+                            - entity: sensor.truenas_nibbler
+                              name: Storage Used
+                              icon: mdi:harddisk
                             # - entity: sensor.truenas_ram_free
                             #   name: Memory Free
                         #----------------------------------------------------------------
