@@ -236,9 +236,45 @@ hypnotoad:
   map-card-room-icon-background-color-selected: "rgb(42, 124, 194)"
 
   # Fix: Material Web 3 (md-item) combo box list item text colors
+  # Bar card global styles
   card-mod-theme: |
     ha-combo-box-item {
       --md-list-item-label-text-color: #FFFFFF;
       --md-list-item-supporting-text-color: rgba(255, 255, 255, 0.7);
       --md-list-item-trailing-supporting-text-color: rgba(255, 255, 255, 0.7);
+    }
+    .type-custom-bar-card bar-card-contentbar {
+      justify-content: center;
+    }
+    .type-custom-bar-card .value-direction-right {
+      margin-left: 0;
+      margin-right: 0;
+    }
+    .type-custom-bar-card bar-card-value {
+      font-size: 1em;
+      font-weight: 400;
+      color: #e0e1e1;
+      letter-spacing: 0.01em;
+      text-shadow: none;
+      text-align: center;
+      flex: 1;
+      margin-top: 5px;
+    }
+    .type-custom-bar-card bar-card-name {
+      padding-left: 0.25em;
+    }
+    .type-custom-bar-card bar-card-iconbar {
+      padding-left: 0.23em;
+    }
+    .type-custom-bar-card bar-card-backgroundbar {
+      background: none;
+    }
+    .type-custom-bar-card bar-card-currentbar {
+      border-radius: 0.3em;
+    }
+    .type-custom-bar-card bar-card-background {
+      background: radial-gradient(circle, rgba(52, 57, 58, 0.1) 0%, rgba(17, 18, 18, 0.2) 75%);
+      box-shadow: inset 0 0 25px #00000045;
+      border-radius: 0.3em;
+      overflow: hidden;
     }
