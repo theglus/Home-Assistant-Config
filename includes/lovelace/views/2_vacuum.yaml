@@ -191,53 +191,44 @@ cards:
               columns: 1
               square: false
               cards:
-                - type: entities
-                  title: Overview
-                  card_mod:
-                    style: |
-                      ha-card {
-                        border-style: none;
-                        background: none;
-                      }
+                - type: custom:bar-card
+                  width: 55%
+                  height: 2em
+                  decimal: 0
+                  unit_of_measurement: "%"
+                  positions:
+                    icon: outside
+                    indicator: "off"
+                    name: outside
+                  severity:
+                    - color: "#303435"
+                      from: 11
+                      to: 10000
+                    - color: "#6d2525"
+                      from: -10000
+                      to: 10
+                  entity_row: true
                   entities:
-                    - type: custom:bar-card
-                      width: 55%
-                      height: 2em
-                      decimal: 0
-                      unit_of_measurement: "%"
-                      positions:
-                        icon: outside
-                        indicator: "off"
-                        name: outside
-                      severity:
-                        - color: "#303435"
-                          from: 11
-                          to: 10000
-                        - color: "#6d2525"
-                          from: -10000
-                          to: 10
-                      entity_row: true
-                      entities:
-                        - entity: vacuum.winston
-                          attribute: battery_level
-                          name: Battery
-                          icon: mdi:battery
+                    - entity: vacuum.winston
+                      attribute: battery_level
+                      name: Battery
+                      icon: mdi:battery
 
-                        - entity: sensor.vacuum_filter
-                          name: Filter
-                          icon: custom:vacuum-filter
+                    - entity: sensor.vacuum_filter
+                      name: Filter
+                      icon: custom:vacuum-filter
 
-                        - entity: sensor.vacuum_mainbrush
-                          name: Main Brush
-                          icon: custom:vacuum-mainbrush
+                    - entity: sensor.vacuum_mainbrush
+                      name: Main Brush
+                      icon: custom:vacuum-mainbrush
 
-                        - entity: sensor.vacuum_sidebrush
-                          name: Side Brush
-                          icon: custom:vacuum-sidebrush
+                    - entity: sensor.vacuum_sidebrush
+                      name: Side Brush
+                      icon: custom:vacuum-sidebrush
 
-                        - entity: sensor.vacuum_sensors
-                          name: Sensors
-                          icon: custom:vacuum-sensor
+                    - entity: sensor.vacuum_sensors
+                      name: Sensors
+                      icon: custom:vacuum-sensor
 
                 #################################################################
                 ## Action Buttons

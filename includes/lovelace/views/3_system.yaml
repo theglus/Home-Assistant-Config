@@ -266,78 +266,81 @@ cards:
                           icon: mdi:nas
                         - entity: sensor.truenas_uptime
                           name: Uptime
-                        - type: custom:bar-card
-                          width: 55%
-                          height: 2em
-                          decimal: 2
-                          unit_of_measurement: "TiB"
-                          positions: &bar_card_positions_nibbler
-                            icon: outside
-                            indicator: "off"
-                            name: outside
-                            value: inside
-                          max: 18.03
-                          severity: &bar_card_severity_nibbler
-                            - color: "#303435"
-                              from: 0
-                              to: 13.52
-                            - color: "#6d2525"
-                              from: 75
-                              to: 18.03
-                          entity_row: true
-                          entities:
-                            #----------------------------------------------------------------
-                            ## Nibbler Memory Bar
-                            #----------------------------------------------------------------
-                            - entity: sensor.truenas_nibbler
-                              name: Storage Used
-                              icon: mdi:harddisk
-                            # - entity: sensor.truenas_ram_free
-                            #   name: Memory Free
+                    #----------------------------------------------------------------
+                    ## Nibbler Storage Bar
+                    #----------------------------------------------------------------
+                    - type: custom:bar-card
+                      width: 55%
+                      height: 2em
+                      decimal: 2
+                      unit_of_measurement: "TiB"
+                      positions: &bar_card_positions_nibbler
+                        icon: outside
+                        indicator: "off"
+                        name: outside
+                        value: inside
+                      max: 18.03
+                      severity: &bar_card_severity_nibbler
+                        - color: "#303435"
+                          from: 0
+                          to: 13.52
+                        - color: "#6d2525"
+                          from: 75
+                          to: 18.03
+                      entity_row: true
+                      entities:
                         #----------------------------------------------------------------
-                        ## Nibbler CPU Utilization Graph
+                        ## Nibbler Storage Bar
                         #----------------------------------------------------------------
-                        - type: custom:hui-horizontal-stack-card
-                          cards:
-                            - type: "custom:decluttering-card"
-                              template: declutter_system_graph
-                              variables:
-                                - sensor: sensor.truenas_cpu_usage
-                                - name: CPU
-                                - server: Nibbler
-                                - title: CPU Utilization
-                                - green: 25
-                                - yellow: 50
-                                - orange: 75
-                                - red: 100
-                            #----------------------------------------------------------------
-                            ## Nibbler CPU Temp Graph
-                            #----------------------------------------------------------------
-                            - type: "custom:decluttering-card"
-                              template: declutter_system_graph
-                              variables:
-                                - sensor: sensor.truenas_temperature
-                                - name: CPU ºC
-                                - server: Nibbler
-                                - title: CPU Temperature
-                                - green: 50
-                                - yellow: 65
-                                - orange: 70
-                                - red: 75
-                            #----------------------------------------------------------------
-                            ## Nibbler Network Graph
-                            #----------------------------------------------------------------
-                            - type: "custom:decluttering-card"
-                              template: declutter_network_graph
-                              variables:
-                                - sensor1: sensor.truenas_eth_down
-                                - sensor2: sensor.truenas_eth_up
-                                - name: Network
-                                - server: Nibbler
-                                - name1: Download
-                                - name2: Upload
-                                - data1: Down
-                                - data2: Up
+                        - entity: sensor.truenas_nibbler
+                          name: Storage Used
+                          icon: mdi:harddisk
+                        # - entity: sensor.truenas_ram_free
+                        #   name: Memory Free
+                    #----------------------------------------------------------------
+                    ## Nibbler CPU Utilization Graph
+                    #----------------------------------------------------------------
+                    - type: custom:hui-horizontal-stack-card
+                      cards:
+                        - type: "custom:decluttering-card"
+                          template: declutter_system_graph
+                          variables:
+                            - sensor: sensor.truenas_cpu_usage
+                            - name: CPU
+                            - server: Nibbler
+                            - title: CPU Utilization
+                            - green: 25
+                            - yellow: 50
+                            - orange: 75
+                            - red: 100
+                        #----------------------------------------------------------------
+                        ## Nibbler CPU Temp Graph
+                        #----------------------------------------------------------------
+                        - type: "custom:decluttering-card"
+                          template: declutter_system_graph
+                          variables:
+                            - sensor: sensor.truenas_temperature
+                            - name: CPU ºC
+                            - server: Nibbler
+                            - title: CPU Temperature
+                            - green: 50
+                            - yellow: 65
+                            - orange: 70
+                            - red: 75
+                        #----------------------------------------------------------------
+                        ## Nibbler Network Graph
+                        #----------------------------------------------------------------
+                        - type: "custom:decluttering-card"
+                          template: declutter_network_graph
+                          variables:
+                            - sensor1: sensor.truenas_eth_down
+                            - sensor2: sensor.truenas_eth_up
+                            - name: Network
+                            - server: Nibbler
+                            - name1: Download
+                            - name2: Upload
+                            - data1: Down
+                            - data2: Up
 
           #################################################################
           ## Leela Controls
@@ -583,27 +586,27 @@ cards:
                       name: Session Reset
                     - entity: sensor.claude_weekly_reset_day
                       name: Week Reset
-                    - type: custom:bar-card
-                      width: 55%
-                      height: 2em
-                      decimal: 0
-                      unit_of_measurement: "%"
-                      positions:
-                        icon: outside
-                        indicator: "off"
-                        name: outside
-                        value: inside
-                      max: 100
-                      severity:
-                        - color: "#303435"
-                          from: 0
-                          to: 75
-                        - color: "#6d2525"
-                          from: 75
-                          to: 100
-                      entity_row: true
-                      entities:
-                        - entity: sensor.claude_session_usage
-                          name: Session Usage
-                        - entity: sensor.claude_week_usage
-                          name: Week Usage
+                - type: custom:bar-card
+                  width: 55%
+                  height: 2em
+                  decimal: 0
+                  unit_of_measurement: "%"
+                  positions:
+                    icon: outside
+                    indicator: "off"
+                    name: outside
+                    value: inside
+                  max: 100
+                  severity:
+                    - color: "#303435"
+                      from: 0
+                      to: 75
+                    - color: "#6d2525"
+                      from: 75
+                      to: 100
+                  entity_row: true
+                  entities:
+                    - entity: sensor.claude_session_usage
+                      name: Session Usage
+                    - entity: sensor.claude_week_usage
+                      name: Week Usage
