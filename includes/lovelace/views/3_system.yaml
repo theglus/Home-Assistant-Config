@@ -288,6 +288,9 @@ cards:
                             ha-card {
                               border-style: none;
                             }
+                            bar-card-contentbar {
+                              justify-content: center;
+                            }
                             bar-card-value {
                               font-size: 1em;
                               font-weight: 400;
@@ -299,8 +302,8 @@ cards:
                               margin-top: 5px;
                             }
                             .value-direction-right {
-                              margin-left: 0;
-                              margin-right: 0;
+                              margin-left: 0 !important;
+                              margin-right: 0 !important;
                             }
                             bar-card-name {
                               padding-left: 0.25em;
@@ -640,6 +643,9 @@ cards:
                         ha-card {
                           border-style: none;
                         }
+                        bar-card-contentbar {
+                          justify-content: center;
+                        }
                         bar-card-value {
                           font-size: 1em;
                           font-weight: 400;
@@ -651,8 +657,8 @@ cards:
                           margin-top: 5px;
                         }
                         .value-direction-right {
-                          margin-left: 0;
-                          margin-right: 0;
+                          margin-left: 0 !important;
+                          margin-right: 0 !important;
                         }
                         bar-card-name {
                           padding-left: 0.25em;
