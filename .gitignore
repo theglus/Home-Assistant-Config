@@ -35,6 +35,9 @@ home-assistant_v2.*
 tts/
 zigbee.db*
 
+# Claude Skills
+.claude/skills/
+
 # Add-ons
 custom_components/mail_and_packages/
 image/
