@@ -263,35 +263,65 @@ cards:
                           name: Updates
                         - entity: binary_sensor.truenas_nibbler_healthy
                           name: NAS Health
-                          icon: mdi:nas
                         - entity: sensor.truenas_uptime
                           name: Uptime
                         - type: custom:bar-card
                           width: 55%
                           height: 2em
-                          decimal: 2
-                          unit_of_measurement: "TiB"
+                          decimal: 0
+                          unit_of_measurement: "GiB"
                           positions: &bar_card_positions_nibbler
                             icon: outside
                             indicator: "off"
                             name: outside
                             value: inside
-                          max: 18.03
+                          max: 15.5
                           severity: &bar_card_severity_nibbler
                             - color: "#303435"
                               from: 0
-                              to: 13.52
-                            - color: "#6d2525"
-                              from: 75
-                              to: 18.03
+                              to: 15.5
+                            # - color: "#6d2525"
+                            #   from: 75
+                            #   to: 100
                           entity_row: true
+                          style: |
+                            ha-card {
+                              border-style: none;
+                            }
+                            bar-card-value { 
+                              font-size: 1em; 
+                              font-weight: 400; 
+                              color: #e0e1e1; 
+                              letter-spacing: 0.01em; 
+                              text-shadow: none; 
+                              margin-right: auto; 
+                              margin-left: auto;
+                              margin-top: 5px; 
+                            } 
+                            bar-card-name { 
+                              padding-left: 0.25em; 
+                            } 
+                            bar-card-iconbar { 
+                              padding-left: 0.23em;
+                            } 
+                            bar-card-backgroundbar { 
+                              background: none; 
+                            } 
+                            bar-card-currentbar {
+                              border-radius: 0.3em;
+                            }
+                            bar-card-background { 
+                              background: radial-gradient(circle, rgba(52, 57, 58, 0.1) 0%, rgba(17, 18, 18, 0.2) 75%); 
+                              box-shadow: inset 0 0 25px #00000045; 
+                              border-radius: 0.3em; 
+                              overflow: hidden; 
+                            }
                           entities:
                             #----------------------------------------------------------------
                             ## Nibbler Memory Bar
                             #----------------------------------------------------------------
-                            - entity: sensor.truenas_nibbler
-                              name: Storage Used
-                              icon: mdi:harddisk
+                            - entity: sensor.truenas_arc_size
+                              name: ZFS Cache
                             # - entity: sensor.truenas_ram_free
                             #   name: Memory Free
                         #----------------------------------------------------------------
@@ -366,16 +396,6 @@ cards:
                         background: none;
                       }
                   entities:
-                    - entity: binary_sensor.leela_plex_updates
-                      name: Plex Version
-                      icon: mdi:plex
-                      tap_action:
-                        action: more-info
-                        entity: update.plex_media_server_leela
-                    - entity: sensor.leela_new_episode
-                      name: New Episode
-                      tap_action:
-                        action: none
                     - type: custom:hui-horizontal-stack-card
                       cards:
                         #----------------------------------------------------------------
@@ -602,6 +622,38 @@ cards:
                           from: 75
                           to: 100
                       entity_row: true
+                      style: |
+                        ha-card {
+                          border-style: none;
+                        }
+                        bar-card-value {
+                          font-size: 1em;
+                          font-weight: 400;
+                          color: #e0e1e1;
+                          letter-spacing: 0.01em;
+                          text-shadow: none;
+                          margin-right: auto;
+                          margin-left: auto;
+                          margin-top: 5px;
+                        }
+                        bar-card-name {
+                          padding-left: 0.25em;
+                        }
+                        bar-card-iconbar {
+                          padding-left: 0.23em;
+                        }
+                        bar-card-backgroundbar {
+                          background: none;
+                        }
+                        bar-card-currentbar {
+                          border-radius: 0.3em;
+                        }
+                        bar-card-background {
+                          background: radial-gradient(circle, rgba(52, 57, 58, 0.1) 0%, rgba(17, 18, 18, 0.2) 75%);
+                          box-shadow: inset 0 0 25px #00000045;
+                          border-radius: 0.3em;
+                          overflow: hidden;
+                        }
                       entities:
                         - entity: sensor.claude_session_usage
                           name: Session Usage
