@@ -16,7 +16,7 @@
           app_id|com.netflix.ninja: 15.50
           app_id|com.plexapp.android: 5.75
           app_id|com.amazon.amazonvideo.livingroom: 7.50
-          app_id"|com.google.android.youtube.tv: 12.50
+          app_id|com.google.android.youtube.tv: 12.50
       standby_power: 3.55
     # Television
     - entity_id: media_player.sony_bravia_tv
