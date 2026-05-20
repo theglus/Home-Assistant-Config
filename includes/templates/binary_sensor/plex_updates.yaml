@@ -6,7 +6,6 @@
 - binary_sensor:
     - name: "Plex Updates"
       unique_id: 3ed16d02-1cd6-4496-a9fa-d043c660ad16
-      device_id: 4a0c1ced82644d496f7f051f471459ea
       state: >-
         {{
           state_attr('update.plex_media_server_leela', 'installed_version')
