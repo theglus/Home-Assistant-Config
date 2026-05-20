@@ -203,7 +203,7 @@ cards:
                   entities:
                     - type: custom:bar-card
                       width: 55%
-                      height: 2em
+                      height: 2.5em
                       decimal: 0
                       unit_of_measurement: "%"
                       positions:

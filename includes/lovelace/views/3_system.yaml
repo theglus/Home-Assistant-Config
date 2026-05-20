@@ -269,7 +269,7 @@ cards:
                           name: Uptime
                         - type: custom:bar-card
                           width: 55%
-                          height: 2em
+                          height: 2.5em
                           decimal: 2
                           unit_of_measurement: "TiB"
                           positions: &bar_card_positions_nibbler
@@ -619,7 +619,7 @@ cards:
                       name: Week Reset
                     - type: custom:bar-card
                       width: 55%
-                      height: 2em
+                      height: 2.5em
                       decimal: 0
                       unit_of_measurement: "%"
                       positions:
