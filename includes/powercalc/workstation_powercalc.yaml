@@ -2,5 +2,6 @@
 ## Powercalc Sensors
 #################################################################
 - entity_id: switch.workstation_plug
+  unique_id: 4f5981d0-c339-4fc1-a1d1-9287565ada13
   fixed:
     power: "{{(states('sensor.workstation_plug_power_gross')|float(0) - states('sensor.pinkie_lamp_power')|float(0))|round(3)}}"
