@@ -1,0 +1,13 @@
+#################################################################
+## Plex Sensors
+#
+## Template sensors for Plex Media Server on Leela.
+#################################################################
+- sensor:
+    - name: "New Episode"
+      unique_id: 17bb60dc-36b9-4cef-8aaa-c824c8ea5a42
+      device_id: 4a0c1ced82644d496f7f051f471459ea
+      state: >-
+        {% set item = state_attr('sensor.leela_library_tv_shows', 'last_added_item') %}
+        {{ item.split(' - S')[0] if item else 'Unknown' }}
+      icon: mdi:television-classic
