@@ -79,7 +79,7 @@ I routinely stream games via Moonlight from my desktop computer (in the Office) 
 <details>
   <summary>See details</summary>
  
-- [Bar Card](https://github.com/custom-cards/bar-card)
+- [Bar Card](https://github.com/spacerokk/bar-card)
 - [Button Card](https://github.com/custom-cards/button-card)
 - [Card Mod](https://github.com/thomasloven/lovelace-card-mod)
 - [Declutter Card](https://github.com/custom-cards/decluttering-card)
