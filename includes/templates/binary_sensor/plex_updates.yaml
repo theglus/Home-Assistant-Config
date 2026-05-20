@@ -2,15 +2,18 @@
 ## Plex Updates
 #
 ## Binary sensor tracking whether a Plex Media Server update is available on Leela.
+##
+## NOTE: This sensor is managed via the UI. The config below is kept for
+## documentation purposes only and is intentionally commented out.
 #################################################################
-- binary_sensor:
-    - name: "Leela Plex Updates"
-      unique_id: 3ed16d02-1cd6-4496-a9fa-d043c660ad16
-      state: >-
-        {{
-          state_attr('update.plex_media_server_leela', 'installed_version')
-          !=
-          state_attr('update.plex_media_server_leela', 'latest_version')
-        }}
-      device_class: update
-      icon: mdi:plex
+# - binary_sensor:
+#     - name: "Leela Plex Updates"
+#       unique_id: 3ed16d02-1cd6-4496-a9fa-d043c660ad16
+#       state: >-
+#         {{
+#           state_attr('update.plex_media_server_leela', 'installed_version')
+#           !=
+#           state_attr('update.plex_media_server_leela', 'latest_version')
+#         }}
+#       device_class: update
+#       icon: mdi:plex
