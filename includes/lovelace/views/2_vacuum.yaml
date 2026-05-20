@@ -198,6 +198,7 @@ cards:
                       ha-card {
                         border-style: none;
                         background: none;
+                        --bar-card-border-radius: 8px;
                       }
                   entities:
                     - type: custom:bar-card

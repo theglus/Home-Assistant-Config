@@ -257,6 +257,7 @@ cards:
                           ha-card {
                             border-style: none;
                             background: none;
+                            --bar-card-border-radius: 8px;
                           }
                       entities:
                         - entity: update.truenas_system_update
@@ -609,6 +610,7 @@ cards:
                       ha-card {
                         border-style: none;
                         background: none;
+                        --bar-card-border-radius: 8px;
                       }
                   entities:
                     - entity: sensor.claude_session_reset_time
