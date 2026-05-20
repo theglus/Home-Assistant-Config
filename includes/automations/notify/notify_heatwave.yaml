@@ -9,26 +9,34 @@ description: Notify smartphones when tomorrows high is  >75 °F.
 trigger:
   - platform: time
     at: "22:00:00"
-condition:
-  - condition: numeric_state
-    entity_id: weather.climacell_daily
-    attribute: forecast[1].temperature
-    above: "75"
 action:
+  - service: weather.get_forecasts
+    target:
+      entity_id: weather.climacell_daily
+    data:
+      type: daily
+    response_variable: forecast_data
+  - condition: template
+    value_template: "{{ forecast_data['weather.climacell_daily'].forecast[1].temperature | float(0) > 75 }}"
   - service: notify.smartphones
     data:
       title: 🥵 Heat Wave
       message: >-
         Tomorrow's high is
-        {{states.weather.climacell_daily.attributes.forecast[1].temperature}}
-        °F.
+        {{ forecast_data['weather.climacell_daily'].forecast[1].temperature }} °F.
   - wait_for_trigger:
       - platform: time
         at: "07:00:00"
+  - service: weather.get_forecasts
+    target:
+      entity_id: weather.climacell_daily
+    data:
+      type: daily
+    response_variable: forecast_morning
   - service: notify.smartphones
     data:
       title: 🥵 Heat Wave
       message: >-
         Today's high is
-        {{states.weather.climacell_daily.attributes.forecast[1].temperature}} °F.
+        {{ forecast_morning['weather.climacell_daily'].forecast[0].temperature }} °F.
 mode: single
