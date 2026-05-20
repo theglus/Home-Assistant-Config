@@ -21,7 +21,9 @@
       unique_id: 42dfbe81-ffd9-49b9-bc36-57db40445be3
       unit_of_measurement: "°F"
       state: "{{ daily_forecast['weather.climacell_daily'].forecast[0].temperature }}"
+      icon: mdi:thermometer-high
     - name: "Weather Today Low"
       unique_id: 47017261-1177-4254-9ab4-d640594dea98
       unit_of_measurement: "°F"
       state: "{{ daily_forecast['weather.climacell_daily'].forecast[0].templow }}"
+      icon: mdi:thermometer-low
