@@ -4,7 +4,7 @@
 ## Template sensors for Plex Media Server on Leela.
 #################################################################
 - sensor:
-    - name: "New Episode"
+    - name: "Leela New Episode"
       unique_id: 17bb60dc-36b9-4cef-8aaa-c824c8ea5a42
       state: >-
         {% set item = state_attr('sensor.leela_library_tv_shows', 'last_added_item') %}
