@@ -10,26 +10,17 @@ ha_reload:
       data:
         duration: 1000
         message: "HA config reloaded."
-      target:
-        device_id:
-          - !secret browsermod_mbp
-          - !secret browsermod_pixel
+        user_id: person.theglus
     - service: lovelace.reload_resources
       data: {}
     - service: browser_mod.notification
       data:
         duration: 1000
         message: "Lovelace resources reloaded."
-      target:
-        device_id:
-          - !secret browsermod_mbp
-          - !secret browsermod_pixel
+        user_id: person.theglus
     - service: browser_mod.notification
       data:
         duration: 3000
         message: "Reload complete."
-      target:
-        device_id:
-          - !secret browsermod_mbp
-          - !secret browsermod_pixel
+        user_id: person.theglus
   mode: single
