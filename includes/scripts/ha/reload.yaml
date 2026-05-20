@@ -10,17 +10,17 @@ ha_reload:
       data:
         duration: 1000
         message: "HA config reloaded."
-        user_id: person.theglus
+        user_id: e43b4b421723479691a6cd90b6a96ded
     - service: lovelace.reload_resources
       data: {}
     - service: browser_mod.notification
       data:
         duration: 1000
         message: "Lovelace resources reloaded."
-        user_id: person.theglus
+        user_id: e43b4b421723479691a6cd90b6a96ded
     - service: browser_mod.notification
       data:
         duration: 3000
         message: "Reload complete."
-        user_id: person.theglus
+        user_id: e43b4b421723479691a6cd90b6a96ded
   mode: single
