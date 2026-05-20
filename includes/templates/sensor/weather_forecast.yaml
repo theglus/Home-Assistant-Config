@@ -1,0 +1,27 @@
+#################################################################
+## Weather Forecast Sensors
+#
+## Stores today's forecast high/low via weather.get_forecasts
+## for use in templates that cannot call services directly.
+#################################################################
+- trigger:
+    - platform: time
+      at: "00:01:00"
+    - platform: homeassistant
+      event: start
+  action:
+    - service: weather.get_forecasts
+      target:
+        entity_id: weather.climacell_daily
+      data:
+        type: daily
+      response_variable: daily_forecast
+  sensor:
+    - name: "Weather Today High"
+      unique_id: 42dfbe81-ffd9-49b9-bc36-57db40445be3
+      unit_of_measurement: "°F"
+      state: "{{ daily_forecast['weather.climacell_daily'].forecast[0].temperature }}"
+    - name: "Weather Today Low"
+      unique_id: 47017261-1177-4254-9ab4-d640594dea98
+      unit_of_measurement: "°F"
+      state: "{{ daily_forecast['weather.climacell_daily'].forecast[0].templow }}"

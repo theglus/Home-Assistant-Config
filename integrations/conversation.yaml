@@ -77,7 +77,7 @@ intent_script:
       text: "The weather in Dogpatch is {{state_attr('weather.climacell_nowcast', 'temperature')}} degrees and {{states('weather.climacell_nowcast')}}."
   weather_today:
     speech:
-      text: "The weather in Dogpatch is {{state_attr('weather.climacell_nowcast', 'temperature')}} degrees. Today you can expect a high of {{state_attr('weather.climacell_daily', 'forecast')[0].temperature}} and a low of {{state_attr('weather.climacell_daily', 'forecast')[0].templow}}."
+      text: "The weather in Dogpatch is {{state_attr('weather.climacell_nowcast', 'temperature')}} degrees. Today you can expect a high of {{states('sensor.weather_today_high')}} and a low of {{states('sensor.weather_today_low')}}."
   welcome:
     speech:
       text: "Hi I'm Farnsworth your home assistant. You can ask me things like 'what's the weather today,' 'what's playing,' and 'turn off the office lights.'"
