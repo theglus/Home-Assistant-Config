@@ -23,7 +23,7 @@ lovelace:
       icon: mdi:home-assistant
   resources:
     # Bar Card
-    # https://github.com/custom-cards/bar-card
+    # https://github.com/spacerokk/bar-card
     - url: /hacsfiles/bar-card/bar-card.js
       type: module
     # Button Card

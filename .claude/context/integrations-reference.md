@@ -79,7 +79,7 @@ Native integrations with official documentation on home-assistant.io.
 
 | Resource | GitHub |
 |---|---|
-| Bar Card | https://github.com/custom-cards/bar-card |
+| Bar Card | https://github.com/spacerokk/bar-card |
 | Browser Mod | https://github.com/thomasloven/hass-browser_mod |
 | Button Card | https://github.com/custom-cards/button-card |
 | Card Mod | https://github.com/thomasloven/lovelace-card-mod |
