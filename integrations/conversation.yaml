@@ -56,7 +56,14 @@ intent_script:
       text: "The AQI in Dogpatch is {{states('sensor.aqi')}}."
   muni_minutes:
     speech:
-      text: "The next 3 trains to Chinatown arrive in {{ state_attr('sensor.muni_metro_inbound', 'upcoming').split(', ')[0] }}, {{ state_attr('sensor.muni_metro_inbound', 'upcoming').split(', ')[1] }}, and {{ state_attr('sensor.muni_metro_inbound', 'upcoming').split(', ')[2] }} minutes."
+      text: >-
+        {%- set upcoming = state_attr('sensor.muni_metro_inbound', 'upcoming') -%}
+        {%- set trains = upcoming.split(', ') if upcoming else [] -%}
+        {%- if trains | length == 0 -%}No trains are currently scheduled to Chinatown.
+        {%- elif trains | length == 1 -%}The next train to Chinatown arrives in {{ trains[0] }} minutes.
+        {%- elif trains | length == 2 -%}The next 2 trains to Chinatown arrive in {{ trains[0] }} and {{ trains[1] }} minutes.
+        {%- else -%}The next 3 trains to Chinatown arrive in {{ trains[0] }}, {{ trains[1] }}, and {{ trains[2] }} minutes.
+        {%- endif -%}
   music:
     speech:
       text: "{{state_attr('media_player.spotify', 'media_title')}} by {{state_attr('media_player.spotify', 'media_artist')}}"
@@ -77,7 +84,7 @@ intent_script:
       text: "The weather in Dogpatch is {{state_attr('weather.climacell_nowcast', 'temperature')}} degrees and {{states('weather.climacell_nowcast')}}."
   weather_today:
     speech:
-      text: "The weather in Dogpatch is {{state_attr('weather.climacell_nowcast', 'temperature')}} degrees. Today you can expect a high of {{state_attr('weather.climacell_daily', 'forecast')[0].temperature}} and a low of {{state_attr('weather.climacell_daily', 'forecast')[0].templow}}."
+      text: "The weather in Dogpatch is {{state_attr('weather.climacell_nowcast', 'temperature')}} degrees. Today you can expect a high of {{states('sensor.weather_today_high')}} and a low of {{states('sensor.weather_today_low')}}."
   welcome:
     speech:
       text: "Hi I'm Farnsworth your home assistant. You can ask me things like 'what's the weather today,' 'what's playing,' and 'turn off the office lights.'"
