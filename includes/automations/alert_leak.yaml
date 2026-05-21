@@ -13,12 +13,14 @@ trigger:
     entity_id: binary_sensor.kitchen_water
     domain: binary_sensor
     alias: Kitchen water sensor moist.
+    id: moist
   - type: moist
     platform: device
     device_id: b70266b2d103e0961f82ba09130a1551
     entity_id: binary_sensor.dishwasher_water
     domain: binary_sensor
     alias: Dishwasher water sensor moist.
+    id: moist
   - type: not_moist
     platform: device
     device_id: 6bd7ff509b62f7b1c7fbd08263ceb018
@@ -29,6 +31,7 @@ trigger:
       minutes: 0
       seconds: 1
     alias: Kitchen water sensor dry.
+    id: not_moist
   - type: not_moist
     platform: device
     device_id: b70266b2d103e0961f82ba09130a1551
@@ -39,6 +42,7 @@ trigger:
       minutes: 0
       seconds: 1
     alias: Dishwasher water sensor dry.
+    id: not_moist
 condition:
   - condition: not
     conditions:
@@ -52,11 +56,8 @@ condition:
 action:
   - choose:
       - conditions:
-          - condition: and
-            conditions:
-              - condition: state
-                entity_id: binary_sensor.kitchen_water
-                state: "on"
+          - condition: trigger
+            id: moist
         sequence:
           - service: scene.create
             data:
@@ -87,59 +88,12 @@ action:
               entity_id: scene.alert
           - service: notify.smartphones
             data:
-              message: Leak in under sink!
               title: "🚨 WATER ALERT:"
+              message: >-
+                {{ 'Leak in under sink!' if trigger.entity_id == 'binary_sensor.kitchen_water' else 'Dishwasher is leaking!' }}
       - conditions:
-          - condition: and
-            conditions:
-              - condition: state
-                entity_id: binary_sensor.dishwasher_water
-                state: "on"
-        sequence:
-          - service: scene.create
-            data:
-              scene_id: scene_lights_before
-              snapshot_entities:
-                - light.bedside
-                - light.garden
-                - light.hallway_marquee
-                - light.hallway_runner
-                - light.jeffreys_lamp
-                - light.kitchen_track
-                - light.loft_bed_light
-                - light.loft_desk_lamp
-                - light.nanoleaf
-                - light.overhead
-                - light.pinkie_lamp
-                - light.potter_lamp
-                - light.recessed
-                - light.row_lamp
-                - light.stair
-                - light.thruple_lamp
-                - light.thumb_lamp
-                - light.tiffanys_lamp
-                - light.track
-                - light.yumi_lamp
-          - service: scene.turn_on
-            target:
-              entity_id: scene.alert
-          - service: notify.smartphones
-            data:
-              message: Dishwasher is leaking!
-              title: "🚨 WATER ALERT:"
-      - conditions:
-          - condition: state
-            entity_id: binary_sensor.kitchen_water
-            state: "off"
-        sequence:
-          - service: scene.turn_on
-            data: {}
-            target:
-              entity_id: scene.scene_lights_before
-      - conditions:
-          - condition: state
-            entity_id: binary_sensor.dishwasher_water
-            state: "off"
+          - condition: trigger
+            id: not_moist
         sequence:
           - service: scene.turn_on
             data: {}
