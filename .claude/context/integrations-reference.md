@@ -91,19 +91,14 @@ Native integrations with official documentation on home-assistant.io.
 | hui-element | https://github.com/thomasloven/lovelace-hui-element |
 | Kiosk Mode | https://github.com/maykar/kiosk-mode |
 | Layout Card | https://github.com/thomasloven/lovelace-layout-card |
-| Light Entity Card | https://github.com/ljmerza/light-entity-card |
 | Light Popup Card | https://github.com/DBuit/light-popup-card |
 | Media Player Popup Card | https://github.com/DBuit/media_player-popup-card |
 | Mini Graph Card | https://github.com/kalkih/mini-graph-card |
 | more-info-card | https://github.com/thomasloven/lovelace-more-info-card |
 | Paper Buttons Row | https://github.com/jcwillox/lovelace-paper-buttons-row |
-| RGB Light Card | https://github.com/bokub/rgb-light-card |
 | Sidebar Card | https://github.com/DBuit/sidebar-card |
-| Simple Thermostat | https://github.com/nervetattoo/simple-thermostat |
 | Slider Entity Row | https://github.com/thomasloven/lovelace-slider-entity-row |
 | Stack In Card | https://github.com/custom-cards/stack-in-card |
 | state-switch | https://github.com/thomasloven/lovelace-state-switch |
-| Switch Popup Card | https://github.com/DBuit/switch-popup-card |
-| Thermostat Popup Card | https://github.com/DBuit/thermostat-popup-card |
 | Vertical Stack In Card | https://github.com/ofekashery/vertical-stack-in-card |
 | Xiaomi Vacuum Map Card | https://github.com/PiotrMachowski/lovelace-xiaomi-vacuum-map-card |

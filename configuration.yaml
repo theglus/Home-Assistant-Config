@@ -30,9 +30,9 @@ lovelace:
     # https://github.com/custom-cards/button-card
     - url: /hacsfiles/button-card/button-card.js
       type: module
-    # Custom Sidebar
-    # https://github.com/Villhellm/custom-sidebar
-    - url: /hacsfiles/custom-sidebar/custom-sidebar.js
+    # Card Tools
+    # https://github.com/thomasloven/lovelace-card-tools
+    - url: /hacsfiles/lovelace-card-tools/card-tools.js
       type: module
     # Declutter Card
     # https://github.com/custom-cards/decluttering-card
@@ -80,10 +80,6 @@ lovelace:
     # More Info Card
     - url: /hacsfiles/lovelace-more-info-card/more-info-card.js
       type: module
-      # RGB Light Card
-    # https://github.com/bokub/rgb-light-card
-    - url: /hacsfiles/rgb-light-card/card.js
-      type: module
     # Paper Button Rows
     # https://github.com/jcwillox/lovelace-paper-buttons-row
     - url: /hacsfiles/lovelace-paper-buttons-row/paper-buttons-row.js
@@ -103,14 +99,6 @@ lovelace:
     # State Switch
     # https://github.com/thomasloven/lovelace-state-switch
     - url: /hacsfiles/lovelace-state-switch/state-switch.js
-      type: module
-    # Switch Popup Card
-    # https://github.com/DBuit/switch-popup-card
-    - url: /hacsfiles/switch-popup-card/switch-popup-card.js
-      type: module
-    # Thermostat Popup Card
-    # https://github.com/DBuit/thermostat-popup-card
-    - url: /hacsfiles/thermostat-popup-card/thermostat-popup-card.js
       type: module
     # Vertical Stack in Card
     # https://github.com/ofekashery/vertical-stack-in-card
