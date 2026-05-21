@@ -30,6 +30,10 @@ lovelace:
     # https://github.com/custom-cards/button-card
     - url: /hacsfiles/button-card/button-card.js
       type: module
+    # Card Tools
+    # https://github.com/thomasloven/lovelace-card-tools
+    - url: /hacsfiles/lovelace-card-tools/card-tools.js
+      type: module
     # Custom Sidebar
     # https://github.com/Villhellm/custom-sidebar
     - url: /hacsfiles/custom-sidebar/custom-sidebar.js
