@@ -44,12 +44,6 @@ actions:
           - condition: trigger
             id: idle
         sequence:
-          - target:
-              entity_id: light.yumi_lamp
-            data:
-              color_temp: 370
-            alias: Return Yumi Light to 370 color temp
-            action: light.turn_on
           - metadata: {}
             target:
               entity_id: scene.yumi_state
