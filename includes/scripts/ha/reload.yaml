@@ -10,17 +10,23 @@ ha_reload:
       data:
         duration: 1000
         message: "HA config reloaded."
-        user_id: e43b4b421723479691a6cd90b6a96ded
+        browser_id:
+          - BrowserMod_Laptop
+          - BrowserMod_Pixel
     - service: lovelace.reload_resources
       data: {}
     - service: browser_mod.notification
       data:
         duration: 1000
         message: "Lovelace resources reloaded."
-        user_id: e43b4b421723479691a6cd90b6a96ded
+        browser_id:
+          - BrowserMod_Laptop
+          - BrowserMod_Pixel
     - service: browser_mod.notification
       data:
         duration: 3000
         message: "Reload complete."
-        user_id: e43b4b421723479691a6cd90b6a96ded
+        browser_id:
+          - BrowserMod_Laptop
+          - BrowserMod_Pixel
   mode: single
