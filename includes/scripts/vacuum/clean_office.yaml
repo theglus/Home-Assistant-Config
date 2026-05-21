@@ -4,9 +4,10 @@
 clean_office:
   alias: Clean Office
   sequence:
-    - service: vacuum.send_command
-      data:
+    - action: vacuum.send_command
+      target:
         entity_id: vacuum.winston
+      data:
         command: app_segment_clean
         params: [17]
   icon: "mdi:desk"
