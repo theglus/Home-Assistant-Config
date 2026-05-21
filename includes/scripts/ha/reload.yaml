@@ -5,6 +5,13 @@ ha_reload:
   alias: "Reload"
   icon: mdi:reload-alert
   sequence:
+    - service: browser_mod.notification
+      data:
+        duration: 2000
+        message: "Reloading..."
+        browser_id:
+          - BrowserMod_Laptop
+          - BrowserMod_Pixel
     - service: homeassistant.reload_all
     - service: browser_mod.notification
       data:
