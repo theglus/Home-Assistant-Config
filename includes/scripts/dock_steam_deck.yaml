@@ -14,6 +14,9 @@ media_steam_deck:
           domain: media_player
           entity_id: media_player.dennis
           type: turned_on
+      timeout:
+        seconds: 15
+      continue_on_timeout: false
     - service: media_player.select_source
       data:
         source: STEAM

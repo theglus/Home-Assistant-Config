@@ -243,7 +243,7 @@ cards:
                   template: declutter_temp_button
                   variables:
                     - light: light.group_living_room
-                    - hvac: switch.heat
+                    - hvac: switch.switchbot_heat
                     - sensor_temp: sensor.temperature_living_room
                     - message_on: Heat is on
                     - message_off: Heat is off
@@ -477,7 +477,7 @@ cards:
                 #----------------------------------------------------------------
                 # TODO: #259 Sensor cirle with Living Room Temp
                 - type: "custom:button-card"
-                  entity: switch.heat
+                  entity: switch.switchbot_heat
                   template:
                     - icon_heater
                 #----------------------------------------------------------------

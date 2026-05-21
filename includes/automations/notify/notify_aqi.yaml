@@ -6,17 +6,17 @@
 id: 660d855c-ccb2-44fe-988c-05b382d21f2c
 alias: Notify AQI
 description: Notify Smartphones when AQI is >75.
-trigger:
+triggers:
   - platform: numeric_state
     entity_id: sensor.aqi
     above: "75"
-condition:
+conditions:
   - condition: time
     after: "07:00:00"
     before: "22:00:00"
-action:
-  - service: notify.smartphones
+actions:
+  - action: notify.smartphones
     data:
       title: 🚨 AIR QUALITY ALERT!
-      message: The AQI is {{states.sensor.aqi.state}}.
+      message: The AQI is {{ states('sensor.aqi') }}.
 mode: single

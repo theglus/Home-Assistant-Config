@@ -1,18 +1,27 @@
 #################################################################
-## Climate: Office On
+## Climate: Office Fan
 #
-## Turn fan ON based off of Overhead light group.
+## Turn fan on/off based on Overhead light group state.
 #################################################################
 id: 84df1600-04d0-4857-9ba7-c3de3c46107b
-alias: "Climate: Office On"
-description: "Turn fan ON based on of Overhead light group."
+alias: "Climate: Office Fan"
+description: "Turn fan on/off based on Overhead light group state."
 trigger:
   - platform: state
     entity_id: light.overhead
-    to: "on"
-    from: "off"
+    to:
+      - "on"
+      - "off"
 action:
-  - service: fan.turn_on
-    target:
-      entity_id: fan.mini_air_circulator
+  - if:
+      - condition: template
+        value_template: "{{ trigger.to_state.state == 'on' }}"
+    then:
+      - service: fan.turn_on
+        target:
+          entity_id: fan.mini_air_circulator
+    else:
+      - service: fan.turn_off
+        target:
+          entity_id: fan.mini_air_circulator
 mode: single
