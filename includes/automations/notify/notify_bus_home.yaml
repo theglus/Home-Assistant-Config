@@ -22,8 +22,7 @@ action:
       chat_id: "{{ trigger.event.data.chat_id }}"
       title: 🚌 Next bus home
       message:
-        '{{states[''sensor.muni_outbound''].attributes.upcoming + " minutes
-        away."}}'
+        "{{ state_attr('sensor.muni_outbound', 'upcoming') + ' minutes away.' }}"
       inline_keyboard:
         - Update status:/home
 mode: single
