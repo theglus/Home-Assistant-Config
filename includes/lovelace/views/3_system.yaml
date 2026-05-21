@@ -213,11 +213,11 @@ cards:
                             haptic: light
                           template: icon_name
                         - type: custom:button-card
-                          name: HACS
-                          icon: "custom:hacs"
+                          name: DEV
+                          icon: "mdi:hammer"
                           tap_action:
                             action: navigate
-                            navigation_path: "/hacs/entry"
+                            navigation_path: "/developer-tools"
                             haptic: light
                           template: icon_name
                         - type: custom:button-card
