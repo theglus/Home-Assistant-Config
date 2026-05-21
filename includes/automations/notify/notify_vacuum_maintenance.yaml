@@ -13,42 +13,40 @@ trigger:
     to: returning
 condition: []
 action:
-  - choose:
-      - conditions:
-          - condition: numeric_state
-            entity_id: sensor.vacuum_sensors
-            below: "10"
-        sequence:
-          - service: notify.smartphones
-            data:
-              title: 🔧Tune-up Winston
-              message: Clean Winston's sensors.
-      - conditions:
-          - condition: numeric_state
-            entity_id: sensor.vacuum_filter
-            below: "10"
-        sequence:
-          - service: notify.smartphones
-            data:
-              title: 🔧Tune-up Winston
-              message: Change Winston's filter.
-      - conditions:
-          - condition: numeric_state
-            entity_id: sensor.vacuum_mainbrush
-            below: "10"
-        sequence:
-          - service: notify.smartphones
-            data:
-              title: 🔧Tune-up Winston
-              message: Clean Winston's mainbrush.
-      - conditions:
-          - condition: numeric_state
-            entity_id: sensor.vacuum_sidebrush
-            below: "10"
-        sequence:
-          - service: notify.smartphones
-            data:
-              title: 🔧Tune-up Winston
-              message: Change Winston's sidebrush.
-    default: []
+  - if:
+      - condition: numeric_state
+        entity_id: sensor.vacuum_sensors
+        below: "10"
+    then:
+      - service: notify.smartphones
+        data:
+          title: 🔧Tune-up Winston
+          message: Clean Winston's sensors.
+  - if:
+      - condition: numeric_state
+        entity_id: sensor.vacuum_filter
+        below: "10"
+    then:
+      - service: notify.smartphones
+        data:
+          title: 🔧Tune-up Winston
+          message: Change Winston's filter.
+  - if:
+      - condition: numeric_state
+        entity_id: sensor.vacuum_mainbrush
+        below: "10"
+    then:
+      - service: notify.smartphones
+        data:
+          title: 🔧Tune-up Winston
+          message: Clean Winston's mainbrush.
+  - if:
+      - condition: numeric_state
+        entity_id: sensor.vacuum_sidebrush
+        below: "10"
+    then:
+      - service: notify.smartphones
+        data:
+          title: 🔧Tune-up Winston
+          message: Change Winston's sidebrush.
 mode: single
