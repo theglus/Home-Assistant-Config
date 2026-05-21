@@ -1,0 +1,18 @@
+#################################################################
+## Reset Button
+#
+## Hold-to-confirm button for resetting a consumable via button.press.
+#################################################################
+card:
+  type: custom:button-card
+  entity: "[[entity]]"
+  tap_action:
+    action: none
+  double_tap_action:
+    action: none
+  hold_action:
+    action: call-service
+    service: button.press
+    service_data:
+      entity_id: "[[entity]]"
+  template: icon_only

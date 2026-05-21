@@ -76,7 +76,7 @@ cards:
           #################################################################
           Map:
             type: "custom:mod-card"
-            style: |
+            style: &mod_card_style |
               ha-card {
                 background: rgba(0,0,0,.3);
                 padding: 10px;
@@ -178,14 +178,7 @@ cards:
           #################################################################
           Controls:
             type: "custom:mod-card"
-            style: |
-              ha-card {
-                background: rgba(0,0,0,.3);
-                padding: 10px;
-                border-radius: 35px;
-                border-style: none;
-                margin-top: none;
-                }
+            style: *mod_card_style
             card:
               type: grid
               columns: 1
@@ -292,63 +285,31 @@ cards:
                     #----------------------------------------------------------------
                     ## Reset Filter
                     #----------------------------------------------------------------
-                    - type: custom:button-card
-                      entity: button.winston_reset_filter
-                      tap_action:
-                        action: none
-                      double_tap_action:
-                        action: none
-                      hold_action:
-                        action: call-service
-                        service: button.press
-                        service_data:
-                          entity_id: button.winston_reset_filter
-                      template: icon_only
+                    - type: "custom:decluttering-card"
+                      template: declutter_reset_button
+                      variables:
+                        - entity: button.winston_reset_filter
                     #----------------------------------------------------------------
                     ## Reset Main Brush
                     #----------------------------------------------------------------
-                    - type: custom:button-card
-                      entity: button.winston_reset_main_brush
-                      tap_action:
-                        action: none
-                      double_tap_action:
-                        action: none
-                      hold_action:
-                        action: call-service
-                        service: button.press
-                        service_data:
-                          entity_id: button.winston_reset_main_brush
-                      template: icon_only
+                    - type: "custom:decluttering-card"
+                      template: declutter_reset_button
+                      variables:
+                        - entity: button.winston_reset_main_brush
                     #----------------------------------------------------------------
                     ## Reset Side Brush
                     #----------------------------------------------------------------
-                    - type: custom:button-card
-                      entity: button.winston_reset_side_brush
-                      tap_action:
-                        action: none
-                      double_tap_action:
-                        action: none
-                      hold_action:
-                        action: call-service
-                        service: button.press
-                        service_data:
-                          entity_id: button.winston_reset_side_brush
-                      template: icon_only
+                    - type: "custom:decluttering-card"
+                      template: declutter_reset_button
+                      variables:
+                        - entity: button.winston_reset_side_brush
                     #----------------------------------------------------------------
                     ## Reset Sensors
                     #----------------------------------------------------------------
-                    - type: custom:button-card
-                      entity: button.winston_reset_sensor_dirty
-                      tap_action:
-                        action: none
-                      double_tap_action:
-                        action: none
-                      hold_action:
-                        action: call-service
-                        service: button.press
-                        service_data:
-                          entity_id: button.winston_reset_sensor_dirty
-                      template: icon_only
+                    - type: "custom:decluttering-card"
+                      template: declutter_reset_button
+                      variables:
+                        - entity: button.winston_reset_sensor_dirty
                     #----------------------------------------------------------------
                     ## Empty
                     #----------------------------------------------------------------

@@ -7,82 +7,35 @@ ha_reload:
   sequence:
     - service: browser_mod.notification
       data:
-        duration: 1000
-        message: 1. Reloading Automations...
-      target:
-        device_id:
-          - !secret browsermod_mbp
-          - !secret browsermod_pixel
-    - service: automation.reload
-      data: {}
+        duration: 2000
+        message: "Reloading..."
+        browser_id:
+          - BrowserMod_Laptop
+          - BrowserMod_Pixel
+    - service: homeassistant.reload_all
     - service: browser_mod.notification
       data:
-        duration: 1000
-        message: 2. Reloading Core Config...
-      target:
-        device_id:
-          - !secret browsermod_mbp
-          - !secret browsermod_pixel
-    - service: homeassistant.reload_core_config
-      data: {}
-    - service: browser_mod.notification
-      data:
-        duration: 1000
-        message: 3. Reloading Frontend Themes...
-      target:
-        device_id:
-          - !secret browsermod_mbp
-          - !secret browsermod_pixel
-    - service: frontend.reload_themes
-      data: {}
-    - service: browser_mod.notification
-      data:
-        duration: 1000
-        message: 4. Reloading Groups...
-      target:
-        device_id:
-          - !secret browsermod_mbp
-          - !secret browsermod_pixel
-    - service: group.reload
-      data: {}
-    - service: browser_mod.notification
-      data:
-        duration: 1000
-        message: 5. Reloading Lovelace Resources...
-      target:
-        device_id:
-          - !secret browsermod_mbp
-          - !secret browsermod_pixel
+        duration: 2000
+        message: "HA config reloaded."
+        browser_id:
+          - BrowserMod_Laptop
+          - BrowserMod_Pixel
+    - delay: "00:00:02"
     - service: lovelace.reload_resources
       data: {}
     - service: browser_mod.notification
       data:
-        duration: 1000
-        message: 6. Reloading Scenes...
-      target:
-        device_id:
-          - !secret browsermod_mbp
-          - !secret browsermod_pixel
-    - service: scene.reload
-      data: {}
+        duration: 2000
+        message: "Lovelace resources reloaded."
+        browser_id:
+          - BrowserMod_Laptop
+          - BrowserMod_Pixel
+    - delay: "00:00:02"
     - service: browser_mod.notification
       data:
-        duration: 1000
-        message: 7. Reloading Templates...
-      target:
-        device_id:
-          - !secret browsermod_mbp
-          - !secret browsermod_pixel
-    - service: template.reload
-      data: {}
-    - service: browser_mod.notification
-      data:
-        duration: 1000
-        message: 8. Reloading Vacuum Extractor...
-      target:
-        device_id:
-          - !secret browsermod_mbp
-          - !secret browsermod_pixel
-    - service: xiaomi_cloud_map_extractor.reload
-      data: {}
+        duration: 3000
+        message: "Reload complete."
+        browser_id:
+          - BrowserMod_Laptop
+          - BrowserMod_Pixel
   mode: single

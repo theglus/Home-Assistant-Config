@@ -173,11 +173,11 @@ cards:
           #################################################################
           General:
             type: "custom:mod-card"
-            style: |
-              ha-card { 
-                background: rgba(0,0,0,.3); 
-                padding: 10px; 
-                border-radius: 35px; 
+            style: &mod_card_style |
+              ha-card {
+                background: rgba(0,0,0,.3);
+                padding: 10px;
+                border-radius: 35px;
                 border-style: none;
                 margin-top: none;
                 }
@@ -284,14 +284,7 @@ cards:
           #################################################################
           Entryway:
             type: "custom:mod-card"
-            style: |
-              ha-card { 
-                background: rgba(0,0,0,.3); 
-                padding: 10px; 
-                border-radius: 35px; 
-                border-style: none;
-                margin-top: none;
-                }
+            style: *mod_card_style
             card:
               type: grid
               columns: 3
@@ -351,14 +344,7 @@ cards:
           #249 Create view for downstairs bathroom
           Laundry:
             type: "custom:mod-card"
-            style: |
-              ha-card { 
-                background: rgba(0,0,0,.3); 
-                padding: 10px; 
-                border-radius: 35px; 
-                border-style: none;
-                margin-top: none;
-                }
+            style: *mod_card_style
             card:
               type: grid
               columns: 3
@@ -384,14 +370,7 @@ cards:
           #################################################################
           Office:
             type: "custom:mod-card"
-            style: |
-              ha-card { 
-                background: rgba(0,0,0,.3); 
-                padding: 10px; 
-                border-radius: 35px; 
-                border-style: none;
-                margin-top: none;
-                }
+            style: *mod_card_style
             card:
               type: grid
               columns: 3
@@ -462,14 +441,7 @@ cards:
           #################################################################
           Living Room:
             type: "custom:mod-card"
-            style: |
-              ha-card { 
-                background: rgba(0,0,0,.3); 
-                padding: 10px; 
-                border-radius: 35px; 
-                border-style: none;
-                margin-top: none;
-                }
+            style: *mod_card_style
             card:
               type: grid
               columns: 3
@@ -554,14 +526,7 @@ cards:
           #################################################################
           Kitchen:
             type: "custom:mod-card"
-            style: |
-              ha-card { 
-                background: rgba(0,0,0,.3); 
-                padding: 10px; 
-                border-radius: 35px; 
-                border-style: none;
-                margin-top: none;
-                }
+            style: *mod_card_style
             card:
               type: grid
               columns: 3
@@ -612,14 +577,7 @@ cards:
           #################################################################
           Loft:
             type: "custom:mod-card"
-            style: |
-              ha-card { 
-                background: rgba(0,0,0,.3); 
-                padding: 10px; 
-                border-radius: 35px; 
-                border-style: none;
-                margin-top: none;
-                }
+            style: *mod_card_style
             card:
               type: grid
               columns: 3
@@ -714,14 +672,7 @@ cards:
           #################################################################
           Loft Bathroom:
             type: "custom:mod-card"
-            style: |
-              ha-card { 
-                background: rgba(0,0,0,.3); 
-                padding: 10px; 
-                border-radius: 35px; 
-                border-style: none;
-                margin-top: none;
-                }
+            style: *mod_card_style
             card:
               type: grid
               columns: 3
