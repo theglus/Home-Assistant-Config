@@ -755,8 +755,7 @@ Before Home Assistant, I had several schedules setup for my two air purifiers in
 
 - [Climate Kirby](includes/automations/climate/climate_purifier.yaml): Trigger [Kirby: Daytime](includes/scenes/kirby_daymode.yaml) @ 8 am + [Kirby: Nighttime](includes/scenes/kirby_nightmode.yaml) @ 9 pm.
 - [Climate Loft](includes/automations/climate_loft.yaml): Turn on fan when Loft is ≥72° and off when ≤71°.
-- [Climate Office Off](includes/automations/climate_office_off.yaml): Turn fan OFF based off of Overhead light group.
-- [Climate Office On](includes/automations/climate_office_on.yaml): Turn fan ON based off of Overhead light group.
+- [Climate Office Fan](includes/automations/climate/climate_office_on.yaml): Turn fan on/off based on Overhead light group state.
 </details>
 
 ### 🎚 Dimmer
@@ -776,8 +775,7 @@ The [M5Stack Atom Echo](https://shop.m5stack.com/products/atom-echo-smart-speake
 - [M5Stack Loft Button](includes/automations/m5stack/m5stack_loft_button.yaml): Toggle Loft desk lamp.
 - [M5Stack Office Button](includes/automations/m5stack/m5stack_office_button.yaml): Toggle PC KVM switch.
 - [M5Stack Living Button](includes/automations/m5stack/m5stack_living_button.yaml): Mute/unmute Living Room wake word.
-- [M5Stack Living Listening](includes/automations/m5stack/m5stack_living_listening.yaml): Change Yumi lamp to blue when M5Stack starts listening.
-- [M5Stack Living Stop Listening](includes/automations/m5stack/m5stack_living_stop_listening.yaml): Return Yumi lamp to default when M5Stack stops listening.
+- [M5Stack Living Assist](includes/automations/m5stack/m5stack_living_assist.yaml): Toggle Yumi lamp color when M5Stack Living Room starts/stops listening.
 </details>
 
 ### 📬  Notifications
