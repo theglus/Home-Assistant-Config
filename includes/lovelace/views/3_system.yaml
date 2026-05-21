@@ -213,7 +213,7 @@ cards:
                             haptic: light
                           template: icon_name
                         - type: custom:button-card
-                          name: DEV
+                          name: DEV TOOLS
                           icon: "mdi:hammer"
                           tap_action:
                             action: navigate
