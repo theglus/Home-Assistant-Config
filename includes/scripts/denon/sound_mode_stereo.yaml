@@ -4,9 +4,10 @@
 sound_mode_stereo:
   alias: Sound Mode Stereo
   sequence:
-    - service: media_player.select_sound_mode
+    - action: media_player.select_sound_mode
+      target:
+        entity_id: media_player.dennis
       data:
         sound_mode: "MCH STEREO"
-        entity_id: media_player.dennis
   mode: single
   icon: mdi:surround-sound-2-0
