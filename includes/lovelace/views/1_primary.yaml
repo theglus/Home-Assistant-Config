@@ -311,7 +311,7 @@ cards:
                   entity: light.potter_lamp
                   name: Lamp
                   template:
-                    - light_color
+                    - light
                     - icon_lamp
                 #----------------------------------------------------------------
                 ## Stair Light
@@ -453,7 +453,7 @@ cards:
                   entity: light.track
                   name: Track
                   template:
-                    - light_color
+                    - light
                     - icon_spot
                 #----------------------------------------------------------------
                 ## Garden Light
@@ -470,7 +470,7 @@ cards:
                   entity: light.yumi_lamp
                   name: Lamp
                   template:
-                    - light_color
+                    - light
                     - icon_lamp
                 #----------------------------------------------------------------
                 ## Heater
@@ -538,7 +538,7 @@ cards:
                   entity: light.kitchen_track
                   name: Track
                   template:
-                    - light_color
+                    - light
                     - icon_spot
                 #----------------------------------------------------------------
                 ## Nanoleaf Dino Panesl
@@ -554,7 +554,7 @@ cards:
                   entity: light.recessed
                   name: Recessed
                   template:
-                    - light_color
+                    - light
                     - icon_recessed
                 #----------------------------------------------------------------
                 ## Kitchen Dyson

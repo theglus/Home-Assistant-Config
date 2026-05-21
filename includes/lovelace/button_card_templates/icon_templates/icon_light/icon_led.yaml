@@ -2,7 +2,7 @@
 ## Hallway Runner Icon
 #################################################################
 template:
-  - light_color
+  - light
 styles:
   custom_fields:
     icon:
