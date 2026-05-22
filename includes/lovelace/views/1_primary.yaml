@@ -598,6 +598,7 @@ cards:
                   entity: light.jeffreys_lamp
                   name: Jeffrey's
                   template:
+                    - light
                     - icon_luxo
                 #----------------------------------------------------------------
                 ## Tiffany's Light
@@ -606,6 +607,7 @@ cards:
                   entity: light.tiffanys_lamp
                   name: Tiffany's
                   template:
+                    - light
                     - icon_luxo
                 #----------------------------------------------------------------
                 ## Bed Track
