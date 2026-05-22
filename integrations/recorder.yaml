@@ -30,8 +30,8 @@ recorder:
       # TrueNAS Sensors
       - sensor.truenas_cpu_usage
       # - sensor.truenas_arc_size
-      # - sensor.truenas_sda
-      # - sensor.truenas_sdb
+      - sensor.truenas_download
+      - sensor.truenas_upload
       - sensor.truenas_temperature
       # Power Tracking
       - sensor.all_lights_power
@@ -58,5 +58,5 @@ recorder:
       - sensor.processor_*
       - sensor.daily_energy_*
       - sensor.monthly_energy_*
-      - sensor.truenas_eth_*
+      - sensor.truenas_enp4s0_*
       - sensor.*_energy_cost
