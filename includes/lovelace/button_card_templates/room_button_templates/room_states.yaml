@@ -17,12 +17,3 @@
         state:
           - color: white
       value: unavailable
-    - styles:
-        card: null
-        custom_fields:
-          s2: null
-        icon: null
-        label: null
-        name: null
-        state: null
-      value: "off"
