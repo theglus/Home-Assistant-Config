@@ -3,6 +3,8 @@
 #
 ## Pixar-style desk lamp that perks up when on and droops when off.
 #################################################################
+template:
+  - light
 styles:
   custom_fields:
     icon:
