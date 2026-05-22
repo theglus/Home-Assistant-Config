@@ -8,9 +8,9 @@ template:
 styles:
   custom_fields:
     icon:
-      - width: 75%
-      - margin-left: -8%
-      - margin-top: 3%
+      - width: 85%
+      - margin-left: -12%
+      - margin-top: -2%
 custom_fields:
   icon: >
     [[[
@@ -69,28 +69,28 @@ custom_fields:
             }
             .on {
               animation: on 0.7s;
-              transform-origin: 52% 88%;
+              transform-origin: 50% 92%;
               animation-fill-mode: forwards;
               animation-delay: -0.1s;
             }
             .off {
               animation: off 0.7s;
-              transform-origin: 52% 88%;
+              transform-origin: 50% 92%;
               animation-fill-mode: forwards;
             }
             .on_timeout {
               transform: rotateZ(-15deg);
-              transform-origin: 52% 88%;
+              transform-origin: 50% 92%;
             }
           </style>
-          <rect fill="#9da0a2" x="13" y="44" width="26" height="4" rx="2"/>
+          <rect fill="#9da0a2" x="11" y="44" width="28" height="4" rx="2"/>
           <g class="${state}">
-            <path fill="#9da0a2" d="M27 44 L25 45 L19 31 L21 30 Z"/>
-            <circle fill="#9da0a2" cx="20" cy="30" r="2.5"/>
-            <path fill="#9da0a2" d="M19 29 L21 31 L33 17 L31 15 Z"/>
-            <circle fill="#9da0a2" cx="32" cy="16" r="2"/>
-            <path fill="#9da0a2" d="M32 16 L22 26 Q31 34 40 23 Z"/>
-            <path fill="${variables.light_color}" d="M32 16 L23 25 Q31 32 39 24 Z"/>
+            <path fill="#9da0a2" d="M26 43 L24 45 L15 23 L17 21 Z"/>
+            <circle fill="#9da0a2" cx="16" cy="22" r="3"/>
+            <path fill="#9da0a2" d="M15 21 L17 23 L39 7 L37 5 Z"/>
+            <circle fill="#9da0a2" cx="38" cy="6" r="2.5"/>
+            <path fill="#9da0a2" d="M38 6 L22 20 Q34 30 46 16 Z"/>
+            <path fill="${variables.light_color}" d="M38 6 L24 19 Q34 28 44 17 Z"/>
           </g>
         </svg>
       `;
