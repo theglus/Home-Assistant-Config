@@ -12,6 +12,7 @@ badges:
   - entity: assist_satellite.m5stack_office_assist_in_progress
     name: "Office"
     label: false
+  - entity: binary_sensor.home_assistant_update
 cards:
   - type: vertical-stack
     cards:
@@ -356,8 +357,8 @@ cards:
                             - type: "custom:decluttering-card"
                               template: declutter_network_graph
                               variables:
-                                - sensor1: sensor.truenas_download
-                                - sensor2: sensor.truenas_upload
+                                - sensor1: sensor.truenas_enp4s0_rx
+                                - sensor2: sensor.truenas_enp4s0_tx
                                 - name: Network
                                 - server: Nibbler
                                 - name1: Download
