@@ -8,9 +8,9 @@ template:
 styles:
   custom_fields:
     icon:
-      - width: 85%
-      - margin-left: -12%
-      - margin-top: -2%
+      - width: 75%
+      - margin-left: -8%
+      - margin-top: 3%
 custom_fields:
   icon: >
     [[[
@@ -25,7 +25,7 @@ custom_fields:
         state = 'on_timeout';
       }
       return `
-        <svg viewBox="0 0 50 50">
+        <svg viewBox="0 0 24 24">
           <style>
             @keyframes on {
               0% {
@@ -69,28 +69,24 @@ custom_fields:
             }
             .on {
               animation: on 0.7s;
-              transform-origin: 50% 92%;
+              transform-origin: 10.32px 5.25px;
               animation-fill-mode: forwards;
               animation-delay: -0.1s;
             }
             .off {
               animation: off 0.7s;
-              transform-origin: 50% 92%;
+              transform-origin: 10.32px 5.25px;
               animation-fill-mode: forwards;
             }
             .on_timeout {
               transform: rotateZ(-15deg);
-              transform-origin: 50% 92%;
+              transform-origin: 10.32px 5.25px;
             }
           </style>
-          <rect fill="#9da0a2" x="11" y="44" width="28" height="4" rx="2"/>
+          <path fill="#9da0a2" d="M 10.32,5.25 7.14,10 H 7 c -1.1045695,0 -2,0.895431 -2,2 0,0.94 0.66,1.75 1.58,1.95 L 10.62,20 H 7 v 2 H 17 V 20 H 13 L 8.53,13.28 C 8.83,12.92 9,12.47 9,12 9,11.7 8.93,11.4 8.8,11.13 L 12,6.37"/>
           <g class="${state}">
-            <path fill="#9da0a2" d="M26 43 L24 45 L15 23 L17 21 Z"/>
-            <circle fill="#9da0a2" cx="16" cy="22" r="3"/>
-            <path fill="#9da0a2" d="M15 21 L17 23 L39 7 L37 5 Z"/>
-            <circle fill="#9da0a2" cx="38" cy="6" r="2.5"/>
-            <path fill="#9da0a2" d="M38 6 L22 20 Q34 30 46 16 Z"/>
-            <path fill="${variables.light_color}" d="M38 6 L24 19 Q34 28 44 17 Z"/>
+            <path fill="#9da0a2" d="M 9.18,4.5 10.32,5.25 12,6.37 C 11.78,8.05 12.75,9.89 14.45,11 L 18.89,4.37 C 17.2,3.24 15.12,3.04 13.65,3.87 L 10.85,2"/>
+            <path fill="${variables.light_color}" d="M 18.33,7 16.67,9.5 C 17.35,9.95 18.29,9.77 18.75,9.08 19.21,8.39 19,7.46 18.33,7 Z"/>
           </g>
         </svg>
       `;
