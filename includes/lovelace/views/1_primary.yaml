@@ -642,14 +642,6 @@ cards:
                           entity.attributes.percentage;
                       ]]]
                 #----------------------------------------------------------------
-                ## Upstairs Speakers
-                #----------------------------------------------------------------
-                - type: custom:button-card
-                  entity: media_player.upstairs_speakers
-                  name: Upstairs Speakers
-                  template:
-                    - icon_monitors
-                #----------------------------------------------------------------
                 ## Row Lamp
                 #----------------------------------------------------------------
                 - type: "custom:button-card"
