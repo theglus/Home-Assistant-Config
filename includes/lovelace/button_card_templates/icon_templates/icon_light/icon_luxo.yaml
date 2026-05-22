@@ -8,9 +8,9 @@ template:
 styles:
   custom_fields:
     icon:
-      - width: 75%
+      - width: 100%
       - margin-left: -8%
-      - margin-top: 3%
+      - margin-top: -9%
 custom_fields:
   icon: >
     [[[
