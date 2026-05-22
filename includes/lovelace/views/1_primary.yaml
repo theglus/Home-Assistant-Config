@@ -586,11 +586,11 @@ cards:
                 ## Bedside Lights
                 #----------------------------------------------------------------
                 # TODO: #280 Animate Loft beside lights
-                - type: "custom:button-card"
-                  entity: light.bedside
-                  name: Bedside
-                  template:
-                    - icon_bedside
+                # - type: "custom:button-card"
+                #   entity: light.bedside
+                #   name: Bedside
+                #   template:
+                #     - icon_bedside
                 #----------------------------------------------------------------
                 ## Jeffrey's Lights
                 #----------------------------------------------------------------
