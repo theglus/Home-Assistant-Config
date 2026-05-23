@@ -12,7 +12,7 @@ recorder:
       - sensor.pc_gpu_load
       - sensor.pc_gpu_temp
       # Devices
-      - device_tracker.keys
+      - device_tracker_tile_keys
       # Leela
       - sensor.leela_cpu_used
       - sensor.leela_ram_used
