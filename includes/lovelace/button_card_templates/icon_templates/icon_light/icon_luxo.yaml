@@ -1,0 +1,93 @@
+#################################################################
+## Luxo Lamp Icon
+#
+## Pixar-style desk lamp that perks up when on and droops when off.
+#################################################################
+template:
+  - light
+styles:
+  custom_fields:
+    icon:
+      - width: 95%
+      - margin-left: -8%
+      - margin-top: -9%
+custom_fields:
+  icon: >
+    [[[
+      let state;
+      if (variables.state === 'on' && variables.timeout < 2000) {
+        state = 'on';
+      }
+      if (variables.state === 'off' && variables.timeout < 2000) {
+        state = 'off';
+      }
+      if (variables.state === 'on' && variables.timeout > 2000) {
+        state = 'on_timeout';
+      }
+      return `
+        <svg viewBox="0 0 24 24">
+          <style>
+            @keyframes on {
+              0% {
+                transform: rotateZ(0deg);
+                animation-timing-function: cubic-bezier(0.7, 0, 0.84, 0);
+              }
+              70% {
+                transform: rotateZ(-15deg);
+                animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+              }
+              75% {
+                transform: rotateZ(-15deg);
+                animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+              }
+              88% {
+                transform: rotateZ(-11deg);
+              }
+              100% {
+                transform: rotateZ(-15deg);
+              }
+            }
+            @keyframes off {
+              0% {
+                transform: rotateZ(-15deg);
+                animation-timing-function: cubic-bezier(0.7, 0, 0.84, 0);
+              }
+              70% {
+                transform: rotateZ(0deg);
+                animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+              }
+              75% {
+                transform: rotateZ(0deg);
+                animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+              }
+              88% {
+                transform: rotateZ(-4deg);
+              }
+              100% {
+                transform: rotateZ(0deg);
+              }
+            }
+            .on {
+              animation: on 0.7s;
+              transform-origin: 10.32px 5.25px;
+              animation-fill-mode: forwards;
+              animation-delay: -0.1s;
+            }
+            .off {
+              animation: off 0.7s;
+              transform-origin: 10.32px 5.25px;
+              animation-fill-mode: forwards;
+            }
+            .on_timeout {
+              transform: rotateZ(-15deg);
+              transform-origin: 10.32px 5.25px;
+            }
+          </style>
+          <path fill="#9da0a2" d="M 10.32,5.25 7.14,10 H 7 c -1.1045695,0 -2,0.895431 -2,2 0,0.94 0.66,1.75 1.58,1.95 L 10.62,20 H 7 v 2 H 17 V 20 H 13 L 8.53,13.28 C 8.83,12.92 9,12.47 9,12 9,11.7 8.93,11.4 8.8,11.13 L 12,6.37"/>
+          <g class="${state}">
+            <path fill="#9da0a2" d="M 9.18,4.5 10.32,5.25 12,6.37 C 11.78,8.05 12.75,9.89 14.45,11 L 18.89,4.37 C 17.2,3.24 15.12,3.04 13.65,3.87 L 10.85,2"/>
+            <path fill="${variables.light_color}" d="M 18.33,7 16.67,9.5 C 17.35,9.95 18.29,9.77 18.75,9.08 19.21,8.39 19,7.46 18.33,7 Z"/>
+          </g>
+        </svg>
+      `;
+    ]]]

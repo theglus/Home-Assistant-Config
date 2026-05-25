@@ -586,19 +586,11 @@ cards:
                 ## Bedside Lights
                 #----------------------------------------------------------------
                 # TODO: #280 Animate Loft beside lights
-                - type: "custom:button-card"
-                  entity: light.bedside
-                  name: Bedside
-                  template:
-                    - icon_bedside
-                #----------------------------------------------------------------
-                ## Jeffrey's Lights
-                #----------------------------------------------------------------
-                - type: "custom:button-card"
-                  entity: light.jeffreys_lamp
-                  name: Jeffrey's
-                  template:
-                    - icon_bed
+                # - type: "custom:button-card"
+                #   entity: light.bedside
+                #   name: Bedside
+                #   template:
+                #     - icon_bedside
                 #----------------------------------------------------------------
                 ## Tiffany's Light
                 #----------------------------------------------------------------
@@ -606,7 +598,7 @@ cards:
                   entity: light.tiffanys_lamp
                   name: Tiffany's
                   template:
-                    - icon_bed
+                    - icon_luxo
                 #----------------------------------------------------------------
                 ## Bed Track
                 #----------------------------------------------------------------
@@ -616,6 +608,14 @@ cards:
                   template:
                     - light
                     - icon_spot
+                #----------------------------------------------------------------
+                ## Jeffrey's Lights
+                #----------------------------------------------------------------
+                - type: "custom:button-card"
+                  entity: light.jeffreys_lamp
+                  name: Jeffrey's
+                  template:
+                    - icon_luxo
                 #----------------------------------------------------------------
                 ## Desk Lights
                 #----------------------------------------------------------------
@@ -641,14 +641,6 @@ cards:
                           null :
                           entity.attributes.percentage;
                       ]]]
-                #----------------------------------------------------------------
-                ## Upstairs Speakers
-                #----------------------------------------------------------------
-                - type: custom:button-card
-                  entity: media_player.upstairs_speakers
-                  name: Upstairs Speakers
-                  template:
-                    - icon_monitors
                 #----------------------------------------------------------------
                 ## Row Lamp
                 #----------------------------------------------------------------
