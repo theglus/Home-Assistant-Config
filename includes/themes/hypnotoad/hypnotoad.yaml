@@ -242,3 +242,10 @@ hypnotoad:
       --md-list-item-supporting-text-color: rgba(255, 255, 255, 0.7);
       --md-list-item-trailing-supporting-text-color: rgba(255, 255, 255, 0.7);
     }
+
+  # Hide history, settings, and overflow menu buttons in all more-info popups
+  card-mod-more-info-yaml: |
+    ha-more-info-header$: |
+      .header__actions {
+        display: none !important;
+      }
