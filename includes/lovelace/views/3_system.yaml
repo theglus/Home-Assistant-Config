@@ -148,7 +148,7 @@ cards:
                         background: none;
                       }
                   entities:
-                    - entity: binary_sensor.home_assistant_update
+                    - entity: binary_sensor.home_assistant_major_update
                       name: Installed Version
                       icon: mdi:home-assistant
                     # - entity: sensor.hacs
