@@ -45,7 +45,6 @@ Configured via the Home Assistant UI (config flow). No YAML required.
 - Telegram Bot
 - Tile
 - Tomorrow.io
-- Google Translate Text-to-Speech
 - TP-Link Smart Home
 - TrueNAS
 - Twinkly
