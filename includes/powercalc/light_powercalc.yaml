@@ -34,9 +34,9 @@
         - entity_id: light.thruple_lamp
           fixed:
             power: 5.50
-        - entity_id: light.thumb_lamp
-          fixed:
-            power: 3.50
+        # - entity_id: light.thumb_lamp
+        #   fixed:
+        #     power: 3.50
     - create_group: Living Room Lights
       unique_id: 62651cc1-9a08-439a-93d1-681b6dae5f65
       entities:
