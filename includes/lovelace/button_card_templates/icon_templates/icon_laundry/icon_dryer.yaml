@@ -19,7 +19,7 @@ custom_fields:
   icon: >
     [[[
       const active = variables.state !== 'off' && variables.state !== 'unavailable';
-      const baseColor = active ? '#ff6a00' : '#ffffff';
+      const baseColor = active ? 'rgba(0,0,0,0.5)' : '#ffffff';
       const tumbleColor = active ? '#ff6a00' : '#ffffff';
       const spinAnim = active ? '<animateTransform attributeName="transform" type="rotate" from="0 12 14" to="360 12 14" dur="2s" repeatCount="indefinite"/>' : '';
       return `
