@@ -172,8 +172,8 @@
         target:
           entity_id:
           - switch.coffee_station_plug
-          - switch.workstation_plug
           - switch.craftstation_plug
+          - switch.workstation_plug
         action: switch.turn_on
       - delay:
           hours: 0
@@ -192,8 +192,8 @@
         target:
           entity_id:
           - switch.coffee_station_plug
-          - switch.workstation_plug
           - switch.craftstation_plug
+          - switch.workstation_plug
         action: switch.turn_off
   mode: single
 - id: '1684367579757'
