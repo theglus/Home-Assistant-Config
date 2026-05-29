@@ -42,12 +42,12 @@ ha_reload:
       data: {}
     - service: browser_mod.notification
       data:
-        duration: 3500
+        duration: 2000
         message: "✅ Lovelace resources reloaded."
         browser_id:
           - BrowserMod_Laptop
           - BrowserMod_Pixel
-    - delay: "00:00:04"
+    - delay: "00:00:01"
     - service: browser_mod.notification
       data:
         duration: 3500
