@@ -4,6 +4,14 @@
 template:
   - base
   - circle_laundry
+state_display: >
+  [[[
+    const active = variables.state !== 'off' && variables.state !== 'unavailable';
+    if (!active) return '';
+    const phase = entity.attributes.run_state;
+    if (!phase || phase === '-' || phase === 'unknown') return '';
+    return phase;
+  ]]]
 tap_action:
   action: failure
 double_tap_action:
