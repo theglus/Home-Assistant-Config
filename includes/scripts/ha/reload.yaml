@@ -15,7 +15,7 @@ ha_reload:
           - BrowserMod_Pixel
     - service: browser_mod.notification
       data:
-        duration: 2000
+        duration: 30000
         message: "🔄 Reloading..."
         browser_id:
           - BrowserMod_Laptop
@@ -31,7 +31,7 @@ ha_reload:
     - delay: "00:00:02"
     - service: browser_mod.notification
       data:
-        duration: 2000
+        duration: 30000
         message: "🔄 Reloading..."
         browser_id:
           - BrowserMod_Laptop
