@@ -8,42 +8,37 @@ ha_reload:
     - service: browser_mod.notification
       data:
         duration: 2000
-        message: "Reloading..."
-        browser_id:
-          - BrowserMod_Laptop
-          - BrowserMod_Pixel
+        message: "🔄 Reloading..."
+        user_id:
+          - e43b4b421723479691a6cd90b6a96ded
     - service: shell_command.touch_lovelace
     - service: browser_mod.notification
       data:
         duration: 2000
-        message: "Lovelace touched."
-        browser_id:
-          - BrowserMod_Laptop
-          - BrowserMod_Pixel
+        message: "✅ Lovelace touched."
+        user_id:
+          - e43b4b421723479691a6cd90b6a96ded
     - service: homeassistant.reload_all
     - service: browser_mod.notification
       data:
         duration: 2000
-        message: "HA config reloaded."
-        browser_id:
-          - BrowserMod_Laptop
-          - BrowserMod_Pixel
+        message: "✅ HA config reloaded."
+        user_id:
+          - e43b4b421723479691a6cd90b6a96ded
     - delay: "00:00:02"
     - service: lovelace.reload_resources
       data: {}
     - service: browser_mod.notification
       data:
         duration: 2000
-        message: "Lovelace resources reloaded."
-        browser_id:
-          - BrowserMod_Laptop
-          - BrowserMod_Pixel
+        message: "✅ Lovelace resources reloaded."
+        user_id:
+          - e43b4b421723479691a6cd90b6a96ded
     - delay: "00:00:02"
     - service: browser_mod.notification
       data:
         duration: 3000
-        message: "Reload complete."
-        browser_id:
-          - BrowserMod_Laptop
-          - BrowserMod_Pixel
+        message: "🏁 Reload complete."
+        user_id:
+          - e43b4b421723479691a6cd90b6a96ded
   mode: single
