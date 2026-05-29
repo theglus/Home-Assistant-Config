@@ -1,0 +1,5 @@
+#################################################################
+## Shell commands for Home Assistant management.
+#################################################################
+shell_command:
+  touch_lovelace: touch /config/ui-lovelace.yaml

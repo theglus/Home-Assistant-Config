@@ -5,18 +5,35 @@ ha_reload:
   alias: "Reload"
   icon: mdi:reload-alert
   sequence:
+    - service: shell_command.touch_lovelace
     - service: browser_mod.notification
       data:
-        duration: 2000
-        message: "Reloading..."
+        duration: 3500
+        message: "🚀 Starting reload... ✅ Lovelace touched."
+        browser_id:
+          - BrowserMod_Laptop
+          - BrowserMod_Pixel
+    - delay: "00:00:03"
+    - service: browser_mod.notification
+      data:
+        duration: 30000
+        message: "🔄 Reloading..."
         browser_id:
           - BrowserMod_Laptop
           - BrowserMod_Pixel
     - service: homeassistant.reload_all
     - service: browser_mod.notification
       data:
-        duration: 2000
-        message: "HA config reloaded."
+        duration: 3500
+        message: "✅ HA config reloaded."
+        browser_id:
+          - BrowserMod_Laptop
+          - BrowserMod_Pixel
+    - delay: "00:00:02"
+    - service: browser_mod.notification
+      data:
+        duration: 30000
+        message: "🔄 Reloading..."
         browser_id:
           - BrowserMod_Laptop
           - BrowserMod_Pixel
@@ -26,15 +43,15 @@ ha_reload:
     - service: browser_mod.notification
       data:
         duration: 2000
-        message: "Lovelace resources reloaded."
+        message: "✅ Lovelace resources reloaded."
         browser_id:
           - BrowserMod_Laptop
           - BrowserMod_Pixel
-    - delay: "00:00:02"
+    - delay: "00:00:01"
     - service: browser_mod.notification
       data:
-        duration: 3000
-        message: "Reload complete."
+        duration: 3500
+        message: "🏁 Reload complete."
         browser_id:
           - BrowserMod_Laptop
           - BrowserMod_Pixel
