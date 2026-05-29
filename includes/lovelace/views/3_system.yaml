@@ -179,9 +179,9 @@ cards:
                             - name: RAM
                             - server: Farnsworth
                             - title: RAM Utilization
-                            - green: 25
-                            - yellow: 50
-                            - orange: 75
+                            - green: 70
+                            - yellow: 80
+                            - orange: 90
                             - red: 100
                         #----------------------------------------------------------------
                         ## HA CPU Temp Graph
