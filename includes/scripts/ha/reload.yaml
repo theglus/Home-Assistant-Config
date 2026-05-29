@@ -24,12 +24,12 @@ ha_reload:
     - service: homeassistant.reload_all
     - service: browser_mod.notification
       data:
-        duration: 5000
+        duration: 3500
         message: "✅ HA config reloaded."
         browser_id:
           - BrowserMod_Laptop
           - BrowserMod_Pixel
-    - delay: "00:00:05"
+    - delay: "00:00:04"
     - service: browser_mod.notification
       data:
         duration: 30000
@@ -41,15 +41,15 @@ ha_reload:
       data: {}
     - service: browser_mod.notification
       data:
-        duration: 5000
+        duration: 3500
         message: "✅ Lovelace resources reloaded."
         browser_id:
           - BrowserMod_Laptop
           - BrowserMod_Pixel
-    - delay: "00:00:05"
+    - delay: "00:00:04"
     - service: browser_mod.notification
       data:
-        duration: 5000
+        duration: 3500
         message: "🏁 Reload complete."
         browser_id:
           - BrowserMod_Laptop
