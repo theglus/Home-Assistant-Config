@@ -12,6 +12,14 @@ ha_reload:
         browser_id:
           - BrowserMod_Laptop
           - BrowserMod_Pixel
+    - service: shell_command.touch_lovelace
+    - service: browser_mod.notification
+      data:
+        duration: 2000
+        message: "Lovelace touched."
+        browser_id:
+          - BrowserMod_Laptop
+          - BrowserMod_Pixel
     - service: homeassistant.reload_all
     - service: browser_mod.notification
       data:
