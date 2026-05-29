@@ -9,8 +9,6 @@ ha_reload:
       data:
         duration: 2000
         message: "🔄 Reloading..."
-        user_id:
-          - e43b4b421723479691a6cd90b6a96ded
         browser_id:
           - BrowserMod_Laptop
           - BrowserMod_Pixel
@@ -19,8 +17,6 @@ ha_reload:
       data:
         duration: 2000
         message: "✅ Lovelace touched."
-        user_id:
-          - e43b4b421723479691a6cd90b6a96ded
         browser_id:
           - BrowserMod_Laptop
           - BrowserMod_Pixel
@@ -29,8 +25,6 @@ ha_reload:
       data:
         duration: 2000
         message: "✅ HA config reloaded."
-        user_id:
-          - e43b4b421723479691a6cd90b6a96ded
         browser_id:
           - BrowserMod_Laptop
           - BrowserMod_Pixel
@@ -41,8 +35,6 @@ ha_reload:
       data:
         duration: 2000
         message: "✅ Lovelace resources reloaded."
-        user_id:
-          - e43b4b421723479691a6cd90b6a96ded
         browser_id:
           - BrowserMod_Laptop
           - BrowserMod_Pixel
@@ -51,8 +43,6 @@ ha_reload:
       data:
         duration: 3000
         message: "🏁 Reload complete."
-        user_id:
-          - e43b4b421723479691a6cd90b6a96ded
         browser_id:
           - BrowserMod_Laptop
           - BrowserMod_Pixel
