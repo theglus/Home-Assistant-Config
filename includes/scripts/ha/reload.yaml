@@ -29,7 +29,7 @@ ha_reload:
         browser_id:
           - BrowserMod_Laptop
           - BrowserMod_Pixel
-    - delay: "00:00:04"
+    - delay: "00:00:02"
     - service: browser_mod.notification
       data:
         duration: 30000
