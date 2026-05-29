@@ -5,18 +5,11 @@ ha_reload:
   alias: "Reload"
   icon: mdi:reload-alert
   sequence:
-    - service: browser_mod.notification
-      data:
-        duration: 2000
-        message: "🚀 Starting reload..."
-        browser_id:
-          - BrowserMod_Laptop
-          - BrowserMod_Pixel
     - service: shell_command.touch_lovelace
     - service: browser_mod.notification
       data:
         duration: 2000
-        message: "✅ Lovelace touched."
+        message: "🚀 Starting reload... ✅ Lovelace touched."
         browser_id:
           - BrowserMod_Laptop
           - BrowserMod_Pixel
