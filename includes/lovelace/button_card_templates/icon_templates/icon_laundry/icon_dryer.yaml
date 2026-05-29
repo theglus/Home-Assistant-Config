@@ -7,7 +7,7 @@ template:
 state_display: >
   [[[
     const active = variables.state !== 'off' && variables.state !== 'unavailable';
-    if (!active) return '';
+    if (!active) return variables.state === 'off' ? 'Off' : '';
     const phase = entity.attributes.run_state;
     if (!phase || phase === '-' || phase === 'unknown') return '';
     return phase;
