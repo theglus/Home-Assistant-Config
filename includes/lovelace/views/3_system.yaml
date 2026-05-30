@@ -10,13 +10,17 @@ badges:
     tap_action:
       action: url
       url_path: "https://www.cloudflarestatus.com/"
+  - entity: binary_sensor.internet_status
+    tap_action:
+      action: url
+      url_path: "https://gfiber.com/webpass/support/"
   - entity: binary_sensor.google_dns
     name: "8.8.8.8"
     show_name: true
     show_state: false
     tap_action:
       action: url
-      url_path: "https://www.cloudflarestatus.com/"
+      url_path: "https://status.cloud.google.com/"
 cards:
   - type: vertical-stack
     cards:
