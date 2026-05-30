@@ -5,12 +5,12 @@
 #################################################################
 - binary_sensor:
     - name: Internet Status
-      unique_id: internet_status
+      unique_id: 3c58b12e-7265-4c23-8cb4-70caaf36799a
       device_class: connectivity
       state: >
         {{
           is_state('binary_sensor.google_dns', 'on')
-          and
+          or
           is_state('binary_sensor.cloudflare_dns', 'on')
         }}
       icon: >
