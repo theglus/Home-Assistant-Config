@@ -3,15 +3,24 @@ path: ha
 panel: false
 icon: "mdi:home-assistant"
 badges:
-  - entity: assist_satellite.m5stack_living_room_assist_in_progress
-    name: "Living"
-    show_name: false
-  - entity: assist_satellite.m5stack_loft_assist_in_progress
-    name: "Loft"
-    show_name: false
-  - entity: assist_satellite.m5stack_office_assist_in_progress
-    name: "Office"
-    show_name: false
+  - entity: binary_sensor.cloudflare_dns
+    name: "1.1.1.1"
+    show_name: true
+    show_state: false
+    tap_action:
+      action: url
+      url_path: "https://www.cloudflarestatus.com/"
+  - entity: binary_sensor.internet_status
+    tap_action:
+      action: url
+      url_path: "https://gfiber.com/webpass/support/"
+  - entity: binary_sensor.google_dns
+    name: "8.8.8.8"
+    show_name: true
+    show_state: false
+    tap_action:
+      action: url
+      url_path: "https://status.cloud.google.com/"
 cards:
   - type: vertical-stack
     cards:

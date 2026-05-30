@@ -32,6 +32,7 @@ Configured via the Home Assistant UI (config flow). No YAML required.
 - OpenAI
 - Opower
 - Philips Hue
+- Ping (ICMP)
 - Plex Media Server
 - Powercalc
 - qBittorrent
@@ -64,6 +65,7 @@ Configured via YAML package files in `integrations/`. Each domain has a correspo
 - Media Player (`integrations/media_player.yaml`)
 - Notify (`integrations/notify.yaml`)
 - RESTful Command (`integrations/rest_command.yaml`)
+- Shell Command (`integrations/shell_command.yaml`)
 - Template (`integrations/template.yaml`)
 - Utility Meter (`integrations/utility_meter.yaml`)
 

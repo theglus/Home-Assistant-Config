@@ -48,6 +48,8 @@ I routinely stream games via Moonlight from my desktop computer (in the Office) 
 - [MQTT](https://www.home-assistant.io/integrations/mqtt)
 - [Nanoleaf](https://www.home-assistant.io/integrations/nanoleaf)
 - [Philips Hue](https://www.home-assistant.io/integrations/hue)
+- [Ping (ICMP)](https://www.home-assistant.io/integrations/ping)
+- [Shell Command](https://www.home-assistant.io/integrations/shell_command)
 - [Sony Bravia TV](https://www.home-assistant.io/integrations/braviatv)
 - [Tile](https://www.home-assistant.io/integrations/tile)
 - [TP-Link Kasa Smart](https://www.home-assistant.io/integrations/tplink)
@@ -792,6 +794,7 @@ I currently have notifications set to be delivered via one of two channels [Tele
 - [Notify Dryer](includes/automations/notify_dryer.yaml): Notify smartphones when dryer is complete.
 - [Notify Entry](includes/automations/notify/notify_entry.yaml): Notify Telegram when the front door is opened.
 - [Notify Heat Wave](includes/automations/notify_heatwave.yaml): Notify smartphones when tomorrows high is  >75 °F.
+- [Notify Internet Status](includes/automations/notify/notify_internet_status.yaml): Notify smartphones of internet outages and resolutions.
 - [Notify Printer](includes/automations/notify/notify_printer.yaml): Notify Smartphones when Major Laser Printer is ready.
 - [Notify Vacuum Maintenance](includes/automations/notify/notify_vacuum_maintenance.yaml): Notify smartphones when Winston's sensors, filter, or brushes need attention.
 - [Notify Washer](includes/automations/notify_washer.yaml): Notify smartphones when washer is complete.
