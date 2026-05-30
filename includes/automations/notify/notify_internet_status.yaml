@@ -1,0 +1,67 @@
+#################################################################
+## Notify Internet Status
+#
+## Notify smartphones of internet outages and resolutions.
+#################################################################
+id: "1780157072089"
+alias: Notify Internet Status
+description: "Notify smartphones of internet outages and resolutions."
+triggers:
+  - trigger: state
+    alias: Internet Outage
+    entity_id:
+      - binary_sensor.internet_status
+    from:
+      - "on"
+    to:
+      - "off"
+    id: Outage
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 15
+  - trigger: state
+    alias: Internet Restored
+    entity_id:
+      - binary_sensor.internet_status
+    from:
+      - "off"
+    id: Restored
+    to:
+      - "on"
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 30
+conditions: []
+actions:
+  - choose:
+      - conditions:
+          - condition: trigger
+            id:
+              - Outage
+        sequence:
+          - action: notify.smartphones
+            metadata: {}
+            data:
+              title: "\U0001F6A8 Internet Outage Detected"
+              message:
+                Cloudflare and Google are unreachable as of {{ now().strftime('%-I:%M
+                %p') }}.
+            alias: "Notify Smartphones: Internet Outage "
+        alias: "Internet Outage "
+      - conditions:
+          - condition: trigger
+            id:
+              - Restored
+        sequence:
+          - action: notify.smartphones
+            metadata: {}
+            data:
+              title: "\U0001F310 Internet Restored"
+              message:
+                Connection has been reestablished with Cloudflare and Google as
+                of {{ now().strftime('%-I:%M %p') }}.
+            alias: "Notify Smartphones: Internet Restored"
+        alias: Internet Restored
+mode: single
