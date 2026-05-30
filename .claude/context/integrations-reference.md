@@ -28,6 +28,7 @@ Native integrations with official documentation on home-assistant.io.
 | OpenAI | https://www.home-assistant.io/integrations/openai_conversation/ |
 | Opower | https://www.home-assistant.io/integrations/opower/ |
 | Philips Hue | https://www.home-assistant.io/integrations/hue/ |
+| Ping (ICMP) | https://www.home-assistant.io/integrations/ping/ |
 | Plex Media Server | https://www.home-assistant.io/integrations/plex/ |
 | qBittorrent | https://www.home-assistant.io/integrations/qbittorrent/ |
 | Sony Bravia TV | https://www.home-assistant.io/integrations/braviatv/ |

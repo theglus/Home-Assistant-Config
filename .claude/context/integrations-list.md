@@ -32,6 +32,7 @@ Configured via the Home Assistant UI (config flow). No YAML required.
 - OpenAI
 - Opower
 - Philips Hue
+- Ping (ICMP)
 - Plex Media Server
 - Powercalc
 - qBittorrent
