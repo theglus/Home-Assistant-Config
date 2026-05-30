@@ -1,0 +1,21 @@
+#################################################################
+## Internet Status
+#
+## Pings 1.1.1.1 and 8.8.8.8 to determine if internet is out.
+#################################################################
+- binary_sensor:
+    - name: Internet Status
+      unique_id: internet_status
+      device_class: connectivity
+      state: >
+        {{
+          is_state('binary_sensor.google_dns', 'on')
+          and
+          is_state('binary_sensor.cloudflare_dns', 'on')
+        }}
+      icon: >
+        {% if this.state == 'on' %}
+          mdi:web-check
+        {% else %}
+          mdi:web-off
+        {% endif %}
