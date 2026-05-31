@@ -1,5 +1,5 @@
 # Home-Assistant-Config
-Welcome to theglus's Home Assistant setup. I hope you find value in the projects and documentation I've been working on. I'll be continuting to update my documentaion in the coming weeks so stay tuned. 
+Welcome to theglus's Home Assistant setup. I hope you find value in the projects and documentation I've been working on.
 ## Table of Contents 
 * [Hardware](#-hardware)
 * [Software](#-software)
@@ -11,11 +11,11 @@ Welcome to theglus's Home Assistant setup. I hope you find value in the projects
 * [Network](#network)
 ### Home Assistant Server
 My Home Assistant setup is pretty basic but it gets the job done without any hiccups.
-| [Raspberry Pi 4 Model B 4GB](https://a.co/d/1OWca61) | [Raspbee II](https://a.co/d/9k93ZNW) | [SanDisk Extreme 64GB MicroSD]https://a.co/d/6piTlaW) | [Argon Neo Case](https://a.co/d/73W0bTn) |
+| [Raspberry Pi 4 Model B 4GB](https://a.co/d/1OWca61) | [Home Assistant SkyConnect (ZBT-1)](https://www.home-assistant.io/connectzbt1/) | [SanDisk Extreme 64GB MicroSD](https://a.co/d/6piTlaW) | [Argon Neo Case](https://a.co/d/73W0bTn) |
 | --- | --- | --- | --- |
-| ![Raspberry Pi 4 Model B 4GB](www/readme/ha_hardware/pi_4.jpg) | ![Raspbee II](www/readme/ha_hardware/raspbee_II.jpg) | ![SanDisk Extreme 64GB MicroSD](www/readme/ha_hardware/sandisk_64.jpg) | ![Argon Neo Pi case](www/readme/ha_hardware/argon_neo.jpg) |
+| ![Raspberry Pi 4 Model B 4GB](www/readme/ha_hardware/pi_4.jpg) | ![Home Assistant SkyConnect (ZBT-1)](https://www.home-assistant.io/images/connectzbt1/connectzbt1_isometric.png) | ![SanDisk Extreme 64GB MicroSD](www/readme/ha_hardware/sandisk_64.jpg) | ![Argon Neo Pi case](www/readme/ha_hardware/argon_neo.jpg) |
 
-I opted to go the Zigbee route primarily because I really like the Aqara platform. I landed on the Raspbee II over the Conbee as it just seemed like a more elegant solution. It's a little bit of a pain to initially setup, but after that it's smooth sailing. 
+I opted to go the Zigbee route primarily because I really like the Aqara platform. I upgraded from a RaspBee II to the SkyConnect shortly after release, as it was conveniently timed with my migration from deCONZ to ZHA.
 ### Network
 Living in a 950 sqft Loft apartment, I don't have to worry about signal strength. My setup consists of a Google WiFi puck in the Living Room. This is my primary router: one end connects to my in-wall ethernet port and the other end to a TP-Link 8-port network switch. 
 | [Google Wifi](https://store.google.com/us/product/google_wifi_2nd_gen?hl=en-US) | [TP-Link Switch](https://a.co/d/3TJbImA) | [MoCa Network Adapter](https://a.co/d/fYFKBw5) |
@@ -43,6 +43,7 @@ I routinely stream games via Moonlight from my desktop computer (in the Office) 
 - [Denon AVR Network Receiver](https://www.home-assistant.io/integrations/denonavr)
 - [Denon HEOS](https://www.home-assistant.io/integrations/heos)
 - [DLNA](https://www.home-assistant.io/integrations/dlna_dmr)
+- [ESPHome](https://www.home-assistant.io/integrations/esphome)
 - [Google Cast](https://www.home-assistant.io/integrations/cast)
 - [Mobile App](https://www.home-assistant.io/integrations/mobile_app)
 - [MQTT](https://www.home-assistant.io/integrations/mqtt)
@@ -52,8 +53,8 @@ I routinely stream games via Moonlight from my desktop computer (in the Office) 
 - [Shell Command](https://www.home-assistant.io/integrations/shell_command)
 - [Sony Bravia TV](https://www.home-assistant.io/integrations/braviatv)
 - [Tile](https://www.home-assistant.io/integrations/tile)
-- [TP-Link Kasa Smart](https://www.home-assistant.io/integrations/tplink)
-- [Xiaomi Miio](https://www.home-assistant.io/integrations/xiaomi_miio)
+- [TP-Link Smart Home](https://www.home-assistant.io/integrations/tplink)
+- [Xiaomi Home](https://www.home-assistant.io/integrations/xiaomi_miio)
 - [Zigbee Home Automation (ZHA)](https://www.home-assistant.io/integrations/zha)
  
 </details>
@@ -67,10 +68,10 @@ I routinely stream games via Moonlight from my desktop computer (in the Office) 
 - [Claude Usage](https://github.com/trickv/hass-claude-usage): Monitors Anthropic Claude subscription usage, including session and weekly usage stats.
 - [Coway IoCare](https://github.com/RobertD502/home-assistant-iocare): Adds support for Coway Airmega to HA.
 - [Drivvo Integration](https://github.com/theglus/sensor.drivvo): Utilized to pull in Vespa milage + fuel economy from [Drivvo](https://github.com/theglus/sensor.drivvo).
-- [Dyson Local/Cloud](https://github.com/shenxn/ha-dyson): Add support for Dyson air purifiers to HA.
+- [Dyson](https://github.com/shenxn/ha-dyson): Add support for Dyson air purifiers to HA.
 - [Frigidaire](https://github.com/bm1549/home-assistant-frigidaire): Adds support for Frigidaire portable AC to HA. This is what originally got me interested in Home Assistant. Ironically I wasn't able to get it working until a year in.
 - [Google Home](https://github.com/leikoilja/ha-google-home): Creates HA sensors for alarms + timers that have been set on various Google Home devices.
-- [LG ThinQ Sensors](https://github.com/ollo69/ha-smartthinq-sensors): Supports integrating my LG washer + dryer into HA.
+- [SmartThinQ LGE Sensors](https://github.com/ollo69/ha-smartthinq-sensors): Supports integrating my LG washer + dryer into HA.
 - [PowerCalc](https://github.com/bramstroker/homeassistant-powercalc): Virtual power sensors for estimated tracking of energy consumption.
 - [TrueNAS](https://github.com/tomaae/homeassistant-truenas): Adds the ability to monitor and control my TrueNAS Scale NAS directly in HA.
 - [Xiaomi Cloud Map Extractor](https://github.com/PiotrMachowski/Home-Assistant-custom-components-Xiaomi-Cloud-Map-Extractor): Harnesses lidar in RoboRock S4 to create a live map of my home.
@@ -115,7 +116,7 @@ Helpers (`input_boolean`, `input_number`, `input_select`, `input_datetime`, `inp
 </details>
 
 ### Voice Assistant
-I'm currently utilizing Nabu Casa to leverage Google Assistant via the aforementioned Google Home devices to enable voice controls. I mainly use voice commands to trigger the lights, music, and theater system. I would like to setup voice commands for Winston and Kirby in the near future. 
+Voice control is theoretically handled by [M5Stack Atom Echos](https://shop.m5stack.com/products/atom-echo-smart-speaker-dev-kit) running local wake words in the Office, Living Room, and Loft — though in practice only the Office one actually behaves. The Living Room thinks everything is a wake word and the Loft unit whispers. Google Assistant via Nabu Casa remains my daily driver until the Satellite 1.1 arrives later this year and I can finally stop explaining myself to Google.
 ## 🕹 Devices
 * [Audio & Video](#audio--video)
   * [Home Theater](#home-theater)
@@ -134,12 +135,11 @@ I recently built out my home theater system centered around my Denon S960H + NVI
 | --- | --- | --- | --- | --- | --- |
 | ![Denon](www/readme/av/denon.png) | ![Polk S35](www/readme/av/polk_s35.jpg) | ![Polk S10](www/readme/av/polk_s10.jpg) | ![Polk S50](www/readme/av/polk_s50.jpg) | ![NVIDIA SHIELD TV Pro](www/readme/av/nvidia_shield_tv_pro.jpg) | ![Sony](www/readme/av/sony_x900h.jpg) |
 
-I have a Levovo Smart Tab M8 that is docked in my living room that I use to access my _[Lovelace Dashboards](#lovelace-dashboards)_ including my Home Theater controls in Home Assistant. 
 #### Multi Room Audio + Displays
 I have a series of Google Home and Nest Mini's scattered throughout the apartment for the purpose of multi-room audio. The audio quality is subpar, but it gets the job done for now. I'm planning on updating to several pairs of Google Nest Audio smart speakers.
-| [Google Nest Mini](https://store.google.com/us/product/google_nest_mini?hl=en-US) | [Google Nest Audio](https://store.google.com/us/product/nest_audio?hl=en-US) | Google Nest Hub | [Lenovo Smart Clock](https://www.lenovo.com/gb/en/smart-clock/) | [Lenovo M8 Smart Tablet](https://www.lenovo.com/us/en/p/tablets/android-tablets/lenovo-tab-series/smart-tab-m8-google-assistant/len103l0006) |
-| --- | --- | --- | --- | --- |
-| ![Google Home Mini](www/readme/av/google_mini.jpg) | ![Google Nest Audio](www/readme/av/nest_audio.jpg) | ![Google Nest Hub](www/readme/av/google_nest_hub.jpg) | ![Lenovo Smart Clock](www/readme/av/lenovo_smart_clock.jpg) | ![Lenovo M8 Smart Tablet](www/readme/av/lenovo_m8.jpg) |
+| [Google Nest Mini](https://store.google.com/us/product/google_nest_mini?hl=en-US) | [Google Nest Audio](https://store.google.com/us/product/nest_audio?hl=en-US) | Google Nest Hub | [Lenovo Smart Clock](https://www.lenovo.com/gb/en/smart-clock/) |
+| --- | --- | --- | --- |
+| ![Google Home Mini](www/readme/av/google_mini.jpg) | ![Google Nest Audio](www/readme/av/nest_audio.jpg) | ![Google Nest Hub](www/readme/av/google_nest_hub.jpg) | ![Lenovo Smart Clock](www/readme/av/lenovo_smart_clock.jpg) |
 
 The Google Nest Hub lives in the loft and is used as a control panel, picture frame, and alarm clock. The Lenovo Smart Clock lives in the downstairs bedroom (referred to in HA as Office) for use as an alarm clock and simplified control panel.
 ### Appliances
@@ -147,11 +147,11 @@ The Google Nest Hub lives in the loft and is used as a control panel, picture fr
 | --- | --- | --- | --- | --- | --- |
 | ![Dyson TP04](www/readme/appliance/dyson_tp04.jpg) | ![Frigidaire](www/readme/appliance/frigidaire.jpg) | ![Airmega 400S Air Purifier](https://home-assistant-readme.s3.amazonaws.com/appliances/airmega.jpg) | ![Roborock](www/readme/appliance/roborock.jpg) | ![LG Smart Washer](www/readme/appliance/washer.jpg) | ![LG Smart Dryer](www/readme/appliance/dryer.jpg) |
 #### Climate
-My climate situation is pretty simple, just a fan and portable AC. The Dyson air purifying fan (Kirby) lives in the loft and is WiFi enabled. Shortly after purchase I realized it lacked the ability to integrate with Google Assistant, this became a huge driver in me exploring Home Assistant. I was pleasantly surprised to learn it contains a `temperature`, `humidity`, `aqi`, and `dust` sesnor. I successfully integrated Kirby with Home Assistant and am utilizing the `tempurature` and `humidity` sensors in my Lovelace dashboard. The [Climate Kirby](includes/automations/climate_kirby.yaml) automation was created to allow me to stop using the Dyson app for various scheduling functionality.
+My climate situation is pretty simple, just a fan and portable AC. The Dyson air purifying fan (Kirby) lives in the loft and is WiFi enabled. Shortly after purchase I realized it lacked the ability to integrate with Google Assistant, this became a huge driver in me exploring Home Assistant. I was pleasantly surprised to learn it contains a `temperature`, `humidity`, `aqi`, and `dust` sensor. I successfully integrated Kirby with Home Assistant and am utilizing the `temperature` and `humidity` sensors in my Lovelace dashboard. The [Climate Kirby](includes/automations/climate_kirby.yaml) automation was created to allow me to stop using the Dyson app for various scheduling functionality.
 
 My apartment has casement windows so my AC options were fairly limited. The Frigidaire Cool Connect Portable AC (Ice Bear) was an easy decision due to it's high BTUs, small footprint, and WiFi conductivity. Unfortunately the smart functionality is incredibly limited and the Frigidaire app very slow to load, making less than ideal for controlling the unit. Thanks to [bm1549](https://github.com/bm1549) I was able to use the [Fridigaire custom component](https://github.com/bm1549/home-assistant-frigidaire) to integrate Ice Bear with Home Assistant. This was a HUGE development as it means I can control the AC via Google Assistant as well.
 #### Vacuum
-The first floor of my apartment is serviced by a [Roborock S4](https://a.co/d/07T35Dz) named Winston. The Roborock S4 intrigued me due to it's lidar, smart mapping, and friendliness with Home Assistant. A lot of people report that you have to do a crazy hack switching the region in Mainland China, but I didn't have to do that, you can read more about my process/HA vacuum implimentation in the wiki under [WINSTON my Roborock S4](https://github.com/theglus/Home-Assistant-Config/wiki/WINSTON-my-Roborock-S4).
+The first floor of my apartment is serviced by a [Roborock S4](https://a.co/d/07T35Dz) named Winston. The Roborock S4 intrigued me in 2020 due to its lidar, smart mapping, and friendliness with Home Assistant. Back when I first got Winston the integration process was a bit of an ordeal, but the native Xiaomi (or Roborock, if you prefer) integrations have come a long way and will likely make your journey much easier. I rely on [Xiaomi Home](https://www.home-assistant.io/integrations/xiaomi_miio) for vacuum control and [PiotrMachowski](https://github.com/PiotrMachowski)'s [Xiaomi Cloud Map Extractor](https://github.com/PiotrMachowski/Home-Assistant-custom-components-Xiaomi-Cloud-Map-Extractor) for custom map styling.
 #### Lighting
 I'm pretty deep into the Hue ecosystem sans my Sengled lightstrip. As a result I have my lights paired directly to the Hue app using the Hue bridge. The main reason I did this instead of utilizing my Raspbee II was so I can ensure my lights remain functional regardless of if Home Assistant is operational. This allows me a lot more flexibility to work with Home Assistant without adversely effecting the other people in my household. 
 | [Hue Starter Kit](https://a.co/d/cqyZFPy) | [BR30 White Ambiance](https://a.co/d/25pj5jB) | [Hue Color](https://a.co/d/i7HmDXJ) | [Sengled Light Strip](https://a.co/d/aVl0VMJ) |
@@ -160,12 +160,12 @@ I'm pretty deep into the Hue ecosystem sans my Sengled lightstrip. As a result I
 
 The only light outside the Hue ecosystem is my Sengled LED strip. I needed 6 feet of LEDs just for my stairs not to mention the other areas of the apartment, it would have been $79 for 6.5' of Hue lights where Sengled was ~$60 for 16.5'. The LED strip is hooked up directly to the Raspbee II. 
 #### Switches + Outlets
-I have a series of smart plugs which I use to control various appliances. I recently migrated from Kasa HS103 outlets to Sengled plugs in order the strengthen my Zigbee network. Additionally, the Sengled plugs have engergy monitoring capabilities.
+I have a series of smart plugs which I use to control various appliances. I recently migrated from Kasa HS103 outlets to Sengled plugs in order to strengthen my Zigbee network. Additionally, the Sengled plugs have energy monitoring capabilities.
 | [Hue Smart Plug](https://a.co/d/cRt5O9x) | [Sengled Energy Monitoring Plugs](https://a.co/d/3luPeQJ) | [Kasa 3-plug Surge](https://a.co/d/fe35mXo) | [Lutron Aurora](https://a.co/d/c9uJlks) | 
 | --- | --- | --- | --- |
 | ![Hue Smart Plug](www/readme/switches/hue_plug.jpg) | ![Sengled Energy Monitoring Plugs](https://home-assistant-readme.s3.amazonaws.com/switches/sengled_plug.jpg) | ![Kasa Surge](www/readme/switches/kasa_surge.jpg) | ![Lutron Aurora](www/readme/switches/lutron_aurora.jpg) |
 
-My old school analog marquee is controlled by the Hue plug which I opted for due to it's ability to be integrated with my other lights via the Hue ecosystem. Lastly, sometimes it's just quicker and quieter to turn on the lights with a switch, being a renter replacing my wall switches isn't appealing. Luckily I discovered Lutron Aurora dimmers which not only gives me a physical button but also a dimmer which I can map to one or many lights. I'm hoping to figure out a way to map secondary actions (double click, triple click, etc.), but the feasiblity is TBD.
+My old school analog marquee is controlled by the Hue plug which I opted for due to it's ability to be integrated with my other lights via the Hue ecosystem. Lastly, sometimes it's just quicker and quieter to turn on the lights with a switch, being a renter replacing my wall switches isn't appealing. Luckily I discovered Lutron Aurora dimmers which not only gives me a physical button but also a dimmer which I can map to one or many lights. I'm hoping to figure out a way to map secondary actions (double click, triple click, etc.), but the feasibility is TBD.
 ## Custom Icons
 Inspired by [matt8707](https://github.com/matt8707), I created several custom icons which can be found in `www/custom_icons.js`. I leveraged [material design principles](https://material.io/design/iconography/system-icons.html#design-principles) and [Guide to a Vector Drawing Program](http://tavmjong.free.fr/INKSCAPE/MANUAL/html/XML.html) when designing and building the icons. I will be working on pulling in additional icons from various [icon_templates](includes/lovelace/button_card_templates/icon_templates) over the next several weeks.
 ## 🎛 Lovelace Dashboards
@@ -180,10 +180,10 @@ Inspired by [matt8707](https://github.com/matt8707), I created several custom ic
 * [Popup Controls](#popup-controls)
   * [Light Popup](#light-popup)
   * [Animated Icons](#animated-icons)
-* [Vacuum Dasboard](#vacuum-dashboard)
+* [Vacuum Dashboard](#vacuum-dashboard)
 * [System Dashboard](#system-dashboard)
 ### Quick Access Controls
-The Quick Access Controls are a logical grouping of Lovelace buttons + cards using many of the [above listed custom components](#custom-components). The inspiration for Quick Access came from stumbling upon [Crixle's Light Control Card](https://github.com/crixle/homeassistant-config#light-control-card) via r/homeassistant. I was fascinated by the idea of reducing the number of clicks required to control my smart home. This led me to overhaul my Lovelace setup with the goal of making all essential controls availible in 3-clicks or less.
+The Quick Access Controls are a logical grouping of Lovelace buttons + cards using many of the [above listed custom components](#custom-components). The inspiration for Quick Access came from stumbling upon [Crixle's Light Control Card](https://github.com/crixle/homeassistant-config#light-control-card) via r/homeassistant. I was fascinated by the idea of reducing the number of clicks required to control my smart home. This led me to overhaul my Lovelace setup with the goal of making all essential controls available in 3-clicks or less.
 
 [Quick Access Controls](https://user-images.githubusercontent.com/2943783/231850800-9f004212-5fc7-4fd3-af17-6edbd818e389.webm) 
 <details>
@@ -751,24 +751,47 @@ Loft:
 ```
 </details>
 
+### Popup Controls
+
+_Coming soon._
+
+#### Light Popup
+- [Light Popup Template](includes/lovelace/button_card_templates/popup_templates/light.yaml)
+- [Climate Fan Popup Template](includes/lovelace/button_card_templates/popup_templates/climate_fan.yaml)
+
+#### Animated Icons
+- [Custom Icons](www/custom_icons.js)
+
+### Vacuum Dashboard
+
+_Coming soon._
+
+- [Vacuum View](includes/lovelace/views/2_vacuum.yaml)
+
+### System Dashboard
+
+_Coming soon._
+
+- [System View](includes/lovelace/views/3_system.yaml)
+
 ## 🤖 Automations
 ### 🌡 Climate
-Before Home Assistant, I had several schedules setup for my two air purifiers in the Dyson App. I was able to easily replace those with two automations in HA, eliminating my need to use the proprietary Dyston App. My air circulators which are hooked up to Kasa smart plugs, utilitze two of my favorite automations. One turns on the downstairs fan when the tempurature in the Loft is ≥72° and off when ≤71°, the other turns the office fan on/off based on the state of the lights in the room.
+Before Home Assistant, I had several schedules setup for my two air purifiers in the Dyson App. I was able to easily replace those with two automations in HA, eliminating my need to use the proprietary Dyston App. My air circulators which are hooked up to Kasa smart plugs, utilitze two of my favorite automations. One turns on the downstairs fan when the temperature in the Loft is ≥72° and off when ≤71°, the other turns the office fan on/off based on the state of the lights in the room.
 <details>
   <summary>Automations</summary>
 
 - [Climate Kirby](includes/automations/climate/climate_purifier.yaml): Trigger [Kirby: Daytime](includes/scenes/kirby_daymode.yaml) @ 8 am + [Kirby: Nighttime](includes/scenes/kirby_nightmode.yaml) @ 9 pm.
-- [Climate Loft](includes/automations/climate_loft.yaml): Turn on fan when Loft is ≥72° and off when ≤71°.
+- [Climate Loft](includes/automations/climate/climate_loft.yaml): Turn on fan when Loft is ≥72° and off when ≤71°.
 - [Climate Office Fan](includes/automations/climate/climate_office_on.yaml): Turn fan on/off based on Overhead light group state.
 </details>
 
 ### 🎚 Dimmer
-Lutton Aurora dimmers have been a game changer in my home automations setup. They are natively supported by Philips Hue and as a renter, they are the perfect solution as to mount onto the existing light switch. Not all my lights are in the Hue ecosystem, so I've created automations to allow the dimmers to control my Sengled LED light strip and various Kasa smart plugs.
+Lutron Aurora dimmers have been a game changer in my home automations setup. They are natively supported by Philips Hue and as a renter, they are the perfect solution as to mount onto the existing light switch. Not all my lights are in the Hue ecosystem, so I've created automations to allow the dimmers to control my Sengled LED light strip and various Kasa smart plugs.
 <details>
   <summary>Automations</summary>
 
-- [Dimmer Hallway](includes/automations/dimmer_hallway.yaml): Trigger runner light with Lutron Aurora switch.
-- [Dimmer Office](includes/automations/dimmer_office.yaml): Trigger office lights with Lutron Aurora switch.
+- [Dimmer Hallway](includes/automations/dimmer/dimmer_hallway.yaml): Trigger runner light with Lutron Aurora switch.
+- [Dimmer Office](includes/automations/dimmer/dimmer_office.yaml): Trigger office lights with Lutron Aurora switch.
 </details>
 
 ### 📡 M5Stack
@@ -787,18 +810,19 @@ I currently have notifications set to be delivered via one of two channels [Tele
 <details>
   <summary>Automations</summary>
 
-- [Notify AQI](includes/automations/notify_aqi.yaml): Notify Smartphones when AQI is >75.
+- [Notify AQI](includes/automations/notify/notify_aqi.yaml): Notify Smartphones when AQI is >75.
 - [Notify Air Filters](includes/automations/notify/notify_filter_maintenance.yaml): Notify smartphones when Airmega or Dyson air filters need cleaning or replacement.
 - [Notify Bus Home](includes/automations/notify/notify_bus_home.yaml): Telegram command to report the next bus home.
 - [Notify Bus Work](includes/automations/notify/notify_bus_work.yaml): Telegram command to report the next bus to work.
-- [Notify Dryer](includes/automations/notify_dryer.yaml): Notify smartphones when dryer is complete.
+- [Notify Dryer](includes/automations/notify/notify_dryer.yaml): Notify smartphones when dryer is complete.
+- [Notify Dryer Warning](includes/automations/notify/notify_dryer_temp.yaml): Notify smartphones when dryer temperature is abnormally high.
 - [Notify Entry](includes/automations/notify/notify_entry.yaml): Notify Telegram when the front door is opened.
-- [Notify Heat Wave](includes/automations/notify_heatwave.yaml): Notify smartphones when tomorrows high is  >75 °F.
+- [Notify Heat Wave](includes/automations/notify/notify_heatwave.yaml): Notify smartphones when tomorrow's high is >75 °F.
 - [Notify Internet Status](includes/automations/notify/notify_internet_status.yaml): Notify smartphones of internet outages and resolutions.
 - [Notify Printer](includes/automations/notify/notify_printer.yaml): Notify Smartphones when Major Laser Printer is ready.
 - [Notify Vacuum Maintenance](includes/automations/notify/notify_vacuum_maintenance.yaml): Notify smartphones when Winston's sensors, filter, or brushes need attention.
-- [Notify Washer](includes/automations/notify_washer.yaml): Notify smartphones when washer is complete.
-- [Peak Usage Alerts](includes/automations/peak_usage_alerts.yaml): Notify Smartphones when AC, Washer, or Dryer is on during peak usage. 
+- [Notify Washer](includes/automations/notify/notify_washer.yaml): Notify smartphones when washer is complete.
+- [Peak Usage Alerts](includes/automations/peak_usage_alerts.yaml): Notify Smartphones when AC, Washer, or Dryer is on during peak usage.
 - [Server Boot Up](includes/automations/notify/notify_server_boot_up.yaml): Notify via Telegram when server has booted up.
 - [Server Reboot](includes/automations/notify/notify_server_reboot.yaml): Telegram notification that alerts of server reboot, restart, or shutdown.
 </details>
@@ -808,8 +832,9 @@ I decided to take a unique approach to presence automations and forgo the use of
 <details>
   <summary>Automations</summary>
 
-- [Leave Home](includes/automations/leave_home.yaml): Notify smartphones of door status + turn off lights accordingly.
-- [Leave Vacuum](includes/automations/leave_vacuum.yaml): Notify smartphones of door status + turn off lights + vacuum.
+- [Leave Entry](includes/automations/leave/leave_entry.yaml): Toggle entry detection via long press on the Aqara Mini Switch.
+- [Leave Home](includes/automations/leave/leave_home.yaml): Notify smartphones of door status + turn off lights accordingly.
+- [Leave Vacuum](includes/automations/leave/leave_vacuum.yaml): Notify smartphones of door status + turn off lights + vacuum.
 
 </details>
 
@@ -821,18 +846,19 @@ Vampire drain is a problem, especially when your power company charges different
 - [Charge Toothbrushes](includes/automations/shutoff/shutoff_toothbrushes.yaml): Start charging toothbrushes at 12 am and stop at 4 am.
 - [Printer Shutoff](includes/automations/shutoff/shutoff_printer.yaml): Shutoff plug to printer 15-minutes after device has been switched on.
 - [Shutdown Shredder](includes/automations/shutoff/shutoff_shredder.yaml): Shutoff plug to paper shredder 2-minutes after device has been switched on.
+- [Steam Deck Shutoff](includes/automations/shutoff/shutoff_steam_deck.yaml): Shutoff plug to Steam Deck after charging is complete.
 </details>
 
 ### 🧹 Vacuum
-Winston my trusty robot vacuum is scheduled to clean the most trafficed areas of my apartment (hallway + kitchen) Monday - Friday, the remaining rooms (office + living room + bathroom) are cleaned on Tuesdays and Thursdays. Creating these automations allowed me to stop using the [Mi Home App](https://play.google.com/store/apps/details?id=com.xiaomi.smarthome&hl=en_US&gl=US).
+Winston my trusty robot vacuum is scheduled to clean the most trafficked areas of my apartment (hallway + kitchen) Monday - Friday, the remaining rooms (office + living room + bathroom) are cleaned on Tuesdays and Thursdays. Creating these automations allowed me to stop using the [Mi Home App](https://play.google.com/store/apps/details?id=com.xiaomi.smarthome&hl=en_US&gl=US).
 <details>
   <summary>Automations</summary>
 
-- [Select Vacuum Speed](includes/automations/select_vacuum_speed.yaml): Adds vacuum.set_fan_speed service calls to Vacuum Speed Helper.
-- [Vacuum Clean](includes/automations/vacuum_clean.yaml): Notify Smartphones when Winston starts cleaning.
-- [Vacuum Docked](includes/automations/vacuum_done.yaml): Notify Smartphones when Winston has returned to dock.
-- [Vacuum Done](includes/automations/vacuum_done.yaml): Notify Smartphones when Winston has completed cleaning.
-- [Vacuum Schedule](includes/automations/vacuum_schedule.yaml): Clean hallway + kitchen @ 10:30 pm M - F & clean bathroom + office + living room @ 10:30 pm T and TH.
+- [Select Vacuum Speed](includes/automations/vacuum/select_vacuum_speed.yaml): Adds vacuum.set_fan_speed service calls to Vacuum Speed Helper.
+- [Vacuum Clean](includes/automations/vacuum/vacuum_clean.yaml): Notify Smartphones when Winston starts cleaning.
+- [Vacuum Docked](includes/automations/vacuum/vacuum_docked.yaml): Notify Smartphones when Winston has returned to dock.
+- [Vacuum Done](includes/automations/vacuum/vacuum_done.yaml): Notify Smartphones when Winston has completed cleaning.
+- [Vacuum Schedule](includes/automations/vacuum/vacuum_schedule.yaml): Clean hallway + kitchen @ 10:30 pm M - F & clean bathroom + office + living room @ 10:30 pm T and TH.
 </details>
 
 ### 🎰 Various
