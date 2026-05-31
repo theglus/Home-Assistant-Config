@@ -33,7 +33,7 @@ ha_reload:
     - delay: "00:00:01"
     - service: browser_mod.notification
       data:
-        duration: 1500
+        duration: 1000
         message: "🏁 Reload complete."
         browser_id:
           - BrowserMod_Laptop
