@@ -1,0 +1,16 @@
+#################################################################
+## Refresh
+#
+## Touch Lovelace and refresh all browser clients.
+#################################################################
+ha_refresh:
+  alias: "Refresh"
+  icon: mdi:refresh
+  sequence:
+    - service: shell_command.touch_lovelace
+    - service: browser_mod.refresh
+      data:
+        browser_id:
+          - BrowserMod_Laptop
+          - BrowserMod_Pixel
+  mode: single

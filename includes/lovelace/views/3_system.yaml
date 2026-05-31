@@ -238,6 +238,12 @@ cards:
                             service_data:
                               entity_id: script.ha_reload
                             haptic: light
+                          double_tap_action:
+                            action: call-service
+                            service: script.turn_on
+                            service_data:
+                              entity_id: script.ha_refresh
+                            haptic: medium
                           template: icon_name
           #################################################################
           ## TrueNAS Controls
