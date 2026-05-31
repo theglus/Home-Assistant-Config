@@ -33,9 +33,8 @@ ha_reload:
     - delay: "00:00:01"
     - service: browser_mod.notification
       data:
-        duration: 3500
+        duration: 1500
         message: "🏁 Reload complete."
-        dismissable: true
         browser_id:
           - BrowserMod_Laptop
           - BrowserMod_Pixel
