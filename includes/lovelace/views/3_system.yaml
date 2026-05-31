@@ -238,7 +238,7 @@ cards:
                             service_data:
                               entity_id: script.ha_reload
                             haptic: light
-                          hold_action:
+                          double_tap_action:
                             action: call-service
                             service: script.turn_on
                             service_data:
