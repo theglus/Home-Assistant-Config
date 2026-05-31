@@ -35,6 +35,7 @@ ha_reload:
       data:
         duration: 3500
         message: "🏁 Reload complete."
+        dismissable: true
         browser_id:
           - BrowserMod_Laptop
           - BrowserMod_Pixel
