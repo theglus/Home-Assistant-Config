@@ -9,7 +9,7 @@ ha_reload:
     - service: browser_mod.notification
       data:
         duration: 30000
-        message: "✅ Lovelace touched. 🚀 Started reloading... ."
+        message: "🚀 Started reloading..."
         browser_id:
           - BrowserMod_Laptop
           - BrowserMod_Pixel
@@ -21,15 +21,6 @@ ha_reload:
         browser_id:
           - BrowserMod_Laptop
           - BrowserMod_Pixel
-    - delay: "00:00:02"
-    - service: browser_mod.notification
-      data:
-        duration: 30000
-        message: "🔄 Reloading..."
-        browser_id:
-          - BrowserMod_Laptop
-          - BrowserMod_Pixel
-    - delay: "00:00:02"
     - service: lovelace.reload_resources
       data: {}
     - service: browser_mod.notification
