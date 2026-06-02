@@ -21,9 +21,6 @@ conversation:
       - "What is the train schedule?"
       - "What is the Muni schedule?"
       - "What's the Muni schedule?"
-    music:
-      - "What's playing?"
-      - "Who is this?"
     welcome:
       - "Hello?"
       - "Hello"
@@ -44,9 +41,6 @@ intent_script:
         {%- elif trains | length == 2 -%}The next 2 trains to Chinatown arrive in {{ trains[0] }} and {{ trains[1] }} minutes.
         {%- else -%}The next 3 trains to Chinatown arrive in {{ trains[0] }}, {{ trains[1] }}, and {{ trains[2] }} minutes.
         {%- endif -%}
-  music:
-    speech:
-      text: "{{state_attr('media_player.spotify', 'media_title')}} by {{state_attr('media_player.spotify', 'media_artist')}}"
   welcome:
     speech:
       text: "Hi I'm Farnsworth your home assistant. You can ask me things like 'what's the weather today,' 'what's playing,' and 'turn off the office lights.'"
