@@ -334,7 +334,7 @@ cards:
                 #----------------------------------------------------------------
                 # TODO: #315 Alarm + timer countdown for Google Home devices.
                 - type: custom:button-card
-                  entity: media_player.smart_clock
+                  entity: media_player.smart_clock_cast
                   name: Smart Clock
                   template:
                     - icon_smart_clock
@@ -432,7 +432,7 @@ cards:
                 ## Bookshelf Speakers
                 #----------------------------------------------------------------
                 - type: custom:button-card
-                  entity: media_player.bookshelf_speakers
+                  entity: media_player.bookshelf_speakers_cast
                   name: Bookshelf Speakers
                   template:
                     - icon_monitors
@@ -655,7 +655,7 @@ cards:
                 #----------------------------------------------------------------
                 # TODO: #315 Alarm + timer countdown for Google Home devices.
                 - type: custom:button-card
-                  entity: media_player.loft_nest_hub
+                  entity: media_player.loft_nest_hub_cast
                   name: Nest Hub
                   template:
                     - icon_nest_hub
@@ -674,7 +674,7 @@ cards:
                 #----------------------------------------------------------------
                 # TODO: #315 Alarm + timer countdown for Google Home devices.
                 - type: custom:button-card
-                  entity: media_player.loft_bathroom
+                  entity: media_player.loft_bathroom_cast
                   name: Nest Mini
                   template:
                     - icon_nest_mini
