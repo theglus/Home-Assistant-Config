@@ -404,10 +404,16 @@ cards:
                       hui-section-row:
                         $: |
                           .label {
-                            color: var(--bc-text-on, rgba(0, 0, 0, 0.6));
+                            color: var(--bc-text-dim);
                           }
                           hr {
-                            border-color: var(--bc-text-on, rgba(0, 0, 0, 0.6));
+                            border-color: var(--bc-text-dim);
+                          }
+                      ha-card:
+                        $: |
+                          .card-header {
+                            border-bottom: none;
+                            padding-bottom: 8px;
                           }
                   entities:
                     - type: section
