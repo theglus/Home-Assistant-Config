@@ -397,13 +397,16 @@ cards:
                   entities:
                     - type: section
                       label: Plex
-                      card_mod: &section_card_mod
+                      card_mod:
                         style: |
                           .label {
                             color: var(--bc-text-dim) !important;
                           }
                           .divider {
-                            background-color: var(--bc-text-dim) !important;
+                            display: none !important;
+                          }
+                          hr {
+                            display: none !important;
                           }
                     - entity: binary_sensor.leela_plex_updates
                       name: Plex Version
@@ -417,7 +420,17 @@ cards:
                         action: none
                     - type: section
                       label: System
-                      card_mod: *section_card_mod
+                      card_mod: &section_card_mod
+                        style: |
+                          .label {
+                            color: var(--bc-text-dim) !important;
+                          }
+                          .divider {
+                            background-color: var(--bc-text-dim) !important;
+                          }
+                          hr {
+                            border-color: var(--bc-text-dim) !important;
+                          }
                     - type: custom:hui-horizontal-stack-card
                       cards:
                         #----------------------------------------------------------------
