@@ -393,20 +393,18 @@ cards:
               cards:
                 - type: entities
                   title: Leela
-                  card_mod:
-                    style: |
-                      ha-card {
-                        border-style: none;
-                        background: none;
-                        --bar-card-border-radius: 8px;
-                      }
-                      hui-section-row {
-                        color: var(--bc-text-dim);
-                        --entities-divider-color: var(--bc-text-dim);
-                      }
+                  card_mod: *entities_bar_card_mod
                   entities:
                     - type: section
                       label: Plex
+                      card_mod: &section_card_mod
+                        style: |
+                          .label {
+                            color: var(--bc-text-dim) !important;
+                          }
+                          .divider {
+                            background-color: var(--bc-text-dim) !important;
+                          }
                     - entity: binary_sensor.leela_plex_updates
                       name: Plex Version
                       icon: mdi:plex
@@ -419,6 +417,7 @@ cards:
                         action: none
                     - type: section
                       label: System
+                      card_mod: *section_card_mod
                     - type: custom:hui-horizontal-stack-card
                       cards:
                         #----------------------------------------------------------------
@@ -465,6 +464,7 @@ cards:
                             - red: 93
                     - type: section
                       label: Container Memory
+                      card_mod: *section_card_mod
                     #----------------------------------------------------------------
                     ## Leela Container Memory Bars
                     #----------------------------------------------------------------
