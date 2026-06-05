@@ -21,29 +21,6 @@ conversation:
       - "What is the train schedule?"
       - "What is the Muni schedule?"
       - "What's the Muni schedule?"
-    temp_kitchen:
-      - "What's the temperature in the Kitchen?"
-      - "What's the Kitchen temperature?"
-    temp_living_room:
-      - "What's the temperature in the Living Room?"
-      - "What's the Living Room temperature?"
-    temp_loft:
-      - "What's the temperature in the Loft?"
-      - "What's the Loft temperature?"
-    temp_office:
-      - "What's the temperature in the Office?"
-      - "What's the Office temperature?"
-    weather_now:
-      - "What's the weather?"
-      - "What's the weather"
-    weather_today:
-      - "What's the weather today?"
-      - "What's the weather today"
-      - "What's todays weather"
-      - "What's the weather today"
-    music:
-      - "What's playing?"
-      - "Who is this?"
     welcome:
       - "Hello?"
       - "Hello"
@@ -64,27 +41,6 @@ intent_script:
         {%- elif trains | length == 2 -%}The next 2 trains to Chinatown arrive in {{ trains[0] }} and {{ trains[1] }} minutes.
         {%- else -%}The next 3 trains to Chinatown arrive in {{ trains[0] }}, {{ trains[1] }}, and {{ trains[2] }} minutes.
         {%- endif -%}
-  music:
-    speech:
-      text: "{{state_attr('media_player.spotify', 'media_title')}} by {{state_attr('media_player.spotify', 'media_artist')}}"
-  temp_kitchen:
-    speech:
-      text: "The temperature in the Kitchen is {{states('sensor.kitchen_temperature')}} degrees."
-  temp_loft:
-    speech:
-      text: "The temperature in the Loft is {{states('sensor.kirby_temperature')}} degrees."
-  temp_living_room:
-    speech:
-      text: "The temperature in the Living Room is {{states('sensor.temperature_living_room')}} degrees."
-  temp_office:
-    speech:
-      text: "The temperature in the Office is {{states('sensor.temperature_office')}} degrees."
-  weather_now:
-    speech:
-      text: "The weather in Dogpatch is {{state_attr('weather.climacell_nowcast', 'temperature')}} degrees and {{states('weather.climacell_nowcast')}}."
-  weather_today:
-    speech:
-      text: "The weather in Dogpatch is {{state_attr('weather.climacell_nowcast', 'temperature')}} degrees. Today you can expect a high of {{states('sensor.weather_today_high')}} and a low of {{states('sensor.weather_today_low')}}."
   welcome:
     speech:
       text: "Hi I'm Farnsworth your home assistant. You can ask me things like 'what's the weather today,' 'what's playing,' and 'turn off the office lights.'"

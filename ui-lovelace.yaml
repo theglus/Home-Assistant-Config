@@ -4,6 +4,7 @@ kiosk_mode:
   hide_dialog_light_control_actions: true
   hide_dialog_light_settings_actions: true
 sidebar:
+  hideTopMenu: true
   digitalClock: true
   twelveHourVersion: true
   period: false
