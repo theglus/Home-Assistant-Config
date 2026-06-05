@@ -393,7 +393,22 @@ cards:
               cards:
                 - type: entities
                   title: Leela
-                  card_mod: *entities_bar_card_mod
+                  card_mod:
+                    style:
+                      .: |
+                        ha-card {
+                          border-style: none;
+                          background: none;
+                          --bar-card-border-radius: 8px;
+                        }
+                      hui-section-row:
+                        $: |
+                          .label {
+                            color: var(--bc-text-on, rgba(0, 0, 0, 0.6));
+                          }
+                          hr {
+                            border-color: var(--bc-text-on, rgba(0, 0, 0, 0.6));
+                          }
                   entities:
                     - type: section
                       label: Plex
