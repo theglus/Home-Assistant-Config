@@ -394,27 +394,16 @@ cards:
                 - type: entities
                   title: Leela
                   card_mod:
-                    style:
-                      .: |
-                        ha-card {
-                          border-style: none;
-                          background: none;
-                          --bar-card-border-radius: 8px;
-                        }
-                      hui-section-row:
-                        $: |
-                          .label {
-                            color: var(--bc-text-dim);
-                          }
-                          hr {
-                            border-color: var(--bc-text-dim);
-                          }
-                      ha-card:
-                        $: |
-                          .card-header {
-                            border-bottom: none;
-                            padding-bottom: 8px;
-                          }
+                    style: |
+                      ha-card {
+                        border-style: none;
+                        background: none;
+                        --bar-card-border-radius: 8px;
+                      }
+                      hui-section-row {
+                        color: var(--bc-text-dim);
+                        --entities-divider-color: var(--bc-text-dim);
+                      }
                   entities:
                     - type: section
                       label: Plex
