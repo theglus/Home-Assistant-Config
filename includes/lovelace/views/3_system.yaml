@@ -393,8 +393,10 @@ cards:
               cards:
                 - type: entities
                   title: Leela
-                  card_mod: *entities_card_mod
+                  card_mod: *entities_bar_card_mod
                   entities:
+                    - type: section
+                      label: Plex
                     - entity: binary_sensor.leela_plex_updates
                       name: Plex Version
                       icon: mdi:plex
@@ -405,6 +407,8 @@ cards:
                       name: New Episode
                       tap_action:
                         action: none
+                    - type: section
+                      label: System
                     - type: custom:hui-horizontal-stack-card
                       cards:
                         #----------------------------------------------------------------
@@ -449,6 +453,43 @@ cards:
                             - yellow: 65
                             - orange: 80
                             - red: 93
+                    - type: section
+                      label: Container Memory
+                    #----------------------------------------------------------------
+                    ## Leela Container Memory Bars
+                    #----------------------------------------------------------------
+                    - type: custom:bar-card
+                      width: 55%
+                      height: 2.5em
+                      decimal: 0
+                      unit_of_measurement: "%"
+                      positions: *bar_card_positions
+                      max: 100
+                      severity:
+                        - color: "#303435"
+                          from: 0
+                          to: 75
+                        - color: "#6d2525"
+                          from: 75
+                          to: 100
+                      entity_row: true
+                      style: *bar_card_style
+                      entities:
+                        - entity: sensor.plex_memory_percentage
+                          name: Plex
+                          icon: mdi:plex
+                        - entity: sensor.music_assistant_memory_percentage
+                          name: Music Asst.
+                          icon: mdi:music
+                        - entity: sensor.qbittorrent_memory_percentage
+                          name: qBittorrent
+                          icon: mdi:download
+                        - entity: sensor.sonarr_memory_percentage
+                          name: Sonarr
+                          icon: mdi:television-play
+                        - entity: sensor.radarr_memory_percentage
+                          name: Radarr
+                          icon: mdi:movie-open
                     #----------------------------------------------------------------
                     ## Leela Controls
                     #----------------------------------------------------------------
