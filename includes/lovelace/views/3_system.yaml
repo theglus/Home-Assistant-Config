@@ -291,7 +291,7 @@ cards:
                               from: 0
                               to: 13.52
                             - color: "#6d2525"
-                              from: 75
+                              from: 13.52
                               to: 18.03
                           entity_row: true
                           style: &bar_card_style |
@@ -486,12 +486,11 @@ cards:
                     #----------------------------------------------------------------
                     - type: custom:bar-card
                       width: 55%
-                      height: 2.5em
+                      height: 2em
                       decimal: 2
                       unit_of_measurement: "GiB"
                       positions: *bar_card_positions
                       max: 62.41
-                      height: 2em
                       severity:
                         - color: "#303435"
                           from: 0
