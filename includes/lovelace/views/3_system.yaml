@@ -212,7 +212,7 @@ cards:
                       styles:
                         grid:
                           - grid-template-areas: '"i n l"'
-                          - grid-template-columns: 40px 1fr auto
+                          - grid-template-columns: 52px 1fr auto
                           - align-items: center
                         card:
                           - background: transparent
@@ -223,10 +223,15 @@ cards:
                           - font-size: 1rem
                           - --mdc-ripple-color: transparent
                           - --ha-card-hover-opacity: "0"
+                        icon:
+                          - align-self: center
+                          - justify-self: center
+                          - padding: 0
                         name:
                           - font-size: 1em
                           - font-weight: 400
                           - justify-self: start
+                          - align-self: center
                           - color: var(--primary-text-color)
                         label:
                           - background: >-
@@ -236,6 +241,7 @@ cards:
                           - padding: 4px 14px
                           - font-size: 0.9em
                           - font-weight: 500
+                          - align-self: center
                       card_mod:
                         style: |
                           ha-card {
