@@ -200,7 +200,8 @@ cards:
                       show_name: true
                       show_state: false
                       show_label: true
-                      size: 1.5em
+                      size: 1em
+                      color: var(--state-icon-color)
                       label: >-
                         [[[ return entity.state === 'on' ? 'Connected' : 'Disconnected' ]]]
                       tap_action:
@@ -220,9 +221,8 @@ cards:
                           - padding: 0
                           - height: auto
                           - font-size: 1rem
-                        icon:
-                          - color: >-
-                              [[[ return entity.state === 'on' ? 'var(--success-color, #43A047)' : 'var(--secondary-text-color)' ]]]
+                          - --mdc-ripple-color: transparent
+                          - --ha-card-hover-opacity: "0"
                         name:
                           - font-size: 1em
                           - font-weight: 400
@@ -230,12 +230,20 @@ cards:
                           - color: var(--primary-text-color)
                         label:
                           - background: >-
-                              [[[ return entity.state === 'on' ? 'var(--success-color, #43A047)' : 'rgba(255,255,255,0.15)' ]]]
+                              [[[ return entity.state === 'on' ? 'rgba(67, 160, 71, 0.5)' : 'rgba(255,255,255,0.15)' ]]]
                           - color: white
                           - border-radius: 12px
                           - padding: 4px 14px
                           - font-size: 0.9em
                           - font-weight: 500
+                      card_mod:
+                        style: |
+                          ha-card {
+                            --ha-card-hover-opacity: 0 !important;
+                          }
+                          ha-ripple {
+                            display: none !important;
+                          }
                     - type: custom:bar-card
                       width: 55%
                       height: 2.5em
