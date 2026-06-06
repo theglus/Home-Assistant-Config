@@ -200,8 +200,8 @@ cards:
                       show_name: true
                       show_state: false
                       show_label: true
-                      size: 1em
-                      color: var(--state-icon-color)
+                      size: 20px
+                      color: "#9da0a2"
                       label: >-
                         [[[ return entity.state === 'on' ? 'Connected' : 'Disconnected' ]]]
                       tap_action:
@@ -219,7 +219,7 @@ cards:
                           - box-shadow: none
                           - border-radius: 0
                           - padding: 0
-                          - height: auto
+                          - height: 52px
                           - font-size: 1rem
                           - --mdc-ripple-color: transparent
                           - --ha-card-hover-opacity: "0"
