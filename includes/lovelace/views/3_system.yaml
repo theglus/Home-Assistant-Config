@@ -502,33 +502,18 @@ cards:
                         - entity: sensor.plex_memory_percentage
                           name: Plex
                           icon: mdi:plex
-                          tap_action:
-                            action: navigate
-                            navigation_path: /config/devices/device/452ca2ae724ccadd847646b2e36d2695
                         - entity: sensor.music_assistant_memory_percentage
                           name: Music Asst.
                           icon: mdi:music
-                          tap_action:
-                            action: navigate
-                            navigation_path: /config/devices/device/9fdd2737e5e9cbfd3c96018ca5ad765c
                         - entity: sensor.qbittorrent_memory_percentage
                           name: qBittorrent
                           icon: mdi:download
-                          tap_action:
-                            action: navigate
-                            navigation_path: /config/devices/device/8a9b760c77b41b45739ff475d3aa926c
                         - entity: sensor.sonarr_memory_percentage
                           name: Sonarr
                           icon: mdi:television-play
-                          tap_action:
-                            action: navigate
-                            navigation_path: /config/devices/device/9eb9899d8c9333b66e4239e801441a73
                         - entity: sensor.radarr_memory_percentage
                           name: Radarr
                           icon: mdi:movie-open
-                          tap_action:
-                            action: navigate
-                            navigation_path: /config/devices/device/b1393bac30f8b9381f4112852686c119
                     #----------------------------------------------------------------
                     ## Leela Controls
                     #----------------------------------------------------------------
