@@ -410,6 +410,7 @@ cards:
                             white-space: nowrap;
                             flex-shrink: 0;
                             margin: 0 !important;
+                            order: -1 !important;
                           }
                           .divider {
                             flex: 1 !important;
