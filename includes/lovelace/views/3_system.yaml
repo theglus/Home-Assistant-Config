@@ -286,7 +286,7 @@ cards:
                           margin-left: auto;
                           margin-top: 5px;
                         }
-                        bar-card-name {
+                        bar-card-name.name-outside {
                           margin-left: 0 !important;
                         }
                         bar-card-iconbar {
@@ -306,7 +306,7 @@ cards:
                         }
                       card_mod:
                         style: |
-                          bar-card-name {
+                          bar-card-name.name-outside {
                             margin-left: 0 !important;
                           }
                       entities:
