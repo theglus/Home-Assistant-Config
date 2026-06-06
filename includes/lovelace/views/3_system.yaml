@@ -296,7 +296,7 @@ cards:
                           overflow: hidden;
                         }
                       entities:
-                        - entity: sensor.studio_code_server_cpu_percent
+                        - entity: sensor.studio_code_server_memory_percent
                           name: Studio Code
                           icon: mdi:microsoft-visual-studio-code
                           tap_action:
