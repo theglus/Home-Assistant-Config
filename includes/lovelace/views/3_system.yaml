@@ -286,9 +286,6 @@ cards:
                           margin-left: auto;
                           margin-top: 5px;
                         }
-                        bar-card-name {
-                          padding-left: 0.25em;
-                        }
                         bar-card-iconbar {
                           padding-left: 0.23em;
                         }
