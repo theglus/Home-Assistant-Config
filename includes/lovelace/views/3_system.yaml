@@ -426,13 +426,7 @@ cards:
                   cards:
                     - type: entities
                       title: Nibbler
-                      card_mod: &entities_bar_card_mod
-                        style: |
-                          ha-card {
-                            border-style: none;
-                            background: none;
-                            --bar-card-border-radius: 8px;
-                          }
+                      card_mod: *entities_card_mod
                       entities:
                         - entity: update.truenas_system_update
                           name: Updates
@@ -559,7 +553,7 @@ cards:
               cards:
                 - type: entities
                   title: Leela
-                  card_mod: *entities_bar_card_mod
+                  card_mod: *entities_card_mod
                   entities:
                     - type: section
                       label: Plex
@@ -797,7 +791,7 @@ cards:
               cards:
                 - type: entities
                   title: Claude Usage
-                  card_mod: *entities_bar_card_mod
+                  card_mod: *entities_card_mod
                   entities:
                     - entity: sensor.claude_session_reset_time
                       name: Session Reset
