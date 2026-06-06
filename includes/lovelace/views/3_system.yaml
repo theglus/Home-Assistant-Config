@@ -196,11 +196,23 @@ cards:
                       name: Tailscale
                       icon: mdi:shield-lock
                       state_color: true
+                      state_display: >-
+                        {{ 'Connected' if is_state('binary_sensor.tailscale_running', 'on') else 'Disconnected' }}
                       tap_action:
                         action: call-service
                         service: switch.toggle
                         service_data:
                           entity_id: switch.tailscale
+                      card_mod:
+                        style: |
+                          hui-generic-entity-row {
+                            --state-binary_sensor-running-on-color: var(--success-color, #43A047);
+                          }
+                          hui-generic-entity-row .text-content {
+                            background: var(--state-color, rgba(255,255,255,0.1));
+                            border-radius: 9999px;
+                            padding: 0.15em 0.6em;
+                          }
                     - type: custom:bar-card
                       width: 55%
                       height: 2.5em
