@@ -163,7 +163,7 @@ cards:
                     # - entity: sensor.hacs
                     - entity: sensor.time_online
                     #----------------------------------------------------------------
-                    ## Containers
+                    ## Containers Bar
                     #----------------------------------------------------------------
                     - type: section
                       label: Containers
@@ -191,91 +191,64 @@ cards:
                           hr {
                             display: none !important;
                           }
-                    #----------------------------------------------------------------
-                    ## Tailscale Row
-                    #----------------------------------------------------------------
-                    - type: custom:hui-element
-                      card_type: horizontal-stack
-                      cards:
-                        - type: custom:button-card
-                          template: icon_name
-                          entity: sensor.tailscale_cpu_percent
+                    - type: custom:bar-card
+                      width: 55%
+                      height: 2.5em
+                      decimal: 0
+                      unit_of_measurement: "%"
+                      positions:
+                        icon: outside
+                        indicator: "off"
+                        name: outside
+                        value: inside
+                      max: 100
+                      severity:
+                        - color: "#303435"
+                          from: 0
+                          to: 75
+                        - color: "#6d2525"
+                          from: 75
+                          to: 100
+                      entity_row: true
+                      style: |
+                        ha-card {
+                          border-style: none;
+                        }
+                        bar-card-value {
+                          font-size: 1em;
+                          font-weight: 400;
+                          color: #e0e1e1;
+                          letter-spacing: 0.01em;
+                          text-shadow: none;
+                          margin-right: auto;
+                          margin-left: auto;
+                          margin-top: 5px;
+                        }
+                        bar-card-name {
+                          padding-left: 0.25em;
+                        }
+                        bar-card-iconbar {
+                          padding-left: 0.23em;
+                        }
+                        bar-card-backgroundbar {
+                          background: none;
+                        }
+                        bar-card-currentbar {
+                          border-radius: 0.3em;
+                        }
+                        bar-card-background {
+                          background: radial-gradient(circle, rgba(52, 57, 58, 0.1) 0%, rgba(17, 18, 18, 0.2) 75%);
+                          box-shadow: inset 0 0 25px #00000045;
+                          border-radius: 0.3em;
+                          overflow: hidden;
+                        }
+                      entities:
+                        - entity: sensor.tailscale_cpu_percent
                           name: Tailscale
                           icon: mdi:shield-lock
-                          show_state: false
-                          tap_action:
-                            action: call-service
-                            service: hassio.addon_restart
-                            service_data:
-                              addon: a0d7b954_tailscale
-                            confirmation: true
-                          styles:
-                            card:
-                              - background: none
-                              - box-shadow: none
-                              - padding: 0.5em 0
-                          card_mod:
-                            style: |
-                              :host {
-                                flex: 0 0 45% !important;
-                              }
-                        - type: custom:bar-card
-                          height: 2.5em
-                          decimal: 0
-                          unit_of_measurement: "%"
-                          positions:
-                            icon: "off"
-                            indicator: "off"
-                            name: "off"
-                            value: inside
-                          max: 100
-                          severity:
-                            - color: "#303435"
-                              from: 0
-                              to: 75
-                            - color: "#6d2525"
-                              from: 75
-                              to: 100
-                          style: |
-                            ha-card {
-                              border-style: none;
-                            }
-                            bar-card-value {
-                              font-size: 1em;
-                              font-weight: 400;
-                              color: #e0e1e1;
-                              letter-spacing: 0.01em;
-                              text-shadow: none;
-                              margin-right: auto;
-                              margin-left: auto;
-                              margin-top: 5px;
-                            }
-                            bar-card-backgroundbar {
-                              background: none;
-                            }
-                            bar-card-currentbar {
-                              border-radius: 0.3em;
-                            }
-                            bar-card-background {
-                              background: radial-gradient(circle, rgba(52, 57, 58, 0.1) 0%, rgba(17, 18, 18, 0.2) 75%);
-                              box-shadow: inset 0 0 25px #00000045;
-                              border-radius: 0.3em;
-                              overflow: hidden;
-                            }
-                          entities:
-                            - entity: sensor.tailscale_cpu_percent
-                    #----------------------------------------------------------------
-                    ## Studio Code Row
-                    #----------------------------------------------------------------
-                    - type: custom:hui-element
-                      card_type: horizontal-stack
-                      cards:
-                        - type: custom:button-card
-                          template: icon_name
-                          entity: sensor.studio_code_server_cpu_percent
+                        - entity: sensor.studio_code_server_cpu_percent
                           name: Studio Code
                           icon: mdi:microsoft-visual-studio-code
-                          show_state: false
                           tap_action:
                             action: navigate
                             navigation_path: /config/app/a0d7b954_vscode/info
@@ -285,61 +258,6 @@ cards:
                             service_data:
                               entity_id: script.vscode_reload
                             confirmation: true
-                          styles:
-                            card:
-                              - background: none
-                              - box-shadow: none
-                              - padding: 0.5em 0
-                          card_mod:
-                            style: |
-                              :host {
-                                flex: 0 0 45% !important;
-                              }
-                        - type: custom:bar-card
-                          height: 2.5em
-                          decimal: 0
-                          unit_of_measurement: "%"
-                          positions:
-                            icon: "off"
-                            indicator: "off"
-                            name: "off"
-                            value: inside
-                          max: 100
-                          severity:
-                            - color: "#303435"
-                              from: 0
-                              to: 75
-                            - color: "#6d2525"
-                              from: 75
-                              to: 100
-                          style: |
-                            ha-card {
-                              border-style: none;
-                            }
-                            bar-card-value {
-                              font-size: 1em;
-                              font-weight: 400;
-                              color: #e0e1e1;
-                              letter-spacing: 0.01em;
-                              text-shadow: none;
-                              margin-right: auto;
-                              margin-left: auto;
-                              margin-top: 5px;
-                            }
-                            bar-card-backgroundbar {
-                              background: none;
-                            }
-                            bar-card-currentbar {
-                              border-radius: 0.3em;
-                            }
-                            bar-card-background {
-                              background: radial-gradient(circle, rgba(52, 57, 58, 0.1) 0%, rgba(17, 18, 18, 0.2) 75%);
-                              box-shadow: inset 0 0 25px #00000045;
-                              border-radius: 0.3em;
-                              overflow: hidden;
-                            }
-                          entities:
-                            - entity: sensor.studio_code_server_cpu_percent
                     - type: custom:hui-horizontal-stack-card
                       cards:
                         #----------------------------------------------------------------
