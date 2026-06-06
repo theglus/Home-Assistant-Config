@@ -261,7 +261,7 @@ cards:
                       positions:
                         icon: outside
                         indicator: "off"
-                        name: outside
+                        name: "off"
                         value: inside
                       max: 100
                       severity:
