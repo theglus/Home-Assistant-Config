@@ -486,32 +486,32 @@ cards:
                       width: 55%
                       height: 2.5em
                       decimal: 0
-                      unit_of_measurement: "%"
+                      unit_of_measurement: "MiB"
                       positions: *bar_card_positions
-                      max: 100
+                      max: 63911.92
                       severity:
                         - color: "#303435"
                           from: 0
-                          to: 75
+                          to: 47933.94
                         - color: "#6d2525"
-                          from: 75
-                          to: 100
+                          from: 47933.94
+                          to: 63911.92
                       entity_row: true
                       style: *bar_card_style
                       entities:
-                        - entity: sensor.plex_memory_percentage
+                        - entity: sensor.plex_memory_usage
                           name: Plex
                           icon: mdi:plex
-                        - entity: sensor.music_assistant_memory_percentage
+                        - entity: sensor.music_assistant_memory_usage
                           name: Music Asst.
                           icon: mdi:music
-                        - entity: sensor.qbittorrent_memory_percentage
+                        - entity: sensor.qbittorrent_memory_usage
                           name: qBittorrent
                           icon: mdi:download
-                        - entity: sensor.sonarr_memory_percentage
+                        - entity: sensor.sonarr_memory_usage
                           name: Sonarr
                           icon: mdi:television-play
-                        - entity: sensor.radarr_memory_percentage
+                        - entity: sensor.radarr_memory_usage
                           name: Radarr
                           icon: mdi:movie-open
                     #----------------------------------------------------------------
