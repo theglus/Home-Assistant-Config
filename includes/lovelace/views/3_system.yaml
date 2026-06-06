@@ -441,10 +441,6 @@ cards:
                           decimal: 2
                           unit_of_measurement: "TiB"
                           positions: *bar_card_positions
-                            icon: outside
-                            indicator: "off"
-                            name: outside
-                            value: inside
                           max: 18.03
                           severity:
                             - color: "#303435"
