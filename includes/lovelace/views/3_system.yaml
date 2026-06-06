@@ -160,7 +160,7 @@ cards:
                   entities:
                     - type: section
                       label: Health
-                      card_mod:
+                      card_mod: &section_card_mod
                         style: |
                           :host {
                             display: flex !important;
@@ -194,30 +194,7 @@ cards:
                     #----------------------------------------------------------------
                     - type: section
                       label: Containers
-                      card_mod:
-                        style: |
-                          :host {
-                            display: flex !important;
-                            flex-direction: row !important;
-                            align-items: center !important;
-                            gap: 8px !important;
-                          }
-                          .label {
-                            color: var(--bc-text-dim) !important;
-                            white-space: nowrap;
-                            flex-shrink: 0;
-                            margin: 0 !important;
-                            order: -1 !important;
-                          }
-                          .divider {
-                            flex: 1 !important;
-                            background-color: var(--bc-text-dim) !important;
-                            height: 1px !important;
-                            margin: 0 !important;
-                          }
-                          hr {
-                            display: none !important;
-                          }
+                      card_mod: *section_card_mod
                     - type: custom:button-card
                       entity: binary_sensor.tailscale_running
                       name: Tailscale
@@ -284,7 +261,7 @@ cards:
                       height: 2.5em
                       decimal: 0
                       unit_of_measurement: "%"
-                      positions:
+                      positions: &bar_card_positions
                         icon: outside
                         indicator: "off"
                         name: outside
@@ -350,30 +327,7 @@ cards:
                             confirmation: true
                     - type: section
                       label: System
-                      card_mod:
-                        style: |
-                          :host {
-                            display: flex !important;
-                            flex-direction: row !important;
-                            align-items: center !important;
-                            gap: 8px !important;
-                          }
-                          .label {
-                            color: var(--bc-text-dim) !important;
-                            white-space: nowrap;
-                            flex-shrink: 0;
-                            margin: 0 !important;
-                            order: -1 !important;
-                          }
-                          .divider {
-                            flex: 1 !important;
-                            background-color: var(--bc-text-dim) !important;
-                            height: 1px !important;
-                            margin: 0 !important;
-                          }
-                          hr {
-                            display: none !important;
-                          }
+                      card_mod: *section_card_mod
                     - type: custom:hui-horizontal-stack-card
                       cards:
                         #----------------------------------------------------------------
@@ -472,13 +426,7 @@ cards:
                   cards:
                     - type: entities
                       title: Nibbler
-                      card_mod: &entities_bar_card_mod
-                        style: |
-                          ha-card {
-                            border-style: none;
-                            background: none;
-                            --bar-card-border-radius: 8px;
-                          }
+                      card_mod: *entities_card_mod
                       entities:
                         - entity: update.truenas_system_update
                           name: Updates
@@ -492,11 +440,7 @@ cards:
                           height: 2.5em
                           decimal: 2
                           unit_of_measurement: "TiB"
-                          positions: &bar_card_positions
-                            icon: outside
-                            indicator: "off"
-                            name: outside
-                            value: inside
+                          positions: *bar_card_positions
                           max: 18.03
                           severity:
                             - color: "#303435"
@@ -605,34 +549,11 @@ cards:
               cards:
                 - type: entities
                   title: Leela
-                  card_mod: *entities_bar_card_mod
+                  card_mod: *entities_card_mod
                   entities:
                     - type: section
                       label: Plex
-                      card_mod: &section_card_mod
-                        style: |
-                          :host {
-                            display: flex !important;
-                            flex-direction: row !important;
-                            align-items: center !important;
-                            gap: 8px !important;
-                          }
-                          .label {
-                            color: var(--bc-text-dim) !important;
-                            white-space: nowrap;
-                            flex-shrink: 0;
-                            margin: 0 !important;
-                            order: -1 !important;
-                          }
-                          .divider {
-                            flex: 1 !important;
-                            background-color: var(--bc-text-dim) !important;
-                            height: 1px !important;
-                            margin: 0 !important;
-                          }
-                          hr {
-                            display: none !important;
-                          }
+                      card_mod: *section_card_mod
                     - entity: binary_sensor.leela_plex_updates
                       name: Plex Version
                       icon: mdi:plex
@@ -866,7 +787,7 @@ cards:
               cards:
                 - type: entities
                   title: Claude Usage
-                  card_mod: *entities_bar_card_mod
+                  card_mod: *entities_card_mod
                   entities:
                     - entity: sensor.claude_session_reset_time
                       name: Session Reset
