@@ -393,8 +393,22 @@ cards:
               cards:
                 - type: entities
                   title: Leela
-                  card_mod: *entities_card_mod
+                  card_mod: *entities_bar_card_mod
                   entities:
+                    - type: section
+                      label: Plex
+                      card_mod:
+                        style: |
+                          .label {
+                            color: var(--bc-text-dim) !important;
+                            margin-top: 0 !important;
+                          }
+                          .divider {
+                            display: none !important;
+                          }
+                          hr {
+                            display: none !important;
+                          }
                     - entity: binary_sensor.leela_plex_updates
                       name: Plex Version
                       icon: mdi:plex
@@ -405,6 +419,19 @@ cards:
                       name: New Episode
                       tap_action:
                         action: none
+                    - type: section
+                      label: System
+                      card_mod: &section_card_mod
+                        style: |
+                          .label {
+                            color: var(--bc-text-dim) !important;
+                          }
+                          .divider {
+                            background-color: var(--bc-text-dim) !important;
+                          }
+                          hr {
+                            border-color: var(--bc-text-dim) !important;
+                          }
                     - type: custom:hui-horizontal-stack-card
                       cards:
                         #----------------------------------------------------------------
@@ -449,6 +476,59 @@ cards:
                             - yellow: 65
                             - orange: 80
                             - red: 93
+                    - type: section
+                      label: Container Memory
+                      card_mod: *section_card_mod
+                    #----------------------------------------------------------------
+                    ## Leela Container Memory Bars
+                    #----------------------------------------------------------------
+                    - type: custom:bar-card
+                      width: 55%
+                      height: 2.5em
+                      decimal: 0
+                      unit_of_measurement: "%"
+                      positions: *bar_card_positions
+                      max: 100
+                      severity:
+                        - color: "#303435"
+                          from: 0
+                          to: 75
+                        - color: "#6d2525"
+                          from: 75
+                          to: 100
+                      entity_row: true
+                      style: *bar_card_style
+                      entities:
+                        - entity: sensor.plex_memory_percentage
+                          name: Plex
+                          icon: mdi:plex
+                          tap_action:
+                            action: navigate
+                            navigation_path: /config/devices/device/452ca2ae724ccadd847646b2e36d2695
+                        - entity: sensor.music_assistant_memory_percentage
+                          name: Music Asst.
+                          icon: mdi:music
+                          tap_action:
+                            action: navigate
+                            navigation_path: /config/devices/device/9fdd2737e5e9cbfd3c96018ca5ad765c
+                        - entity: sensor.qbittorrent_memory_percentage
+                          name: qBittorrent
+                          icon: mdi:download
+                          tap_action:
+                            action: navigate
+                            navigation_path: /config/devices/device/8a9b760c77b41b45739ff475d3aa926c
+                        - entity: sensor.sonarr_memory_percentage
+                          name: Sonarr
+                          icon: mdi:television-play
+                          tap_action:
+                            action: navigate
+                            navigation_path: /config/devices/device/9eb9899d8c9333b66e4239e801441a73
+                        - entity: sensor.radarr_memory_percentage
+                          name: Radarr
+                          icon: mdi:movie-open
+                          tap_action:
+                            action: navigate
+                            navigation_path: /config/devices/device/b1393bac30f8b9381f4112852686c119
                     #----------------------------------------------------------------
                     ## Leela Controls
                     #----------------------------------------------------------------
