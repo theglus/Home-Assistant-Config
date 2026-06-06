@@ -158,6 +158,32 @@ cards:
                         --bar-card-border-radius: 8px;
                       }
                   entities:
+                    - type: section
+                      label: Health
+                      card_mod:
+                        style: |
+                          :host {
+                            display: flex !important;
+                            flex-direction: row !important;
+                            align-items: center !important;
+                            gap: 8px !important;
+                          }
+                          .label {
+                            color: var(--bc-text-dim) !important;
+                            white-space: nowrap;
+                            flex-shrink: 0;
+                            margin: 0 !important;
+                            order: -1 !important;
+                          }
+                          .divider {
+                            flex: 1 !important;
+                            background-color: var(--bc-text-dim) !important;
+                            height: 1px !important;
+                            margin: 0 !important;
+                          }
+                          hr {
+                            display: none !important;
+                          }
                     - entity: binary_sensor.home_assistant_major_update
                       name: Installed Version
                       icon: mdi:home-assistant
