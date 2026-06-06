@@ -212,7 +212,7 @@ cards:
                       styles:
                         grid:
                           - grid-template-areas: '"i n l"'
-                          - grid-template-columns: 52px 1fr auto
+                          - grid-template-columns: 40px 1fr auto
                           - align-items: center
                         card:
                           - background: transparent
@@ -220,7 +220,7 @@ cards:
                           - border-radius: 0
                           - padding: 0
                           - height: 52px
-                          - font-size: 1rem
+                          - font-size: inherit
                           - --mdc-ripple-color: transparent
                           - --ha-card-hover-opacity: "0"
                         icon:
