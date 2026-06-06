@@ -489,7 +489,7 @@ cards:
                       unit_of_measurement: "GiB"
                       positions: *bar_card_positions
                       max: 62.41
-                      height: 1.5em
+                      height: 2em
                       severity:
                         - color: "#303435"
                           from: 0
