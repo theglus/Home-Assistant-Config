@@ -486,7 +486,7 @@ cards:
                       width: 55%
                       height: 2.5em
                       decimal: 2
-                      unit_of_measurement: "GB"
+                      unit_of_measurement: "GiB"
                       positions: *bar_card_positions
                       max: 62.41
                       severity:
