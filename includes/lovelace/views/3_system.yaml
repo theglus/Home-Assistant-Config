@@ -399,11 +399,11 @@ cards:
                       label: Plex
                       card_mod: &section_card_mod
                         style: |
-                          .section-row {
-                            display: flex;
-                            flex-direction: row;
-                            align-items: center;
-                            gap: 8px;
+                          :host {
+                            display: flex !important;
+                            flex-direction: row !important;
+                            align-items: center !important;
+                            gap: 8px !important;
                           }
                           .label {
                             color: var(--bc-text-dim) !important;
@@ -412,9 +412,9 @@ cards:
                             margin: 0 !important;
                           }
                           .divider {
-                            flex: 1;
+                            flex: 1 !important;
                             background-color: var(--bc-text-dim) !important;
-                            height: 1px;
+                            height: 1px !important;
                             margin: 0 !important;
                           }
                           hr {
