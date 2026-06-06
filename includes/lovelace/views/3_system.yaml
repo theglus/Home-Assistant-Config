@@ -155,6 +155,7 @@ cards:
                       ha-card {
                         border-style: none;
                         background: none;
+                        --bar-card-border-radius: 8px;
                       }
                   entities:
                     - entity: binary_sensor.home_assistant_major_update
@@ -191,10 +192,15 @@ cards:
                           hr {
                             display: none !important;
                           }
-                    - entity: switch.tailscale
+                    - entity: binary_sensor.tailscale_running
                       name: Tailscale
                       icon: mdi:shield-lock
                       state_color: true
+                      tap_action:
+                        action: call-service
+                        service: switch.toggle
+                        service_data:
+                          entity_id: switch.tailscale
                     - type: custom:bar-card
                       width: 55%
                       height: 2.5em
