@@ -217,12 +217,12 @@ cards:
                           - background: transparent
                           - box-shadow: none
                           - border-radius: 0
-                          - padding: 8px 16px
+                          - padding: 0
                           - height: auto
                           - font-size: 1rem
                         icon:
                           - color: >-
-                              [[[ return entity.state === 'on' ? 'var(--success-color, #43A047)' : 'var(--disabled-color, #9da0a2)' ]]]
+                              [[[ return entity.state === 'on' ? 'var(--success-color, #43A047)' : 'var(--secondary-text-color)' ]]]
                         name:
                           - font-size: 1em
                           - font-weight: 400
@@ -233,8 +233,8 @@ cards:
                               [[[ return entity.state === 'on' ? 'var(--success-color, #43A047)' : 'rgba(255,255,255,0.15)' ]]]
                           - color: white
                           - border-radius: 12px
-                          - padding: 2px 10px
-                          - font-size: 0.82em
+                          - padding: 4px 14px
+                          - font-size: 0.9em
                           - font-weight: 500
                     - type: custom:bar-card
                       width: 55%
