@@ -701,50 +701,6 @@ cards:
                   card_mod: *entities_card_mod
                   entities:
                     #----------------------------------------------------------------
-                    ## PC CPU Utilization Graph
-                    #----------------------------------------------------------------
-                    - type: custom:hui-horizontal-stack-card
-                      cards:
-                        - type: "custom:decluttering-card"
-                          template: declutter_system_graph
-                          variables:
-                            - sensor: sensor.pc_cpu_load
-                            - name: CPU
-                            - server: Zoidberg
-                            - title: CPU Utilization
-                            - green: 25
-                            - yellow: 50
-                            - orange: 75
-                            - red: 100
-                        #----------------------------------------------------------------
-                        ## PC GPU Load Graph
-                        #----------------------------------------------------------------
-                        - type: "custom:decluttering-card"
-                          template: declutter_system_graph
-                          variables:
-                            - sensor: sensor.pc_gpu_load
-                            - name: GPU
-                            - server: Zoidberg
-                            - title: GPU Utilization
-                            - green: 25
-                            - yellow: 50
-                            - orange: 75
-                            - red: 100
-                        #----------------------------------------------------------------
-                        ## PC GPU Temp Graph
-                        #----------------------------------------------------------------
-                        - type: "custom:decluttering-card"
-                          template: declutter_system_graph
-                          variables:
-                            - sensor: sensor.pc_gpu_temp
-                            - name: GPU ºF
-                            - server: Zoidberg
-                            - title: GPU Temperature
-                            - green: 140
-                            - yellow: 158
-                            - orange: 176
-                            - red: 210
-                    #----------------------------------------------------------------
                     ## PC Boot Button
                     #----------------------------------------------------------------
                     # TODO: #312 Format Dekstop + HA system control buttons.
