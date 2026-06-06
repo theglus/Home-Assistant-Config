@@ -261,7 +261,7 @@ cards:
                       positions:
                         icon: outside
                         indicator: "off"
-                        name: "off"
+                        name: outside
                         value: inside
                       max: 100
                       severity:
@@ -304,6 +304,11 @@ cards:
                           border-radius: 0.3em;
                           overflow: hidden;
                         }
+                      card_mod:
+                        style: |
+                          bar-card-name {
+                            margin-left: 0 !important;
+                          }
                       entities:
                         - entity: sensor.studio_code_server_memory_percent
                           name: Studio Code
