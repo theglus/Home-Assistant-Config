@@ -291,7 +291,7 @@ cards:
                               from: 0
                               to: 13.52
                             - color: "#6d2525"
-                              from: 75
+                              from: 13.52
                               to: 18.03
                           entity_row: true
                           style: &bar_card_style |
@@ -397,14 +397,26 @@ cards:
                   entities:
                     - type: section
                       label: Plex
-                      card_mod:
+                      card_mod: &section_card_mod
                         style: |
+                          :host {
+                            display: flex !important;
+                            flex-direction: row !important;
+                            align-items: center !important;
+                            gap: 8px !important;
+                          }
                           .label {
                             color: var(--bc-text-dim) !important;
-                            margin-top: 0 !important;
+                            white-space: nowrap;
+                            flex-shrink: 0;
+                            margin: 0 !important;
+                            order: -1 !important;
                           }
                           .divider {
-                            display: none !important;
+                            flex: 1 !important;
+                            background-color: var(--bc-text-dim) !important;
+                            height: 1px !important;
+                            margin: 0 !important;
                           }
                           hr {
                             display: none !important;
@@ -421,17 +433,7 @@ cards:
                         action: none
                     - type: section
                       label: System
-                      card_mod: &section_card_mod
-                        style: |
-                          .label {
-                            color: var(--bc-text-dim) !important;
-                          }
-                          .divider {
-                            background-color: var(--bc-text-dim) !important;
-                          }
-                          hr {
-                            border-color: var(--bc-text-dim) !important;
-                          }
+                      card_mod: *section_card_mod
                     - type: custom:hui-horizontal-stack-card
                       cards:
                         #----------------------------------------------------------------
@@ -484,51 +486,41 @@ cards:
                     #----------------------------------------------------------------
                     - type: custom:bar-card
                       width: 55%
-                      height: 2.5em
-                      decimal: 0
-                      unit_of_measurement: "%"
+                      height: 2em
+                      decimal: 2
+                      unit_of_measurement: "GiB"
                       positions: *bar_card_positions
-                      max: 100
+                      max: 62.41
                       severity:
                         - color: "#303435"
                           from: 0
-                          to: 75
+                          to: 46.81
                         - color: "#6d2525"
-                          from: 75
-                          to: 100
+                          from: 46.81
+                          to: 62.41
                       entity_row: true
                       style: *bar_card_style
+                      card_mod:
+                        style: |
+                          #states > * {
+                            margin-bottom: 2px !important;
+                          }
                       entities:
-                        - entity: sensor.plex_memory_percentage
+                        - entity: sensor.plex_memory_usage
                           name: Plex
                           icon: mdi:plex
-                          tap_action:
-                            action: navigate
-                            navigation_path: /config/devices/device/452ca2ae724ccadd847646b2e36d2695
-                        - entity: sensor.music_assistant_memory_percentage
+                        - entity: sensor.music_assistant_memory_usage
                           name: Music Asst.
                           icon: mdi:music
-                          tap_action:
-                            action: navigate
-                            navigation_path: /config/devices/device/9fdd2737e5e9cbfd3c96018ca5ad765c
-                        - entity: sensor.qbittorrent_memory_percentage
+                        - entity: sensor.qbittorrent_memory_usage
                           name: qBittorrent
                           icon: mdi:download
-                          tap_action:
-                            action: navigate
-                            navigation_path: /config/devices/device/8a9b760c77b41b45739ff475d3aa926c
-                        - entity: sensor.sonarr_memory_percentage
+                        - entity: sensor.sonarr_memory_usage
                           name: Sonarr
                           icon: mdi:television-play
-                          tap_action:
-                            action: navigate
-                            navigation_path: /config/devices/device/9eb9899d8c9333b66e4239e801441a73
-                        - entity: sensor.radarr_memory_percentage
+                        - entity: sensor.radarr_memory_usage
                           name: Radarr
                           icon: mdi:movie-open
-                          tap_action:
-                            action: navigate
-                            navigation_path: /config/devices/device/b1393bac30f8b9381f4112852686c119
                     #----------------------------------------------------------------
                     ## Leela Controls
                     #----------------------------------------------------------------
