@@ -155,13 +155,225 @@ cards:
                       ha-card {
                         border-style: none;
                         background: none;
+                        --bar-card-border-radius: 8px;
                       }
                   entities:
+                    - type: section
+                      label: Health
+                      card_mod:
+                        style: |
+                          :host {
+                            display: flex !important;
+                            flex-direction: row !important;
+                            align-items: center !important;
+                            gap: 8px !important;
+                          }
+                          .label {
+                            color: var(--bc-text-dim) !important;
+                            white-space: nowrap;
+                            flex-shrink: 0;
+                            margin: 0 !important;
+                            order: -1 !important;
+                          }
+                          .divider {
+                            flex: 1 !important;
+                            background-color: var(--bc-text-dim) !important;
+                            height: 1px !important;
+                            margin: 0 !important;
+                          }
+                          hr {
+                            display: none !important;
+                          }
                     - entity: binary_sensor.home_assistant_major_update
                       name: Installed Version
                       icon: mdi:home-assistant
                     # - entity: sensor.hacs
                     - entity: sensor.time_online
+                    #----------------------------------------------------------------
+                    ## Containers Bar
+                    #----------------------------------------------------------------
+                    - type: section
+                      label: Containers
+                      card_mod:
+                        style: |
+                          :host {
+                            display: flex !important;
+                            flex-direction: row !important;
+                            align-items: center !important;
+                            gap: 8px !important;
+                          }
+                          .label {
+                            color: var(--bc-text-dim) !important;
+                            white-space: nowrap;
+                            flex-shrink: 0;
+                            margin: 0 !important;
+                            order: -1 !important;
+                          }
+                          .divider {
+                            flex: 1 !important;
+                            background-color: var(--bc-text-dim) !important;
+                            height: 1px !important;
+                            margin: 0 !important;
+                          }
+                          hr {
+                            display: none !important;
+                          }
+                    - type: custom:button-card
+                      entity: binary_sensor.tailscale_running
+                      name: Tailscale
+                      icon: mdi:shield-lock
+                      show_icon: true
+                      show_name: true
+                      show_state: false
+                      show_label: true
+                      size: 24px
+                      color: "#9da0a2"
+                      label: >-
+                        [[[ return entity.state === 'on' ? 'Connected' : 'Disconnected' ]]]
+                      tap_action:
+                        action: call-service
+                        service: switch.toggle
+                        service_data:
+                          entity_id: switch.tailscale
+                      styles:
+                        grid:
+                          - grid-template-areas: '"i n l"'
+                          - grid-template-columns: 40px 1fr auto
+                          - align-items: center
+                        card:
+                          - background: transparent
+                          - box-shadow: none
+                          - border-radius: 0
+                          - padding: 0
+                          - height: 52px
+                          - font-size: inherit
+                          - --mdc-ripple-color: transparent
+                          - --ha-card-hover-opacity: "0"
+                        icon:
+                          - align-self: center
+                          - justify-self: center
+                          - padding: 0
+                          - width: 24px
+                          - height: 24px
+                        name:
+                          - font-size: 1em
+                          - font-weight: 400
+                          - justify-self: start
+                          - align-self: center
+                          - padding-left: 16px
+                          - color: var(--primary-text-color)
+                        label:
+                          - background: >-
+                              [[[ return entity.state === 'on' ? 'rgba(67, 160, 71, 0.5)' : 'rgba(255,255,255,0.15)' ]]]
+                          - color: white
+                          - border-radius: 12px
+                          - padding: 4px 14px
+                          - font-size: 0.9em
+                          - font-weight: 500
+                          - align-self: center
+                      card_mod:
+                        style: |
+                          ha-card {
+                            --ha-card-hover-opacity: 0 !important;
+                          }
+                          ha-ripple {
+                            display: none !important;
+                          }
+                    - type: custom:bar-card
+                      width: 55%
+                      height: 2.5em
+                      decimal: 0
+                      unit_of_measurement: "%"
+                      positions:
+                        icon: outside
+                        indicator: "off"
+                        name: outside
+                        value: inside
+                      max: 100
+                      severity:
+                        - color: "#303435"
+                          from: 0
+                          to: 75
+                        - color: "#6d2525"
+                          from: 75
+                          to: 100
+                      entity_row: true
+                      style: |
+                        ha-card {
+                          border-style: none;
+                        }
+                        bar-card-value {
+                          font-size: 1em;
+                          font-weight: 400;
+                          color: #e0e1e1;
+                          letter-spacing: 0.01em;
+                          text-shadow: none;
+                          margin-right: auto;
+                          margin-left: auto;
+                          margin-top: 5px;
+                        }
+                        bar-card-name.name-outside {
+                          margin-left: 21px !important;
+                        }
+                        bar-card-iconbar {
+                          padding-left: 0.23em;
+                        }
+                        bar-card-backgroundbar {
+                          background: none;
+                        }
+                        bar-card-currentbar {
+                          border-radius: 0.3em;
+                        }
+                        bar-card-background {
+                          background: radial-gradient(circle, rgba(52, 57, 58, 0.1) 0%, rgba(17, 18, 18, 0.2) 75%);
+                          box-shadow: inset 0 0 25px #00000045;
+                          border-radius: 0.3em;
+                          overflow: hidden;
+                        }
+                      card_mod:
+                        style: |
+                          bar-card-name.name-outside {
+                            margin-left: 21px !important;
+                          }
+                      entities:
+                        - entity: sensor.studio_code_server_memory_percent
+                          name: Studio Code
+                          icon: mdi:microsoft-visual-studio-code
+                          tap_action:
+                            action: navigate
+                            navigation_path: /config/app/a0d7b954_vscode/info
+                          hold_action:
+                            action: call-service
+                            service: script.turn_on
+                            service_data:
+                              entity_id: script.vscode_reload
+                            confirmation: true
+                    - type: section
+                      label: System
+                      card_mod:
+                        style: |
+                          :host {
+                            display: flex !important;
+                            flex-direction: row !important;
+                            align-items: center !important;
+                            gap: 8px !important;
+                          }
+                          .label {
+                            color: var(--bc-text-dim) !important;
+                            white-space: nowrap;
+                            flex-shrink: 0;
+                            margin: 0 !important;
+                            order: -1 !important;
+                          }
+                          .divider {
+                            flex: 1 !important;
+                            background-color: var(--bc-text-dim) !important;
+                            height: 1px !important;
+                            margin: 0 !important;
+                          }
+                          hr {
+                            display: none !important;
+                          }
                     - type: custom:hui-horizontal-stack-card
                       cards:
                         #----------------------------------------------------------------
