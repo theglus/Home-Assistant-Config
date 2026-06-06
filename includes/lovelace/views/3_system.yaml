@@ -191,6 +191,10 @@ cards:
                           hr {
                             display: none !important;
                           }
+                    - entity: switch.tailscale
+                      name: Tailscale
+                      icon: mdi:shield-lock
+                      state_color: true
                     - type: custom:bar-card
                       width: 55%
                       height: 2.5em
@@ -243,9 +247,6 @@ cards:
                           overflow: hidden;
                         }
                       entities:
-                        - entity: sensor.tailscale_cpu_percent
-                          name: Tailscale
-                          icon: mdi:shield-lock
                         - entity: sensor.studio_code_server_cpu_percent
                           name: Studio Code
                           icon: mdi:microsoft-visual-studio-code
