@@ -200,7 +200,7 @@ cards:
                       show_name: true
                       show_state: false
                       show_label: true
-                      size: 20px
+                      size: 24px
                       color: "#9da0a2"
                       label: >-
                         [[[ return entity.state === 'on' ? 'Connected' : 'Disconnected' ]]]
@@ -227,11 +227,14 @@ cards:
                           - align-self: center
                           - justify-self: center
                           - padding: 0
+                          - width: 24px
+                          - height: 24px
                         name:
                           - font-size: 1em
                           - font-weight: 400
                           - justify-self: start
                           - align-self: center
+                          - padding-left: 16px
                           - color: var(--primary-text-color)
                         label:
                           - background: >-
