@@ -196,8 +196,11 @@ cards:
                       entity: binary_sensor.tailscale_running
                       name: Tailscale
                       icon: mdi:shield-lock
+                      show_icon: true
+                      show_name: true
                       show_state: false
                       show_label: true
+                      size: 1.5em
                       label: >-
                         [[[ return entity.state === 'on' ? 'Connected' : 'Disconnected' ]]]
                       tap_action:
@@ -208,22 +211,22 @@ cards:
                       styles:
                         grid:
                           - grid-template-areas: '"i n l"'
-                          - grid-template-columns: auto 1fr auto
+                          - grid-template-columns: 40px 1fr auto
                           - align-items: center
                         card:
                           - background: transparent
                           - box-shadow: none
                           - border-radius: 0
-                          - padding: 4px 16px
+                          - padding: 8px 16px
                           - height: auto
+                          - font-size: 1rem
                         icon:
-                          - width: 1.5em
                           - color: >-
                               [[[ return entity.state === 'on' ? 'var(--success-color, #43A047)' : 'var(--disabled-color, #9da0a2)' ]]]
                         name:
                           - font-size: 1em
+                          - font-weight: 400
                           - justify-self: start
-                          - padding-left: 0.5em
                           - color: var(--primary-text-color)
                         label:
                           - background: >-
