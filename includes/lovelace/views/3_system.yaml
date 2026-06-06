@@ -485,17 +485,17 @@ cards:
                     - type: custom:bar-card
                       width: 55%
                       height: 2.5em
-                      decimal: 0
-                      unit_of_measurement: "MiB"
+                      decimal: 2
+                      unit_of_measurement: "GB"
                       positions: *bar_card_positions
-                      max: 63911.92
+                      max: 62.41
                       severity:
                         - color: "#303435"
                           from: 0
-                          to: 47933.94
+                          to: 46.81
                         - color: "#6d2525"
-                          from: 47933.94
-                          to: 63911.92
+                          from: 46.81
+                          to: 62.41
                       entity_row: true
                       style: *bar_card_style
                       entities:
