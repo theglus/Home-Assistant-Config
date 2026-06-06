@@ -1,0 +1,27 @@
+#################################################################
+## VS Code Reload
+#
+## Restart the Studio Code add-on and notify via BrowserMod.
+#################################################################
+vscode_reload:
+  alias: "VS Code Reload"
+  icon: mdi:microsoft-visual-studio-code
+  sequence:
+    - service: browser_mod.notification
+      data:
+        duration: 30000
+        message: "🔄 Restarting Studio Code..."
+        browser_id:
+          - BrowserMod_Laptop
+          - BrowserMod_Pixel
+    - service: hassio.addon_restart
+      data:
+        addon: a0d7b954_vscode
+    - service: browser_mod.notification
+      data:
+        duration: 3500
+        message: "✅ Studio Code restarted."
+        browser_id:
+          - BrowserMod_Laptop
+          - BrowserMod_Pixel
+  mode: single

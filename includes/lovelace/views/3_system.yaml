@@ -162,6 +162,102 @@ cards:
                       icon: mdi:home-assistant
                     # - entity: sensor.hacs
                     - entity: sensor.time_online
+                    #----------------------------------------------------------------
+                    ## Containers Bar
+                    #----------------------------------------------------------------
+                    - type: section
+                      label: Containers
+                      card_mod:
+                        style: |
+                          :host {
+                            display: flex !important;
+                            flex-direction: row !important;
+                            align-items: center !important;
+                            gap: 8px !important;
+                          }
+                          .label {
+                            color: var(--bc-text-dim) !important;
+                            white-space: nowrap;
+                            flex-shrink: 0;
+                            margin: 0 !important;
+                            order: -1 !important;
+                          }
+                          .divider {
+                            flex: 1 !important;
+                            background-color: var(--bc-text-dim) !important;
+                            height: 1px !important;
+                            margin: 0 !important;
+                          }
+                          hr {
+                            display: none !important;
+                          }
+                    - type: custom:bar-card
+                      width: 55%
+                      height: 2.5em
+                      decimal: 0
+                      unit_of_measurement: "%"
+                      positions:
+                        icon: outside
+                        indicator: "off"
+                        name: outside
+                        value: inside
+                      max: 100
+                      severity:
+                        - color: "#303435"
+                          from: 0
+                          to: 75
+                        - color: "#6d2525"
+                          from: 75
+                          to: 100
+                      entity_row: true
+                      style: |
+                        ha-card {
+                          border-style: none;
+                        }
+                        bar-card-value {
+                          font-size: 1em;
+                          font-weight: 400;
+                          color: #e0e1e1;
+                          letter-spacing: 0.01em;
+                          text-shadow: none;
+                          margin-right: auto;
+                          margin-left: auto;
+                          margin-top: 5px;
+                        }
+                        bar-card-name {
+                          padding-left: 0.25em;
+                        }
+                        bar-card-iconbar {
+                          padding-left: 0.23em;
+                        }
+                        bar-card-backgroundbar {
+                          background: none;
+                        }
+                        bar-card-currentbar {
+                          border-radius: 0.3em;
+                        }
+                        bar-card-background {
+                          background: radial-gradient(circle, rgba(52, 57, 58, 0.1) 0%, rgba(17, 18, 18, 0.2) 75%);
+                          box-shadow: inset 0 0 25px #00000045;
+                          border-radius: 0.3em;
+                          overflow: hidden;
+                        }
+                      entities:
+                        - entity: sensor.tailscale_cpu_percent
+                          name: Tailscale
+                          icon: mdi:shield-lock
+                        - entity: sensor.studio_code_server_cpu_percent
+                          name: Studio Code
+                          icon: mdi:microsoft-visual-studio-code
+                          tap_action:
+                            action: navigate
+                            navigation_path: /config/app/a0d7b954_vscode/info
+                          hold_action:
+                            action: call-service
+                            service: script.turn_on
+                            service_data:
+                              entity_id: script.vscode_reload
+                            confirmation: true
                     - type: custom:hui-horizontal-stack-card
                       cards:
                         #----------------------------------------------------------------
