@@ -802,7 +802,7 @@ cards:
                           - box-shadow: none
                           - border-radius: 0
                           - padding: 0
-                          - height: 52px
+                          - height: 2em 
                           - font-size: inherit
                           - --mdc-ripple-color: transparent
                         icon:
