@@ -305,9 +305,13 @@ cards:
                           overflow: hidden;
                         }
                       card_mod:
+                      # This is the primary means of currecting the bar-card alignment issues.
                         style: |
                           bar-card-name.name-outside {
-                            margin-left: 1.6em !important;
+                            margin-left: 1.3em !important;
+                          }
+                          bar-card-iconbar {
+                            margin-left: 0.3em !important;
                           }
                       entities:
                         - entity: sensor.studio_code_server_memory_percent
@@ -479,6 +483,15 @@ cards:
                               border-radius: 0.3em;
                               overflow: hidden;
                             }
+                          card_mod:
+                          # This is the primary means of currecting the bar-card alignment issues.
+                            style: |
+                              bar-card-name.name-outside {
+                                margin-left: 1.3em !important;
+                              }
+                              bar-card-iconbar {
+                                margin-left: 0.3em !important;
+                              }
                           entities:
                             #----------------------------------------------------------------
                             ## Nibbler Memory Bar
