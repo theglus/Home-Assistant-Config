@@ -54,6 +54,9 @@ recorder:
       # Claude Usage\
       - sensor.claude_session_usage
       - sensor.claude_week_usage
+      # Ollama
+      - sensor.ollama_cpu_usage_total
+      - sensor.ollama_memory_usage_percentage
     entity_globs:
       - person.jeffrey_*
       - person.tiffany_*
