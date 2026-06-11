@@ -511,17 +511,17 @@ cards:
                         - type: custom:bar-card
                           width: 55%
                           height: 2em
-                          decimal: 0
+                          decimal: 1
                           unit_of_measurement: "GiB"
                           positions: *bar_card_positions
-                          max: 16
+                          max: 15.5
                           severity:
                             - color: "#303435"
                               from: 0
                               to: 12
                             - color: "#6d2525"
                               from: 12
-                              to: 16
+                              to: 15.5
                           entity_row: true
                           style: *bar_card_style
                           card_mod:
