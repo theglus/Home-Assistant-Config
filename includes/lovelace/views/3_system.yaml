@@ -305,7 +305,7 @@ cards:
                           overflow: hidden;
                         }
                       card_mod:
-                      # This is the primary means of currecting the bar-card alignment issues.
+                      # This is the primary means of correcting the bar-card alignment issues.
                         style: |
                           bar-card-name.name-outside {
                             margin-left: 1.3em !important;
@@ -484,7 +484,7 @@ cards:
                               overflow: hidden;
                             }
                           card_mod:
-                          # This is the primary means of currecting the bar-card alignment issues.
+                          # This is the primary means of correcting the bar-card alignment issues.
                             style: |
                               bar-card-name.name-outside {
                                 margin-left: 1.3em !important;
@@ -644,9 +644,16 @@ cards:
                       entity_row: true
                       style: *bar_card_style
                       card_mod:
+                      # This is the primary means of correcting the bar-card alignment issues.
                         style: |
                           #states > * {
                             margin-bottom: 2px !important;
+                          }
+                          bar-card-name.name-outside {
+                            margin-left: 1.3em !important;
+                          }
+                          bar-card-iconbar {
+                            margin-left: 0.3em !important;
                           }
                       entities:
                         - entity: sensor.plex_memory_usage
@@ -778,6 +785,15 @@ cards:
                           to: 100
                       entity_row: true
                       style: *bar_card_style
+                      card_mod:
+                      # This is the primary means of correcting the bar-card alignment issues.
+                        style: |
+                          bar-card-name.name-outside {
+                            margin-left: 1.3em !important;
+                          }
+                          bar-card-iconbar {
+                            margin-left: 0.3em !important;
+                          }
                       entities:
                         - entity: sensor.claude_session_usage
                           name: Session Usage
