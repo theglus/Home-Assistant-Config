@@ -776,39 +776,99 @@ cards:
                     - type: section
                       label: Voice Assistants
                       card_mod: *section_card_mod
-                    - entity: sensor.m5stack_living_room_assistant
+                    - type: custom:button-card
+                      entity: sensor.m5stack_living_room_assistant
                       name: "Living Room"
-                      icon: "mdi:record"
+                      icon: mdi:record
+                      show_icon: true
+                      show_name: true
+                      show_state: true
+                      size: 24px
                       tap_action:
                         action: call-service
                         service: switch.toggle
-                        target:
+                        service_data:
                           entity_id: switch.m5stack_living_room_wake_toggle
                       double_tap_action:
                         action: navigate
                         navigation_path: /config/devices/device/3bb3c33455c31c794a4c2971f59d8a38
-                    - entity: sensor.m5stack_office_assistant
+                      styles: &m5stack_assistant_styles
+                        grid:
+                          - grid-template-areas: '"i n s"'
+                          - grid-template-columns: 40px 1fr auto
+                          - align-items: center
+                        card:
+                          - background: transparent
+                          - box-shadow: none
+                          - border-radius: 0
+                          - padding: 0
+                          - height: 52px
+                          - font-size: inherit
+                          - --mdc-ripple-color: transparent
+                        icon:
+                          - align-self: center
+                          - justify-self: center
+                          - padding: 0
+                          - width: 24px
+                          - height: 24px
+                          - color: >-
+                              [[[return entity.state === 'Muted' ? 'var(--secondary-text-color)' : '#30d257']]]
+                        name:
+                          - font-size: 1em
+                          - font-weight: 400
+                          - justify-self: start
+                          - align-self: center
+                          - padding-left: 16px
+                          - color: var(--primary-text-color)
+                        state:
+                          - font-size: 1em
+                          - font-weight: 400
+                          - align-self: center
+                          - color: var(--primary-text-color)
+                      card_mod: &m5stack_assistant_cardmod
+                        style: |
+                          ha-card {
+                            --ha-card-hover-opacity: 0 !important;
+                          }
+                          ha-ripple {
+                            display: none !important;
+                          }
+                    - type: custom:button-card
+                      entity: sensor.m5stack_office_assistant
                       name: "Office"
-                      icon: "mdi:record"
+                      icon: mdi:record
+                      show_icon: true
+                      show_name: true
+                      show_state: true
+                      size: 24px
                       tap_action:
                         action: call-service
                         service: switch.toggle
-                        target:
+                        service_data:
                           entity_id: switch.m5stack_office_wake_toggle
                       double_tap_action:
                         action: navigate
                         navigation_path: /config/devices/device/98074542f9d0d3cee7d5be78e840ea0f
-                    - entity: sensor.m5stack_loft_assistant
+                      styles: *m5stack_assistant_styles
+                      card_mod: *m5stack_assistant_cardmod
+                    - type: custom:button-card
+                      entity: sensor.m5stack_loft_assistant
                       name: "Loft"
-                      icon: "mdi:record"
+                      icon: mdi:record
+                      show_icon: true
+                      show_name: true
+                      show_state: true
+                      size: 24px
                       tap_action:
                         action: call-service
                         service: switch.toggle
-                        target:
+                        service_data:
                           entity_id: switch.m5stack_loft_wake_toggle
                       double_tap_action:
                         action: navigate
                         navigation_path: /config/devices/device/b241806292966c0a697ccfc339b040ad
+                      styles: *m5stack_assistant_styles
+                      card_mod: *m5stack_assistant_cardmod
                     - type: section
                       label: Ollama
                       card_mod: *section_card_mod
