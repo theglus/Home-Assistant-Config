@@ -201,7 +201,7 @@ cards:
                     ]]]
                   name: |
                     [[[
-                      return "Feels like " + states['sensor.climacell_feels_like'].state + '°F'
+                      return states['sensor.jacket_recommendation'].state
                     ]]]
                   template:
                     - weather_layout
@@ -223,7 +223,6 @@ cards:
                     - icon_state: mdi:door-open
                     - icon_default: custom:room-hallway
                 #----------------------------------------------------------------
-                ## Office button
                 #----------------------------------------------------------------
                 - type: "custom:decluttering-card"
                   template: declutter_temp_button
@@ -513,6 +512,9 @@ cards:
                   entity: media_player.shield_tv
                   tap_action:
                     action: toggle
+                  double_tap_action:
+                    action: more-info
+                    entity: media_player.shield
                   template:
                     - icon_tv
                   # TODO: #263 Create TV controls pop-up
