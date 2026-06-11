@@ -603,10 +603,10 @@ cards:
                             - name: RAM
                             - server: Leela
                             - title: RAM Utilization
-                            - green: 25
-                            - yellow: 50
-                            - orange: 75
-                            - red: 100
+                            - green: 15.6
+                            - yellow: 31.2
+                            - orange: 46.8
+                            - red: 62.41
                         #----------------------------------------------------------------
                         ## Leela CPU Temp Graph
                         #----------------------------------------------------------------
@@ -901,7 +901,7 @@ cards:
                     - type: custom:hui-horizontal-stack-card
                       cards:
                         #----------------------------------------------------------------
-                        ## Leela CPU Utilization Graph
+                        ## Ollama CPU Utilization Graph
                         #----------------------------------------------------------------
                         - type: "custom:decluttering-card"
                           template: declutter_system_graph
@@ -915,7 +915,7 @@ cards:
                             - orange: 75
                             - red: 100
                         #----------------------------------------------------------------
-                        ## Leela CPU Utilization Graph
+                        ## Ollama Memory Utilization Graph
                         #----------------------------------------------------------------
                         - type: "custom:decluttering-card"
                           template: declutter_system_graph
