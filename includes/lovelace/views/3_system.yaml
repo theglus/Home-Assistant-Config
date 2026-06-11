@@ -379,10 +379,10 @@ cards:
                         - type: custom:button-card
                           name: RESTART
                           icon: "mdi:home-assistant"
-                          tap_action:
+                          double_tap_action:
                             action: call-service
                             service: homeassistant.restart
-                            haptic: light
+                            haptic: success
                           template: icon_name
                         - type: custom:button-card
                           name: DEV TOOLS
