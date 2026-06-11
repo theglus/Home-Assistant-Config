@@ -778,8 +778,9 @@ cards:
                       card_mod: *section_card_mod
                     - entity: sensor.m5stack_living_room_assistant
                       name: "Living Room"
+                      icon: "mdi:record"
                       tap_action:
-                        actions: call-service
+                        action: call-service
                         service: switch.toggle
                         target:
                           entity_id: switch.m5stack_living_room_wake_toggle
@@ -787,7 +788,7 @@ cards:
                       name: "Office"
                       icon: "mdi:record"
                       tap_action:
-                        actions: call-service
+                        action: call-service
                         service: switch.toggle
                         target:
                           entity_id: switch.m5stack_office_wake_toggle
@@ -795,7 +796,7 @@ cards:
                       name: "Loft"
                       icon: "mdi:record"
                       tap_action:
-                        actions: call-service
+                        action: call-service
                         service: switch.toggle
                         target:
                           entity_id: switch.m5stack_loft_wake_toggle
