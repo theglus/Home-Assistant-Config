@@ -838,7 +838,7 @@ cards:
                           - width: 24px
                           - height: 24px
                           - color: >-
-                              [[[return entity.state === 'Muted' ? 'var(--secondary-text-color)' : '#30d257']]]
+                              [[[return entity.state === 'Muted' ? 'var(--secondary-text-color)' : '#6aa84f']]]
                         name:
                           - font-size: 1em
                           - font-weight: 400
