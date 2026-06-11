@@ -310,7 +310,7 @@ cards:
                       card_mod:
                         style: |
                           bar-card-name.name-outside {
-                            margin-left: 21px !important;
+                            margin-left: 1.6em !important;
                           }
                       entities:
                         - entity: sensor.studio_code_server_memory_percent
