@@ -514,14 +514,14 @@ cards:
                           decimal: 0
                           unit_of_measurement: "GiB"
                           positions: *bar_card_positions
-                          max: 100
+                          max: 16
                           severity:
                             - color: "#303435"
                               from: 0
-                              to: 75
+                              to: 12
                             - color: "#6d2525"
-                              from: 75
-                              to: 100
+                              from: 12
+                              to: 16
                           entity_row: true
                           style: *bar_card_style
                           card_mod:
