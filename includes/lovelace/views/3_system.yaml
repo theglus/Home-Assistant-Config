@@ -784,6 +784,9 @@ cards:
                         service: switch.toggle
                         target:
                           entity_id: switch.m5stack_living_room_wake_toggle
+                      double_tap_action:
+                        action: navigate
+                        navigation_path: /config/devices/device/3bb3c33455c31c794a4c2971f59d8a38
                     - entity: sensor.m5stack_office_assistant
                       name: "Office"
                       icon: "mdi:record"
@@ -792,6 +795,9 @@ cards:
                         service: switch.toggle
                         target:
                           entity_id: switch.m5stack_office_wake_toggle
+                      double_tap_action:
+                        action: navigate
+                        navigation_path: /config/devices/device/98074542f9d0d3cee7d5be78e840ea0f
                     - entity: sensor.m5stack_loft_assistant
                       name: "Loft"
                       icon: "mdi:record"
@@ -800,6 +806,9 @@ cards:
                         service: switch.toggle
                         target:
                           entity_id: switch.m5stack_loft_wake_toggle
+                      double_tap_action:
+                        action: navigate
+                        navigation_path: /config/devices/device/b241806292966c0a697ccfc339b040ad
                     - type: section
                       label: Ollama
                       card_mod: *section_card_mod
