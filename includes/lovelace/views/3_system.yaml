@@ -973,7 +973,7 @@ cards:
                             - orange: 46.8
                             - red: 62.41
                     #----------------------------------------------------------------
-                    ## HA Controls
+                    ## Assistant Controls
                     #----------------------------------------------------------------
                     # TODO: #312 Format Dekstop + HA system control buttons.
                     - type: custom:hui-element
