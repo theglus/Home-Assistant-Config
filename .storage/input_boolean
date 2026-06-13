@@ -3,6 +3,12 @@
   "minor_version": 1,
   "key": "input_boolean",
   "data": {
-    "items": []
+    "items": [
+      {
+        "id": "clean_shutdown",
+        "name": "Clean Shutdown",
+        "icon": "mdi:power-standby"
+      }
+    ]
   }
 }

@@ -38,6 +38,13 @@
         "has_date": false,
         "icon": "mdi:weather-sunset-down",
         "has_time": true
+      },
+      {
+        "id": "ha_session_start",
+        "name": "HA Session Start",
+        "has_date": true,
+        "icon": "mdi:calendar-clock",
+        "has_time": true
       }
     ]
   }
