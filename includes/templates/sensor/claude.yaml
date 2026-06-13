@@ -14,3 +14,8 @@
           Unknown
         {% endif %}
       icon: mdi:calendar-refresh
+    # Claude Reset Time
+    # - name: "Claude Reset Time"
+    #   state: >-
+    #     {{ as_timestamp(states('sensor.claude_session_reset_time'))
+    #        | timestamp_custom('%I:%M %p') }}
