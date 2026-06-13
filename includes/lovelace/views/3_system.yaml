@@ -289,11 +289,8 @@ cards:
                           margin-left: auto;
                           margin-top: 5px;
                         }
-                        bar-card-name.name-outside {
-                          margin-left: 21px !important;
-                        }
                         bar-card-iconbar {
-                          padding-left: 0.23em;
+                          margin-left: 8px;
                         }
                         bar-card-backgroundbar {
                           background: none;
@@ -308,9 +305,13 @@ cards:
                           overflow: hidden;
                         }
                       card_mod:
+                      # This is the primary means of correcting the bar-card alignment issues.
                         style: |
                           bar-card-name.name-outside {
-                            margin-left: 21px !important;
+                            margin-left: 1.3em !important;
+                          }
+                          bar-card-iconbar {
+                            margin-left: 0.3em !important;
                           }
                       entities:
                         - entity: sensor.studio_code_server_memory_percent
@@ -382,10 +383,10 @@ cards:
                         - type: custom:button-card
                           name: RESTART
                           icon: "mdi:home-assistant"
-                          tap_action:
+                          double_tap_action:
                             action: call-service
                             service: homeassistant.restart
-                            haptic: light
+                            haptic: success
                           template: icon_name
                         - type: custom:button-card
                           name: DEV TOOLS
@@ -428,6 +429,9 @@ cards:
                       title: Nibbler
                       card_mod: *entities_card_mod
                       entities:
+                        - type: section
+                          label: Health
+                          card_mod: *section_card_mod
                         - entity: update.truenas_system_update
                           name: Updates
                         - entity: binary_sensor.truenas_nibbler_healthy
@@ -482,18 +486,69 @@ cards:
                               border-radius: 0.3em;
                               overflow: hidden;
                             }
+                          card_mod:
+                          # This is the primary means of correcting the bar-card alignment issues.
+                            style: |
+                              bar-card-name.name-outside {
+                                margin-left: 1.3em !important;
+                              }
+                              bar-card-iconbar {
+                                margin-left: 0.3em !important;
+                              }
                           entities:
                             #----------------------------------------------------------------
-                            ## Nibbler Memory Bar
+                            ## Nibbler Storage Bar
                             #----------------------------------------------------------------
                             - entity: sensor.truenas_nibbler
                               name: Storage Used
                               icon: mdi:harddisk
-                            # - entity: sensor.truenas_ram_free
-                            #   name: Memory Free
+                        #----------------------------------------------------------------
+                        ## Nibbler Memory Bars
+                        #----------------------------------------------------------------
+                        - type: section
+                          label: Memory
+                          card_mod: *section_card_mod
+                        - type: custom:bar-card
+                          width: 55%
+                          height: 2em
+                          decimal: 1
+                          unit_of_measurement: "GiB"
+                          positions: *bar_card_positions
+                          max: 15.5
+                          severity:
+                            - color: "#303435"
+                              from: 0
+                              to: 12
+                            - color: "#6d2525"
+                              from: 12
+                              to: 15.5
+                          entity_row: true
+                          style: *bar_card_style
+                          card_mod:
+                          # This is the primary means of correcting the bar-card alignment issues.
+                            style: |
+                              #states > * {
+                                margin-bottom: 2px !important;
+                              }
+                              bar-card-name.name-outside {
+                                margin-left: 1.3em !important;
+                              }
+                              bar-card-iconbar {
+                                margin-left: 0.3em !important;
+                              }
+                          entities:
+                            - entity: sensor.truenas_arc_size
+                              name: ZFS ARC
+                            - entity: sensor.truenas_services_memory_usage
+                              name: Services
+                            - entity: sensor.truenas_memory_free
+                              name: Free
                         #----------------------------------------------------------------
                         ## Nibbler CPU Utilization Graph
                         #----------------------------------------------------------------
+                        - type: section
+                          label: System
+                          card_mod: *section_card_mod
                         - type: custom:hui-horizontal-stack-card
                           cards:
                             - type: "custom:decluttering-card"
@@ -535,7 +590,6 @@ cards:
                                 - name2: Upload
                                 - data1: Down
                                 - data2: Up
-
           #################################################################
           ## Leela Controls
           #################################################################
@@ -593,10 +647,10 @@ cards:
                             - name: RAM
                             - server: Leela
                             - title: RAM Utilization
-                            - green: 25
-                            - yellow: 50
-                            - orange: 75
-                            - red: 100
+                            - green: 15.6
+                            - yellow: 31.2
+                            - orange: 46.8
+                            - red: 62.41
                         #----------------------------------------------------------------
                         ## Leela CPU Temp Graph
                         #----------------------------------------------------------------
@@ -634,9 +688,16 @@ cards:
                       entity_row: true
                       style: *bar_card_style
                       card_mod:
+                      # This is the primary means of correcting the bar-card alignment issues.
                         style: |
                           #states > * {
                             margin-bottom: 2px !important;
+                          }
+                          bar-card-name.name-outside {
+                            margin-left: 1.3em !important;
+                          }
+                          bar-card-iconbar {
+                            margin-left: 0.3em !important;
                           }
                       entities:
                         - entity: sensor.plex_memory_usage
@@ -768,6 +829,15 @@ cards:
                           to: 100
                       entity_row: true
                       style: *bar_card_style
+                      card_mod:
+                      # This is the primary means of correcting the bar-card alignment issues.
+                        style: |
+                          bar-card-name.name-outside {
+                            margin-left: 1.3em !important;
+                          }
+                          bar-card-iconbar {
+                            margin-left: 0.3em !important;
+                          }
                       entities:
                         - entity: sensor.claude_session_usage
                           name: Session Usage
@@ -776,46 +846,106 @@ cards:
                     - type: section
                       label: Voice Assistants
                       card_mod: *section_card_mod
-                    - entity: sensor.m5stack_living_room_assistant
+                    - type: custom:button-card
+                      entity: sensor.m5stack_living_room_assistant
                       name: "Living Room"
-                      icon: "mdi:record"
+                      icon: mdi:record
+                      show_icon: true
+                      show_name: true
+                      show_state: true
+                      size: 24px
                       tap_action:
                         action: call-service
                         service: switch.toggle
-                        target:
+                        service_data:
                           entity_id: switch.m5stack_living_room_wake_toggle
                       double_tap_action:
                         action: navigate
                         navigation_path: /config/devices/device/3bb3c33455c31c794a4c2971f59d8a38
-                    - entity: sensor.m5stack_office_assistant
+                      styles: &m5stack_assistant_styles
+                        grid:
+                          - grid-template-areas: '"i n s"'
+                          - grid-template-columns: 40px 1fr auto
+                          - align-items: center
+                        card:
+                          - background: transparent
+                          - box-shadow: none
+                          - border-radius: 0
+                          - padding: 0
+                          - height: 2em 
+                          - font-size: inherit
+                          - --mdc-ripple-color: transparent
+                        icon:
+                          - align-self: center
+                          - justify-self: center
+                          - padding: 0
+                          - width: 24px
+                          - height: 24px
+                          - color: >-
+                              [[[return entity.state === 'Muted' ? 'var(--secondary-text-color)' : '#6aa84f']]]
+                        name:
+                          - font-size: 1em
+                          - font-weight: 400
+                          - justify-self: start
+                          - align-self: center
+                          - padding-left: 16px
+                          - color: var(--primary-text-color)
+                        state:
+                          - font-size: 1em
+                          - font-weight: 400
+                          - align-self: center
+                          - color: var(--primary-text-color)
+                      card_mod: &m5stack_assistant_cardmod
+                        style: |
+                          ha-card {
+                            --ha-card-hover-opacity: 0 !important;
+                          }
+                          ha-ripple {
+                            display: none !important;
+                          }
+                    - type: custom:button-card
+                      entity: sensor.m5stack_office_assistant
                       name: "Office"
-                      icon: "mdi:record"
+                      icon: mdi:record
+                      show_icon: true
+                      show_name: true
+                      show_state: true
+                      size: 24px
                       tap_action:
                         action: call-service
                         service: switch.toggle
-                        target:
+                        service_data:
                           entity_id: switch.m5stack_office_wake_toggle
                       double_tap_action:
                         action: navigate
                         navigation_path: /config/devices/device/98074542f9d0d3cee7d5be78e840ea0f
-                    - entity: sensor.m5stack_loft_assistant
+                      styles: *m5stack_assistant_styles
+                      card_mod: *m5stack_assistant_cardmod
+                    - type: custom:button-card
+                      entity: sensor.m5stack_loft_assistant
                       name: "Loft"
-                      icon: "mdi:record"
+                      icon: mdi:record
+                      show_icon: true
+                      show_name: true
+                      show_state: true
+                      size: 24px
                       tap_action:
                         action: call-service
                         service: switch.toggle
-                        target:
+                        service_data:
                           entity_id: switch.m5stack_loft_wake_toggle
                       double_tap_action:
                         action: navigate
                         navigation_path: /config/devices/device/b241806292966c0a697ccfc339b040ad
+                      styles: *m5stack_assistant_styles
+                      card_mod: *m5stack_assistant_cardmod
                     - type: section
                       label: Ollama
                       card_mod: *section_card_mod
                     - type: custom:hui-horizontal-stack-card
                       cards:
                         #----------------------------------------------------------------
-                        ## Leela CPU Utilization Graph
+                        ## Ollama CPU Utilization Graph
                         #----------------------------------------------------------------
                         - type: "custom:decluttering-card"
                           template: declutter_system_graph
@@ -829,16 +959,48 @@ cards:
                             - orange: 75
                             - red: 100
                         #----------------------------------------------------------------
-                        ## Leela CPU Utilization Graph
+                        ## Ollama Memory Utilization Graph
                         #----------------------------------------------------------------
                         - type: "custom:decluttering-card"
                           template: declutter_system_graph
                           variables:
-                            - sensor: sensor.ollama_memory_usage_percentage
+                            - sensor: sensor.ollama_memory_usage
                             - name: RAM
                             - server: Ollama
                             - title: RAM Utilization
-                            - green: 25
-                            - yellow: 50
-                            - orange: 75
-                            - red: 100
+                            - green: 15.6
+                            - yellow: 31.2
+                            - orange: 46.8
+                            - red: 62.41
+                    #----------------------------------------------------------------
+                    ## Assistant Controls
+                    #----------------------------------------------------------------
+                    # TODO: #312 Format Dekstop + HA system control buttons.
+                    - type: custom:hui-element
+                      card_type: horizontal-stack
+                      cards:
+                        - type: custom:button-card
+                          name: OK NABU
+                          icon: "mdi:home-assistant"
+                          entity: conversation.ollama_conversation
+                          tap_action:
+                            action: assist
+                            haptic: light
+                          template: icon_name
+                        - type: custom:button-card
+                          name: ASK AI
+                          icon: "mdi:message-processing-outline"
+                          entity: conversation.ollama_conversation
+                          tap_action:
+                            action: more-info
+                            haptic: light
+                          template: icon_name
+                        - type: custom:button-card
+                          name: AI CHAT
+                          icon: "custom:ollama"
+                          tap_action:
+                          entity: conversation.ollama_chat
+                          tap_action:
+                            action: more-info
+                            haptic: light
+                          template: icon_name
