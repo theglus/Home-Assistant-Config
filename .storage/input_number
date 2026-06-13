@@ -37,9 +37,9 @@
         "max": 876000.0,
         "name": "Accumulated Uptime Hours",
         "icon": "mdi:sigma",
-        "step": 0.001,
+        "step": 0.0001,
         "mode": "slider",
-        "unit_of_measurement": "h"
+        "unit_of_measurement": "d"
       }
     ]
   }
