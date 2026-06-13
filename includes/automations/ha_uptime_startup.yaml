@@ -1,0 +1,37 @@
+#################################################################
+## HA Uptime - Startup
+##
+## On startup, checks clean shutdown flag to preserve uptime across
+## manual restarts or reset it after a crash.
+#################################################################
+id: 4cf4081d-6ab4-4090-adaa-8de1a0c6816b
+alias: "HA Uptime - Startup"
+description: "On startup, checks clean shutdown flag to preserve uptime across manual restarts or reset it after a crash."
+triggers:
+  - trigger: homeassistant
+    event: start
+    alias: "Home Assistant started"
+actions:
+  - alias: "Check for clean shutdown"
+    if:
+      - condition: state
+        entity_id: input_boolean.clean_shutdown
+        state: "on"
+    then:
+      - alias: "Clear clean shutdown flag"
+        action: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.clean_shutdown
+    else:
+      - alias: "Reset accumulated uptime after crash"
+        action: input_number.set_value
+        target:
+          entity_id: input_number.accumulated_uptime_hours
+        data:
+          value: 0
+  - alias: "Record session start time"
+    action: input_datetime.set_datetime
+    target:
+      entity_id: input_datetime.ha_session_start
+    data:
+      datetime: "{{ now().strftime('%Y-%m-%d %H:%M:%S') }}"
