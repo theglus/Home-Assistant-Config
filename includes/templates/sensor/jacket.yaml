@@ -1,0 +1,85 @@
+#################################################################
+## Jacket Recommendation Sensors
+## UI-managed template sensors for jacket recommendation system.
+#
+## NOTE: Config commented out for documentation purposes.
+#################################################################
+# - sensor:
+#     # Jacket Comfort Score
+#     - name: "Jacket Comfort Score"
+#       state: >-
+#         {% set feels = states('sensor.climacell_feels_like') | float(65) %}
+#         {% set uv = states('sensor.climacell_uv_index') | float(0) %}
+#         {% set wind = state_attr('weather.climacell_nowcast', 'wind_speed') | float(0) %}
+#         {% set condition = states('weather.climacell_nowcast') %}
+#         {% if feels >= 80 %}
+#           {% set score = 0 %}
+#         {% elif feels >= 75 %}
+#           {% set score = 1 %}
+#         {% elif feels >= 70 %}
+#           {% set score = 2 %}
+#         {% elif feels >= 65 %}
+#           {% set score = 3 %}
+#         {% elif feels >= 60 %}
+#           {% set score = 5 %}
+#         {% elif feels >= 55 %}
+#           {% set score = 7 %}
+#         {% else %}
+#           {% set score = 9 %}
+#         {% endif %}
+#         {% if wind >= 20 %}
+#           {% set score = score + 4 %}
+#         {% elif wind >= 15 %}
+#           {% set score = score + 3 %}
+#         {% elif wind >= 10 %}
+#           {% set score = score + 2 %}
+#         {% elif wind >= 5 %}
+#           {% set score = score + 1 %}
+#         {% endif %}
+#         {% if condition in ['sunny', 'partlycloudy'] %}
+#           {% if uv >= 9 %}
+#             {% set score = score - 3 %}
+#           {% elif uv >= 6 %}
+#             {% set score = score - 2 %}
+#           {% elif uv >= 3 %}
+#             {% set score = score - 1 %}
+#           {% endif %}
+#         {% endif %}
+#         {{ [0, [score, 10] | min] | max }}
+#     # Jacket Recommendation
+#     - name: "Jacket Recommendation"
+#       state: >-
+#         {% set score = states('sensor.jacket_comfort_score') | int(0) %}
+#         {% if score <= 2 %}
+#           T-Shirt
+#         {% elif score <= 4 %}
+#           Light Shacket
+#         {% elif score <= 6 %}
+#           Medium Shacket
+#         {% elif score <= 8 %}
+#           Light Jacket
+#         {% else %}
+#           Jacket
+#         {% endif %}
+#     # Jacket Reason
+#     - name: "Jacket Reason"
+#       state: >-
+#         {% set feels = states('sensor.climacell_feels_like') | float(0) %}
+#         {% set uv = states('sensor.climacell_uv_index') | float(0) %}
+#         {% set wind = state_attr('weather.climacell_nowcast', 'wind_speed') | float(0) %}
+#         {% set condition = states('weather.climacell_nowcast') %}
+#         {% if feels <= 62 and uv >= 6 %}
+#           Cool temperatures push toward warmer layers, but sunshine offsets some of the chill.
+#         {% elif feels >= 68 and wind >= 15 %}
+#           Warm temperatures suggest lighter layers, but the wind pushes the recommendation upward.
+#         {% elif feels <= 60 and condition in ['cloudy', 'fog', 'rainy'] %}
+#           Cool temperatures favor warmer layers, and limited sunshine provides little relief.
+#         {% elif uv >= 7 and wind >= 15 %}
+#           Strong sunshine and noticeable wind largely offset one another.
+#         {% elif feels >= 75 %}
+#           Warm temperatures and sunshine both favor lighter layers.
+#         {% elif feels <= 55 %}
+#           Temperature and conditions both favor warmer layers.
+#         {% else %}
+#           Weather factors are relatively balanced today.
+#         {% endif %}
