@@ -1,0 +1,23 @@
+#################################################################
+## Home Assistant Sensors
+## UI-managed template sensors for Home Assistant system monitoring.
+#
+## NOTE: Config commented out for documentation purposes.
+#################################################################
+# - sensor:
+#     # HA Uptime
+#     # Tracks cumulative uptime across clean restarts; resets only on crashes.
+#     - name: "HA Uptime"
+#       unique_id: ha_uptime
+#       unit_of_measurement: "d"
+#       state_class: measurement
+#       icon: mdi:clock-check
+#       state: >-
+#         {% set accumulated = states('input_number.accumulated_uptime_hours') | float(0) %}
+#         {% set session_start = states('input_datetime.ha_session_start') %}
+#         {% if session_start not in ['unknown', 'unavailable'] %}
+#           {% set elapsed = (now() - session_start | as_datetime | as_local).total_seconds() / 86400 %}
+#           {{ (accumulated + elapsed) | round(2) }}
+#         {% else %}
+#           {{ accumulated | round(2) }}
+#         {% endif %}

@@ -18,6 +18,7 @@ recorder:
       - sensor.leela_ram_used
       - sensor.leela_package_temperature
       # Home Assistant Sensors
+      - sensor.ha_uptime
       - sensor.memory_use_percent
       - sensor.time_online
       # Sensors
