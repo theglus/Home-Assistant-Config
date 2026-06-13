@@ -21,3 +21,12 @@
 #         {% else %}
 #           {{ accumulated | round(2) }}
 #         {% endif %}
+#
+#     # HA Uptime Display
+#     # Timestamp sensor derived from ha_uptime; displays as relative time in the UI.
+#     - name: "HA Uptime Display"
+#       unique_id: ha_uptime_display
+#       device_class: timestamp
+#       icon: mdi:clock-check
+#       state: >-
+#         {{ (now() - timedelta(days=states('sensor.ha_uptime') | float(0))).isoformat() }}
