@@ -3,6 +3,7 @@
 ## UI-managed light groups.
 #
 ## NOTE: Config commented out for documentation purposes.
+## https://www.home-assistant.io/integrations/group/
 #################################################################
 # light:
 #   # Overhead Lights
