@@ -1,0 +1,25 @@
+#################################################################
+## Fan & Switch Groups
+## UI-managed fan and switch groups.
+#
+## NOTE: Config commented out for documentation purposes.
+#################################################################
+# fan:
+#   # Vacation Fans
+#   - platform: group
+#     name: "Vacation Fans"
+#     entities:
+#       - fan.airmega
+#       - fan.air_circulator
+#       - fan.kirby
+#       - fan.kitchen
+#       - fan.mini_air_circulator
+# switch:
+#   # Vacation Plugs
+#   - platform: group
+#     name: "Vacation Plugs"
+#     entities:
+#       - switch.coffee_station_plug
+#       - switch.craftstation_plug
+#       - switch.dennis_plug
+#       - switch.workstation_plug
