@@ -33,7 +33,11 @@ import voluptuous as vol
 
 from .analytics.analytics import ANALYTICS_INTERVAL, Analytics
 from .common import validate_name_pattern
-from .configuration.global_config import FLAG_HAS_GLOBAL_GUI_CONFIG, get_global_configuration, get_global_gui_configuration
+from .configuration.global_config import (
+    FLAG_HAS_GLOBAL_GUI_CONFIG,
+    get_global_configuration,
+    get_global_gui_configuration,
+)
 from .const import (
     CONF_CREATE_DOMAIN_GROUPS,
     CONF_CREATE_ENERGY_SENSORS,
@@ -190,7 +194,7 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
         _LOGGER.critical(msg)
         return False
 
-    global_config = await get_global_configuration(hass, config)
+    global_config = get_global_configuration(hass, config)
 
     discovery_manager = await create_discovery_manager_instance(hass, config, global_config)
     hass.data[DOMAIN] = {
@@ -205,7 +209,7 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
         DATA_ANALYTICS: {},
     }
 
-    await register_services(hass)
+    register_services(hass)
 
     await async_load_platform(hass, Platform.SELECT, DOMAIN, {}, config)
     await setup_yaml_sensors(hass, config, global_config)
@@ -258,7 +262,9 @@ async def create_discovery_manager_instance(
     global_powercalc_config: ConfigType,
 ) -> DiscoveryManager:
     discovery_config = global_powercalc_config.get(CONF_DISCOVERY, {})
-    exclude_device_types = [DeviceType(device_type) for device_type in discovery_config.get(CONF_EXCLUDE_DEVICE_TYPES, [])]
+    exclude_device_types = [
+        DeviceType(device_type) for device_type in discovery_config.get(CONF_EXCLUDE_DEVICE_TYPES, [])
+    ]
     exclude_self_usage = discovery_config.get(CONF_EXCLUDE_SELF_USAGE, False)
     enable_autodiscovery = discovery_config.get(CONF_ENABLED, True)
 
@@ -273,7 +279,7 @@ async def create_discovery_manager_instance(
     return manager
 
 
-async def register_services(hass: HomeAssistant) -> None:
+def register_services(hass: HomeAssistant) -> None:
     """Register generic services"""
 
     async def _handle_change_gui_service(call: ServiceCall) -> None:
@@ -309,7 +315,7 @@ async def register_services(hass: HomeAssistant) -> None:
         hass.data[DOMAIN][DATA_USED_UNIQUE_IDS] = []
         hass.data[DOMAIN][DATA_CONFIGURED_ENTITIES] = {}
         hass.data[DOMAIN][DATA_ANALYTICS] = {}
-        hass.data[DOMAIN][DOMAIN_CONFIG] = await get_global_configuration(hass, reload_config)
+        hass.data[DOMAIN][DOMAIN_CONFIG] = get_global_configuration(hass, reload_config)
 
         # Reload YAML sensors if any
         if DOMAIN in reload_config:
@@ -328,7 +334,7 @@ async def register_services(hass: HomeAssistant) -> None:
             _LOGGER.debug("Reloading config entry %s", entry.entry_id)
             await hass.config_entries.async_reload(entry.entry_id)
 
-        global_config = await get_global_configuration(hass, reload_config)
+        global_config = get_global_configuration(hass, reload_config)
         setup_domain_groups(hass, global_config)
         await create_standby_group(hass, global_config)
 
@@ -517,7 +523,7 @@ async def async_remove_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> 
 
     sensor_type = config_entry.data.get(CONF_SENSOR_TYPE)
     if sensor_type == SensorType.VIRTUAL_POWER:
-        updated_entries = await remove_power_sensor_from_associated_groups(
+        updated_entries = remove_power_sensor_from_associated_groups(
             hass,
             config_entry,
         )
@@ -545,7 +551,7 @@ async def repair_none_config_entries_issue(hass: HomeAssistant) -> None:
         try:
             unique_id = f"{int(time.time() * 1000)}_{random.randint(1000, 9999)}"  # noqa: S311
             object.__setattr__(entry, "unique_id", unique_id)
-            hass.config_entries._entries._index_entry(entry)  # noqa
+            hass.config_entries._entries._index_entry(entry)  # noqa: SLF001
             await hass.config_entries.async_remove(entry.entry_id)
         except Exception as e:  # pragma: no cover
             _LOGGER.error("problem while cleaning up None entities", exc_info=e)  # pragma: no cover

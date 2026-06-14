@@ -46,7 +46,7 @@ def is_number(value: str) -> bool:
     return math.isfinite(fvalue)
 
 
-async def create_source_entity(entity_id: str, hass: HomeAssistant) -> SourceEntity:
+def create_source_entity(entity_id: str, hass: HomeAssistant) -> SourceEntity:
     """Create object containing all information about the source entity."""
 
     source_entity_domain, source_object_id = split_entity_id(entity_id)
@@ -61,7 +61,9 @@ async def create_source_entity(entity_id: str, hass: HomeAssistant) -> SourceEnt
     entity_entry = entity_registry.async_get(entity_id)
 
     device_registry = dr.async_get(hass)
-    device_entry = device_registry.async_get(entity_entry.device_id) if entity_entry and entity_entry.device_id else None
+    device_entry = (
+        device_registry.async_get(entity_entry.device_id) if entity_entry and entity_entry.device_id else None
+    )
 
     unique_id = None
     supported_color_modes: list[ColorMode] = []
@@ -69,13 +71,14 @@ async def create_source_entity(entity_id: str, hass: HomeAssistant) -> SourceEnt
         source_entity_domain = entity_entry.domain
         unique_id = entity_entry.unique_id
         if entity_entry.capabilities:
-            supported_color_modes = entity_entry.capabilities.get(  # type: ignore[assignment]
+            supported_color_modes = entity_entry.capabilities.get(
                 ATTR_SUPPORTED_COLOR_MODES,
+                [],
             )
 
     entity_state = hass.states.get(entity_id)
     if entity_state:
-        supported_color_modes = entity_state.attributes.get(ATTR_SUPPORTED_COLOR_MODES)
+        supported_color_modes = entity_state.attributes.get(ATTR_SUPPORTED_COLOR_MODES, [])
 
     return SourceEntity(
         source_object_id,
@@ -147,13 +150,20 @@ def get_merged_sensor_configuration(*configs: dict, validate: bool = True) -> di
             CONF_CREATE_ENERGY_SENSORS,
         )
 
-    is_entity_id_required = not any(key in merged_config for key in (CONF_DAILY_FIXED_ENERGY, CONF_POWER_SENSOR_ID, CONF_MULTI_SWITCH))
+    is_entity_id_required = not any(
+        key in merged_config for key in (CONF_DAILY_FIXED_ENERGY, CONF_POWER_SENSOR_ID, CONF_MULTI_SWITCH)
+    )
 
     if not is_entity_id_required and CONF_ENTITY_ID not in merged_config:
         merged_config[CONF_ENTITY_ID] = DUMMY_ENTITY_ID
 
     sensor_type = merged_config.get(CONF_SENSOR_TYPE)
-    if validate and CONF_CREATE_GROUP not in merged_config and CONF_ENTITY_ID not in merged_config and sensor_type != SensorType.GROUP:
+    if (
+        validate
+        and CONF_CREATE_GROUP not in merged_config
+        and CONF_ENTITY_ID not in merged_config
+        and sensor_type != SensorType.GROUP
+    ):
         raise SensorConfigurationError(
             "You must supply an entity_id in the configuration, see the README",
         )

@@ -4,7 +4,7 @@ from awesomeversion import AwesomeVersion
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import (
     CONF_DEVICE,
-    __version__ as HA_VERSION,  # noqa
+    __version__ as HA_VERSION,  # noqa: N812
 )
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers import device_registry
@@ -90,7 +90,11 @@ def remove_stale_devices(
         )
 
 
-def get_device_info(hass: HomeAssistant, sensor_config: ConfigType, source_entity: SourceEntity | None) -> DeviceInfo | None:
+def get_device_info(
+    hass: HomeAssistant,
+    sensor_config: ConfigType,
+    source_entity: SourceEntity | None,
+) -> DeviceInfo | None:
     """
     Get device info for a given powercalc entity configuration.
     Prefer user configured device, when it is not set fallback to the same device as the source entity

@@ -19,10 +19,7 @@ class SubProfileRepairFlow(RepairsFlow):
         self._config_entry = config_entry
         self._hass = hass
 
-    async def async_step_init(
-        self,
-        user_input: dict[str, str] | None = None,
-    ) -> data_entry_flow.FlowResult:
+    async def async_step_init(self, _: dict[str, str] | None = None) -> data_entry_flow.FlowResult:
         """Handle the first step of a fix flow."""
 
         return await self.async_step_sub_profile()
@@ -32,9 +29,9 @@ class SubProfileRepairFlow(RepairsFlow):
             new_data = self._config_entry.data.copy()
             new_data[CONF_MODEL] = f"{new_data[CONF_MODEL]}/{user_input[CONF_SUB_PROFILE]}"
             self._hass.config_entries.async_update_entry(self._config_entry, data=new_data)
-            return self.async_create_entry(title="", data={})
+            return self.async_create_entry(title="", data={})  # type: ignore[no-any-return]
 
-        source_entity = await create_source_entity(self._config_entry.data[CONF_ENTITY_ID], self._hass)
+        source_entity = create_source_entity(self._config_entry.data[CONF_ENTITY_ID], self._hass)
         profile = await get_power_profile(self.hass, dict(self._config_entry.data), source_entity)
         assert profile
         sub_profile_schema = await build_sub_profile_schema(profile, None)
@@ -43,7 +40,7 @@ class SubProfileRepairFlow(RepairsFlow):
         if remarks:
             remarks = "\n\n" + remarks
 
-        return self.async_show_form(
+        return self.async_show_form(  # type: ignore[no-any-return]
             step_id="sub_profile",
             data_schema=sub_profile_schema,
             description_placeholders={
@@ -57,7 +54,7 @@ class SubProfileRepairFlow(RepairsFlow):
 
 async def async_create_fix_flow(
     hass: HomeAssistant,
-    issue_id: str,
+    _: str,
     data: dict[str, str | int | float | None] | None,
 ) -> RepairsFlow:
     """Create flow."""

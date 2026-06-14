@@ -17,7 +17,7 @@ from homeassistant.const import (
     EntityCategory,
 )
 
-MIN_HA_VERSION = "2025.1"
+MIN_HA_VERSION = "2026.1"
 
 BUILT_IN_LIBRARY_DIR = "powercalc_profiles"
 
@@ -170,6 +170,11 @@ CONF_UTILITY_METER_TARIFFS = "utility_meter_tariffs"
 CONF_UTILITY_METER_TYPES = "utility_meter_types"
 CONF_VALUE = "value"
 CONF_VALUE_TEMPLATE = "value_template"
+
+# Wrapper keys for ChooseSelector config flow forms (not stored in config entries).
+CONF_FIXED_VALUE = "fixed_value"
+CONF_DAILY_ENERGY_VALUE = "daily_energy_value"
+CONF_PLAYBOOK_ID = "playbook_id"
 CONF_VARIABLES = "variables"
 CONF_VOLTAGE = "voltage"
 CONF_WILDCARD = "wildcard"
@@ -198,7 +203,6 @@ class UnitPrefix(StrEnum):
 
 
 ENTITY_CATEGORIES = [
-    EntityCategory.CONFIG,
     EntityCategory.DIAGNOSTIC,
     None,
 ]
@@ -225,10 +229,12 @@ API_URL = "https://api.powercalc.nl"
 MANUFACTURER_WLED = "WLED"
 
 ATTR_CALCULATION_MODE = "calculation_mode"
+ATTR_MEMBERS = "members"
 ATTR_ENERGY_SENSOR_ENTITY_ID = "energy_sensor_entity_id"
 ATTR_ENTITIES = "entities"
 ATTR_INTEGRATION = "integration"
 ATTR_IS_GROUP = "is_group"
+ATTR_STATE = "state"
 ATTR_SOURCE_ENTITY = "source_entity"
 ATTR_SOURCE_DOMAIN = "source_domain"
 
@@ -236,6 +242,7 @@ SERVICE_ACTIVATE_PLAYBOOK = "activate_playbook"
 SERVICE_CALIBRATE_UTILITY_METER = "calibrate_utility_meter"
 SERVICE_CALIBRATE_ENERGY = "calibrate_energy"
 SERVICE_CHANGE_GUI_CONFIGURATION = "change_gui_config"
+SERVICE_DEBUG_GROUP = "debug_group"
 SERVICE_GET_ACTIVE_PLAYBOOK = "get_active_playbook"
 SERVICE_GET_GROUP_ENTITIES = "get_group_entities"
 SERVICE_INCREASE_DAILY_ENERGY = "increase_daily_energy"
