@@ -1,0 +1,23 @@
+#################################################################
+## Custom Device Types
+## UI-managed switch_as_x (Change Device Type) helpers.
+#
+## NOTE: Config commented out for documentation purposes.
+## https://www.home-assistant.io/integrations/switch_as_x/
+#################################################################
+# switch_as_x:
+#   # Air Circulator
+#   - platform: fan
+#     entity_id: switch.air_circulator
+#   # Mini Air Circulator
+#   - platform: fan
+#     entity_id: switch.mini_air_circulator
+#   # Row Lamp
+#   - platform: light
+#     entity_id: switch.row_lamp
+#   # Thruple Lamp
+#   - platform: light
+#     entity_id: switch.thruple_lamp
+#   # Thumb Lamp
+#   - platform: light
+#     entity_id: switch.thumb_lamp

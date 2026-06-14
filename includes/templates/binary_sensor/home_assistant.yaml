@@ -1,0 +1,15 @@
+#################################################################
+## Home Assistant Update Sensors
+## UI-managed template sensors for Home Assistant update tracking.
+#
+## NOTE: Config commented out for documentation purposes.
+#################################################################
+# - binary_sensor:
+#     # Home Assistant Version Major Release
+#     - name: "Home Assistant Version Major Release"
+#       state: >-
+#         {% set latest = states('sensor.home_assistant_latest_version') %}
+#         {% set current = states('sensor.home_assistant_current_version') %}
+#         {% set latest_major = latest.split('.')[0:2] | join('.') %}
+#         {% set current_major = current.split('.')[0:2] | join('.') %}
+#         {{ latest_major != current_major }}

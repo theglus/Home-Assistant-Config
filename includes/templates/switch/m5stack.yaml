@@ -1,0 +1,79 @@
+#################################################################
+## M5Stack Wake Toggles
+## UI-managed template switches for M5Stack wake word control.
+#
+## NOTE: Config commented out for documentation purposes.
+#################################################################
+# - switch:
+#     # Living Room Wake Toggle
+#     - name: "Wake Toggle"
+#       turn_on:
+#         - action: select.select_option
+#           alias: "Enable 'Okay Nabu' as HA Wake Word for Living Room Assistant."
+#           data:
+#             option: "Okay Nabu"
+#           target:
+#             entity_id: select.m5stack_living_room_wake_word
+#         - action: select.select_option
+#           alias: "Enable 'Hey Jarvis' as AI Wake Word for Living Room Assistant."
+#           data:
+#             option: "Hey Jarvis"
+#           target:
+#             entity_id: select.m5stack_living_room_wake_word_2
+#       turn_off:
+#         - action: select.select_option
+#           alias: "Disable HA + AI Wake Words for Living Room Assistant."
+#           data:
+#             option: "no_wake_word"
+#           target:
+#             entity_id:
+#               - select.m5stack_living_room_wake_word
+#               - select.m5stack_living_room_wake_word_2
+#     # Office Wake Toggle
+#     - name: "Wake Toggle"
+#       turn_on:
+#         - action: select.select_option
+#           alias: "Enable 'Okay Nabu' as HA Wake Word for Office Assistant."
+#           data:
+#             option: "Okay Nabu"
+#           target:
+#             entity_id: select.m5stack_office_wake_word
+#         - action: select.select_option
+#           alias: "Enable 'Hey Jarvis' as AI Wake Word for Office Assistant."
+#           data:
+#             option: "Hey Jarvis"
+#           target:
+#             entity_id: select.m5stack_office_wake_word_2
+#       turn_off:
+#         - action: select.select_option
+#           alias: "Disable HA + AI Wake Words for Office Assistant."
+#           data:
+#             option: "no_wake_word"
+#           target:
+#             entity_id:
+#               - select.m5stack_office_wake_word
+#               - select.m5stack_office_wake_word_2
+#     # Loft Wake Toggle
+#     - name: "Wake Toggle"
+#       turn_on:
+#         - action: select.select_option
+#           alias: "Enable 'Okay Nabu' as HA Wake Word for Loft Assistant."
+#           data:
+#             option: "Okay Nabu"
+#           target:
+#             entity_id: select.m5stack_loft_wake_word
+#         - action: select.select_option
+#           alias: "Enable 'Hey Jarvis' as AI Wake Word for Loft Assistant."
+#           data:
+#             option: "Hey Jarvis"
+#           target:
+#             entity_id: select.m5stack_loft_wake_word_2
+#       turn_off:
+#         - action: select.select_option
+#           alias: "Disable HA + AI Wake Words for Loft Assistant."
+#           data:
+#             option: "no_wake_word"
+#           target:
+#             entity_id:
+#               - select.m5stack_loft_wake_word
+#               - select.m5stack_loft_wake_word_2

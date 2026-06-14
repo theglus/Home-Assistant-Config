@@ -10,8 +10,8 @@ import gzip
 import logging
 import os
 
-from homeassistant.const import STATE_OFF
-from homeassistant.core import CALLBACK_TYPE, HomeAssistant, State, callback
+from homeassistant.const import EVENT_HOMEASSISTANT_STOP, STATE_OFF
+from homeassistant.core import CALLBACK_TYPE, HassJob, HomeAssistant, State, callback
 import homeassistant.helpers.config_validation as cv
 from homeassistant.helpers.event import async_track_point_in_time
 from homeassistant.helpers.typing import ConfigType
@@ -64,6 +64,7 @@ class PlaybookStrategy(PowerCalculationStrategyInterface):
         self._update_callback: Callable[[Decimal], None] = lambda power: None
         self._start_time: datetime = dt.utcnow()
         self._cancel_timer: CALLBACK_TYPE | None = None
+        self._cancel_stop_listener: CALLBACK_TYPE | None = None
         self._config = config
         self._repeat: bool = bool(config.get(CONF_REPEAT))
         self._autostart: str | None = config.get(CONF_AUTOSTART)
@@ -116,6 +117,9 @@ class PlaybookStrategy(PowerCalculationStrategyInterface):
         if self._cancel_timer is not None:
             self._cancel_timer()
             self._cancel_timer = None
+        if self._cancel_stop_listener is not None:
+            self._cancel_stop_listener()
+            self._cancel_stop_listener = None
 
     def get_active_playbook(self) -> Playbook | None:
         """Get running playbook"""
@@ -124,41 +128,79 @@ class PlaybookStrategy(PowerCalculationStrategyInterface):
     @callback
     def _execute_playbook_entry(self) -> None:
         """Execute one step of the playbook"""
-        if self._cancel_timer is not None:
-            self._cancel_timer()
-            self._cancel_timer = None
+        self._cancel_pending_timer()
 
         if not self._active_playbook:  # pragma: no cover
             _LOGGER.error("Could not execute next playbook entry. No active playbook")
             return
 
-        queue = self._active_playbook.queue
-        if len(queue) == 0:
-            if self._repeat:
-                _LOGGER.debug("Playbook %s repeating", self._active_playbook.key)
-                self._start_time = dt.utcnow()
-                queue.reset()
-                self._execute_playbook_entry()
-                return
-
-            _LOGGER.debug("Playbook %s completed", self._active_playbook.key)
-            self._active_playbook = None
+        playbook = self._active_playbook
+        if self._complete_or_repeat_playbook(playbook):
             return
 
-        entry = queue.dequeue()
+        entry = playbook.queue.dequeue()
+        self._schedule_playbook_entry_update(playbook, entry)
+
+    @callback
+    def _cancel_pending_timer(self) -> None:
+        if self._cancel_timer is not None:
+            self._cancel_timer()
+            self._cancel_timer = None
+
+    @callback
+    def _complete_or_repeat_playbook(self, playbook: Playbook) -> bool:
+        queue = playbook.queue
+        if len(queue) != 0:
+            return False
+
+        if self._repeat:
+            _LOGGER.debug("Playbook %s repeating", playbook.key)
+            self._start_time = dt.utcnow()
+            queue.reset()
+            self._execute_playbook_entry()
+            return True
+
+        _LOGGER.debug("Playbook %s completed", playbook.key)
+        self._active_playbook = None
+        return True
+
+    @callback
+    def _schedule_playbook_entry_update(self, playbook: Playbook, entry: PlaybookEntry) -> None:
+        """Schedule the next playbook power update."""
 
         @callback
         def _update_power(date_time: datetime) -> None:
+            active_playbook = self._active_playbook
+            if active_playbook is None:  # pragma: no cover
+                return
             self._power = entry.power
-            _LOGGER.debug("playbook %s: Update power %.2f", self._active_playbook.key, self._power)  # type: ignore
+            _LOGGER.debug("playbook %s: Update power %.2f", active_playbook.key, self._power)
             self._update_callback(self._power)
-            # Schedule next update
             self._execute_playbook_entry()
+
+        @callback
+        def _cancel_pending_updates_on_stop(_: datetime) -> None:
+            self._cancel_pending_timer()
+            if self._cancel_stop_listener is not None:
+                self._cancel_stop_listener()
+                self._cancel_stop_listener = None
+            self._active_playbook = None
+
+        if self._cancel_stop_listener is not None:
+            self._cancel_stop_listener()
+        self._cancel_stop_listener = self._hass.bus.async_listen_once(
+            EVENT_HOMEASSISTANT_STOP,
+            _cancel_pending_updates_on_stop,
+        )
 
         # Schedule update in the future
         self._cancel_timer = async_track_point_in_time(
             self._hass,
-            _update_power,
+            HassJob(
+                _update_power,
+                name=f"powercalc playbook {playbook.key}",
+                cancel_on_shutdown=True,
+            ),
             self._start_time + timedelta(seconds=entry.time),
         )
 
@@ -167,20 +209,20 @@ class PlaybookStrategy(PowerCalculationStrategyInterface):
         if playbook_id in self._loaded_playbooks:
             return self._loaded_playbooks[playbook_id]
 
-        playbooks: dict[str, str] = self._config.get(CONF_PLAYBOOKS)  # type: ignore
+        playbooks: dict[str, str] = dict(self._config.get(CONF_PLAYBOOKS) or {})
         if playbook_id not in playbooks:
             raise StrategyConfigurationError(
                 f"Playbook with id {playbook_id} not defined in playbooks config",
             )
 
         file_path = os.path.join(self._playbook_directory, playbooks[playbook_id])
-        if not (os.path.exists(file_path) or os.path.exists(f"{file_path}.gz")):
-            raise StrategyConfigurationError(
-                f"Playbook file '{file_path}' does not exist",
-            )
 
         def _load_playbook_entries() -> list[PlaybookEntry]:
             """Load playbook entries from a CSV file, with support for gzipped files"""
+            if not (os.path.exists(file_path) or os.path.exists(f"{file_path}.gz")):
+                raise StrategyConfigurationError(
+                    f"Playbook file '{file_path}' does not exist",
+                )
             actual_path = file_path if os.path.exists(file_path) else f"{file_path}.gz"
             open_func = gzip.open if actual_path.endswith(".gz") else open
             with open_func(actual_path, mode="rt") as csv_file:

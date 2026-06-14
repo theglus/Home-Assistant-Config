@@ -22,3 +22,9 @@
       unique_id: b3f26047-93e1-44a9-8d9a-3e3f786da98d
       unit_of_measurement: "MiB/s"
       state: "{{ (states('sensor.truenas_enp4s0_rx') | float / 1024) | round(2) }}"
+    # TrueNAS Services Memory Usage
+    # - name: "TrueNAS Services Memory Usage"
+    #   unit_of_measurement: "GiB"
+    #   device_class: data_size
+    #   state_class: measurement
+    #   state: "{{ 15.5 - states('sensor.truenas_memory_free') | float(0) - states('sensor.truenas_arc_size') | float(0) }}"

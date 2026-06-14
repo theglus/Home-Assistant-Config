@@ -1,0 +1,26 @@
+#################################################################
+## Studio Code Server - Memory Watchdog
+#
+## Restarts Studio Code Server if memory usage exceeds 15% for 5 minutes.
+#################################################################
+id: 35d81419-1960-4caf-ba29-f5a97af08ece
+alias: "Studio Code Server - Memory Watchdog"
+description: "Restarts Studio Code Server if memory usage exceeds 15% for 5 minutes."
+triggers:
+  - trigger: numeric_state
+    entity_id: sensor.studio_code_server_memory_percent
+    above: 15
+    for:
+      minutes: 5
+    alias: "Studio Code Server memory above 15% for 5 minutes"
+actions:
+  - alias: "Restart Studio Code Server add-on"
+    action: hassio.addon_restart
+    data:
+      addon: a0d7b954_vscode
+  - alias: "Notify about restart"
+    action: notify.smartphones
+    data:
+      title: "Studio Code Server"
+      message: "Memory exceeded 15% — add-on restarted automatically."
+mode: single

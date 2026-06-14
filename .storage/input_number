@@ -30,6 +30,16 @@
         "name": "Magic Cube Last Active Face",
         "step": 1.0,
         "mode": "box"
+      },
+      {
+        "id": "accumulated_uptime_hours",
+        "min": 0.0,
+        "max": 876000.0,
+        "name": "Accumulated Uptime Hours",
+        "icon": "mdi:sigma",
+        "step": 0.0001,
+        "mode": "slider",
+        "unit_of_measurement": "d"
       }
     ]
   }

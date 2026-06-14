@@ -60,7 +60,7 @@ ENTITY_ID_FORMAT = SENSOR_DOMAIN + ".{}"
 _LOGGER = logging.getLogger(__name__)
 
 
-async def create_energy_sensor(
+def create_energy_sensor(
     hass: HomeAssistant,
     sensor_config: ConfigType,
     power_sensor: PowerSensor,
@@ -69,20 +69,20 @@ async def create_energy_sensor(
     """Create the energy sensor entity."""
 
     # Check for existing energy sensor
-    energy_sensor = await _get_existing_energy_sensor(hass, sensor_config)
+    energy_sensor = _get_existing_energy_sensor(hass, sensor_config)
     if energy_sensor:
         return energy_sensor
 
     # Check if we should find or create a related energy sensor
-    energy_sensor = await _get_related_energy_sensor(hass, sensor_config, power_sensor)
+    energy_sensor = _get_related_energy_sensor(hass, sensor_config, power_sensor)
     if energy_sensor:
         return energy_sensor
 
     # Create a new virtual energy sensor based on the virtual power sensor
-    return await _create_virtual_energy_sensor(hass, sensor_config, power_sensor, source_entity)
+    return _create_virtual_energy_sensor(hass, sensor_config, power_sensor, source_entity)
 
 
-async def _get_existing_energy_sensor(
+def _get_existing_energy_sensor(
     hass: HomeAssistant,
     sensor_config: ConfigType,
 ) -> EnergySensor | None:
@@ -95,7 +95,8 @@ async def _get_existing_energy_sensor(
     entity_entry = ent_reg.async_get(energy_sensor_id)
     if entity_entry is None:
         raise SensorConfigurationError(
-            f"No energy sensor with id {energy_sensor_id} found in your HA instance. Double check `energy_sensor_id` setting",
+            f"No energy sensor with id {energy_sensor_id} found in your HA instance. "
+            "Double check `energy_sensor_id` setting",
         )
     return RealEnergySensor(
         entity_entry.entity_id,
@@ -104,7 +105,7 @@ async def _get_existing_energy_sensor(
     )
 
 
-async def _get_related_energy_sensor(
+def _get_related_energy_sensor(
     hass: HomeAssistant,
     sensor_config: ConfigType,
     power_sensor: PowerSensor,
@@ -137,7 +138,7 @@ async def _get_related_energy_sensor(
     return None
 
 
-async def _create_virtual_energy_sensor(
+def _create_virtual_energy_sensor(
     hass: HomeAssistant,
     sensor_config: ConfigType,
     power_sensor: PowerSensor,
@@ -188,10 +189,15 @@ def get_unit_prefix(
 ) -> str | None:
     unit_prefix = sensor_config.get(CONF_ENERGY_SENSOR_UNIT_PREFIX)
 
-    power_unit = UnitOfPower(power_sensor.unit_of_measurement)  # type: ignore
+    try:
+        power_unit: UnitOfPower | str | None = (
+            UnitOfPower(power_sensor.unit_of_measurement) if power_sensor.unit_of_measurement else None
+        )
+    except ValueError:
+        power_unit = None
     power_state = hass.states.get(power_sensor.entity_id)
-    if power_unit is None and power_state:  # type: ignore
-        power_unit = power_state.attributes.get(ATTR_UNIT_OF_MEASUREMENT)  # type: ignore  # pragma: no cover
+    if power_unit is None and power_state:
+        power_unit = power_state.attributes.get(ATTR_UNIT_OF_MEASUREMENT)  # pragma: no cover
 
     # When the power sensor is in kW, we don't want to add an extra k prefix.
     # As this would result in an energy sensor having kkWh unit, which is obviously invalid
@@ -269,14 +275,16 @@ class VirtualEnergySensor(IntegrationSensor, EnergySensor):
             "integration_method": integration_method,
             "unique_id": unique_id,
             "device_info": device_info,
-            "max_sub_interval": timedelta(seconds=sensor_config.get(CONF_ENERGY_UPDATE_INTERVAL, DEFAULT_ENERGY_UPDATE_INTERVAL)),
+            "max_sub_interval": timedelta(
+                seconds=sensor_config.get(CONF_ENERGY_UPDATE_INTERVAL, DEFAULT_ENERGY_UPDATE_INTERVAL),
+            ),
         }
 
         signature = inspect.signature(IntegrationSensor.__init__)
 
         params = {key: val for key, val in params.items() if key in signature.parameters}
 
-        super().__init__(**params)  # type: ignore[arg-type]
+        super().__init__(**params)  # type: ignore[arg-type]  # ty: ignore[invalid-argument-type]
 
         self._powercalc_source_entity = powercalc_source_entity
         self._powercalc_source_domain = powercalc_source_domain

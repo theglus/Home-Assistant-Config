@@ -30,7 +30,7 @@ from custom_components.powercalc.sensors.power import PowerSensor
 _LOGGER = logging.getLogger(__name__)
 
 
-async def create_general_standby_sensors(
+def create_general_standby_sensors(
     hass: HomeAssistant,
     config: ConfigType,
 ) -> list[Entity]:
@@ -44,8 +44,8 @@ async def create_general_standby_sensors(
         power_sensor.entity_id = "sensor.all_standby_power"
         sensor_config = config.copy()
         sensor_config[CONF_NAME] = "All standby"
-        source_entity = await create_source_entity(DUMMY_ENTITY_ID, hass)
-        energy_sensor = await create_energy_sensor(
+        source_entity = create_source_entity(DUMMY_ENTITY_ID, hass)
+        energy_sensor = create_energy_sensor(
             hass,
             sensor_config,
             power_sensor,
@@ -80,8 +80,8 @@ class StandbyPowerSensor(SensorEntity, PowerSensor):
         """Calculate sum of all power sensors in standby, and update the state of the sensor."""
         if self.standby_sensors:
             self._attr_native_value = Decimal(
-                round(  # type: ignore
-                    sum(self.standby_sensors.values()),
+                round(
+                    sum(self.standby_sensors.values(), Decimal(0)),
                     self._rounding_digits,
                 ),
             )

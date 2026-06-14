@@ -25,6 +25,8 @@ from custom_components.powercalc.const import (
     CONF_GAMMA_CURVE,
     CONF_MAX_POWER,
     CONF_MIN_POWER,
+    CONF_POWER,
+    CONF_VALUE,
 )
 from custom_components.powercalc.errors import StrategyConfigurationError
 from custom_components.powercalc.helpers import get_related_entity_by_device_class
@@ -78,6 +80,8 @@ class LinearStrategy(PowerCalculationStrategyInterface):
 
     async def calculate(self, entity_state: State) -> Decimal | None:
         """Calculate the current power consumption."""
+        value_entity = self.get_initialized_value_entity()
+
         if not self._initialized:
             self._attribute = self.get_attribute(entity_state)
             self._initialized = True
@@ -93,7 +97,7 @@ class LinearStrategy(PowerCalculationStrategyInterface):
 
         _LOGGER.debug(
             "%s: Linear mode state value: %d range(%d-%d)",
-            self._value_entity.entity_id,  # type: ignore
+            value_entity.entity_id,
             value,
             min_value,
             max_value,
@@ -115,9 +119,7 @@ class LinearStrategy(PowerCalculationStrategyInterface):
 
     def is_enabled(self, entity_state: State) -> bool:
         """Return if this strategy is enabled based on entity state."""
-        if self._source_entity.domain == media_player.DOMAIN and entity_state.state is not STATE_PLAYING:  # noqa: SIM103
-            return False
-        return True
+        return not (self._source_entity.domain == media_player.DOMAIN and entity_state.state is not STATE_PLAYING)
 
     def get_min_calibrate(self, value: int) -> tuple[int, float]:
         """Get closest lower value from calibration table."""
@@ -134,16 +136,19 @@ class LinearStrategy(PowerCalculationStrategyInterface):
         calibrate = self._config.get(CONF_CALIBRATE)
         if isinstance(calibrate, dict):
             calibrate = [f"{key} -> {value}" for key, value in calibrate.items()]
+        elif isinstance(calibrate, list) and calibrate and isinstance(calibrate[0], dict):
+            calibrate = [f"{item[CONF_VALUE]} -> {item[CONF_POWER]}" for item in calibrate]
 
         if calibrate is None or len(calibrate) == 0:
             full_range = self.get_entity_value_range()
             min_value = full_range[0]
             max_value = full_range[1]
             min_power = self._config.get(CONF_MIN_POWER) or self._standby_power or 0
+            max_power = self._config.get(CONF_MAX_POWER)
+            if max_power is None:  # pragma: no cover
+                raise StrategyConfigurationError("Linear strategy must have max power defined")
             calibration_list.append((min_value, float(min_power)))
-            calibration_list.append(
-                (max_value, float(self._config.get(CONF_MAX_POWER))),  # type: ignore
-            )
+            calibration_list.append((max_value, float(max_power)))
             return calibration_list
 
         for line in calibrate:
@@ -154,23 +159,30 @@ class LinearStrategy(PowerCalculationStrategyInterface):
 
     def get_entity_value_range(self) -> tuple:
         """Get the min/max range for a given entity domain."""
-        if self._value_entity.domain == light.DOMAIN:  # type: ignore
+        if self.get_initialized_value_entity().domain == light.DOMAIN:
             return 0, 255
 
         return 0, 100
+
+    def get_initialized_value_entity(self) -> SourceEntity:
+        """Return the initialized value entity."""
+        if self._value_entity is None:  # pragma: no cover
+            raise StrategyConfigurationError("Linear strategy has not been initialized")
+        return self._value_entity
 
     def get_current_state_value(self, entity_state: State) -> int | None:
         """Get the current entity state, i.e. selected brightness."""
         if self._attribute:
             return self.get_value_from_attribute(entity_state)
 
-        if self._value_entity.entity_id is not self._source_entity.entity_id:  # type: ignore
+        value_entity = self.get_initialized_value_entity()
+        if value_entity.entity_id is not self._source_entity.entity_id:
             # If the value entity is different from the source entity, we need to fetch the state of the value entity
-            entity_state = self._hass.states.get(self._value_entity.entity_id)  # type: ignore
+            entity_state = self._hass.states.get(value_entity.entity_id)
             if not entity_state:
                 _LOGGER.error(
                     "Value entity %s not found",
-                    self._value_entity.entity_id,  # type: ignore
+                    value_entity.entity_id,
                 )
                 return None
 
@@ -184,7 +196,10 @@ class LinearStrategy(PowerCalculationStrategyInterface):
             return None
 
     def get_value_from_attribute(self, entity_state: State) -> int | None:
-        value: int | None = entity_state.attributes.get(self._attribute)  # type: ignore[arg-type]
+        if self._attribute is None:  # pragma: no cover
+            return None
+
+        value = entity_state.attributes.get(self._attribute)
         if value is None:
             _LOGGER.warning(
                 "No %s attribute for entity: %s",
@@ -192,13 +207,15 @@ class LinearStrategy(PowerCalculationStrategyInterface):
                 entity_state.entity_id,
             )
             return None
-        if self._attribute == ATTR_BRIGHTNESS and value > 255:
-            value = 255
         # Convert volume level to 0-100 range
         if self._attribute == ATTR_MEDIA_VOLUME_LEVEL:
             if entity_state.attributes.get(ATTR_MEDIA_VOLUME_MUTED) is True:
-                value = 0
-            value *= 100
+                return 0
+            return int(float(value) * 100)
+
+        value = int(value)
+        if self._attribute == ATTR_BRIGHTNESS and value > 255:
+            value = 255
         return value
 
     def get_attribute(self, entity_state: State) -> str | None:
@@ -214,9 +231,8 @@ class LinearStrategy(PowerCalculationStrategyInterface):
         if not self._config.get(CONF_CALIBRATE):
             if self._source_entity.domain not in ALLOWED_DOMAINS:
                 raise StrategyConfigurationError(
-                    "Entity domain not supported for linear mode. Must be one of: {}, or use the calibrate option".format(
-                        ",".join(ALLOWED_DOMAINS),
-                    ),
+                    "Entity domain not supported for linear mode. "
+                    f"Must be one of: {','.join(ALLOWED_DOMAINS)}, or use the calibrate option",
                     "linear_unsupported_domain",
                 )
             if CONF_MAX_POWER not in self._config:
@@ -235,7 +251,11 @@ class LinearStrategy(PowerCalculationStrategyInterface):
 
     async def get_value_entity(self) -> SourceEntity:
         """Set the value entity based on the current state."""
-        if self._source_entity.domain in (vacuum.DOMAIN, lawn_mower.DOMAIN) and self._attribute is None and self._source_entity.entity_entry:
+        if (
+            self._source_entity.domain in (vacuum.DOMAIN, lawn_mower.DOMAIN)
+            and self._attribute is None
+            and self._source_entity.entity_entry
+        ):
             # For vacuum cleaner and lawn mower, battery level is a separate entity
             related_entity = get_related_entity_by_device_class(
                 self._hass,
@@ -247,7 +267,7 @@ class LinearStrategy(PowerCalculationStrategyInterface):
                     "No battery entity found for vacuum cleaner",
                     "linear_no_battery_entity",
                 )
-            return await create_source_entity(related_entity, self._hass)
+            return create_source_entity(related_entity, self._hass)
 
         return self._value_entity or self._source_entity
 

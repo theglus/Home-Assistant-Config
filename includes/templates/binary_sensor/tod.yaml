@@ -1,0 +1,23 @@
+#################################################################
+## Times of Day Sensors
+## UI-managed Times of Day binary sensors.
+#
+## NOTE: Config commented out for documentation purposes.
+## https://www.home-assistant.io/integrations/tod/
+#################################################################
+# binary_sensor:
+#   # Peak Usage
+#   - platform: tod
+#     name: "Peak Usage"
+#     after: "16:00"
+#     before: "21:00"
+#   # Purifier Schedule
+#   - platform: tod
+#     name: "Purifier Schedule"
+#     after: "23:00"
+#     before: "08:15"
+#   # Volume Schedule
+#   - platform: tod
+#     name: "Volume Schedule"
+#     after: "22:00"
+#     before: "09:00"

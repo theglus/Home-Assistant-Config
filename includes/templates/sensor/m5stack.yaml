@@ -1,0 +1,61 @@
+#################################################################
+## M5Stack Assistant Sensors
+## UI-managed template sensors for M5Stack assistant status.
+#
+## NOTE: Config commented out for documentation purposes.
+#################################################################
+# - sensor:
+#     # M5Stack Living Room Assistant
+#     - name: "M5Stack Living Room Assistant"
+#       state: >-
+#         {% set assist = states('assist_satellite.m5stack_living_room_assist_in_progress') %}
+#         {% set wake_enabled = is_state('switch.m5stack_living_room_wake_toggle', 'on') %}
+#         {% if not wake_enabled %}
+#           Muted
+#         {% elif assist == 'idle' %}
+#           Ready
+#         {% elif assist == 'listening' %}
+#           Listening
+#         {% elif assist == 'processing' %}
+#           Thinking
+#         {% elif assist == 'responding' %}
+#           Speaking
+#         {% else %}
+#           Unknown
+#         {% endif %}
+#     # M5Stack Office Assistant
+#     - name: "M5Stack Office Assistant"
+#       state: >-
+#         {% set assist = states('assist_satellite.m5stack_office_assist_in_progress') %}
+#         {% set wake_enabled = is_state('switch.m5stack_office_wake_toggle', 'on') %}
+#         {% if not wake_enabled %}
+#           Muted
+#         {% elif assist == 'idle' %}
+#           Ready
+#         {% elif assist == 'listening' %}
+#           Listening
+#         {% elif assist == 'processing' %}
+#           Thinking
+#         {% elif assist == 'responding' %}
+#           Speaking
+#         {% else %}
+#           Unknown
+#         {% endif %}
+#     # M5Stack Loft Assistant
+#     - name: "M5Stack Loft Assistant"
+#       state: >-
+#         {% set assist = states('assist_satellite.m5stack_loft_assist_in_progress') %}
+#         {% set wake_enabled = is_state('switch.m5stack_loft_wake_toggle', 'on') %}
+#         {% if not wake_enabled %}
+#           Muted
+#         {% elif assist == 'idle' %}
+#           Ready
+#         {% elif assist == 'listening' %}
+#           Listening
+#         {% elif assist == 'processing' %}
+#           Thinking
+#         {% elif assist == 'responding' %}
+#           Speaking
+#         {% else %}
+#           Unknown
+#         {% endif %}

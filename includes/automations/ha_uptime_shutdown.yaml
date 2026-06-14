@@ -1,0 +1,32 @@
+#################################################################
+## HA Uptime - Shutdown
+##
+## On shutdown, accumulates session uptime and flags a clean shutdown.
+#################################################################
+id: fc750e59-baf2-47a8-8b31-c39c824177dd
+alias: "HA Uptime - Shutdown"
+description: "On shutdown, accumulates session uptime and flags a clean shutdown."
+triggers:
+  - trigger: homeassistant
+    event: shutdown
+    alias: "Home Assistant shutting down"
+actions:
+  - alias: "Calculate session duration"
+    variables:
+      session_start: "{{ states('input_datetime.ha_session_start') }}"
+      elapsed: >-
+        {% if session_start not in ['unknown', 'unavailable'] %}
+          {{ (now() - session_start | as_datetime | as_local).total_seconds() / 86400 }}
+        {% else %}
+          0
+        {% endif %}
+  - alias: "Add session to accumulated uptime"
+    action: input_number.set_value
+    target:
+      entity_id: input_number.accumulated_uptime_hours
+    data:
+      value: "{{ (states('input_number.accumulated_uptime_hours') | float(0) + elapsed | float(0)) | round(4) }}"
+  - alias: "Flag clean shutdown"
+    action: input_boolean.turn_on
+    target:
+      entity_id: input_boolean.clean_shutdown

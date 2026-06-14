@@ -188,7 +188,8 @@ cards:
                       name: Installed Version
                       icon: mdi:home-assistant
                     # - entity: sensor.hacs
-                    - entity: sensor.time_online
+                    - entity: sensor.ha_uptime_display
+                      name: Time Online
                     #----------------------------------------------------------------
                     ## Containers Bar
                     #----------------------------------------------------------------

@@ -1,0 +1,14 @@
+#################################################################
+## Clock Sensor
+## UI-managed template sensor for 12-hour clock display.
+#
+## NOTE: Config commented out for documentation purposes.
+#################################################################
+# - sensor:
+#     # Clock
+#     - name: "Clock"
+#       state: >-
+#         {% set time = states('sensor.time') %}
+#         {% set hour = time[:2] | int(0) %}
+#         {{ '{:02d}:{}'.format(hour if hour == 12 else hour % 12, time[3:5]) }}
+#         {{ 'PM' if hour > 11 else 'AM' }}

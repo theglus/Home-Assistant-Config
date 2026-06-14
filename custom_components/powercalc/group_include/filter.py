@@ -94,7 +94,7 @@ def create_filter(
         CONF_LABEL: lambda: LabelFilter(hass, filter_config),  # type: ignore
         CONF_WILDCARD: lambda: WildcardFilter(filter_config),  # type: ignore
         CONF_GROUP: lambda: GroupFilter(hass, filter_config),  # type: ignore
-        CONF_TEMPLATE: lambda: TemplateFilter(hass, filter_config),  # type: ignore
+        CONF_TEMPLATE: lambda: TemplateFilter(filter_config),  # type: ignore
         CONF_ALL: lambda: NullFilter(),
         CONF_OR: lambda: create_composite_filter(filter_config, hass, FilterOperator.OR),  # type: ignore
         CONF_AND: lambda: create_composite_filter(filter_config, hass, FilterOperator.AND),  # type: ignore
@@ -104,7 +104,7 @@ def create_filter(
     return filter_mapping.get(filter_type, lambda: NullFilter())()
 
 
-async def get_filtered_entity_list(
+def get_filtered_entity_list(
     hass: HomeAssistant,
     entity_filter: EntityFilter,
 ) -> list[entity_registry.RegistryEntry]:
@@ -133,7 +133,11 @@ class GroupFilter(EntityFilter):
         filters = []
         for single_group_id in group_ids:
             domain = split_entity_id(single_group_id)[0]
-            filter_instance = LightGroupFilter(hass, single_group_id) if domain == LIGHT_DOMAIN else StandardGroupFilter(hass, single_group_id)
+            filter_instance = (
+                LightGroupFilter(hass, single_group_id)
+                if domain == LIGHT_DOMAIN
+                else StandardGroupFilter(hass, single_group_id)
+            )
             filters.append(filter_instance)
 
         self.filter = CompositeFilter(filters, FilterOperator.OR) if len(filters) > 1 else filters[0]
@@ -227,8 +231,7 @@ class WildcardFilter(EntityFilter):
 
 
 class TemplateFilter(EntityFilter):
-    def __init__(self, hass: HomeAssistant, template: Template) -> None:
-        template.hass = hass
+    def __init__(self, template: Template) -> None:
         self.entity_ids = template.async_render()
 
     def is_valid(self, entity: RegistryEntry) -> bool:
@@ -311,7 +314,9 @@ class AreaFilter(EntityFilter):
                 )
 
             self.area_ids.append(area.id)
-            self.area_devices.update([device.id for device in device_registry.async_entries_for_area(device_reg, area.id)])
+            self.area_devices.update(
+                [device.id for device in device_registry.async_entries_for_area(device_reg, area.id)],
+            )
 
     def is_valid(self, entity: RegistryEntry) -> bool:
         return entity.area_id in self.area_ids or entity.device_id in self.area_devices
@@ -350,7 +355,9 @@ class FloorFilter(EntityFilter):
             self.area_ids.extend([area.id for area in areas if area.id is not None])
 
             for area in areas:
-                self.devices.extend([device.id for device in device_registry.async_entries_for_area(device_reg, area.id)])
+                self.devices.extend(
+                    [device.id for device in device_registry.async_entries_for_area(device_reg, area.id)],
+                )
 
     def is_valid(self, entity: RegistryEntry) -> bool:
         return entity.area_id in self.area_ids or entity.device_id in self.devices
