@@ -71,9 +71,15 @@ FRIGIDAIRE_TO_HA_MODE = {
     frigidaire.Mode.CONTINUOUS: MODE_BOOST,
     frigidaire.Mode.QUIET: MODE_SLEEP,
     frigidaire.Mode.AUTO: MODE_AUTO,
+    frigidaire.Mode.SMART: MODE_AUTO,
 }
 
-HA_TO_FRIGIDAIRE_MODE = {v: k for k, v in FRIGIDAIRE_TO_HA_MODE.items()}
+HA_TO_FRIGIDAIRE_MODE = {
+    MODE_NORMAL: frigidaire.Mode.DRY,
+    MODE_BOOST: frigidaire.Mode.CONTINUOUS,
+    MODE_SLEEP: frigidaire.Mode.QUIET,
+    MODE_AUTO: frigidaire.Mode.AUTO,
+}
 
 FRIGIDAIRE_TO_HA_FAN_MODE = {
     frigidaire.FanSpeed.LOW: FAN_LOW,
