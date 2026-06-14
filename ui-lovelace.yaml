@@ -32,6 +32,8 @@ sidebar:
       active: true
   template: |
     <li>The air quality in Dogpatch is {{states('sensor.u_s_air_pollution_level')}} with an AQI of {{states('sensor.aqi')}}.</li>
+    <li>---</li>
+    <li>Don't forget to bring a {{ states('sensor.jacket_recommendation') | lower }}!</li>
   style: |
     :host {
         --sidebar-background: rgba(0,0,0,.3);
