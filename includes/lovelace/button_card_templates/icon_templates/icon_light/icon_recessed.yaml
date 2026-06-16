@@ -10,7 +10,7 @@ styles:
       - position: absolute
 custom_fields:
   icon: >
-    [[[ const state = entity.state === 'on' ? 'animate' : null;
+    [[[ const state = (variables.state === 'on' && variables.timeout < 2000) ? 'animate' : null;
     return `
     <svg viewBox="0 0 50 50">
     <style>@keyframes animate {
