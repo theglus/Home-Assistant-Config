@@ -56,7 +56,7 @@ custom_fields:
           <stop offset="1" stop-color="#7fdbe9"/>
         </linearGradient>
       `;
-      if (variables.state === 'playing') {
+      if (['playing', 'idle', 'paused'].includes(variables.state)) {
         if (variables.timeout < 2000) { setTimeout(() => { if (!this.shadowRoot) return; const el = this.shadowRoot.querySelector('path.on'); if (el) el.removeAttribute('class'); }, 1100); }
         return `
           <svg viewBox="0 0 50 50"> ${variables.timeout < 2000 ? style : ''} ${gradient}
