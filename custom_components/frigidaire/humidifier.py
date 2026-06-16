@@ -271,7 +271,10 @@ class FrigidaireDehumidifier(HumidifierEntity):
                 _LOGGER.error("Failed to connect to Frigidaire servers")
             self._attr_available = False
         else:
-            # If we successfully retrieved details, the appliance is available
-            # Check that we have a valid applianceState (running or off)
+            # If we successfully retrieved details, the appliance is available.
+            # Prefer applianceState when present; fall back to checking for a
+            # reported mode, since some models omit applianceState from their
+            # API response.
             appliance_state = self._details.get(frigidaire.Detail.APPLIANCE_STATE)
-            self._attr_available = appliance_state is not None
+            mode = self._details.get(frigidaire.Detail.MODE)
+            self._attr_available = appliance_state is not None or mode is not None
