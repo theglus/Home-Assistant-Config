@@ -5,16 +5,19 @@
     loader: >
       <img src="/local/icons/loader.svg" width="100%">
   tap_action:
-    loader: >
+    action: javascript
+    haptic: light
+    javascript: >
       [[[
         if (entity !== undefined) {
+          hass.callService('homeassistant', 'toggle', {entity_id: entity.entity_id});
           let elt = this.shadowRoot;
           const loader = (id, style, timeout) => {
             if (elt.getElementById(id)) {
               elt.getElementById(id).style.display = style;
               window.setTimeout(() => {
                 elt.getElementById(id).style.display = timeout;
-              }, 20000)
+              }, 20000);
             }
           };
           loader('circle', 'none', 'initial');
