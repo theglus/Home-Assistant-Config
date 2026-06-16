@@ -57,6 +57,7 @@ custom_fields:
         </linearGradient>
       `;
       if (variables.state === 'playing') {
+        if (variables.timeout < 2000) { setTimeout(() => { if (!this.shadowRoot) return; const el = this.shadowRoot.querySelector('path.on'); if (el) el.removeAttribute('class'); }, 1100); }
         return `
           <svg viewBox="0 0 50 50"> ${variables.timeout < 2000 ? style : ''} ${gradient}
             <path d="M2.9,8h44.3v29.9H2.9V8z" fill="#20262890"/>
@@ -65,9 +66,10 @@ custom_fields:
         `;
       }
       if (variables.state === 'off' && variables.timeout < 2000) {
+        setTimeout(() => { if (!this.shadowRoot) return; const el = this.shadowRoot.querySelector('path.off'); if (el) { el.removeAttribute('class'); el.style.transform = 'scaleY(0)'; el.style.transformOrigin = '-100% 46%'; } }, 1100);
         return `
-          <svg viewBox="0 0 50 50"> ${style} ${gradient} 
-            <path class="off" d="M2.9,8h44.3v29.9H2.9V8z" fill="url(#A)"/> ${path} 
+          <svg viewBox="0 0 50 50"> ${style} ${gradient}
+            <path class="off" d="M2.9,8h44.3v29.9H2.9V8z" fill="url(#A)"/> ${path}
           </svg>
         `;
       } else {

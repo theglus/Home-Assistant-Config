@@ -13,9 +13,11 @@ custom_fields:
       let state;
       if (variables.state === 'on' && variables.timeout < 2000) {
         state = 'on';
-      } 
+        setTimeout(() => { if (!this.shadowRoot) return; this.shadowRoot.querySelectorAll('.on').forEach(el => el.setAttribute('class', 'on_timeout')); }, 750);
+      }
       if (variables.state === 'off' && variables.timeout < 2000) {
         state = 'off';
+        setTimeout(() => { if (!this.shadowRoot) return; this.shadowRoot.querySelectorAll('.off').forEach(el => el.removeAttribute('class')); }, 750);
       }
       if (variables.state === 'on' && variables.timeout > 2000) {
         state = 'on_timeout';
