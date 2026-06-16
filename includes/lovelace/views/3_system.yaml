@@ -999,7 +999,6 @@ cards:
                         - type: custom:button-card
                           name: AI CHAT
                           icon: "custom:ollama"
-                          tap_action:
                           entity: conversation.ollama_chat
                           tap_action:
                             action: more-info
