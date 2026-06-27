@@ -154,8 +154,7 @@ class ClaudeUsageConfigFlow(ConfigFlow, domain=DOMAIN):
             session = aiohttp_client.async_get_clientsession(self.hass)
             resp = await session.post(
                 OAUTH_TOKEN_URL,
-                data=payload,
-                headers={"Content-Type": "application/x-www-form-urlencoded"},
+                json=payload,
                 timeout=aiohttp.ClientTimeout(total=15),
             )
             if not resp.ok:
@@ -204,6 +203,71 @@ class ClaudeUsageConfigFlow(ConfigFlow, domain=DOMAIN):
         except (aiohttp.ClientError, KeyError):
             _LOGGER.exception("Error fetching account info")
             return None, None
+
+    async def async_step_reauth(self, entry_data: dict[str, Any]) -> ConfigFlowResult:
+        """Handle reauth when token is invalid."""
+        return await self.async_step_reauth_confirm()
+
+    async def async_step_reauth_confirm(
+        self, user_input: dict[str, Any] | None = None
+    ) -> ConfigFlowResult:
+        """Handle reauth confirmation with new OAuth code."""
+        errors: dict[str, str] = {}
+
+        # Generate PKCE and state on first load
+        if self._pkce_verifier is None:
+            self._pkce_verifier, self._pkce_challenge = generate_pkce()
+            self._state = secrets.token_urlsafe(32)
+
+        # Build OAuth URL
+        params = urlencode(
+            {
+                "code": "true",
+                "client_id": OAUTH_CLIENT_ID,
+                "response_type": "code",
+                "redirect_uri": OAUTH_REDIRECT_URI,
+                "scope": OAUTH_SCOPES,
+                "code_challenge": self._pkce_challenge,
+                "code_challenge_method": "S256",
+                "state": self._state,
+            }
+        )
+        oauth_url = f"{OAUTH_AUTHORIZE_URL}?{params}"
+
+        if user_input is not None:
+            auth_code = user_input.get("auth_code", "").strip()
+            if not auth_code:
+                errors["auth_code"] = "missing_code"
+            else:
+                token_data = await self._exchange_code(auth_code)
+                if token_data is None:
+                    errors["auth_code"] = "exchange_failed"
+                else:
+                    account_name, subscription_level = await self._fetch_account_info(
+                        token_data["access_token"]
+                    )
+
+                    return self.async_update_reload_and_abort(
+                        self._get_reauth_entry(),
+                        data_updates={
+                            CONF_ACCESS_TOKEN: token_data["access_token"],
+                            CONF_REFRESH_TOKEN: token_data.get("refresh_token", ""),
+                            CONF_EXPIRES_AT: time.time() + token_data.get("expires_in", 3600),
+                            CONF_ACCOUNT_NAME: account_name,
+                            CONF_SUBSCRIPTION_LEVEL: subscription_level,
+                        },
+                    )
+
+        return self.async_show_form(
+            step_id="reauth_confirm",
+            data_schema=vol.Schema(
+                {
+                    vol.Required("auth_code"): str,
+                }
+            ),
+            description_placeholders={"url": oauth_url},
+            errors=errors,
+        )
 
     @staticmethod
     @callback

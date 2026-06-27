@@ -11,6 +11,7 @@ import aiohttp
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
+from homeassistant.exceptions import ConfigEntryAuthFailed
 from homeassistant.helpers import aiohttp_client
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
@@ -46,7 +47,10 @@ async def async_setup_entry(hass: HomeAssistant, entry: ClaudeUsageConfigEntry) 
 
 async def async_unload_entry(hass: HomeAssistant, entry: ClaudeUsageConfigEntry) -> bool:
     """Unload a config entry."""
-    return await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
+    unload_ok = await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
+    if unload_ok:
+        await entry.runtime_data.async_shutdown()
+    return unload_ok
 
 
 async def _async_update_listener(hass: HomeAssistant, entry: ClaudeUsageConfigEntry) -> None:
@@ -70,6 +74,7 @@ class ClaudeUsageCoordinator(DataUpdateCoordinator[dict[str, Any]]):
             name=DOMAIN,
             update_interval=timedelta(seconds=interval),
             config_entry=entry,
+            always_update=False,
         )
 
     async def _async_update_data(self) -> dict[str, Any]:
@@ -88,7 +93,7 @@ class ClaudeUsageCoordinator(DataUpdateCoordinator[dict[str, Any]]):
                 USAGE_API_URL, headers=headers, timeout=aiohttp.ClientTimeout(total=15)
             )
             if resp.status == 401:
-                raise UpdateFailed("Authentication failed - token may be invalid")
+                raise ConfigEntryAuthFailed("Authentication failed - token may be invalid")
             resp.raise_for_status()
             raw = await resp.json()
         except aiohttp.ClientError as err:
@@ -104,7 +109,7 @@ class ClaudeUsageCoordinator(DataUpdateCoordinator[dict[str, Any]]):
 
         refresh_token = self.config_entry.data.get(CONF_REFRESH_TOKEN)
         if not refresh_token:
-            raise UpdateFailed("No refresh token available")
+            raise ConfigEntryAuthFailed("No refresh token available")
 
         payload = {
             "grant_type": "refresh_token",
@@ -116,18 +121,17 @@ class ClaudeUsageCoordinator(DataUpdateCoordinator[dict[str, Any]]):
             session = aiohttp_client.async_get_clientsession(self.hass)
             resp = await session.post(
                 OAUTH_TOKEN_URL,
-                data=payload,
-                headers={"Content-Type": "application/x-www-form-urlencoded"},
+                json=payload,
                 timeout=aiohttp.ClientTimeout(total=15),
             )
             if not resp.ok:
-                raise UpdateFailed(f"Token refresh failed ({resp.status})")
+                raise ConfigEntryAuthFailed(f"Token refresh failed ({resp.status})")
             token_data = await resp.json()
         except aiohttp.ClientError as err:
             raise UpdateFailed(f"Token refresh request failed: {err}") from err
 
         if "access_token" not in token_data:
-            raise UpdateFailed("Token refresh response missing access_token")
+            raise ConfigEntryAuthFailed("Token refresh response missing access_token")
 
         new_data = {
             **self.config_entry.data,

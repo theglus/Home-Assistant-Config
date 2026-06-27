@@ -69,4 +69,5 @@ SENSOR_DEFINITIONS = [
         "mdi:credit-card-settings",
         None,
     ),
+    ("api_error", "API Error", "errors", "mdi:alert-circle", None),
 ]
