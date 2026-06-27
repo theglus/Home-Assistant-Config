@@ -25,5 +25,11 @@ logger:
       # ValueError: Invalid datetime: sensor.pc_last_active provides state '2021-11-14 22:22:37', which is missing timezone information
       - "Error adding entities for domain sensor with platform mqtt"
     homeassistant.util.logging:
-      # LOCOMOTIVE ERROS
+      # LOCOMOTIVE ERRORS
       - "Exception in message_received when handling msg on"
+    homeassistant.components.utility_meter.sensor:
+      # Daily & Monthy Energy WARNINGS
+      - "received an invalid new state"
+      # Tile Invisalign ERROR
+    pytile:
+      - "Error requesting details for 5bf5c597ffc975b5"
