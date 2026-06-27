@@ -200,8 +200,6 @@ cards:
                       entity: binary_sensor.tailscale_running
                       name: Tailscale
                       icon: mdi:shield-lock
-                      show_icon: true
-                      show_name: true
                       show_state: false
                       show_label: true
                       size: 24px
@@ -851,8 +849,6 @@ cards:
                       entity: sensor.m5stack_living_room_assistant
                       name: "Living Room"
                       icon: mdi:record
-                      show_icon: true
-                      show_name: true
                       show_state: true
                       size: 24px
                       tap_action:
@@ -908,8 +904,6 @@ cards:
                       entity: sensor.m5stack_office_assistant
                       name: "Office"
                       icon: mdi:record
-                      show_icon: true
-                      show_name: true
                       show_state: true
                       size: 24px
                       tap_action:
@@ -926,8 +920,6 @@ cards:
                       entity: sensor.m5stack_loft_assistant
                       name: "Loft"
                       icon: mdi:record
-                      show_icon: true
-                      show_name: true
                       show_state: true
                       size: 24px
                       tap_action:
