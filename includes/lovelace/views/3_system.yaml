@@ -303,7 +303,7 @@ cards:
                           border-radius: 0.3em;
                           overflow: hidden;
                         }
-                      card_mod:
+                      card_mod: &bar_card_alignment
                       # This is the primary means of correcting the bar-card alignment issues.
                         style: |
                           bar-card-name.name-outside {
@@ -485,15 +485,7 @@ cards:
                               border-radius: 0.3em;
                               overflow: hidden;
                             }
-                          card_mod:
-                          # This is the primary means of correcting the bar-card alignment issues.
-                            style: |
-                              bar-card-name.name-outside {
-                                margin-left: 1.3em !important;
-                              }
-                              bar-card-iconbar {
-                                margin-left: 0.3em !important;
-                              }
+                          card_mod: *bar_card_alignment
                           entities:
                             #----------------------------------------------------------------
                             ## Nibbler Storage Bar
@@ -523,7 +515,7 @@ cards:
                               to: 15.5
                           entity_row: true
                           style: *bar_card_style
-                          card_mod:
+                          card_mod: &bar_card_alignment_stacked
                           # This is the primary means of correcting the bar-card alignment issues.
                             style: |
                               #states > * {
@@ -686,18 +678,7 @@ cards:
                           to: 62.41
                       entity_row: true
                       style: *bar_card_style
-                      card_mod:
-                      # This is the primary means of correcting the bar-card alignment issues.
-                        style: |
-                          #states > * {
-                            margin-bottom: 2px !important;
-                          }
-                          bar-card-name.name-outside {
-                            margin-left: 1.3em !important;
-                          }
-                          bar-card-iconbar {
-                            margin-left: 0.3em !important;
-                          }
+                      card_mod: *bar_card_alignment_stacked
                       entities:
                         - entity: sensor.plex_memory_usage
                           name: Plex
@@ -828,15 +809,7 @@ cards:
                           to: 100
                       entity_row: true
                       style: *bar_card_style
-                      card_mod:
-                      # This is the primary means of correcting the bar-card alignment issues.
-                        style: |
-                          bar-card-name.name-outside {
-                            margin-left: 1.3em !important;
-                          }
-                          bar-card-iconbar {
-                            margin-left: 0.3em !important;
-                          }
+                      card_mod: *bar_card_alignment
                       entities:
                         - entity: sensor.claude_session_usage
                           name: Session Usage
