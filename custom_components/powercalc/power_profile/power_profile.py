@@ -27,9 +27,13 @@ from homeassistant.helpers.typing import ConfigType
 
 from custom_components.powercalc.const import (
     BUILT_IN_LIBRARY_DIR,
+    CONF_ENERGY_SENSOR_NAMING,
     CONF_MAX_POWER,
     CONF_MIN_POWER,
     CONF_POWER,
+    CONF_POWER_SENSOR_NAMING,
+    DEFAULT_SELF_USAGE_ENERGY_NAME_PATTERN,
+    DEFAULT_SELF_USAGE_POWER_NAME_PATTERN,
     DOMAIN,
     CalculationStrategy,
     PowerProfileSource,
@@ -244,7 +248,12 @@ class PowerProfile:
     @property
     def sensor_config(self) -> ConfigType:
         """Additional sensor configuration."""
-        return self._json_data.get("sensor_config") or {}
+        sensor_config = dict(self._json_data.get("sensor_config") or {})
+        if self.only_self_usage and CONF_POWER_SENSOR_NAMING not in sensor_config:
+            sensor_config[CONF_POWER_SENSOR_NAMING] = DEFAULT_SELF_USAGE_POWER_NAME_PATTERN
+        if self.only_self_usage and CONF_ENERGY_SENSOR_NAMING not in sensor_config:
+            sensor_config[CONF_ENERGY_SENSOR_NAMING] = DEFAULT_SELF_USAGE_ENERGY_NAME_PATTERN
+        return sensor_config
 
     def is_strategy_supported(self, mode: CalculationStrategy) -> bool:
         """Whether a certain calculation strategy is supported by this profile."""

@@ -22,7 +22,9 @@ CONF_ACCESS_TOKEN = "access_token"
 CONF_REFRESH_TOKEN = "refresh_token"
 CONF_EXPIRES_AT = "expires_at"
 CONF_UPDATE_INTERVAL = "update_interval"
+CONF_ACCOUNT_ID = "account_id"
 CONF_ACCOUNT_NAME = "account_name"
+CONF_ACCOUNT_EMAIL = "account_email"
 CONF_SUBSCRIPTION_LEVEL = "subscription_level"
 
 # Sensor definitions: (key, name, unit, icon, device_class)
@@ -69,4 +71,5 @@ SENSOR_DEFINITIONS = [
         "mdi:credit-card-settings",
         None,
     ),
+    ("api_error", "API Error", "errors", "mdi:alert-circle", None),
 ]

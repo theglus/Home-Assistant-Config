@@ -197,6 +197,10 @@ class FrigidaireClimate(ClimateEntity):
         """Return current operation i.e. heat, cool, idle."""
         frigidaire_mode = _normalize_enum_value(self._details.get(frigidaire.Detail.MODE))
 
+        if frigidaire_mode not in FRIGIDAIRE_TO_HA_MODE:
+            _LOGGER.warning("Unsupported HVAC mode '%s' reported by device.", frigidaire_mode)
+            return None
+
         return FRIGIDAIRE_TO_HA_MODE[frigidaire_mode]
 
     @property
@@ -293,7 +297,10 @@ class FrigidaireClimate(ClimateEntity):
                 _LOGGER.error("Failed to connect to Frigidaire servers")
             self._attr_available = False
         else:
-            # If we successfully retrieved details, the appliance is available
-            # Check that we have a valid applianceState
+            # If we successfully retrieved details, the appliance is available.
+            # Prefer applianceState when present; fall back to checking for a
+            # reported mode, since some portable AC models (e.g. FHPW-series)
+            # omit applianceState from their API response.
             appliance_state = self._details.get(frigidaire.Detail.APPLIANCE_STATE)
-            self._attr_available = appliance_state is not None
+            mode = self._details.get(frigidaire.Detail.MODE)
+            self._attr_available = appliance_state is not None or mode is not None

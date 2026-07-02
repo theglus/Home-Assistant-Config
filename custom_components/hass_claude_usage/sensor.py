@@ -91,6 +91,8 @@ class ClaudeUsageSensor(CoordinatorEntity[ClaudeUsageCoordinator], SensorEntity)
     @property
     def available(self) -> bool:
         """Return True if the sensor value is present in coordinator data."""
+        if self._key == "api_error":
+            return True
         if not super().available:
             return False
         if self.coordinator.data is None:
@@ -100,6 +102,8 @@ class ClaudeUsageSensor(CoordinatorEntity[ClaudeUsageCoordinator], SensorEntity)
     @property
     def native_value(self) -> Any:
         """Return the sensor value."""
+        if self._key == "api_error":
+            return 0 if self.coordinator.last_update_success else 1
         if self.coordinator.data is None:
             return None
         value = self.coordinator.data.get(self._key)

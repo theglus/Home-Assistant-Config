@@ -12,7 +12,7 @@ styles:
       - position: absolute
 custom_fields:
   icon: >
-    [[[ const state = entity.state === 'on' ? 'animate' : null;
+    [[[ const state = (variables.state === 'on' && variables.timeout < 2000) ? 'animate' : null; if (state) { setTimeout(() => { const el = this.shadowRoot && this.shadowRoot.querySelector('path.animate'); if (el) { el.removeAttribute('class'); el.setAttribute('fill', 'var(--button-card-light-color-no-temperature)'); } }, 900); }
     return `
     <svg viewBox="0 0 50 50">
     <style>@keyframes animate {

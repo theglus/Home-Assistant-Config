@@ -187,7 +187,6 @@ cards:
                     - entity: binary_sensor.home_assistant_major_update
                       name: Installed Version
                       icon: mdi:home-assistant
-                    # - entity: sensor.hacs
                     - entity: sensor.ha_uptime_display
                       name: Time Online
                     #----------------------------------------------------------------
@@ -200,8 +199,6 @@ cards:
                       entity: binary_sensor.tailscale_running
                       name: Tailscale
                       icon: mdi:shield-lock
-                      show_icon: true
-                      show_name: true
                       show_state: false
                       show_label: true
                       size: 24px
@@ -249,7 +246,7 @@ cards:
                           - font-size: 0.9em
                           - font-weight: 500
                           - align-self: center
-                      card_mod:
+                      card_mod: &no_hover_cardmod
                         style: |
                           ha-card {
                             --ha-card-hover-opacity: 0 !important;
@@ -305,7 +302,7 @@ cards:
                           border-radius: 0.3em;
                           overflow: hidden;
                         }
-                      card_mod:
+                      card_mod: &bar_card_alignment
                       # This is the primary means of correcting the bar-card alignment issues.
                         style: |
                           bar-card-name.name-outside {
@@ -377,7 +374,7 @@ cards:
                     #----------------------------------------------------------------
                     ## HA Controls
                     #----------------------------------------------------------------
-                    # TODO: #312 Format Dekstop + HA system control buttons.
+                    # TODO: #312 Format Desktop + HA system control buttons.
                     - type: custom:hui-element
                       card_type: horizontal-stack
                       cards:
@@ -487,15 +484,7 @@ cards:
                               border-radius: 0.3em;
                               overflow: hidden;
                             }
-                          card_mod:
-                          # This is the primary means of correcting the bar-card alignment issues.
-                            style: |
-                              bar-card-name.name-outside {
-                                margin-left: 1.3em !important;
-                              }
-                              bar-card-iconbar {
-                                margin-left: 0.3em !important;
-                              }
+                          card_mod: *bar_card_alignment
                           entities:
                             #----------------------------------------------------------------
                             ## Nibbler Storage Bar
@@ -525,7 +514,7 @@ cards:
                               to: 15.5
                           entity_row: true
                           style: *bar_card_style
-                          card_mod:
+                          card_mod: &bar_card_alignment_stacked
                           # This is the primary means of correcting the bar-card alignment issues.
                             style: |
                               #states > * {
@@ -688,18 +677,7 @@ cards:
                           to: 62.41
                       entity_row: true
                       style: *bar_card_style
-                      card_mod:
-                      # This is the primary means of correcting the bar-card alignment issues.
-                        style: |
-                          #states > * {
-                            margin-bottom: 2px !important;
-                          }
-                          bar-card-name.name-outside {
-                            margin-left: 1.3em !important;
-                          }
-                          bar-card-iconbar {
-                            margin-left: 0.3em !important;
-                          }
+                      card_mod: *bar_card_alignment_stacked
                       entities:
                         - entity: sensor.plex_memory_usage
                           name: Plex
@@ -719,7 +697,7 @@ cards:
                     #----------------------------------------------------------------
                     ## Leela Controls
                     #----------------------------------------------------------------
-                    # TODO: #312 Format Dekstop + HA system control buttons.
+                    # TODO: #312 Format Desktop + HA system control buttons.
                     - type: custom:hui-element
                       card_type: horizontal-stack
                       cards:
@@ -765,7 +743,7 @@ cards:
                     #----------------------------------------------------------------
                     ## PC Boot Button
                     #----------------------------------------------------------------
-                    # TODO: #312 Format Dekstop + HA system control buttons.
+                    # TODO: #312 Format Desktop + HA system control buttons.
                     - type: custom:hui-horizontal-stack-card
                       cards:
                         - type: custom:button-card
@@ -830,15 +808,7 @@ cards:
                           to: 100
                       entity_row: true
                       style: *bar_card_style
-                      card_mod:
-                      # This is the primary means of correcting the bar-card alignment issues.
-                        style: |
-                          bar-card-name.name-outside {
-                            margin-left: 1.3em !important;
-                          }
-                          bar-card-iconbar {
-                            margin-left: 0.3em !important;
-                          }
+                      card_mod: *bar_card_alignment
                       entities:
                         - entity: sensor.claude_session_usage
                           name: Session Usage
@@ -851,8 +821,6 @@ cards:
                       entity: sensor.m5stack_living_room_assistant
                       name: "Living Room"
                       icon: mdi:record
-                      show_icon: true
-                      show_name: true
                       show_state: true
                       size: 24px
                       tap_action:
@@ -896,20 +864,11 @@ cards:
                           - font-weight: 400
                           - align-self: center
                           - color: var(--primary-text-color)
-                      card_mod: &m5stack_assistant_cardmod
-                        style: |
-                          ha-card {
-                            --ha-card-hover-opacity: 0 !important;
-                          }
-                          ha-ripple {
-                            display: none !important;
-                          }
+                      card_mod: *no_hover_cardmod
                     - type: custom:button-card
                       entity: sensor.m5stack_office_assistant
                       name: "Office"
                       icon: mdi:record
-                      show_icon: true
-                      show_name: true
                       show_state: true
                       size: 24px
                       tap_action:
@@ -921,13 +880,11 @@ cards:
                         action: navigate
                         navigation_path: /config/devices/device/98074542f9d0d3cee7d5be78e840ea0f
                       styles: *m5stack_assistant_styles
-                      card_mod: *m5stack_assistant_cardmod
+                      card_mod: *no_hover_cardmod
                     - type: custom:button-card
                       entity: sensor.m5stack_loft_assistant
                       name: "Loft"
                       icon: mdi:record
-                      show_icon: true
-                      show_name: true
                       show_state: true
                       size: 24px
                       tap_action:
@@ -939,7 +896,7 @@ cards:
                         action: navigate
                         navigation_path: /config/devices/device/b241806292966c0a697ccfc339b040ad
                       styles: *m5stack_assistant_styles
-                      card_mod: *m5stack_assistant_cardmod
+                      card_mod: *no_hover_cardmod
                     - type: section
                       label: Ollama
                       card_mod: *section_card_mod
@@ -976,7 +933,7 @@ cards:
                     #----------------------------------------------------------------
                     ## Assistant Controls
                     #----------------------------------------------------------------
-                    # TODO: #312 Format Dekstop + HA system control buttons.
+                    # TODO: #312 Format Desktop + HA system control buttons.
                     - type: custom:hui-element
                       card_type: horizontal-stack
                       cards:
@@ -999,7 +956,6 @@ cards:
                         - type: custom:button-card
                           name: AI CHAT
                           icon: "custom:ollama"
-                          tap_action:
                           entity: conversation.ollama_chat
                           tap_action:
                             action: more-info

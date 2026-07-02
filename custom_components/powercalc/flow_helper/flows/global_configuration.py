@@ -38,6 +38,7 @@ from custom_components.powercalc.const import (
     DEFAULT_ENERGY_UPDATE_INTERVAL,
     DEFAULT_GROUP_ENERGY_UPDATE_INTERVAL,
     DEFAULT_GROUP_POWER_UPDATE_INTERVAL,
+    DOCS_URI,
     DOMAIN,
     DOMAIN_CONFIG,
     ENTITY_CATEGORIES,
@@ -132,6 +133,21 @@ SCHEMA_GLOBAL_CONFIGURATION_ENERGY_SENSOR = vol.Schema(
 )
 
 
+def merge_global_config(global_config: ConfigType, user_input: dict[str, Any], schema: vol.Schema) -> None:
+    """Merge submitted user input into the global config.
+
+    Keys present in the schema but absent from the user input were cleared in the form
+    and must be removed, otherwise a previously saved value would incorrectly persist.
+    """
+    for key in schema.schema:
+        if isinstance(key, vol.Marker):
+            key = key.schema
+        if key in user_input:
+            global_config[key] = user_input[key]
+        elif key in global_config:
+            global_config.pop(key)
+
+
 def get_global_powercalc_config(flow: PowercalcCommonFlow) -> ConfigType:
     """Get the global powercalc config."""
     if flow.global_config:
@@ -182,9 +198,10 @@ class GlobalConfigurationFlow:
         """Handle the throttling related options."""
 
         if user_input is not None:
-            self.flow.global_config.update(user_input)
             if self.flow.is_options_flow:
+                merge_global_config(self.flow.global_config, user_input, SCHEMA_GLOBAL_CONFIGURATION_THROTTLING)
                 return self.flow.persist_config_entry()
+            self.flow.global_config.update(user_input)
 
         return await self.flow.handle_form_step(
             PowercalcFormStep(
@@ -207,9 +224,10 @@ class GlobalConfigurationFlow:
         """Handle the global configuration step."""
 
         if user_input is not None:
-            self.flow.global_config.update(user_input)
             if self.flow.is_options_flow:
+                merge_global_config(self.flow.global_config, user_input, SCHEMA_GLOBAL_CONFIGURATION_ENERGY_SENSOR)
                 return self.flow.persist_config_entry()
+            self.flow.global_config.update(user_input)
 
         if not bool(self.flow.global_config.get(CONF_CREATE_ENERGY_SENSORS)) or user_input is not None:
             return await self.async_step_global_configuration_utility_meter()
@@ -220,7 +238,7 @@ class GlobalConfigurationFlow:
                 schema=SCHEMA_GLOBAL_CONFIGURATION_ENERGY_SENSOR,
                 form_kwarg={
                     "description_placeholders": {
-                        "docs_uri": "https://docs.powercalc.nl/configuration/global-configuration/",
+                        "docs_uri": DOCS_URI,
                     },
                 },
             ),
@@ -233,9 +251,10 @@ class GlobalConfigurationFlow:
         """Handle the global configuration step."""
 
         if user_input is not None:
-            self.flow.global_config.update(user_input)
             if self.flow.is_options_flow:
+                merge_global_config(self.flow.global_config, user_input, SCHEMA_UTILITY_METER_OPTIONS)
                 return self.flow.persist_config_entry()
+            self.flow.global_config.update(user_input)
 
         if not bool(self.flow.global_config.get(CONF_CREATE_UTILITY_METERS)) or user_input is not None:
             return self.flow.async_create_entry(
@@ -249,7 +268,7 @@ class GlobalConfigurationFlow:
                 schema=SCHEMA_UTILITY_METER_OPTIONS,
                 form_kwarg={
                     "description_placeholders": {
-                        "docs_uri": "https://docs.powercalc.nl/configuration/global-configuration/",
+                        "docs_uri": DOCS_URI,
                     },
                 },
             ),
@@ -277,7 +296,7 @@ class GlobalConfigurationConfigFlow(GlobalConfigurationFlow):
                 schema=SCHEMA_GLOBAL_CONFIGURATION,
                 form_kwarg={
                     "description_placeholders": {
-                        "docs_uri": "https://docs.powercalc.nl/configuration/global-configuration/",
+                        "docs_uri": DOCS_URI,
                     },
                 },
             ),
@@ -306,7 +325,7 @@ class GlobalConfigurationOptionsFlow(GlobalConfigurationFlow):
         """Handle the global configuration step."""
 
         if user_input is not None:
-            self.flow.global_config.update(user_input)
+            merge_global_config(self.flow.global_config, user_input, SCHEMA_GLOBAL_CONFIGURATION)
             return self.flow.persist_config_entry()
 
         return await self.flow.handle_form_step(

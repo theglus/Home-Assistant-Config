@@ -510,8 +510,6 @@ cards:
                 #----------------------------------------------------------------
                 - type: "custom:button-card"
                   entity: media_player.shield_tv
-                  tap_action:
-                    action: toggle
                   double_tap_action:
                     action: more-info
                     entity: media_player.shield
