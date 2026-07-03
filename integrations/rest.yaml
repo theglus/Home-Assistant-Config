@@ -3,5 +3,5 @@
 #
 ## REST commands and sensors.
 #################################################################
-rest_command: !include ../includes/rest/rest_commands.yaml
-rest: !include ../includes/rest/rest_sensors.yaml
+rest_command: !include ../includes/rest_commands.yaml
+rest: !include ../includes/rest_sensors.yaml

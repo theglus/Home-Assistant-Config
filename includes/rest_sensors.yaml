@@ -1,5 +1,5 @@
 #################################################################
-## Glances Container Sensors
+## REST Sensors
 #
 ## Polls the Glances API for per-container memory and CPU stats.
 ## Memory = memory_usage - memory_inactive_file (working-set, matches docker stats).
@@ -7,6 +7,7 @@
 resource: !secret glances_containers_url
 scan_interval: 30
 sensor:
+  # Sonarr working-set memory (excludes page cache).
   - name: "Sonarr Memory"
     unique_id: glances_sonarr_memory
     value_template: >-
@@ -17,6 +18,7 @@ sensor:
     state_class: measurement
     icon: mdi:memory
 
+  # Radarr working-set memory (excludes page cache).
   - name: "Radarr Memory"
     unique_id: glances_radarr_memory
     value_template: >-
@@ -27,6 +29,7 @@ sensor:
     state_class: measurement
     icon: mdi:memory
 
+  # Music Assistant working-set memory (excludes page cache).
   - name: "Music Assistant Memory"
     unique_id: glances_music_assistant_memory
     value_template: >-
@@ -37,6 +40,7 @@ sensor:
     state_class: measurement
     icon: mdi:memory
 
+  # Plex working-set memory (excludes page cache).
   - name: "Plex Memory"
     unique_id: glances_plex_memory
     value_template: >-
@@ -47,6 +51,7 @@ sensor:
     state_class: measurement
     icon: mdi:memory
 
+  # qBittorrent working-set memory (excludes page cache; raw usage is misleadingly high due to disk caching).
   - name: "qBittorrent Memory"
     unique_id: glances_qbittorrent_memory
     value_template: >-
@@ -57,6 +62,7 @@ sensor:
     state_class: measurement
     icon: mdi:memory
 
+  # Ollama working-set memory (excludes page cache).
   - name: "Ollama Memory"
     unique_id: glances_ollama_memory
     value_template: >-
@@ -67,6 +73,7 @@ sensor:
     state_class: measurement
     icon: mdi:memory
 
+  # Ollama CPU usage — tracked separately as it spikes during inference.
   - name: "Ollama CPU"
     unique_id: glances_ollama_cpu
     value_template: >-
