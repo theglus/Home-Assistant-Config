@@ -214,6 +214,20 @@ hypnotoad:
   md-sys-color-on-surface: "#FFFFFF"
   md-sys-color-on-surface-variant: "rgba(255, 255, 255, 0.6)"
 
+  # Fix: HA design token hover/fill states — default neutral palette is light-mode only,
+  # so hover/focus states render as bright #e6e6e6 on dark backgrounds.
+  # Values follow MD3 state-layer convention for dark surfaces.
+  ha-color-fill-neutral-quiet-resting: "rgba(255, 255, 255, 0.04)"
+  ha-color-fill-neutral-quiet-hover: "rgba(255, 255, 255, 0.08)"
+  ha-color-fill-neutral-quiet-active: "rgba(255, 255, 255, 0.12)"
+  ha-color-fill-neutral-normal-resting: "rgba(255, 255, 255, 0.12)"
+  ha-color-fill-neutral-normal-hover: "rgba(255, 255, 255, 0.16)"
+  ha-color-fill-neutral-normal-active: "rgba(255, 255, 255, 0.12)"
+  ha-color-fill-disabled-quiet-resting: "rgba(255, 255, 255, 0.04)"
+  ha-color-fill-disabled-quiet-hover: "rgba(255, 255, 255, 0.08)"
+  ha-color-fill-disabled-normal-resting: "rgba(255, 255, 255, 0.04)"
+  ha-color-fill-disabled-normal-hover: "rgba(255, 255, 255, 0.08)"
+
   # Fix: Lumo (Vaadin) dark mode — sets the base background so text is readable
   lumo-base-color: "#1c1c1e"
   lumo-body-text-color: "#FFFFFF"
