@@ -679,19 +679,19 @@ cards:
                       style: *bar_card_style
                       card_mod: *bar_card_alignment_stacked
                       entities:
-                        - entity: sensor.plex_memory_usage
+                        - entity: sensor.plex_memory
                           name: Plex
                           icon: mdi:plex
-                        - entity: sensor.music_assistant_memory_usage
+                        - entity: sensor.music_assistant_memory
                           name: Music Asst.
                           icon: mdi:music
-                        - entity: sensor.qbittorrent_memory_usage
+                        - entity: sensor.qbittorrent_memory
                           name: qBittorrent
                           icon: mdi:download
-                        - entity: sensor.sonarr_memory_usage
+                        - entity: sensor.sonarr_memory
                           name: Sonarr
                           icon: mdi:television-play
-                        - entity: sensor.radarr_memory_usage
+                        - entity: sensor.radarr_memory
                           name: Radarr
                           icon: mdi:movie-open
                     #----------------------------------------------------------------
@@ -908,7 +908,7 @@ cards:
                         - type: "custom:decluttering-card"
                           template: declutter_system_graph
                           variables:
-                            - sensor: sensor.ollama_cpu_usage_total
+                            - sensor: sensor.ollama_cpu
                             - name: CPU
                             - server: Ollama
                             - title: CPU Utilization
@@ -922,7 +922,7 @@ cards:
                         - type: "custom:decluttering-card"
                           template: declutter_system_graph
                           variables:
-                            - sensor: sensor.ollama_memory_usage
+                            - sensor: sensor.ollama_memory
                             - name: RAM
                             - server: Ollama
                             - title: RAM Utilization

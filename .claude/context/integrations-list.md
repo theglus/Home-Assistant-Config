@@ -64,7 +64,7 @@ Configured via YAML package files in `integrations/`. Each domain has a correspo
 - Conversation (`integrations/conversation.yaml`)
 - Media Player (`integrations/media_player.yaml`)
 - Notify (`integrations/notify.yaml`)
-- RESTful Command (`integrations/rest_command.yaml`)
+- RESTful Command & Sensor (`integrations/rest.yaml`) — REST commands (Denon AVR) and Glances container sensors
 - Shell Command (`integrations/shell_command.yaml`)
 - Template (`integrations/template.yaml`)
 - Utility Meter (`integrations/utility_meter.yaml`)

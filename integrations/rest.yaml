@@ -1,5 +1,7 @@
 #################################################################
-## This handles the loading of my rest commands.
+## REST Integration
+#
+## REST commands and sensors.
 #################################################################
 rest_command: !include ../includes/rest_commands.yaml
-#rest_command split: !include_dir_list ../includes/rest_commands
+rest: !include ../includes/rest_sensors.yaml
