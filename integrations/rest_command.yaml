@@ -1,5 +1,0 @@
-#################################################################
-## This handles the loading of my rest commands.
-#################################################################
-rest_command: !include ../includes/rest_commands.yaml
-#rest_command split: !include_dir_list ../includes/rest_commands

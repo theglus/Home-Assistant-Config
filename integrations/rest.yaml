@@ -1,6 +1,7 @@
 #################################################################
 ## REST Integration
 #
-## Loads REST sensor resources from includes/rest/.
+## REST commands and sensors.
 #################################################################
-rest: !include_dir_list ../includes/rest/
+rest_command: !include ../includes/rest/rest_commands.yaml
+rest: !include ../includes/rest/rest_sensors.yaml
