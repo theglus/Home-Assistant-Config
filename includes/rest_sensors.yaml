@@ -7,68 +7,13 @@
 resource: !secret glances_containers_url
 scan_interval: 30
 sensor:
-  # Sonarr working-set memory (excludes page cache).
-  - name: "Sonarr Memory"
-    unique_id: glances_sonarr_memory
-    value_template: >-
-      {% set c = value_json | selectattr('name', 'eq', 'sonarr') | list | first %}
-      {{ ((c.memory_usage - c.memory_inactive_file) / 1048576) | round(0) | int }}
-    unit_of_measurement: "MiB"
-    device_class: data_size
-    state_class: measurement
-    icon: mdi:memory
-
-  # Radarr working-set memory (excludes page cache).
-  - name: "Radarr Memory"
-    unique_id: glances_radarr_memory
-    value_template: >-
-      {% set c = value_json | selectattr('name', 'eq', 'radarr') | list | first %}
-      {{ ((c.memory_usage - c.memory_inactive_file) / 1048576) | round(0) | int }}
-    unit_of_measurement: "MiB"
-    device_class: data_size
-    state_class: measurement
-    icon: mdi:memory
-
   # Music Assistant working-set memory (excludes page cache).
   - name: "Music Assistant Memory"
     unique_id: glances_music_assistant_memory
     value_template: >-
       {% set c = value_json | selectattr('name', 'eq', 'music-assistant') | list | first %}
-      {{ ((c.memory_usage - c.memory_inactive_file) / 1048576) | round(0) | int }}
-    unit_of_measurement: "MiB"
-    device_class: data_size
-    state_class: measurement
-    icon: mdi:memory
-
-  # Plex working-set memory (excludes page cache).
-  - name: "Plex Memory"
-    unique_id: glances_plex_memory
-    value_template: >-
-      {% set c = value_json | selectattr('name', 'eq', 'plex') | list | first %}
-      {{ ((c.memory_usage - c.memory_inactive_file) / 1048576) | round(0) | int }}
-    unit_of_measurement: "MiB"
-    device_class: data_size
-    state_class: measurement
-    icon: mdi:memory
-
-  # qBittorrent working-set memory (excludes page cache; raw usage is misleadingly high due to disk caching).
-  - name: "qBittorrent Memory"
-    unique_id: glances_qbittorrent_memory
-    value_template: >-
-      {% set c = value_json | selectattr('name', 'eq', 'qbittorrent') | list | first %}
-      {{ ((c.memory_usage - c.memory_inactive_file) / 1048576) | round(0) | int }}
-    unit_of_measurement: "MiB"
-    device_class: data_size
-    state_class: measurement
-    icon: mdi:memory
-
-  # Ollama working-set memory (excludes page cache).
-  - name: "Ollama Memory"
-    unique_id: glances_ollama_memory
-    value_template: >-
-      {% set c = value_json | selectattr('name', 'eq', 'ollama') | list | first %}
-      {{ ((c.memory_usage - c.memory_inactive_file) / 1048576) | round(0) | int }}
-    unit_of_measurement: "MiB"
+      {{ ((c.memory_usage - c.memory_inactive_file) / 1073741824) | round(2) }}
+    unit_of_measurement: "GiB"
     device_class: data_size
     state_class: measurement
     icon: mdi:memory
@@ -82,3 +27,58 @@ sensor:
     unit_of_measurement: "%"
     state_class: measurement
     icon: mdi:cpu-64-bit
+
+  # Ollama working-set memory (excludes page cache).
+  - name: "Ollama Memory"
+    unique_id: glances_ollama_memory
+    value_template: >-
+      {% set c = value_json | selectattr('name', 'eq', 'ollama') | list | first %}
+      {{ ((c.memory_usage - c.memory_inactive_file) / 1073741824) | round(2) }}
+    unit_of_measurement: "GiB"
+    device_class: data_size
+    state_class: measurement
+    icon: mdi:memory
+
+  # Plex working-set memory (excludes page cache).
+  - name: "Plex Memory"
+    unique_id: glances_plex_memory
+    value_template: >-
+      {% set c = value_json | selectattr('name', 'eq', 'plex') | list | first %}
+      {{ ((c.memory_usage - c.memory_inactive_file) / 1073741824) | round(2) }}
+    unit_of_measurement: "GiB"
+    device_class: data_size
+    state_class: measurement
+    icon: mdi:memory
+
+  # qBittorrent working-set memory (excludes page cache; raw usage is misleadingly high due to disk caching).
+  - name: "qBittorrent Memory"
+    unique_id: glances_qbittorrent_memory
+    value_template: >-
+      {% set c = value_json | selectattr('name', 'eq', 'qbittorrent') | list | first %}
+      {{ ((c.memory_usage - c.memory_inactive_file) / 1073741824) | round(2) }}
+    unit_of_measurement: "GiB"
+    device_class: data_size
+    state_class: measurement
+    icon: mdi:memory
+
+  # Radarr working-set memory (excludes page cache).
+  - name: "Radarr Memory"
+    unique_id: glances_radarr_memory
+    value_template: >-
+      {% set c = value_json | selectattr('name', 'eq', 'radarr') | list | first %}
+      {{ ((c.memory_usage - c.memory_inactive_file) / 1073741824) | round(2) }}
+    unit_of_measurement: "GiB"
+    device_class: data_size
+    state_class: measurement
+    icon: mdi:memory
+
+  # Sonarr working-set memory (excludes page cache).
+  - name: "Sonarr Memory"
+    unique_id: glances_sonarr_memory
+    value_template: >-
+      {% set c = value_json | selectattr('name', 'eq', 'sonarr') | list | first %}
+      {{ ((c.memory_usage - c.memory_inactive_file) / 1073741824) | round(2) }}
+    unit_of_measurement: "GiB"
+    device_class: data_size
+    state_class: measurement
+    icon: mdi:memory
