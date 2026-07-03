@@ -1,0 +1,6 @@
+#################################################################
+## REST Integration
+#
+## Loads REST sensor resources from includes/rest/.
+#################################################################
+rest: !include_dir_list ../includes/rest/

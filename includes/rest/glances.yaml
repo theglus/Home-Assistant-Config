@@ -1,0 +1,77 @@
+#################################################################
+## Glances Container Sensors
+#
+## Polls the Glances API for per-container memory and CPU stats.
+## Memory = memory_usage - memory_inactive_file (working-set, matches docker stats).
+#################################################################
+resource: !secret glances_containers_url
+scan_interval: 30
+sensor:
+  - name: "Sonarr Memory"
+    unique_id: glances_sonarr_memory
+    value_template: >-
+      {% set c = value_json | selectattr('name', 'eq', 'sonarr') | list | first %}
+      {{ ((c.memory_usage - c.memory_inactive_file) / 1048576) | round(0) | int }}
+    unit_of_measurement: "MiB"
+    device_class: data_size
+    state_class: measurement
+    icon: mdi:memory
+
+  - name: "Radarr Memory"
+    unique_id: glances_radarr_memory
+    value_template: >-
+      {% set c = value_json | selectattr('name', 'eq', 'radarr') | list | first %}
+      {{ ((c.memory_usage - c.memory_inactive_file) / 1048576) | round(0) | int }}
+    unit_of_measurement: "MiB"
+    device_class: data_size
+    state_class: measurement
+    icon: mdi:memory
+
+  - name: "Music Assistant Memory"
+    unique_id: glances_music_assistant_memory
+    value_template: >-
+      {% set c = value_json | selectattr('name', 'eq', 'music-assistant') | list | first %}
+      {{ ((c.memory_usage - c.memory_inactive_file) / 1048576) | round(0) | int }}
+    unit_of_measurement: "MiB"
+    device_class: data_size
+    state_class: measurement
+    icon: mdi:memory
+
+  - name: "Plex Memory"
+    unique_id: glances_plex_memory
+    value_template: >-
+      {% set c = value_json | selectattr('name', 'eq', 'plex') | list | first %}
+      {{ ((c.memory_usage - c.memory_inactive_file) / 1048576) | round(0) | int }}
+    unit_of_measurement: "MiB"
+    device_class: data_size
+    state_class: measurement
+    icon: mdi:memory
+
+  - name: "qBittorrent Memory"
+    unique_id: glances_qbittorrent_memory
+    value_template: >-
+      {% set c = value_json | selectattr('name', 'eq', 'qbittorrent') | list | first %}
+      {{ ((c.memory_usage - c.memory_inactive_file) / 1048576) | round(0) | int }}
+    unit_of_measurement: "MiB"
+    device_class: data_size
+    state_class: measurement
+    icon: mdi:memory
+
+  - name: "Ollama Memory"
+    unique_id: glances_ollama_memory
+    value_template: >-
+      {% set c = value_json | selectattr('name', 'eq', 'ollama') | list | first %}
+      {{ ((c.memory_usage - c.memory_inactive_file) / 1048576) | round(0) | int }}
+    unit_of_measurement: "MiB"
+    device_class: data_size
+    state_class: measurement
+    icon: mdi:memory
+
+  - name: "Ollama CPU"
+    unique_id: glances_ollama_cpu
+    value_template: >-
+      {% set c = value_json | selectattr('name', 'eq', 'ollama') | list | first %}
+      {{ c.cpu_percent | round(2) }}
+    unit_of_measurement: "%"
+    state_class: measurement
+    icon: mdi:cpu-64-bit
