@@ -412,3 +412,29 @@
           entity_id: switch.btn_1_living_room_prevent_sleep
         data: {}
   mode: single
+- id: '1783049693960'
+  alias: Volume Pixel 10 Pro
+  triggers:
+  - trigger: numeric_state
+    entity_id: sensor.pixel_10_pro_volume_level_alarm
+    for:
+      seconds: 10
+    below: 7
+    alias: Pixel 10 Pro alarm no longer at max volume
+  - trigger: time
+    at: '21:00:00'
+    alias: Check volume at 9:00 pm
+  conditions:
+  - condition: time
+    after: '21:00:00'
+    before: 09:00:00
+    alias: Confirm time is after 9:00 PM and before 9:00 am
+  actions:
+  - action: notify.mobile_app_pixel_10_pro
+    data:
+      message: command_volume_level
+      data:
+        media_stream: alarm_stream
+        command: 7
+    alias: Adjust Pixel 10 Pro alarm to max volume
+  mode: single
