@@ -56,6 +56,7 @@ Native integrations with official documentation on home-assistant.io.
 | Media Player | https://www.home-assistant.io/integrations/media_player/ |
 | Notify | https://www.home-assistant.io/integrations/notify/ |
 | RESTful Command | https://www.home-assistant.io/integrations/rest_command/ |
+| RESTful Sensor | https://www.home-assistant.io/integrations/rest/ |
 | Shell Command | https://www.home-assistant.io/integrations/shell_command/ |
 | Template | https://www.home-assistant.io/integrations/template/ |
 | TTS | https://www.home-assistant.io/integrations/tts/ |
