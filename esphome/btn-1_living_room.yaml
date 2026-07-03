@@ -1,0 +1,15 @@
+substitutions:
+  name: btn-1_living_room
+  friendly_name: BTN-1 Living Room
+packages:
+  ApolloAutomation.BTN-1: github://ApolloAutomation/BTN-1/Integrations/ESPHome/BTN-1_Minimal.yaml
+esphome:
+  name: ${name}
+  name_add_mac_suffix: false
+  friendly_name: ${friendly_name}
+api:
+  encryption:
+    key: !secret btn_living_room
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password

@@ -267,3 +267,174 @@
       sunrise_duration: 15
       min_mired: 333
       check_entity: binary_sensor.workday
+- id: '1782067918837'
+  alias: 'BTN-1 Controls '
+  description: ''
+  use_blueprint:
+    path: ApolloAutomation/BTN-1.yaml
+    input:
+      button_1_single:
+      - action: media_player.media_play_pause
+        metadata: {}
+        target:
+          device_id: 0157cf8135a39223323e875bafb845b5
+        data: {}
+      device: da850e50245e49fc12c5588c4eaa0676
+      button_2_single:
+      - action: light.toggle
+        metadata: {}
+        data: {}
+        target:
+          entity_id: light.kitchen
+      button_3_single:
+      - action: light.turn_on
+        metadata: {}
+        target:
+          entity_id: light.btn_1_living_room_btn_3_light
+        data:
+          rgb_color:
+          - 0
+          - 255
+          - 0
+          brightness_pct: 50
+      - action: media_player.volume_up
+        metadata: {}
+        data: {}
+        target:
+          entity_id: media_player.dennis
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 1
+          milliseconds: 0
+      - action: light.turn_off
+        metadata: {}
+        target:
+          entity_id: light.btn_1_living_room_btn_3_light
+        data:
+          transition: 1
+      button_4_single:
+      - action: light.turn_on
+        metadata: {}
+        target:
+          entity_id: light.btn_1_living_room_btn_4_light
+        data:
+          rgb_color:
+          - 255
+          - 0
+          - 0
+          brightness_pct: 50
+      - action: media_player.volume_down
+        metadata: {}
+        data: {}
+        target:
+          entity_id: media_player.dennis
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 1
+          milliseconds: 0
+      - action: light.turn_off
+        metadata: {}
+        target:
+          entity_id: light.btn_1_living_room_btn_4_light
+        data:
+          transition: 1
+      button_1_hold:
+      - action: script.remote_finder
+        metadata: {}
+        data: {}
+        note: Hold 'button 1' to find remote.
+      button_2_double:
+      - action: light.toggle
+        metadata: {}
+        data: {}
+        target:
+          entity_id: light.group_office
+      button_2_triple:
+      - action: light.toggle
+        metadata: {}
+        target:
+          entity_id: light.group_hallway
+        data: {}
+- id: '1782106662390'
+  alias: BTN-1 Sleep
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - media_player.shield
+    to:
+    - 'off'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 5
+    id: TV Off
+  - trigger: state
+    entity_id:
+    - media_player.shield
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 5
+    id: TV On
+    from:
+    - 'off'
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - TV Off
+      sequence:
+      - action: switch.turn_off
+        metadata: {}
+        target:
+          entity_id: switch.btn_1_living_room_prevent_sleep
+        data: {}
+    - conditions:
+      - condition: trigger
+        id:
+        - TV On
+      sequence:
+      - wait_for_trigger:
+        - trigger: state
+          entity_id:
+          - binary_sensor.btn_1_living_room_online
+          to:
+          - 'on'
+        continue_on_timeout: false
+      - action: switch.turn_on
+        metadata: {}
+        target:
+          entity_id: switch.btn_1_living_room_prevent_sleep
+        data: {}
+  mode: single
+- id: '1783049693960'
+  alias: Volume Pixel 10 Pro
+  triggers:
+  - trigger: numeric_state
+    entity_id: sensor.pixel_10_pro_volume_level_alarm
+    for:
+      seconds: 10
+    below: 7
+    alias: Pixel 10 Pro alarm no longer at max volume
+  - trigger: time
+    at: '21:00:00'
+    alias: Check volume at 9:00 pm
+  conditions:
+  - condition: time
+    after: '21:00:00'
+    before: 09:00:00
+    alias: Confirm time is after 9:00 PM and before 9:00 am
+  actions:
+  - action: notify.mobile_app_pixel_10_pro
+    data:
+      message: command_volume_level
+      data:
+        media_stream: alarm_stream
+        command: 7
+    alias: Adjust Pixel 10 Pro alarm to max volume
+  mode: single

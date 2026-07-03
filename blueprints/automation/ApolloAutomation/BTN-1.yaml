@@ -1,0 +1,245 @@
+blueprint:
+  name: Apollo Automation BTN-1 Blueprint
+  description: A Blueprint to easily automate with the Apollo Automation [BTN-1 Macro
+    Deck](https://apolloautomation.com/products/btn-1-macro-deck)!
+  author: Brandon Harvey aka Smart Home Sellout. Thanks to [Jesse at ESPHome for the
+    original yaml](https://github.com/jesserockz/blueprints/blob/main/esphome-button-4x.yaml)
+  domain: automation
+  source_url: https://raw.githubusercontent.com/ApolloAutomation/Blueprints/refs/heads/main/BTN-1/BTN-1.yaml
+  input:
+    device:
+      name: Apollo BTN-1
+      description: Select the BTN-1 from the dropdown!
+      selector:
+        device:
+          filter:
+          - integration: esphome
+            manufacturer: ApolloAutomation
+            model: BTN-1
+          multiple: false
+    button_1:
+      name: Button 1
+      icon: mdi:numeric-1-box-outline
+      description: Select the actions to perform after an event on Button 1
+      collapsed: true
+      input:
+        button_1_single:
+          name: Single Click
+          default: []
+          selector:
+            action: {}
+        button_1_double:
+          name: Double Click
+          default: []
+          selector:
+            action: {}
+        button_1_triple:
+          name: Triple Click
+          default: []
+          selector:
+            action: {}
+        button_1_hold:
+          name: Hold
+          default: []
+          selector:
+            action: {}
+    button_2:
+      name: Button 2
+      icon: mdi:numeric-2-box-outline
+      description: Select the actions to perform after an event on Button 2
+      collapsed: true
+      input:
+        button_2_single:
+          name: Single Click
+          default: []
+          selector:
+            action: {}
+        button_2_double:
+          name: Double Click
+          default: []
+          selector:
+            action: {}
+        button_2_triple:
+          name: Triple Click
+          default: []
+          selector:
+            action: {}
+        button_2_hold:
+          name: Hold
+          default: []
+          selector:
+            action: {}
+    button_3:
+      name: Button 3
+      icon: mdi:numeric-3-box-outline
+      description: Select the actions to perform after an event on Button 3
+      collapsed: true
+      input:
+        button_3_single:
+          name: Single Click
+          default: []
+          selector:
+            action: {}
+        button_3_double:
+          name: Double Click
+          default: []
+          selector:
+            action: {}
+        button_3_triple:
+          name: Triple Click
+          default: []
+          selector:
+            action: {}
+        button_3_hold:
+          name: Hold
+          default: []
+          selector:
+            action: {}
+    button_4:
+      name: Button 4
+      icon: mdi:numeric-4-box-outline
+      description: Select the actions to perform after an event on Button 4
+      collapsed: true
+      input:
+        button_4_single:
+          name: Single Click
+          default: []
+          selector:
+            action: {}
+        button_4_double:
+          name: Double Click
+          default: []
+          selector:
+            action: {}
+        button_4_triple:
+          name: Triple Click
+          default: []
+          selector:
+            action: {}
+        button_4_hold:
+          name: Hold
+          default: []
+          selector:
+            action: {}
+trigger_variables:
+  deviceid: !input device
+  entities: '{{ device_entities(deviceid) }}'
+  event_1_entity: '{{ entities | selectattr(None, "search", "event.*_button_1") |
+    list | last }}
+
+    '
+  event_2_entity: '{{ entities | selectattr(None, "search", "event.*_button_2") |
+    list | last }}
+
+    '
+  event_3_entity: '{{ entities | selectattr(None, "search", "event.*_button_3") |
+    list | last }}
+
+    '
+  event_4_entity: '{{ entities | selectattr(None, "search", "event.*_button_4") |
+    list | last }}
+
+    '
+mode: parallel
+trigger:
+- platform: event
+  id: one
+  event_type: state_changed
+  event_data:
+    entity_id: '{{ event_1_entity }}'
+- platform: event
+  id: two
+  event_type: state_changed
+  event_data:
+    entity_id: '{{ event_2_entity }}'
+- platform: event
+  id: three
+  event_type: state_changed
+  event_data:
+    entity_id: '{{ event_3_entity }}'
+- platform: event
+  id: four
+  event_type: state_changed
+  event_data:
+    entity_id: '{{ event_4_entity }}'
+conditions:
+- condition: template
+  value_template: '{{ trigger.event.data.old_state is defined and trigger.event.data.old_state.state
+    != ''unavailable'' }}'
+action:
+- variables:
+    action: '{{ trigger.event.data.new_state.attributes.event_type }}'
+    button: '{{ trigger.id }}'
+- choose:
+  - conditions:
+    - condition: trigger
+      id:
+      - one
+    sequence:
+    - choose:
+      - conditions:
+        - '{{ action == ''click'' }}'
+        sequence: !input button_1_single
+      - conditions:
+        - '{{ action == ''double_click'' }}'
+        sequence: !input button_1_double
+      - conditions:
+        - '{{ action == ''triple_click'' }}'
+        sequence: !input button_1_triple
+      - conditions:
+        - '{{ action == ''hold'' }}'
+        sequence: !input button_1_hold
+  - conditions:
+    - condition: trigger
+      id:
+      - two
+    sequence:
+    - choose:
+      - conditions:
+        - '{{ action == ''click'' }}'
+        sequence: !input button_2_single
+      - conditions:
+        - '{{ action == ''double_click'' }}'
+        sequence: !input button_2_double
+      - conditions:
+        - '{{ action == ''triple_click'' }}'
+        sequence: !input button_2_triple
+      - conditions:
+        - '{{ action == ''hold'' }}'
+        sequence: !input button_2_hold
+  - conditions:
+    - condition: trigger
+      id:
+      - three
+    sequence:
+    - choose:
+      - conditions:
+        - '{{ action == ''click'' }}'
+        sequence: !input button_3_single
+      - conditions:
+        - '{{ action == ''double_click'' }}'
+        sequence: !input button_3_double
+      - conditions:
+        - '{{ action == ''triple_click'' }}'
+        sequence: !input button_3_triple
+      - conditions:
+        - '{{ action == ''hold'' }}'
+        sequence: !input button_3_hold
+  - conditions:
+    - condition: trigger
+      id:
+      - four
+    sequence:
+    - choose:
+      - conditions:
+        - '{{ action == ''click'' }}'
+        sequence: !input button_4_single
+      - conditions:
+        - '{{ action == ''double_click'' }}'
+        sequence: !input button_4_double
+      - conditions:
+        - '{{ action == ''triple_click'' }}'
+        sequence: !input button_4_triple
+      - conditions:
+        - '{{ action == ''hold'' }}'
+        sequence: !input button_4_hold
