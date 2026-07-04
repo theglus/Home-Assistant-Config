@@ -83,7 +83,7 @@ hypnotoad:
   ha-card-border-radius: 20px
   ha-card-background: rgba(10, 10, 10, 0.4)
   paper-card-background-color: var(--ha-card-background) # legacy Polymer alias for ha-card-background
-  code-editor-background-color: var(--disabled-text-color)
+  code-editor-background-color: "#1e1e1e"
   ha-card-border-width: 0 # from https://github.com/basnijholt/lovelace-ios-dark-mode-theme/issues/82
 
   ###############################################################
@@ -133,7 +133,20 @@ hypnotoad:
   mdc-select-hover-line-color: var(--secondary-text-color)
   input-ink-color: var(--primary-text-color)
   input-disabled-label-ink-color: var(--disabled-text-color)
-  codemirror-property: var(--accent-color)
+  # CodeMirror syntax highlighting — defaults are light-mode colors; these override
+  # with values readable on the dark (#1e1e1e) code editor background.
+  codemirror-keyword: "#C678DD"
+  codemirror-string: "#98C379"
+  codemirror-string2: "#98C379"
+  codemirror-atom: "#E5C07B"
+  codemirror-number: "#D19A66"
+  codemirror-property: "#E06C75"
+  codemirror-variable: "#E5C07B"
+  codemirror-qualifier: "#4EC9B0"
+  codemirror-def: "#61AFEF"
+  codemirror-operator: "#ABB2BF"
+  codemirror-comment: "#7F848E"
+  codemirror-meta: "#ABB2BF"
   # Alternatives proposed in upstream issue comments — current choices shown active
   input-label-ink-color: var(--secondary-text-color)
   # input-label-ink-color: var(--primary-text-color)
@@ -213,6 +226,46 @@ hypnotoad:
   md-sys-color-surface-container-highest: "#636366"
   md-sys-color-on-surface: "#FFFFFF"
   md-sys-color-on-surface-variant: "rgba(255, 255, 255, 0.6)"
+
+  # Fix: HA surface tokens — default palette uses white surfaces (light-mode only).
+  # Tooltips and overlays use --ha-color-surface-default for their background,
+  # causing solid white boxes on hover in the sidebar and top nav.
+  ha-color-surface-lower: "#1c1c1e"
+  ha-color-surface-low: "#2c2c2e"
+  ha-color-surface-default: "#3a3a3c"
+  ha-color-on-surface-default: "#FFFFFF"
+
+  # Fix: HA design token hover/fill states — default neutral palette is light-mode only,
+  # so hover/focus states render as bright #e6e6e6 on dark backgrounds.
+  # Values follow MD3 state-layer convention for dark surfaces.
+  ha-color-fill-neutral-quiet-resting: "rgba(255, 255, 255, 0.04)"
+  ha-color-fill-neutral-quiet-hover: "rgba(255, 255, 255, 0.08)"
+  ha-color-fill-neutral-quiet-active: "rgba(255, 255, 255, 0.12)"
+  ha-color-fill-neutral-normal-resting: "rgba(255, 255, 255, 0.12)"
+  ha-color-fill-neutral-normal-hover: "rgba(255, 255, 255, 0.16)"
+  ha-color-fill-neutral-normal-active: "rgba(255, 255, 255, 0.12)"
+  ha-color-fill-disabled-quiet-resting: "rgba(255, 255, 255, 0.08)"
+  ha-color-fill-disabled-quiet-hover: "rgba(255, 255, 255, 0.12)"
+  ha-color-fill-disabled-normal-resting: "rgba(255, 255, 255, 0.04)"
+  ha-color-fill-disabled-normal-hover: "rgba(255, 255, 255, 0.08)"
+  # Fix: ha-switch styled using MD3 Android pattern.
+  # Off: transparent track, gray outline/thumb. On: light sky blue track, dark teal thumb.
+  ha-switch-background-color: "transparent"
+  ha-switch-border-color: "#938F99"
+  ha-switch-thumb-background-color: "#938F99"
+  ha-switch-thumb-border-color: "#938F99"
+  ha-switch-checked-thumb-background-color: "#009ac7" # idea: #003F4A (Pixel Material Design teal)
+  ha-switch-checked-thumb-border-color: "#009ac7" # idea: #003F4A (Pixel Material Design teal)
+  # Fix: HA primary fill tokens — default palette uses near-white (#eff9fe), light-mode only.
+  # quiet-* (selection indicators, dropdown selected rows) use theme orange per user preference.
+  # normal-* (button fills) use a very subtle neutral fill so the pill toggle's inactive half
+  # has a visible shape without competing with the solid active half.
+  ha-color-fill-primary-quiet-resting: "rgba(255, 159, 9, 0.12)"
+  ha-color-fill-primary-quiet-hover: "rgba(255, 159, 9, 0.20)"
+  ha-color-fill-primary-quiet-active: "rgba(255, 159, 9, 0.24)"
+  ha-color-fill-primary-normal-resting: "#dff3fc"
+  ha-color-fill-primary-normal-hover: "#b9e6fc"
+  ha-color-fill-primary-normal-active: "#dff3fc"
 
   # Fix: Lumo (Vaadin) dark mode — sets the base background so text is readable
   lumo-base-color: "#1c1c1e"
