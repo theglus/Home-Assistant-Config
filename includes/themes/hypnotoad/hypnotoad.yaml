@@ -214,6 +214,14 @@ hypnotoad:
   md-sys-color-on-surface: "#FFFFFF"
   md-sys-color-on-surface-variant: "rgba(255, 255, 255, 0.6)"
 
+  # Fix: HA surface tokens — default palette uses white surfaces (light-mode only).
+  # Tooltips and overlays use --ha-color-surface-default for their background,
+  # causing solid white boxes on hover in the sidebar and top nav.
+  ha-color-surface-lower: "#1c1c1e"
+  ha-color-surface-low: "#2c2c2e"
+  ha-color-surface-default: "#3a3a3c"
+  ha-color-on-surface-default: "#FFFFFF"
+
   # Fix: HA design token hover/fill states — default neutral palette is light-mode only,
   # so hover/focus states render as bright #e6e6e6 on dark backgrounds.
   # Values follow MD3 state-layer convention for dark surfaces.
