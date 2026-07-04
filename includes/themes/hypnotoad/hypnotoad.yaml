@@ -244,8 +244,8 @@ hypnotoad:
   ha-color-fill-neutral-normal-resting: "rgba(255, 255, 255, 0.12)"
   ha-color-fill-neutral-normal-hover: "rgba(255, 255, 255, 0.16)"
   ha-color-fill-neutral-normal-active: "rgba(255, 255, 255, 0.12)"
-  ha-color-fill-disabled-quiet-resting: "rgba(255, 255, 255, 0.04)"
-  ha-color-fill-disabled-quiet-hover: "rgba(255, 255, 255, 0.08)"
+  ha-color-fill-disabled-quiet-resting: "#636366"
+  ha-color-fill-disabled-quiet-hover: "#7c7c80"
   ha-color-fill-disabled-normal-resting: "rgba(255, 255, 255, 0.04)"
   ha-color-fill-disabled-normal-hover: "rgba(255, 255, 255, 0.08)"
   # Fix: HA primary fill tokens — default palette uses near-white (#eff9fe), light-mode only.
