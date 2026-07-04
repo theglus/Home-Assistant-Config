@@ -135,18 +135,18 @@ hypnotoad:
   input-disabled-label-ink-color: var(--disabled-text-color)
   # CodeMirror syntax highlighting — defaults are light-mode colors; these override
   # with values readable on the dark (#1e1e1e) code editor background.
-  codemirror-keyword: "#C678DD"
-  codemirror-string: "#98C379"
-  codemirror-string2: "#98C379"
-  codemirror-atom: "#E5C07B"
-  codemirror-number: "#D19A66"
-  codemirror-property: "#E06C75"
-  codemirror-variable: "#E5C07B"
+  codemirror-keyword: "#569CD6"
+  codemirror-string: "#CE9178"
+  codemirror-string2: "#CE9178"
+  codemirror-atom: "#569CD6"
+  codemirror-number: "#B5CEA8"
+  codemirror-property: "#9CDCFE"
+  codemirror-variable: "#9CDCFE"
   codemirror-qualifier: "#4EC9B0"
-  codemirror-def: "#61AFEF"
-  codemirror-operator: "#ABB2BF"
-  codemirror-comment: "#7F848E"
-  codemirror-meta: "#ABB2BF"
+  codemirror-def: "#DCDCAA"
+  codemirror-operator: "#D4D4D4"
+  codemirror-comment: "#6A9955"
+  codemirror-meta: "#D4D4D4"
   # Alternatives proposed in upstream issue comments — current choices shown active
   input-label-ink-color: var(--secondary-text-color)
   # input-label-ink-color: var(--primary-text-color)
