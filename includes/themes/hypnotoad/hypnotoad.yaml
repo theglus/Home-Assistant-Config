@@ -248,12 +248,14 @@ hypnotoad:
   ha-color-fill-disabled-quiet-hover: "rgba(255, 255, 255, 0.12)"
   ha-color-fill-disabled-normal-resting: "rgba(255, 255, 255, 0.04)"
   ha-color-fill-disabled-normal-hover: "rgba(255, 255, 255, 0.08)"
-  # Fix: ha-switch off-state uses MD3 Android style — transparent track with gray outline/thumb.
-  # Uses switch-specific tokens to avoid affecting other components that use ha-color-on-neutral-*.
+  # Fix: ha-switch styled using MD3 Android pattern.
+  # Off: transparent track, gray outline/thumb. On: light sky blue track, dark teal thumb.
   ha-switch-background-color: "transparent"
   ha-switch-border-color: "#938F99"
   ha-switch-thumb-background-color: "#938F99"
   ha-switch-thumb-border-color: "#938F99"
+  ha-switch-checked-thumb-background-color: "#003F4A"
+  ha-switch-checked-thumb-border-color: "#003F4A"
   # Fix: HA primary fill tokens — default palette uses near-white (#eff9fe), light-mode only.
   # quiet-* (selection indicators, dropdown selected rows) use theme orange per user preference.
   # normal-* (button fills) use a very subtle neutral fill so the pill toggle's inactive half
