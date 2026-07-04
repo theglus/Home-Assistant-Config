@@ -244,8 +244,8 @@ hypnotoad:
   ha-color-fill-neutral-normal-resting: "rgba(255, 255, 255, 0.12)"
   ha-color-fill-neutral-normal-hover: "rgba(255, 255, 255, 0.16)"
   ha-color-fill-neutral-normal-active: "rgba(255, 255, 255, 0.12)"
-  ha-color-fill-disabled-quiet-resting: "#636366"
-  ha-color-fill-disabled-quiet-hover: "#7c7c80"
+  ha-color-fill-disabled-quiet-resting: "#8e8e93"
+  ha-color-fill-disabled-quiet-hover: "#a0a0a5"
   ha-color-fill-disabled-normal-resting: "rgba(255, 255, 255, 0.04)"
   ha-color-fill-disabled-normal-hover: "rgba(255, 255, 255, 0.08)"
   # Fix: HA "on-neutral" tokens default to dark values (#5e5e5e) designed for light mode.
