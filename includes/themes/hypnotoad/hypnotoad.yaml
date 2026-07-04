@@ -255,9 +255,9 @@ hypnotoad:
   ha-color-fill-primary-quiet-resting: "rgba(255, 159, 9, 0.12)"
   ha-color-fill-primary-quiet-hover: "rgba(255, 159, 9, 0.20)"
   ha-color-fill-primary-quiet-active: "rgba(255, 159, 9, 0.24)"
-  ha-color-fill-primary-normal-resting: "rgba(255, 255, 255, 0.18)"
-  ha-color-fill-primary-normal-hover: "rgba(255, 255, 255, 0.24)"
-  ha-color-fill-primary-normal-active: "rgba(255, 255, 255, 0.28)"
+  ha-color-fill-primary-normal-resting: "#dff3fc"
+  ha-color-fill-primary-normal-hover: "#b9e6fc"
+  ha-color-fill-primary-normal-active: "#dff3fc"
 
   # Fix: Lumo (Vaadin) dark mode — sets the base background so text is readable
   lumo-base-color: "#1c1c1e"
