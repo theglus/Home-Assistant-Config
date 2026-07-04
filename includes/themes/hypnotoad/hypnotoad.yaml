@@ -250,14 +250,14 @@ hypnotoad:
   ha-color-fill-disabled-normal-hover: "rgba(255, 255, 255, 0.08)"
   # Fix: HA primary fill tokens — default palette uses near-white (#eff9fe), light-mode only.
   # quiet-* (selection indicators, dropdown selected rows) use theme orange per user preference.
-  # normal-* (button fills) are transparent so the pill toggle's inactive half is invisible,
-  # relying on the wa-button-group outline (injected via card-mod) for the pill container shape.
+  # normal-* (button fills) use a very subtle neutral fill so the pill toggle's inactive half
+  # has a visible shape without competing with the solid active half.
   ha-color-fill-primary-quiet-resting: "rgba(255, 159, 9, 0.12)"
   ha-color-fill-primary-quiet-hover: "rgba(255, 159, 9, 0.20)"
   ha-color-fill-primary-quiet-active: "rgba(255, 159, 9, 0.24)"
-  ha-color-fill-primary-normal-resting: "rgba(0, 0, 0, 0)"
-  ha-color-fill-primary-normal-hover: "rgba(0, 154, 199, 0.12)"
-  ha-color-fill-primary-normal-active: "rgba(0, 154, 199, 0.16)"
+  ha-color-fill-primary-normal-resting: "rgba(255, 255, 255, 0.06)"
+  ha-color-fill-primary-normal-hover: "rgba(0, 154, 199, 0.16)"
+  ha-color-fill-primary-normal-active: "rgba(0, 154, 199, 0.20)"
 
   # Fix: Lumo (Vaadin) dark mode — sets the base background so text is readable
   lumo-base-color: "#1c1c1e"
@@ -286,8 +286,4 @@ hypnotoad:
       --md-list-item-label-text-color: #FFFFFF;
       --md-list-item-supporting-text-color: rgba(255, 255, 255, 0.7);
       --md-list-item-trailing-supporting-text-color: rgba(255, 255, 255, 0.7);
-    }
-    ha-button-toggle-group {
-      outline: 1px solid rgba(0, 154, 199, 0.45);
-      border-radius: 9999px;
     }
