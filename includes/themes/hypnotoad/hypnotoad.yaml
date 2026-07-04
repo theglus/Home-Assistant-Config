@@ -83,7 +83,7 @@ hypnotoad:
   ha-card-border-radius: 20px
   ha-card-background: rgba(10, 10, 10, 0.4)
   paper-card-background-color: var(--ha-card-background) # legacy Polymer alias for ha-card-background
-  code-editor-background-color: var(--disabled-text-color)
+  code-editor-background-color: "#1e1e1e"
   ha-card-border-width: 0 # from https://github.com/basnijholt/lovelace-ios-dark-mode-theme/issues/82
 
   ###############################################################
@@ -133,7 +133,20 @@ hypnotoad:
   mdc-select-hover-line-color: var(--secondary-text-color)
   input-ink-color: var(--primary-text-color)
   input-disabled-label-ink-color: var(--disabled-text-color)
-  codemirror-property: var(--accent-color)
+  # CodeMirror syntax highlighting — defaults are light-mode colors; these override
+  # with values readable on the dark (#1e1e1e) code editor background.
+  codemirror-keyword: "#C678DD"
+  codemirror-string: "#98C379"
+  codemirror-string2: "#98C379"
+  codemirror-atom: "#E5C07B"
+  codemirror-number: "#D19A66"
+  codemirror-property: "#E06C75"
+  codemirror-variable: "#E5C07B"
+  codemirror-qualifier: "#4EC9B0"
+  codemirror-def: "#61AFEF"
+  codemirror-operator: "#ABB2BF"
+  codemirror-comment: "#7F848E"
+  codemirror-meta: "#ABB2BF"
   # Alternatives proposed in upstream issue comments — current choices shown active
   input-label-ink-color: var(--secondary-text-color)
   # input-label-ink-color: var(--primary-text-color)
