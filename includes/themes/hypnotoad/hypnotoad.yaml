@@ -254,8 +254,8 @@ hypnotoad:
   ha-switch-border-color: "#938F99"
   ha-switch-thumb-background-color: "#938F99"
   ha-switch-thumb-border-color: "#938F99"
-  ha-switch-checked-thumb-background-color: "#003F4A"  # was: #009ac7 (HA default teal)
-  ha-switch-checked-thumb-border-color: "#003F4A"      # was: #009ac7 (HA default teal)
+  ha-switch-checked-thumb-background-color: "#009ac7" # idea: #003F4A (Pixel Material Design teal)
+  ha-switch-checked-thumb-border-color: "#009ac7" # idea: #003F4A (Pixel Material Design teal)
   # Fix: HA primary fill tokens — default palette uses near-white (#eff9fe), light-mode only.
   # quiet-* (selection indicators, dropdown selected rows) use theme orange per user preference.
   # normal-* (button fills) use a very subtle neutral fill so the pill toggle's inactive half
