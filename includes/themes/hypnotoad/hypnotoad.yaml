@@ -248,6 +248,14 @@ hypnotoad:
   ha-color-fill-disabled-quiet-hover: "rgba(255, 255, 255, 0.08)"
   ha-color-fill-disabled-normal-resting: "rgba(255, 255, 255, 0.04)"
   ha-color-fill-disabled-normal-hover: "rgba(255, 255, 255, 0.08)"
+  # Fix: HA primary fill tokens — selected dropdown items use ha-color-fill-primary-quiet-resting
+  # which defaults to #eff9fe (near-white) — a light-mode-only value.
+  ha-color-fill-primary-quiet-resting: "rgba(255, 159, 9, 0.12)"
+  ha-color-fill-primary-quiet-hover: "rgba(255, 159, 9, 0.20)"
+  ha-color-fill-primary-quiet-active: "rgba(255, 159, 9, 0.24)"
+  ha-color-fill-primary-normal-resting: "rgba(255, 159, 9, 0.20)"
+  ha-color-fill-primary-normal-hover: "rgba(255, 159, 9, 0.28)"
+  ha-color-fill-primary-normal-active: "rgba(255, 159, 9, 0.24)"
 
   # Fix: Lumo (Vaadin) dark mode — sets the base background so text is readable
   lumo-base-color: "#1c1c1e"
