@@ -6,15 +6,50 @@
           "username": "[%key:common::config_flow::data::username%]",
           "password": "[%key:common::config_flow::data::password%]"
         }
+      },
+      "device": {
+        "title": "Extra Controls — {device_name}",
+        "description": "Select which entities to expose for {device_name}. Only enable options your device supports — unsupported settings will be silently ignored by the appliance.",
+        "data": {
+          "clean_air_mode": "Ionizer (Clean Air Mode)",
+          "display_light": "Display Light",
+          "ui_lock": "Child Lock",
+          "check_filter": "Check Filter",
+          "filter_runtime": "Filter runtime"
+        },
+        "data_description": {
+          "check_filter": "Problem sensor that turns on when the filter state is CLEAN, CHANGE, or BUY. Use it to trigger filter-maintenance notifications.",
+          "filter_runtime": "Cumulative air-filter runtime reported by the appliance in native seconds. Home Assistant converts it to the configured display unit."
+        }
       }
     },
     "error": {
       "cannot_connect": "[%key:common::config_flow::error::cannot_connect%]",
       "invalid_auth": "[%key:common::config_flow::error::invalid_auth%]",
+      "no_appliances": "No Frigidaire appliances found on this account.",
       "unknown": "[%key:common::config_flow::error::unknown%]"
     },
     "abort": {
       "already_configured": "[%key:common::config_flow::abort::already_configured_device%]"
+    }
+  },
+  "options": {
+    "step": {
+      "device": {
+        "title": "Extra Controls — {device_name}",
+        "description": "Select which entities to expose for {device_name}. Only enable options your device supports — unsupported settings will be silently ignored by the appliance.",
+        "data": {
+          "clean_air_mode": "Ionizer (Clean Air Mode)",
+          "display_light": "Display Light",
+          "ui_lock": "Child Lock",
+          "check_filter": "Check Filter",
+          "filter_runtime": "Filter runtime"
+        },
+        "data_description": {
+          "check_filter": "Problem sensor that turns on when the filter state is CLEAN, CHANGE, or BUY. Use it to trigger filter-maintenance notifications.",
+          "filter_runtime": "Cumulative air-filter runtime reported by the appliance in native seconds. Home Assistant converts it to the configured display unit."
+        }
+      }
     }
   }
 }

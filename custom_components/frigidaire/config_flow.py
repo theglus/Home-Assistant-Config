@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import json
 import logging
 import os
 from typing import Any
@@ -15,37 +14,27 @@ from homeassistant.exceptions import HomeAssistantError
 
 import frigidaire
 
-from .const import DOMAIN
+from .auth_store import AUTH_FILE, load_auth, save_auth
+from .const import (
+    BINARY_SENSOR_OPTIONS,
+    DOMAIN,
+    SENSOR_OPTIONS,
+    SWITCH_OPTIONS,
+)
 
 _LOGGER = logging.getLogger(__name__)
 
 STEP_USER_DATA_SCHEMA = vol.Schema({"username": str, "password": str})
 
-AUTH_FILE = "frigidaire.json"
+ALL_OPTIONS = {**SWITCH_OPTIONS, **BINARY_SENSOR_OPTIONS, **SENSOR_OPTIONS}
 
 
-def load_auth(auth_path: str) -> tuple[str | None, str | None]:
-    if not os.path.exists(auth_path):
-        with open(auth_path, "w"):
-            pass
-
-    if os.path.getsize(auth_path) > 0:
-        with open(auth_path) as f:
-            obj: dict = json.loads(f.read())
-            return obj.get("session_key"), obj.get("regional_base_url")
-    return None, None
+def _device_schema(current: dict) -> vol.Schema:
+    return vol.Schema({vol.Optional(key, default=current.get(key, False)): bool for key in ALL_OPTIONS})
 
 
-def save_auth(auth_path: str, session_key: str, regional_base_url: str) -> None:
-    with open(auth_path, "w") as f:
-        json.dump({"session_key": session_key, "regional_base_url": regional_base_url}, f, ensure_ascii=False, indent=4)
-
-
-async def validate_input(hass: HomeAssistant, data: dict[str, Any]):
-    """Validate the user input allows us to connect.
-
-    Data has the keys from STEP_USER_DATA_SCHEMA with values provided by the user.
-    """
+async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> list[frigidaire.Appliance]:
+    """Validate credentials and return list of appliances."""
 
     def setup(username: str, password: str) -> list[frigidaire.Appliance]:
         auth_path = os.path.join(hass.config.path(), AUTH_FILE)
@@ -73,14 +62,23 @@ async def validate_input(hass: HomeAssistant, data: dict[str, Any]):
     if len(appliances) == 0:
         raise NoAppliances
 
-    # Validation Succeeded
-    return True
+    return appliances
 
 
 class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     """Handle a config flow for frigidaire."""
 
     VERSION = 1
+
+    def __init__(self) -> None:
+        self._user_input: dict[str, Any] = {}
+        self._appliances: list[frigidaire.Appliance] = []
+        self._pending_appliances: list[frigidaire.Appliance] = []
+        self._options: dict[str, dict[str, bool]] = {}
+
+    @staticmethod
+    def async_get_options_flow(config_entry: config_entries.ConfigEntry) -> config_entries.OptionsFlow:
+        return OptionsFlowHandler(config_entry)
 
     async def async_step_user(self, user_input: dict[str, Any] | None = None) -> FlowResult:
         """Handle the initial step."""
@@ -90,7 +88,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         errors = {}
 
         try:
-            await validate_input(self.hass, user_input)
+            appliances = await validate_input(self.hass, user_input)
         except CannotConnect:
             errors["base"] = "cannot_connect"
         except InvalidAuth:
@@ -101,9 +99,75 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             _LOGGER.exception("Unexpected exception")
             errors["base"] = "unknown"
         else:
-            return self.async_create_entry(title=DOMAIN, data=user_input)
+            await self.async_set_unique_id(user_input["username"].lower())
+            self._abort_if_unique_id_configured()
+            self._user_input = user_input
+            self._appliances = appliances
+            self._pending_appliances = list(appliances)
+            return await self._async_next_device_step()
 
         return self.async_show_form(step_id="user", data_schema=STEP_USER_DATA_SCHEMA, errors=errors)
+
+    async def _async_next_device_step(self) -> FlowResult:
+        if not self._pending_appliances:
+            return self.async_create_entry(title="Frigidaire", data=self._user_input, options=self._options)
+        return await self.async_step_device()
+
+    async def async_step_device(self, user_input: dict[str, Any] | None = None) -> FlowResult:
+        """Show switch checkboxes for the current appliance in the queue."""
+        appliance = self._pending_appliances[0]
+
+        if user_input is not None:
+            self._options[appliance.appliance_id] = user_input
+            self._pending_appliances.pop(0)
+            return await self._async_next_device_step()
+
+        schema = _device_schema({})
+        return self.async_show_form(
+            step_id="device",
+            data_schema=schema,
+            description_placeholders={"device_name": appliance.nickname},
+        )
+
+
+class OptionsFlowHandler(config_entries.OptionsFlow):
+    """Handle options for the frigidaire integration."""
+
+    def __init__(self, config_entry: config_entries.ConfigEntry) -> None:
+        self._entry_id = config_entry.entry_id
+        self._appliances: list[frigidaire.Appliance] = []
+        self._pending_appliances: list[frigidaire.Appliance] = []
+        self._options: dict[str, dict[str, bool]] = {}
+
+    async def async_step_init(self, user_input: dict[str, Any] | None = None) -> FlowResult:
+        """Load appliances then start per-device steps."""
+        entry = self.hass.config_entries.async_get_entry(self._entry_id)
+        self._appliances = self.hass.data[DOMAIN][self._entry_id]["appliances"]
+        self._pending_appliances = list(self._appliances)
+        self._options = dict(entry.options)
+        return await self._async_next_device_step()
+
+    async def _async_next_device_step(self) -> FlowResult:
+        if not self._pending_appliances:
+            return self.async_create_entry(title="", data=self._options)
+        return await self.async_step_device()
+
+    async def async_step_device(self, user_input: dict[str, Any] | None = None) -> FlowResult:
+        """Show switch checkboxes for the current appliance in the queue."""
+        appliance = self._pending_appliances[0]
+        current = self._options.get(appliance.appliance_id, {})
+
+        if user_input is not None:
+            self._options[appliance.appliance_id] = {**current, **user_input}
+            self._pending_appliances.pop(0)
+            return await self._async_next_device_step()
+
+        schema = _device_schema(current)
+        return self.async_show_form(
+            step_id="device",
+            data_schema=schema,
+            description_placeholders={"device_name": appliance.nickname},
+        )
 
 
 class NoAppliances(HomeAssistantError):

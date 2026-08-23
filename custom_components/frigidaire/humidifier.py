@@ -19,11 +19,16 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers import entity_platform
+from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
+from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 import frigidaire
 
 from .const import DOMAIN
+from .coordinator import FrigidaireApplianceCoordinator
+from .diagnostics import filter_needs_attention, normalize_alerts
+from .helpers import suggest_area
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -49,20 +54,13 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_e
         "set_fan_mode",
     )
 
-    client = hass.data[DOMAIN][entry.entry_id]
-
-    def get_entities(username: str, password: str) -> list[frigidaire.Appliance]:
-        return client.get_appliances()
-
-    appliances = await hass.async_add_executor_job(get_entities, entry.data["username"], entry.data["password"])
+    coordinators: dict[str, FrigidaireApplianceCoordinator] = hass.data[DOMAIN][entry.entry_id]["coordinators"]
+    appliances: list[frigidaire.Appliance] = hass.data[DOMAIN][entry.entry_id]["appliances"]
 
     async_add_entities(
-        [
-            FrigidaireDehumidifier(client, appliance)
-            for appliance in appliances
-            if appliance.destination == frigidaire.Destination.DEHUMIDIFIER
-        ],
-        update_before_add=True,
+        FrigidaireDehumidifier(coordinators[appliance.appliance_id], suggest_area(hass, appliance.nickname))
+        for appliance in appliances
+        if appliance.destination == frigidaire.Destination.DEHUMIDIFIER
     )
 
 
@@ -90,37 +88,38 @@ FRIGIDAIRE_TO_HA_FAN_MODE = {
 HA_TO_FRIGIDAIRE_FAN_MODE = {v: k for k, v in FRIGIDAIRE_TO_HA_FAN_MODE.items()}
 
 
-class FrigidaireDehumidifier(HumidifierEntity):
+class FrigidaireDehumidifier(CoordinatorEntity[FrigidaireApplianceCoordinator], HumidifierEntity):
     """Representation of a Frigidaire dehumidifier."""
 
-    def __init__(self, client, appliance):
-        """Build FrigidaireClimate.
+    def __init__(self, coordinator: FrigidaireApplianceCoordinator, suggested_area: str | None = None):
+        """Build FrigidaireDehumidifier.
 
-        client: the client used to contact the frigidaire API
-        appliance: the basic information about the frigidaire appliance, used to contact
-            the API
+        coordinator: shared per-appliance coordinator that polls the frigidaire API
         """
 
-        self._client: frigidaire.Frigidaire = client
-        self._appliance: frigidaire.Appliance = appliance
-        self._details: dict | None = None
+        super().__init__(coordinator)
+        self._client: frigidaire.Frigidaire = coordinator.client
+        self._appliance: frigidaire.Appliance = coordinator.appliance
 
         # Entity Class Attributes
         self._attr_unique_id = self._appliance.appliance_id
         self._attr_name = self._appliance.nickname
+        self._attr_device_info = DeviceInfo(
+            identifiers={(DOMAIN, self._appliance.appliance_id)},
+            name=self._appliance.nickname,
+            manufacturer="Frigidaire",
+            suggested_area=suggested_area,
+        )
         self._attr_supported_features = HumidifierEntityFeature.MODES
 
-        # Although we can access the Frigidaire API to get updates, they are
-        # not reflected immediately after making a request. To improve the UX
-        # around this, we set assume_state to True
-        self._attr_assumed_state = True
+        self._attr_device_class = HumidifierDeviceClass.DEHUMIDIFIER
 
         # self._attr_fan_modes = [
         #     FAN_LOW,
         #     FAN_HIGH,
         # ]
 
-        self._attr_modes = [
+        self._attr_available_modes = [
             MODE_NORMAL,
             MODE_BOOST,
             MODE_AUTO,
@@ -128,23 +127,18 @@ class FrigidaireDehumidifier(HumidifierEntity):
         ]
 
     @property
-    def assumed_state(self):
-        """Return True if unable to access real state of the entity."""
-        return self._attr_assumed_state
+    def _details(self) -> dict:
+        return self.coordinator.data or {}
 
     @property
-    def unique_id(self):
-        """Return unique ID based on Frigidaire ID."""
-        return self._attr_unique_id
-
-    @property
-    def name(self):
-        """Return the name of the entity."""
-        return self._attr_name
-
-    @property
-    def device_class(self):
-        return HumidifierDeviceClass.DEHUMIDIFIER
+    def available(self) -> bool:
+        # Prefer applianceState when present; fall back to a reported mode, since
+        # some models omit applianceState from their API response.
+        if not super().available:
+            return False
+        appliance_state = self._details.get(frigidaire.Detail.APPLIANCE_STATE)
+        mode = self._details.get(frigidaire.Detail.MODE)
+        return appliance_state is not None or mode is not None
 
     @property
     def is_on(self):
@@ -152,16 +146,6 @@ class FrigidaireDehumidifier(HumidifierEntity):
             _normalize_enum_value(self._details.get(frigidaire.Detail.APPLIANCE_STATE))
             == frigidaire.ApplianceState.RUNNING
         )
-
-    @property
-    def supported_features(self):
-        """Return the list of supported features."""
-        return self._attr_supported_features
-
-    @property
-    def available_modes(self):
-        """List of available operation modes."""
-        return self._attr_modes
 
     @property
     def target_humidity(self):
@@ -176,6 +160,10 @@ class FrigidaireDehumidifier(HumidifierEntity):
         if frigidaire_mode == frigidaire.Mode.OFF:
             return MODE_NORMAL
 
+        if frigidaire_mode not in FRIGIDAIRE_TO_HA_MODE:
+            _LOGGER.warning("Unsupported dehumidifier mode '%s' reported by device.", frigidaire_mode)
+            return None
+
         return FRIGIDAIRE_TO_HA_MODE[frigidaire_mode]
 
     @property
@@ -185,28 +173,27 @@ class FrigidaireDehumidifier(HumidifierEntity):
 
         attrib = {
             "current_humidity": self._details.get(frigidaire.Detail.SENSOR_HUMIDITY),
-            "check_filter": bool(
-                _normalize_enum_value(self._details.get(frigidaire.Detail.FILTER_STATE)) != frigidaire.FilterState.GOOD
-            ),
-            "fan_mode": FRIGIDAIRE_TO_HA_FAN_MODE[fan_speed],
+            "check_filter": filter_needs_attention(self._details.get(frigidaire.Detail.FILTER_STATE)) or False,
+            "fan_mode": FRIGIDAIRE_TO_HA_FAN_MODE.get(fan_speed),
         }
 
         # The following attributes only exist on some models of dehumidifier
         bin_full = False
-        alerts = self._details.get(frigidaire.Detail.ALERTS)
+        alerts = normalize_alerts(self._details.get(frigidaire.Detail.ALERTS))
         if alerts is not None:
-            # 1) Old approach
-            if frigidaire.Alert.BUCKET_FULL in alerts:
-                bin_full = True
-
-            # 2) New approach
-            if any(alert.get("code") == "BUCKET_FULL" for alert in alerts):
-                bin_full = True
+            attrib["active_alerts"] = alerts
+            bin_full = "BUCKET_FULL" in alerts
 
         # Fallback to waterBucketLevel if alert is not set
         if not bin_full:
             water_bucket_level = self._details.get(frigidaire.Detail.WATER_BUCKET_LEVEL)
             if water_bucket_level == 1:
+                bin_full = True
+
+        # Fallback to waterTankFull if neither alert nor waterBucketLevel is set
+        if not bin_full:
+            water_tank_full = _normalize_enum_value(self._details.get(frigidaire.Detail.WATER_TANK_FULL))
+            if water_tank_full in ("YES", True):
                 bin_full = True
 
         attrib["bin_full"] = bin_full
@@ -225,9 +212,11 @@ class FrigidaireDehumidifier(HumidifierEntity):
 
     def turn_on(self, **kwargs: Any) -> None:
         self._client.execute_action(self._appliance, frigidaire.Action.set_power(frigidaire.Power.ON))
+        self.schedule_update_ha_state(force_refresh=True)
 
     def turn_off(self, **kwargs: Any) -> None:
         self._client.execute_action(self._appliance, frigidaire.Action.set_power(frigidaire.Power.OFF))
+        self.schedule_update_ha_state(force_refresh=True)
 
     def set_humidity(self, humidity: int):
         """Set new target humidity."""
@@ -238,6 +227,7 @@ class FrigidaireDehumidifier(HumidifierEntity):
         # We have to be in dry mode to set a target humidity
         self.set_mode(MODE_NORMAL)
         self._client.execute_action(self._appliance, frigidaire.Action.set_humidity(humidity))
+        self.schedule_update_ha_state(force_refresh=True)
 
     def set_fan_mode(self, fan_mode):
         """Set new target fan mode."""
@@ -247,6 +237,7 @@ class FrigidaireDehumidifier(HumidifierEntity):
 
         action = frigidaire.Action.set_fan_speed(HA_TO_FRIGIDAIRE_FAN_MODE[fan_mode])
         self._client.execute_action(self._appliance, action)
+        self.schedule_update_ha_state(force_refresh=True)
 
     def set_mode(self, mode):
         """Set new target operation mode."""
@@ -260,21 +251,4 @@ class FrigidaireDehumidifier(HumidifierEntity):
             self.turn_on()
 
         self._client.execute_action(self._appliance, frigidaire.Action.set_mode(HA_TO_FRIGIDAIRE_MODE[mode]))
-
-    def update(self):
-        """Retrieve latest state and updates the details."""
-        try:
-            details = self._client.get_appliance_details(self._appliance)
-            self._details = details
-        except frigidaire.FrigidaireException:
-            if self.available:
-                _LOGGER.error("Failed to connect to Frigidaire servers")
-            self._attr_available = False
-        else:
-            # If we successfully retrieved details, the appliance is available.
-            # Prefer applianceState when present; fall back to checking for a
-            # reported mode, since some models omit applianceState from their
-            # API response.
-            appliance_state = self._details.get(frigidaire.Detail.APPLIANCE_STATE)
-            mode = self._details.get(frigidaire.Detail.MODE)
-            self._attr_available = appliance_state is not None or mode is not None
+        self.schedule_update_ha_state(force_refresh=True)
