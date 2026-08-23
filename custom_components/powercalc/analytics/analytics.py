@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from asyncio import timeout
 from collections import Counter
 from collections.abc import Hashable
@@ -28,6 +26,7 @@ from custom_components.powercalc.const import (
     DATA_GROUP_SIZES,
     DATA_GROUP_TYPES,
     DATA_HAS_GROUP_INCLUDE,
+    DATA_MEASURE_APP_COORDINATOR,
     DATA_POWER_PROFILE_SOURCES,
     DATA_POWER_PROFILES,
     DATA_SENSOR_TYPES,
@@ -152,7 +151,7 @@ class Analytics:
     def install_id(self) -> str | None:
         return self._data.install_id
 
-    async def _prepare_payload(self) -> dict:
+    async def _prepare_payload(self) -> dict[str, Any]:
         powercalc_integration = await async_get_integration(self.hass, DOMAIN)
         runtime_data: RuntimeAnalyticsData = self.hass.data[DOMAIN][DATA_ANALYTICS]
         power_profiles: list[PowerProfile] = runtime_data.get(DATA_POWER_PROFILES, [])
@@ -162,6 +161,7 @@ class Analytics:
             DOMAIN,
             ENTRY_GLOBAL_CONFIG_UNIQUE_ID,
         )
+        measure_app_coordinator = self.hass.data[DOMAIN].get(DATA_MEASURE_APP_COORDINATOR)
         return {
             "install_id": self.install_id,
             "install_date": await self._get_install_date(),
@@ -172,6 +172,7 @@ class Analytics:
             "custom_profile_count": await self._get_custom_profile_count(),
             "has_global_gui_config": global_config_entry is not None,
             "has_group_include": runtime_data.get(DATA_HAS_GROUP_INCLUDE, False),
+            "has_measure_app": measure_app_coordinator is not None and measure_app_coordinator.data is not None,
             "group_sizes": Counter(group_sizes),
             "counts": {
                 "by_config_type": runtime_data.setdefault(DATA_CONFIG_TYPES, Counter()),

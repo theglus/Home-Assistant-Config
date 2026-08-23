@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from typing import TYPE_CHECKING, Any
 
 from homeassistant.config_entries import ConfigFlowResult
@@ -15,8 +13,8 @@ from homeassistant.helpers import selector
 from homeassistant.helpers.schema_config_entry_flow import SchemaFlowError
 import voluptuous as vol
 
-from custom_components.powercalc import CONF_CREATE_UTILITY_METERS
 from custom_components.powercalc.const import (
+    CONF_CREATE_UTILITY_METERS,
     CONF_DAILY_ENERGY_VALUE,
     CONF_DAILY_FIXED_ENERGY,
     CONF_GROUP,

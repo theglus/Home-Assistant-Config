@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from decimal import Decimal
 import inspect
 import logging
@@ -17,7 +15,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.dispatcher import async_dispatcher_send
 from homeassistant.helpers.entity import async_generate_entity_id
 import homeassistant.helpers.entity_registry as er
-from homeassistant.helpers.typing import StateType
+from homeassistant.helpers.typing import ConfigType, StateType
 from homeassistant.util import slugify
 
 from custom_components.powercalc.const import (
@@ -44,7 +42,7 @@ GENERAL_TARIFF = "general"
 def create_utility_meters(
     hass: HomeAssistant,
     energy_sensor: EnergySensor,
-    sensor_config: dict,
+    sensor_config: ConfigType,
     config_entry: ConfigEntry | None = None,
 ) -> list[VirtualUtilityMeter]:
     """Create the utility meters."""
@@ -101,7 +99,7 @@ def should_create_utility_meter(
 def create_meters_for_type(
     hass: HomeAssistant,
     energy_sensor: EnergySensor,
-    sensor_config: dict,
+    sensor_config: ConfigType,
     config_entry: ConfigEntry | None,
     unique_id: str | None,
     meter_type: str,
@@ -153,7 +151,7 @@ def create_tariff_meters(
     energy_sensor: EnergySensor,
     entity_id: str,
     name: str,
-    sensor_config: dict,
+    sensor_config: ConfigType,
     config_entry: ConfigEntry | None,
     meter_type: str,
     unique_id: str | None,
@@ -183,7 +181,7 @@ def create_tariff_meters(
 
 def create_tariff_select(
     config_entry: ConfigEntry | None,
-    tariffs: list,
+    tariffs: list[str],
     hass: HomeAssistant,
     name: str,
     unique_id: str | None,
@@ -220,7 +218,7 @@ def create_utility_meter(
     source_entity: str,
     entity_id: str,
     name: str,
-    sensor_config: dict,
+    sensor_config: ConfigType,
     meter_type: str,
     unique_id: str | None = None,
     tariff: str | None = None,
@@ -261,13 +259,15 @@ def create_utility_meter(
     utility_meter.rounding_digits = int(
         sensor_config.get(CONF_ENERGY_SENSOR_PRECISION, DEFAULT_ENERGY_SENSOR_PRECISION),
     )
+    utility_meter._sensor_config = sensor_config  # noqa: SLF001
     utility_meter.entity_id = entity_id
 
     return utility_meter
 
 
-class VirtualUtilityMeter(UtilityMeterSensor, BaseEntity):
+class VirtualUtilityMeter(BaseEntity, UtilityMeterSensor):
     rounding_digits: int = DEFAULT_ENERGY_SENSOR_PRECISION
+    _sensor_config: ConfigType
 
     @property
     def unique_id(self) -> str | None:

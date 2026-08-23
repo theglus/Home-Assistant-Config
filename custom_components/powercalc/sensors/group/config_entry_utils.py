@@ -1,5 +1,6 @@
 import inspect
 import logging
+from typing import Any
 
 from homeassistant.config_entries import SOURCE_IMPORT, ConfigEntry, ConfigFlow
 from homeassistant.const import CONF_NAME
@@ -28,7 +29,9 @@ def remove_power_sensor_from_associated_groups(
     group_entries = get_groups_having_member(hass, config_entry)
 
     for group_entry in group_entries:
-        member_sensors = group_entry.data.get(CONF_GROUP_MEMBER_SENSORS) or []
+        # Copy the list so we don't mutate the config entry's data in place, which would make
+        # async_update_entry's change detection see no change and skip persisting/reloading.
+        member_sensors = list(group_entry.data.get(CONF_GROUP_MEMBER_SENSORS) or [])
         member_sensors.remove(config_entry.entry_id)
 
         hass.config_entries.async_update_entry(
@@ -82,7 +85,7 @@ async def add_to_associated_group(
     if not group_entry and len(group_entry_id) != 32:
         group_entry = hass.config_entries.async_entry_for_domain_unique_id(DOMAIN, group_entry_id)
         if not group_entry:
-            additional_args: dict = {}
+            additional_args: dict[str, Any] = {}
             signature = inspect.signature(ConfigEntry.__init__)
             if "discovery_keys" in signature.parameters:
                 additional_args["discovery_keys"] = {}

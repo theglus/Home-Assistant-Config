@@ -1,11 +1,19 @@
-from __future__ import annotations
-
 from collections.abc import Callable
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
+from homeassistant.components.sensor import SensorDeviceClass
 from homeassistant.config_entries import ConfigFlowResult
-from homeassistant.const import CONF_ATTRIBUTE, CONF_ENTITIES, CONF_ENTITY_ID, CONF_ID, CONF_NAME, CONF_PATH, Platform
+from homeassistant.const import (
+    CONF_ATTRIBUTE,
+    CONF_ENTITIES,
+    CONF_ENTITY_ID,
+    CONF_ID,
+    CONF_NAME,
+    CONF_PATH,
+    Platform,
+    UnitOfElectricCurrent,
+)
 from homeassistant.helpers import selector
 from homeassistant.helpers.schema_config_entry_flow import SchemaFlowError
 import voluptuous as vol
@@ -16,7 +24,9 @@ from custom_components.powercalc.const import (
     CONF_CALCULATION_ENABLED_CONDITION,
     CONF_CALIBRATE,
     CONF_CREATE_ENERGY_SENSOR,
+    CONF_CREATE_STANDBY_ENERGY_SENSOR,
     CONF_CREATE_UTILITY_METERS,
+    CONF_CURRENT_ENTITY,
     CONF_FIXED,
     CONF_FIXED_VALUE,
     CONF_GAMMA_CURVE,
@@ -47,8 +57,6 @@ from custom_components.powercalc.flow_helper.common import (
     PowercalcFormStep,
     Step,
     fill_schema_defaults,
-    unwrap_choose_selector,
-    wrap_choose_selector,
 )
 from custom_components.powercalc.flow_helper.flows.global_configuration import get_global_powercalc_config
 from custom_components.powercalc.flow_helper.flows.library import (
@@ -59,10 +67,18 @@ from custom_components.powercalc.flow_helper.profile_preview import PREVIEW_NAME
 from custom_components.powercalc.flow_helper.schema import (
     SCHEMA_ENERGY_SENSOR_TOGGLE,
     SCHEMA_SENSOR_ENERGY_OPTIONS,
+    SCHEMA_STANDBY_ENERGY_SENSOR_TOGGLE,
     SCHEMA_UTILITY_METER_TOGGLE,
 )
+from custom_components.powercalc.flow_helper.strategy_form import (
+    FIXED_CHOICES,
+    find_present_choice,
+    order_choices_for_default,
+    unwrap_strategy_user_input,
+    wrap_strategy_form_data,
+)
 from custom_components.powercalc.power_profile.power_profile import DeviceType
-from custom_components.powercalc.strategy.wled import CONFIG_SCHEMA as SCHEMA_POWER_WLED
+from custom_components.powercalc.strategy.wled import CONFIG_SCHEMA as CONFIG_SCHEMA_WLED
 
 if TYPE_CHECKING:
     from custom_components.powercalc.config_flow import PowercalcCommonFlow, PowercalcConfigFlow, PowercalcOptionsFlow
@@ -87,6 +103,7 @@ SCHEMA_POWER_OPTIONS = vol.Schema(
     {
         vol.Optional(CONF_STANDBY_POWER): vol.Coerce(float),
         **SCHEMA_ENERGY_SENSOR_TOGGLE.schema,
+        **SCHEMA_STANDBY_ENERGY_SENSOR_TOGGLE.schema,
         **SCHEMA_UTILITY_METER_TOGGLE.schema,
     },
 )
@@ -108,28 +125,6 @@ FIXED_CHOICE_SELECTORS: dict[str, selector.ChooseSelectorChoiceConfig] = {
     CONF_POWER_TEMPLATE: {"selector": {"template": {}}},
     CONF_STATES_POWER: {"selector": STATES_POWER_SELECTOR.serialize()["selector"]},
 }
-
-
-def order_choices_for_default(
-    choices: dict[str, selector.ChooseSelectorChoiceConfig],
-    default_choice: str | None,
-) -> dict[str, selector.ChooseSelectorChoiceConfig]:
-    """Put the default choice first because HA initializes choose selectors from the first choice."""
-    if default_choice not in choices:
-        return choices
-    return {
-        default_choice: choices[default_choice],
-        **{choice: config for choice, config in choices.items() if choice != default_choice},
-    }
-
-
-def find_present_choice(form_data: dict[str, Any], choices: dict[str, list[str] | str]) -> str | None:
-    """Find the first choice that has matching config data."""
-    for choice_id, mapping in choices.items():
-        keys = [mapping] if isinstance(mapping, str) else mapping
-        if any(key in form_data for key in keys):
-            return choice_id
-    return None
 
 
 SCHEMA_POWER_FIXED = vol.Schema(
@@ -168,47 +163,20 @@ SCHEMA_POWER_LINEAR = vol.Schema(
     },
 )
 
-FIXED_CHOICES: dict[str, list[str] | str] = {
-    CONF_STATES_POWER: CONF_STATES_POWER,
-    CONF_POWER_TEMPLATE: CONF_POWER_TEMPLATE,
-    CONF_POWER: CONF_POWER,
-}
-
-
-def fixed_choice_key_from_validated_value(value: object) -> str:
-    """Infer the fixed strategy config key from a validated ChooseSelector value."""
-    if isinstance(value, list):
-        return CONF_STATES_POWER
-    if isinstance(value, str):
-        return CONF_POWER_TEMPLATE
-    return CONF_POWER
-
-
-def unwrap_strategy_user_input(strategy: CalculationStrategy, user_input: dict[str, Any]) -> dict[str, Any]:
-    """Unwrap ChooseSelector wrappers and normalize list/dict shapes for strategy user input."""
-    if strategy == CalculationStrategy.FIXED:
-        unwrap_choose_selector(user_input, CONF_FIXED_VALUE, fixed_choice_key_from_validated_value)
-    if CONF_STATE_TRIGGER in user_input and isinstance(user_input[CONF_STATE_TRIGGER], list):
-        user_input[CONF_STATE_TRIGGER] = {
-            item[CONF_STATE]: item[CONF_PLAYBOOK_ID] for item in user_input[CONF_STATE_TRIGGER]
-        }
-    return user_input
-
-
-def wrap_strategy_form_data(strategy: CalculationStrategy, form_data: dict[str, Any]) -> dict[str, Any]:
-    """Wrap flat strategy config back into ChooseSelector form structure for display."""
-    if strategy == CalculationStrategy.FIXED:
-        form_data = wrap_choose_selector(form_data, CONF_FIXED_VALUE, FIXED_CHOICES, raw_value=True)
-    if CONF_STATE_TRIGGER in form_data and isinstance(form_data[CONF_STATE_TRIGGER], dict):
-        form_data = {
-            **form_data,
-            CONF_STATE_TRIGGER: [
-                {CONF_STATE: state, CONF_PLAYBOOK_ID: playbook_id}
-                for state, playbook_id in form_data[CONF_STATE_TRIGGER].items()
-            ],
-        }
-    return form_data
-
+# The WLED strategy config schema, with the current entity rendered as an entity picker in the GUI.
+SCHEMA_POWER_WLED = CONFIG_SCHEMA_WLED.extend(
+    {
+        vol.Optional(CONF_CURRENT_ENTITY): selector.EntitySelector(
+            selector.EntitySelectorConfig(
+                filter={
+                    "domain": "sensor",
+                    "device_class": SensorDeviceClass.CURRENT,
+                    "unit_of_measurement": UnitOfElectricCurrent.MILLIAMPERE,
+                },
+            ),
+        ),
+    },
+)
 
 SCHEMA_POWER_MULTI_SWITCH_MANUAL = vol.Schema(
     {
@@ -417,7 +385,9 @@ class VirtualPowerFlow:
             return self.flow.persist_config_entry()
 
         schema = SCHEMA_POWER_ADVANCED
-        if self.flow.sensor_config.get(CONF_CREATE_ENERGY_SENSOR):
+        if self.flow.sensor_config.get(CONF_CREATE_ENERGY_SENSOR) or self.flow.sensor_config.get(
+            CONF_CREATE_STANDBY_ENERGY_SENSOR,
+        ):
             schema = schema.extend(SCHEMA_SENSOR_ENERGY_OPTIONS.schema)
 
         return await self.flow.handle_form_step(

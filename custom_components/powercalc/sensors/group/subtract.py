@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from decimal import Decimal
 import logging
 from typing import cast
@@ -18,8 +16,8 @@ from custom_components.powercalc.const import (
 from custom_components.powercalc.errors import SensorConfigurationError
 from custom_components.powercalc.sensors.abstract import generate_power_sensor_entity_id, generate_power_sensor_name
 from custom_components.powercalc.sensors.energy import create_energy_sensor
+from custom_components.powercalc.sensors.energy_related import create_energy_related_sensors
 from custom_components.powercalc.sensors.group.custom import GroupedPowerSensor
-from custom_components.powercalc.sensors.utility_meter import create_utility_meters
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -33,7 +31,7 @@ def create_subtract_group_sensors(
     validate_config(config)
     group_name = str(config.get(CONF_NAME))
     base_entity_id = str(config.get(CONF_ENTITY_ID))
-    subtract_entities = cast(list, config.get(CONF_SUBTRACT_ENTITIES))
+    subtract_entities = cast(list[str], config.get(CONF_SUBTRACT_ENTITIES))
 
     name = generate_power_sensor_name(config, group_name)
     unique_id = config.get(CONF_UNIQUE_ID, generate_unique_id(config))
@@ -66,13 +64,7 @@ def create_subtract_group_sensors(
         sensors.append(energy_sensor)
 
         config[CONF_UTILITY_METER_NET_CONSUMPTION] = True
-        sensors.extend(
-            create_utility_meters(
-                hass,
-                energy_sensor,
-                config,
-            ),
-        )
+        sensors.extend(create_energy_related_sensors(hass, config, energy_sensor))
     return sensors
 
 
@@ -115,7 +107,6 @@ class SubtractGroupSensor(GroupedPowerSensor):
             sensor_config=sensor_config,
             group_type=GroupType.SUBTRACT,
             unique_id=unique_id,
-            device_id=None,
         )
 
         self._base_entity_id = base_entity_id

@@ -1,15 +1,14 @@
-from __future__ import annotations
-
 from collections.abc import Callable
 from decimal import Decimal
 from typing import Any, cast
 
-from homeassistant.const import CONF_CONDITION, CONF_ENTITIES, CONF_ENTITY_ID
+from homeassistant.const import CONF_CONDITION, CONF_CONDITIONS, CONF_ENTITIES, CONF_ENTITY_ID
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers import condition
 from homeassistant.helpers.singleton import singleton
 from homeassistant.helpers.template import Template
 from homeassistant.helpers.typing import ConfigType
+import voluptuous as vol
 
 from custom_components.powercalc.common import SourceEntity
 from custom_components.powercalc.const import (
@@ -31,7 +30,14 @@ from custom_components.powercalc.errors import (
 )
 from custom_components.powercalc.power_profile.power_profile import PowerProfile
 
-from .composite import DEFAULT_MODE, CompositeStrategy, SubStrategy
+from .composite import (
+    COMPOUND_CONDITIONS,
+    CONFIG_SCHEMA as COMPOSITE_SCHEMA,
+    DEFAULT_MODE,
+    ENTITY_CONDITIONS,
+    CompositeStrategy,
+    SubStrategy,
+)
 from .fixed import FixedStrategy
 from .linear import LinearStrategy
 from .lut import LutRegistry, LutStrategy
@@ -40,6 +46,24 @@ from .playbook import PlaybookStrategy
 from .selector import detect_calculation_strategy
 from .strategy_interface import PowerCalculationStrategyInterface
 from .wled import WledStrategy
+
+
+def resolve_condition_entity_ids(condition_config: ConfigType, source_entity: SourceEntity) -> ConfigType:
+    """Default entity_id to the source entity for conditions which omit it.
+
+    Recurses into and/or/not, so nested conditions are treated the same as top level ones.
+    Returns a copy, to prevent mutating the profile configuration.
+    """
+    resolved = dict(condition_config)
+    condition_type = resolved.get(CONF_CONDITION)
+    if condition_type in COMPOUND_CONDITIONS:
+        resolved[CONF_CONDITIONS] = [
+            resolve_condition_entity_ids(sub_condition, source_entity)
+            for sub_condition in resolved.get(CONF_CONDITIONS, [])
+        ]
+    elif condition_type in ENTITY_CONDITIONS and CONF_ENTITY_ID not in resolved:
+        resolved[CONF_ENTITY_ID] = [source_entity.entity_id]
+    return resolved
 
 
 class PowerCalculatorStrategyFactory:
@@ -54,7 +78,7 @@ class PowerCalculatorStrategyFactory:
 
     async def create(
         self,
-        config: dict,
+        config: ConfigType,
         strategy: str,
         power_profile: PowerProfile | None,
         source_entity: SourceEntity,
@@ -90,7 +114,7 @@ class PowerCalculatorStrategyFactory:
     def _create_linear(
         self,
         source_entity: SourceEntity,
-        config: dict,
+        config: ConfigType,
         power_profile: PowerProfile | None,
     ) -> LinearStrategy:
         """Create the linear strategy."""
@@ -106,7 +130,7 @@ class PowerCalculatorStrategyFactory:
     def _create_fixed(
         self,
         source_entity: SourceEntity,
-        config: dict,
+        config: ConfigType,
         power_profile: PowerProfile | None,
     ) -> FixedStrategy:
         """Create the fixed strategy."""
@@ -139,7 +163,7 @@ class PowerCalculatorStrategyFactory:
 
         return LutStrategy(source_entity, self._lut_registry, power_profile)
 
-    def _create_wled(self, source_entity: SourceEntity, config: dict) -> WledStrategy:
+    def _create_wled(self, source_entity: SourceEntity, config: ConfigType) -> WledStrategy:
         """Create the WLED strategy."""
         wled_config = self._get_strategy_config(CalculationStrategy.WLED, config, None)
         return WledStrategy(
@@ -164,10 +188,10 @@ class PowerCalculatorStrategyFactory:
         source_entity: SourceEntity,
         power_profile: PowerProfile | None,
     ) -> CompositeStrategy:
-        composite_config: list | dict | None = config.get(CONF_COMPOSITE)
+        composite_config: list[ConfigType] | ConfigType | None = config.get(CONF_COMPOSITE)
         if composite_config is None:
             if power_profile and power_profile.composite_config:
-                composite_config = power_profile.composite_config
+                composite_config = self._validate_composite_config(power_profile.composite_config)
             else:
                 raise StrategyConfigurationError("No composite configuration supplied")
 
@@ -183,11 +207,8 @@ class PowerCalculatorStrategyFactory:
             condition_instance = None
             condition_config = strategy_config.get(CONF_CONDITION)
             if condition_config:
-                condition_type = condition_config.get(CONF_CONDITION)
-                if condition_type in ["state", "numeric_state"] and CONF_ENTITY_ID not in condition_config:
-                    condition_config[CONF_ENTITY_ID] = [source_entity.entity_id]
-                if condition_type == "state":
-                    condition_config = condition.state_validate_config(self._hass, condition_config)
+                condition_config = resolve_condition_entity_ids(condition_config, source_entity)
+                condition_config = await condition.async_validate_condition_config(self._hass, condition_config)
                 condition_instance = await condition.async_from_config(
                     self._hass,
                     condition_config,
@@ -207,11 +228,25 @@ class PowerCalculatorStrategyFactory:
         strategies = [await _create_sub_strategy(config) for config in sub_strategies]
         return CompositeStrategy(self._hass, strategies, mode)
 
+    @staticmethod
+    def _validate_composite_config(composite_config: list[ConfigType] | ConfigType) -> list[ConfigType] | ConfigType:
+        """Validate the composite configuration of a library profile.
+
+        Configuration from YAML and the config flow is already validated by the sensor schema.
+        Library profiles are raw JSON, so validate them here as well to get the same normalization,
+        for example entity_id to a list and value_template to a Template instance.
+        """
+        try:
+            return cast(list[ConfigType] | ConfigType, COMPOSITE_SCHEMA(composite_config))
+        except vol.Invalid as err:
+            raise StrategyConfigurationError(f"Invalid composite configuration in profile: {err}") from err
+
     def _create_multi_switch(self, config: ConfigType, power_profile: PowerProfile | None) -> MultiSwitchStrategy:
         """Create instance of multi switch strategy."""
         multi_switch_config: ConfigType = {}
         if power_profile and power_profile.multi_switch_config:
-            multi_switch_config = power_profile.multi_switch_config
+            # Copy to avoid mutating the (potentially cached) profile config with the user's config below.
+            multi_switch_config = dict(power_profile.multi_switch_config)
         multi_switch_config.update(config.get(CONF_MULTI_SWITCH, {}))
 
         if not multi_switch_config:

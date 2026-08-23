@@ -1,7 +1,5 @@
 """Real-power logic for the config flow."""
 
-from __future__ import annotations
-
 from typing import TYPE_CHECKING, Any
 
 from homeassistant.components.sensor import SensorDeviceClass
@@ -10,7 +8,7 @@ from homeassistant.const import CONF_DEVICE, CONF_ENTITY_ID, CONF_NAME
 from homeassistant.helpers import selector
 import voluptuous as vol
 
-from custom_components.powercalc import SensorType
+from custom_components.powercalc.const import SensorType
 from custom_components.powercalc.flow_helper.common import PowercalcFormStep, Step
 from custom_components.powercalc.flow_helper.schema import SCHEMA_UTILITY_METER_TOGGLE
 

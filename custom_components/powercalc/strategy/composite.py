@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from collections.abc import Callable
 from dataclasses import dataclass
 from decimal import Decimal
@@ -7,12 +5,14 @@ from enum import StrEnum
 import logging
 from typing import Any
 
-from homeassistant.const import CONF_ATTRIBUTE, CONF_CONDITION, CONF_ENTITY_ID, STATE_OFF
+from homeassistant.const import CONF_ATTRIBUTE, CONF_CONDITION, CONF_CONDITIONS, CONF_ENTITY_ID, STATE_OFF
 from homeassistant.core import HomeAssistant, State
+from homeassistant.exceptions import ConditionError
 from homeassistant.helpers.condition import ConditionCheckerType
 import homeassistant.helpers.config_validation as cv
 from homeassistant.helpers.event import TrackTemplate
 from homeassistant.helpers.template import Template
+from homeassistant.helpers.typing import ConfigType
 import voluptuous as vol
 
 from custom_components.powercalc.const import (
@@ -40,14 +40,52 @@ class CompositeMode(StrEnum):
     SUM_ALL = "sum_all"
 
 
+class ConditionType(StrEnum):
+    """Condition types supported by the composite strategy.
+
+    Home Assistant has no constants for these, it uses string literals itself.
+    """
+
+    AND = "and"
+    DEVICE = "device"
+    NOT = "not"
+    NUMERIC_STATE = "numeric_state"
+    OR = "or"
+    STATE = "state"
+    TEMPLATE = "template"
+
+
+COMPOUND_CONDITIONS = (ConditionType.AND, ConditionType.OR, ConditionType.NOT)
+ENTITY_CONDITIONS = (ConditionType.STATE, ConditionType.NUMERIC_STATE)
+
 DEFAULT_MODE = CompositeMode.STOP_AT_FIRST
 
 
 def make_entity_id_optional(schema: vol.Schema) -> vol.Schema:
     """Make entity_id optional in schema."""
-    schema = schema.schema
-    schema[vol.Optional(CONF_ENTITY_ID)] = schema.pop(vol.Required(CONF_ENTITY_ID))  # type: ignore[index, attr-defined]
-    return vol.Schema(schema)
+    # Copy, the schemas we get passed here are module level globals of Home Assistant itself
+    schema_dict = dict(schema.schema)
+    schema_dict[vol.Optional(CONF_ENTITY_ID)] = schema_dict.pop(vol.Required(CONF_ENTITY_ID))
+    return vol.Schema(schema_dict)
+
+
+def get_compound_schema(condition_type: ConditionType) -> vol.Schema:
+    """Return the schema for and/or/not conditions.
+
+    Home Assistant's own compound schemas recurse into `cv.CONDITION_SCHEMA`, which requires entity_id.
+    We recurse into our own schema instead, so entity_id stays optional at any nesting level
+    and can be defaulted to the source entity.
+    """
+    return vol.Schema(
+        {
+            **cv.CONDITION_BASE_SCHEMA,
+            vol.Required(CONF_CONDITION): condition_type.value,
+            vol.Required(CONF_CONDITIONS): vol.All(
+                cv.ensure_list,
+                [lambda value: CONDITION_SCHEMA(value)],
+            ),
+        },
+    )
 
 
 def get_numeric_state_schema() -> vol.Schema:
@@ -85,13 +123,13 @@ CONDITION_SCHEMA: vol.Schema = vol.Schema(
             cv.key_value_schemas(
                 CONF_CONDITION,
                 {
-                    "and": cv.AND_CONDITION_SCHEMA,
-                    "device": cv.DEVICE_CONDITION_SCHEMA,
-                    "not": cv.NOT_CONDITION_SCHEMA,
-                    "numeric_state": get_numeric_state_schema(),
-                    "or": cv.OR_CONDITION_SCHEMA,
-                    "state": get_state_schema,
-                    "template": cv.TEMPLATE_CONDITION_SCHEMA,
+                    ConditionType.AND: get_compound_schema(ConditionType.AND),
+                    ConditionType.DEVICE: cv.DEVICE_CONDITION_SCHEMA,
+                    ConditionType.NOT: get_compound_schema(ConditionType.NOT),
+                    ConditionType.NUMERIC_STATE: get_numeric_state_schema(),
+                    ConditionType.OR: get_compound_schema(ConditionType.OR),
+                    ConditionType.STATE: get_state_schema,
+                    ConditionType.TEMPLATE: cv.TEMPLATE_CONDITION_SCHEMA,
                 },
             ),
         ),
@@ -150,24 +188,36 @@ class CompositeStrategy(PowerCalculationStrategyInterface):
 
         total = Decimal(0)
         for sub_strategy in self.strategies:
-            strategy = sub_strategy.strategy
-
-            if sub_strategy.condition and not sub_strategy.condition(self.hass, {"state": entity_state}):
+            value = await self._calculate_sub_strategy(sub_strategy, entity_state)
+            if value is None:
                 continue
-
-            if isinstance(strategy, PlaybookStrategy):
-                await self.activate_playbook(strategy)
-
-            if (
-                entity_state.state == STATE_OFF and strategy.can_calculate_standby()
-            ) or entity_state.state != STATE_OFF:
-                value = await strategy.calculate(entity_state)
-                if value is not None:
-                    if self.mode == CompositeMode.STOP_AT_FIRST:
-                        return value
-                    total += value
+            if self.mode == CompositeMode.STOP_AT_FIRST:
+                return value
+            total += value
 
         return total if self.mode == CompositeMode.SUM_ALL else None
+
+    async def _calculate_sub_strategy(self, sub_strategy: SubStrategy, entity_state: State) -> Decimal | None:
+        """Calculate the power for a single sub strategy. Returns None when the sub strategy must be skipped."""
+        strategy = sub_strategy.strategy
+
+        if sub_strategy.condition and not self._condition_matches(sub_strategy.condition, entity_state):
+            return None
+
+        if isinstance(strategy, PlaybookStrategy):
+            await self.activate_playbook(strategy)
+
+        if entity_state.state == STATE_OFF and not strategy.can_calculate_standby():
+            return None
+
+        return await strategy.calculate(entity_state)
+
+    def _condition_matches(self, condition: ConditionCheckerType, entity_state: State) -> bool:
+        try:
+            return condition(self.hass, {"state": entity_state})
+        except ConditionError:
+            _LOGGER.debug("Skipping composite sub-strategy because condition evaluation failed", exc_info=True)
+            return False
 
     async def stop_active_playbooks(self) -> None:
         """Stop any active playbooks from sub strategies."""
@@ -221,7 +271,7 @@ class CompositeStrategy(PowerCalculationStrategyInterface):
 
     def resolve_track_templates_from_condition(
         self,
-        condition_config: dict,
+        condition_config: ConfigType,
         templates: list[str | TrackTemplate],
     ) -> None:
         """Resolve track templates from condition config."""
@@ -238,6 +288,6 @@ class CompositeStrategy(PowerCalculationStrategyInterface):
 
 @dataclass
 class SubStrategy:
-    condition_config: dict | None
+    condition_config: ConfigType | None
     condition: ConditionCheckerType | None
     strategy: PowerCalculationStrategyInterface

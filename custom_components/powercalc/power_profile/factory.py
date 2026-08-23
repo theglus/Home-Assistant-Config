@@ -1,9 +1,8 @@
-from __future__ import annotations
-
 import logging
 import os
 
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers.typing import ConfigType
 
 from custom_components.powercalc.common import SourceEntity
 from custom_components.powercalc.const import (
@@ -24,12 +23,18 @@ _LOGGER = logging.getLogger(__name__)
 
 async def get_power_profile(
     hass: HomeAssistant,
-    config: dict,
+    config: ConfigType,
     source_entity: SourceEntity | None = None,
     model_info: ModelInfo | None = None,
     log_errors: bool = True,
     process_variables: bool = True,
+    model_resolved: bool = False,
 ) -> PowerProfile | None:
+    """Build the power profile for a given configuration or model.
+
+    Pass `model_resolved` when `model_info` already comes out of `ProfileLibrary.find_models`,
+    to skip resolving it against the library again.
+    """
     manufacturer = config.get(CONF_MANUFACTURER)
     model = config.get(CONF_MODEL)
     model_id = None
@@ -61,6 +66,7 @@ async def get_power_profile(
             custom_model_directory,
             variables,
             process_variables,
+            model_resolved,
         )
     except LibraryError as err:
         if log_errors:

@@ -1,15 +1,11 @@
-from __future__ import annotations
-
 from typing import TYPE_CHECKING, Any
 
 from homeassistant.config_entries import ConfigFlowResult
+from homeassistant.const import CONF_DEVICE
 from homeassistant.helpers import selector, translation
+from homeassistant.helpers.device_registry import DeviceEntry
 import voluptuous as vol
 
-from custom_components.powercalc import (
-    DOMAIN,
-    DeviceType,
-)
 from custom_components.powercalc.const import (
     CONF_AVAILABILITY_ENTITY,
     CONF_FIXED,
@@ -20,10 +16,11 @@ from custom_components.powercalc.const import (
     CONF_SELF_USAGE_INCLUDED,
     CONF_SUB_PROFILE,
     CONF_VARIABLES,
-    DUMMY_ENTITY_ID,
+    DOMAIN,
     LIBRARY_URL,
     CalculationStrategy,
 )
+from custom_components.powercalc.device_binding import get_devices_for_config_entry, get_related_devices
 from custom_components.powercalc.discovery import (
     get_power_profile_by_source_device,
     get_power_profile_by_source_entity,
@@ -32,6 +29,7 @@ from custom_components.powercalc.flow_helper.common import FlowType, PowercalcFo
 from custom_components.powercalc.flow_helper.dynamic_field_builder import build_dynamic_field_schema
 from custom_components.powercalc.flow_helper.schema import (
     SCHEMA_ENERGY_SENSOR_TOGGLE,
+    SCHEMA_STANDBY_ENERGY_SENSOR_TOGGLE,
     SCHEMA_UTILITY_METER_TOGGLE,
     build_sub_profile_schema,
 )
@@ -44,6 +42,7 @@ from custom_components.powercalc.power_profile.library import ModelInfo, Profile
 from custom_components.powercalc.power_profile.power_profile import (
     DEVICE_TYPE_DOMAIN,
     DOMAIN_DEVICE_TYPE_MAPPING,
+    DeviceType,
     DiscoveryBy,
     PowerProfile,
 )
@@ -60,6 +59,7 @@ SCHEMA_POWER_AUTODISCOVERED = vol.Schema(
 SCHEMA_POWER_OPTIONS_LIBRARY = vol.Schema(
     {
         **SCHEMA_ENERGY_SENSOR_TOGGLE.schema,
+        **SCHEMA_STANDBY_ENERGY_SENSOR_TOGGLE.schema,
         **SCHEMA_UTILITY_METER_TOGGLE.schema,
     },
 )
@@ -193,45 +193,105 @@ class LibraryFlow:
         if not self.flow.selected_profile:
             return self.flow.async_abort(reason="model_not_supported")  # pragma: no cover
 
-        if Step.LIBRARY_CUSTOM_FIELDS not in self.flow.handled_steps and self.flow.selected_profile.has_custom_fields:
+        profile_step = await self._async_next_profile_step(self.flow.selected_profile)
+        if profile_step:
+            return profile_step
+
+        strategy_step = await self._async_next_strategy_step(self.flow.selected_profile)
+        if strategy_step:
+            return strategy_step
+
+        return await self.flow.flow_handlers[FlowType.GROUP].async_step_assign_groups()  # type: ignore[no-any-return]
+
+    async def _async_next_profile_step(self, profile: PowerProfile) -> ConfigFlowResult | None:
+        """Return the next step needed to complete the profile itself, or None when nothing is left to ask."""
+        handled_steps = self.flow.handled_steps
+
+        if Step.LIBRARY_CUSTOM_FIELDS not in handled_steps and profile.has_custom_fields:
             return await self.async_step_library_custom_fields()
 
-        if (
-            Step.AVAILABILITY_ENTITY not in self.flow.handled_steps
-            and self.flow.selected_profile.discovery_by == DiscoveryBy.DEVICE
-        ):
+        if Step.SELECT_DEVICE not in handled_steps and profile.discovery_by == DiscoveryBy.CONFIG_ENTRY:
+            return await self.async_step_select_device()
+
+        if Step.AVAILABILITY_ENTITY not in handled_steps and profile.discovery_by == DiscoveryBy.DEVICE:
             result = await self.async_step_availability_entity()
             if result:
                 return result
 
-        if (
-            Step.SUB_PROFILE not in self.flow.handled_steps
-            and await self.flow.selected_profile.requires_manual_sub_profile_selection
-        ):
+        if Step.SUB_PROFILE not in handled_steps and await profile.requires_manual_sub_profile_selection:
             return await self.async_step_sub_profile()
 
+        return None
+
+    async def async_step_select_device(self, user_input: dict[str, Any] | None = None) -> ConfigFlowResult:
+        """Ask which device should receive the entities created for a config-entry profile."""
+        return await self.flow.handle_form_step(
+            PowercalcFormStep(
+                step=Step.SELECT_DEVICE,
+                schema=self.build_select_device_schema(),
+                next_step=Step.POST_LIBRARY,
+            ),
+            user_input,
+        )
+
+    def build_select_device_schema(self) -> vol.Schema:
+        """Build the schema to select the device the Powercalc entities should be linked to."""
+        discovery_by = self.flow.selected_profile.discovery_by if self.flow.selected_profile else DiscoveryBy.ENTITY
+
+        if discovery_by == DiscoveryBy.CONFIG_ENTRY:
+            # The entities can only be linked to one of the devices of the source config entry.
+            return vol.Schema(
+                {
+                    vol.Required(CONF_DEVICE): selector.SelectSelector(
+                        selector.SelectSelectorConfig(
+                            options=[
+                                selector.SelectOptionDict(
+                                    value=device.id,
+                                    label=device.name_by_user or device.name or device.id,
+                                )
+                                for device in self.get_selectable_devices()
+                            ],
+                            mode=selector.SelectSelectorMode.DROPDOWN,
+                        ),
+                    ),
+                },
+            )
+
+        return vol.Schema({vol.Required(CONF_DEVICE): selector.DeviceSelector()})
+
+    def get_selectable_devices(self) -> list[DeviceEntry]:
+        """Return the devices belonging to the same config entry as the source of the profile."""
+        config_entry_id = self.flow.source_entity.config_entry_id if self.flow.source_entity else None
+        if config_entry_id:
+            return get_devices_for_config_entry(self.flow.hass, config_entry_id)
+
+        # The options flow has no reference to the source config entry anymore,
+        # so resolve the candidates from the currently configured device instead.
+        device_id: str | None = self.flow.sensor_config.get(CONF_DEVICE)
+        return get_related_devices(self.flow.hass, device_id) if device_id else []
+
+    async def _async_next_strategy_step(self, profile: PowerProfile) -> ConfigFlowResult | None:
+        """Return the next step needed to configure the calculation strategy, or None when nothing is left to ask."""
+        handled_steps = self.flow.handled_steps
+        virtual_power_flow = self.flow.flow_handlers[FlowType.VIRTUAL_POWER]
+
         if (
-            Step.SMART_SWITCH not in self.flow.handled_steps
-            and self.flow.selected_profile.device_type == DeviceType.SMART_SWITCH
-            and self.flow.selected_profile.calculation_strategy == CalculationStrategy.FIXED
+            Step.SMART_SWITCH not in handled_steps
+            and profile.device_type == DeviceType.SMART_SWITCH
+            and profile.calculation_strategy == CalculationStrategy.FIXED
         ):
             return await self.async_step_smart_switch()
 
-        if (
-            Step.FIXED not in self.flow.handled_steps and self.flow.selected_profile.needs_fixed_config
-        ):  # pragma: no cover
-            return await self.flow.flow_handlers[FlowType.VIRTUAL_POWER].async_step_fixed()  # type: ignore[no-any-return]
+        if Step.FIXED not in handled_steps and profile.needs_fixed_config:  # pragma: no cover
+            return await virtual_power_flow.async_step_fixed()  # type: ignore[no-any-return]
 
-        if Step.LINEAR not in self.flow.handled_steps and self.flow.selected_profile.needs_linear_config:
-            return await self.flow.flow_handlers[FlowType.VIRTUAL_POWER].async_step_linear()  # type: ignore[no-any-return]
+        if Step.LINEAR not in handled_steps and profile.needs_linear_config:
+            return await virtual_power_flow.async_step_linear()  # type: ignore[no-any-return]
 
-        if (
-            Step.MULTI_SWITCH not in self.flow.handled_steps
-            and self.flow.selected_profile.calculation_strategy == CalculationStrategy.MULTI_SWITCH
-        ):
-            return await self.flow.flow_handlers[FlowType.VIRTUAL_POWER].async_step_multi_switch()  # type: ignore[no-any-return]
+        if Step.MULTI_SWITCH not in handled_steps and profile.calculation_strategy == CalculationStrategy.MULTI_SWITCH:
+            return await virtual_power_flow.async_step_multi_switch()  # type: ignore[no-any-return]
 
-        return await self.flow.flow_handlers[FlowType.GROUP].async_step_assign_groups()  # type: ignore[no-any-return]
+        return None
 
     async def async_step_library_custom_fields(self, user_input: dict[str, Any] | None = None) -> ConfigFlowResult:
         """Handle the flow for custom fields."""
@@ -389,7 +449,7 @@ class LibraryFlow:
 
     def _get_library_device_types(self) -> set[DeviceType] | None:
         """Determine which device types should be shown in the library selectors."""
-        if self._get_library_discovery_by() == DiscoveryBy.DEVICE:
+        if self._get_library_discovery_by() in (DiscoveryBy.CONFIG_ENTRY, DiscoveryBy.DEVICE):
             return None
 
         if self.flow.source_entity:
@@ -399,9 +459,19 @@ class LibraryFlow:
 
     def _get_library_discovery_by(self) -> DiscoveryBy | None:
         """Determine whether listing should be filtered by discovery mode."""
-        if self.flow.source_entity and self.flow.source_entity.entity_id == DUMMY_ENTITY_ID:
-            return DiscoveryBy.DEVICE
-        return None
+        source_entity = self.flow.source_entity
+        if not source_entity:
+            return None
+
+        if source_entity.config_entry_id:
+            return DiscoveryBy.CONFIG_ENTRY
+        if not source_entity.is_dummy:
+            return None
+
+        profile = self.flow.selected_profile
+        if profile and profile.discovery_by == DiscoveryBy.CONFIG_ENTRY:
+            return DiscoveryBy.CONFIG_ENTRY
+        return DiscoveryBy.DEVICE
 
 
 class LibraryConfigFlow(LibraryFlow):
@@ -538,19 +608,22 @@ class LibraryConfigFlow(LibraryFlow):
 
     def _get_profile_source(self, profile: PowerProfile) -> str:
         """Build the autodiscovery source description."""
+        source_entity = self.flow.source_entity
+        if source_entity and profile.discovery_by == DiscoveryBy.CONFIG_ENTRY:
+            config_entry_id = source_entity.config_entry_id
+            if config_entry_id:
+                return source_entity.name or config_entry_id
+
         translations = translation.async_get_cached_translations(
             self.flow.hass,
             self.flow.hass.config.language,
             "common",
             DOMAIN,
         )
-        if (
-            profile.discovery_by == DiscoveryBy.DEVICE
-            and self.flow.source_entity
-            and self.flow.source_entity.device_entry
-        ):
+        device_entry = source_entity.device_entry if source_entity else None
+        if profile.discovery_by == DiscoveryBy.DEVICE and device_entry:
             label = translations.get(f"component.{DOMAIN}.common.source_device")
-            return f"{label}: {self.flow.source_entity.device_entry.name}"
+            return f"{label}: {device_entry.name}"
 
         return f"{translations.get(f'component.{DOMAIN}.common.source_entity')}: {self.flow.source_entity_id}"
 
@@ -585,6 +658,14 @@ class LibraryOptionsFlow(LibraryFlow):
     def __init__(self, flow: PowercalcOptionsFlow) -> None:
         super().__init__(flow)
         self.flow: PowercalcOptionsFlow = flow
+
+    async def async_step_select_device(self, user_input: dict[str, Any] | None = None) -> ConfigFlowResult:
+        """Change the device the Powercalc entities are linked to."""
+        return await self.flow.async_handle_options_step(
+            user_input,
+            self.build_select_device_schema(),
+            Step.SELECT_DEVICE,
+        )
 
     async def async_step_library_options(self, user_input: dict[str, Any] | None = None) -> ConfigFlowResult:
         """Handle the basic options flow."""

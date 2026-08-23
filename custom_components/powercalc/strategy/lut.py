@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from bisect import bisect_left
 from collections.abc import Mapping
 from csv import reader
@@ -71,12 +69,16 @@ class _EffectEntry:
     table: EffectTableType
 
 
+# manufacturer, model, lookup mode, sub profile
+_CacheKey = tuple[str, str, LookupMode, str | None]
+
+
 class LutRegistry:
     def __init__(self, hass: HomeAssistant) -> None:
         self._hass = hass
-        self._lut_entries: dict[tuple, _LutEntry] = {}
-        self._effect_entries: dict[tuple, _EffectEntry] = {}
-        self._supported_modes: dict[tuple, set[LookupMode]] = {}
+        self._lut_entries: dict[_CacheKey, _LutEntry] = {}
+        self._effect_entries: dict[_CacheKey, _EffectEntry] = {}
+        self._supported_modes: dict[tuple[str, str, str], set[LookupMode]] = {}
 
     async def get_lookup_entry(
         self,
@@ -121,7 +123,7 @@ class LutRegistry:
         return supported_modes
 
     @staticmethod
-    def _cache_key(power_profile: PowerProfile, lookup_mode: LookupMode) -> tuple:
+    def _cache_key(power_profile: PowerProfile, lookup_mode: LookupMode) -> _CacheKey:
         return power_profile.manufacturer, power_profile.model, lookup_mode, power_profile.sub_profile
 
     @classmethod
@@ -188,7 +190,7 @@ class LutRegistry:
             _LOGGER.debug("Loading LUT data file: %s", path)
             return open(path)
 
-        raise LutFileNotFoundError("Data file not found: %s")
+        raise LutFileNotFoundError(f"Data file not found: {path}")
 
 
 class LutStrategy(PowerCalculationStrategyInterface):
@@ -312,7 +314,7 @@ class LutStrategy(PowerCalculationStrategyInterface):
                 )
                 light_setting.hue = int(hs[0] / 360 * 65535)
                 light_setting.saturation = int(hs[1] / 100 * 255)
-            except (KeyError, TypeError, ValueError):
+            except KeyError, TypeError, ValueError:
                 _LOGGER.error(
                     "%s: Could not calculate power. no hue/sat set. "
                     "Please check the attributes of your light in the developer tools.",
