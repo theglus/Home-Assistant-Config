@@ -86,16 +86,16 @@ class TrueNASUptimeSensor(TrueNASSensor):
         """Restart TrueNAS systen."""
         await self.hass.async_add_executor_job(
             self.coordinator.api.query,
-            "system/reboot",
-            "post",
+            "system.reboot",
+            ["Home Assistant Integration"],
         )
 
     async def stop(self) -> None:
         """Shutdown TrueNAS systen."""
         await self.hass.async_add_executor_job(
             self.coordinator.api.query,
-            "system/shutdown",
-            "post",
+            "system.shutdown",
+            ["Home Assistant Integration"],
         )
 
 
@@ -110,8 +110,7 @@ class TrueNASDatasetSensor(TrueNASSensor):
         ts = datetime.now().isoformat(sep="_", timespec="microseconds")
         await self.hass.async_add_executor_job(
             self.coordinator.api.query,
-            "zfs/snapshot",
-            "post",
+            "zfs.snapshot.create",
             {"dataset": f"{self._data['name']}", "name": f"custom-{ts}"},
         )
 
@@ -125,7 +124,9 @@ class TrueNASClousyncSensor(TrueNASSensor):
     async def start(self) -> None:
         """Run cloudsync job."""
         tmp_job = await self.hass.async_add_executor_job(
-            self.coordinator.api.query, f"cloudsync/id/{self._data['id']}"
+            self.coordinator.api.query,
+            "cloudsync.get_instance",
+            [self._data["id"]],
         )
 
         if "job" not in tmp_job:
@@ -135,7 +136,10 @@ class TrueNASClousyncSensor(TrueNASSensor):
                 self._data["id"],
             )
             return
-        if tmp_job["job"]["state"] in ["WAITING", "RUNNING"]:
+        if "state" in tmp_job["job"] and tmp_job["job"]["state"] in [
+            "WAITING",
+            "RUNNING",
+        ]:
             _LOGGER.warning(
                 "Clousync job %s (%s) is already running",
                 self._data["description"],
@@ -144,13 +148,17 @@ class TrueNASClousyncSensor(TrueNASSensor):
             return
 
         await self.hass.async_add_executor_job(
-            self.coordinator.api.query, f"cloudsync/id/{self._data['id']}/sync", "post"
+            self.coordinator.api.query,
+            "cloudsync.sync",
+            [self._data["id"]],
         )
 
     async def stop(self) -> None:
         """Abort cloudsync job."""
         tmp_job = await self.hass.async_add_executor_job(
-            self.coordinator.api.query, f"cloudsync/id/{self._data['id']}"
+            self.coordinator.api.query,
+            "cloudsync.get_instance",
+            [self._data["id"]],
         )
 
         if "job" not in tmp_job:
@@ -160,7 +168,10 @@ class TrueNASClousyncSensor(TrueNASSensor):
                 self._data["id"],
             )
             return
-        if tmp_job["job"]["state"] not in ["WAITING", "RUNNING"]:
+        if "state" in tmp_job["job"] and tmp_job["job"]["state"] not in [
+            "WAITING",
+            "RUNNING",
+        ]:
             _LOGGER.warning(
                 "Clousync job %s (%s) is not running",
                 self._data["description"],
@@ -170,7 +181,6 @@ class TrueNASClousyncSensor(TrueNASSensor):
 
         await self.hass.async_add_executor_job(
             self.coordinator.api.query,
-            f"cloudsync/id/{self._data['id']}/abort",
-            "post",
-            None,
+            "cloudsync.abort",
+            [self._data["id"]],
         )

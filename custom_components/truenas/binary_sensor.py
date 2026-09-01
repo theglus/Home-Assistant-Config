@@ -28,7 +28,6 @@ async def async_setup_entry(
     """Set up device tracker for OpenMediaVault component."""
     dispatcher = {
         "TrueNASBinarySensor": TrueNASBinarySensor,
-        "TrueNASJailBinarySensor": TrueNASJailBinarySensor,
         "TrueNASVMBinarySensor": TrueNASVMBinarySensor,
         "TrueNASServiceBinarySensor": TrueNASServiceBinarySensor,
         "TrueNASAppBinarySensor": TrueNASAppBinarySensor,
@@ -48,7 +47,7 @@ class TrueNASBinarySensor(TrueNASEntity, BinarySensorEntity):
         return self._data[self.entity_description.data_is_on]
 
     @property
-    def icon(self) -> str:
+    def icon(self) -> str | None:
         """Return the icon."""
         if self.entity_description.icon_enabled:
             if self._data[self.entity_description.data_is_on]:
@@ -56,78 +55,7 @@ class TrueNASBinarySensor(TrueNASEntity, BinarySensorEntity):
             else:
                 return self.entity_description.icon_disabled
 
-
-# ---------------------------
-#   TrueNASJailBinarySensor
-# ---------------------------
-class TrueNASJailBinarySensor(TrueNASBinarySensor):
-    """Define a TrueNAS Jail Binary Sensor."""
-
-    async def start(self):
-        """Start a Jail."""
-        tmp_jail = await self.hass.async_add_executor_job(
-            self.coordinator.api.query, f"jail/id/{self._data['id']}"
-        )
-
-        if "state" not in tmp_jail:
-            _LOGGER.error(
-                "Jail %s (%s) invalid", self._data["comment"], self._data["id"]
-            )
-            return
-
-        if tmp_jail["state"] != "down":
-            _LOGGER.warning(
-                "Jail %s (%s) is not down", self._data["comment"], self._data["id"]
-            )
-            return
-
-        await self.hass.async_add_executor_job(
-            self.coordinator.api.query, "jail/start", "post", self._data["id"]
-        )
-
-    async def stop(self):
-        """Stop a Jail."""
-        tmp_jail = await self.hass.async_add_executor_job(
-            self.coordinator.api.query, f"jail/id/{self._data['id']}"
-        )
-
-        if "state" not in tmp_jail:
-            _LOGGER.error(
-                "Jail %s (%s) invalid", self._data["comment"], self._data["id"]
-            )
-            return
-
-        if tmp_jail["state"] != "up":
-            _LOGGER.warning(
-                "Jail %s (%s) is not up", self._data["comment"], self._data["id"]
-            )
-            return
-
-        await self.hass.async_add_executor_job(
-            self.coordinator.api.query, "jail/stop", "post", {"jail": self._data["id"]}
-        )
-
-    async def restart(self):
-        """Restart a Jail."""
-        tmp_jail = await self.hass.async_add_executor_job(
-            self.coordinator.api.query, f"jail/id/{self._data['id']}"
-        )
-
-        if "state" not in tmp_jail:
-            _LOGGER.error(
-                "Jail %s (%s) invalid", self._data["comment"], self._data["id"]
-            )
-            return
-
-        if tmp_jail["state"] != "up":
-            _LOGGER.warning(
-                "Jail %s (%s) is not up", self._data["comment"], self._data["id"]
-            )
-            return
-
-        await self.hass.async_add_executor_job(
-            self.coordinator.api.query, "jail/restart", "post", self._data["id"]
-        )
+        return None
 
 
 # ---------------------------
@@ -137,16 +65,18 @@ class TrueNASVMBinarySensor(TrueNASBinarySensor):
     """Define a TrueNAS VM Binary Sensor."""
 
     async def start(self, overcommit: bool = False):
-        """Start a VM."""
+        """Start a VM."""  # virt.instance.start
         tmp_vm = await self.hass.async_add_executor_job(
-            self.coordinator.api.query, f"vm/id/{self._data['id']}"
+            self.coordinator.api.query,
+            "virt.instance.get_instance",
+            [self._data["id"]],
         )
 
         if "status" not in tmp_vm:
             _LOGGER.error("VM %s (%s) invalid", self._data["name"], self._data["id"])
             return
 
-        if tmp_vm["status"]["state"] != "STOPPED":
+        if tmp_vm["status"] != "STOPPED":
             _LOGGER.warning(
                 "VM %s (%s) is not down", self._data["name"], self._data["id"]
             )
@@ -154,29 +84,32 @@ class TrueNASVMBinarySensor(TrueNASBinarySensor):
 
         await self.hass.async_add_executor_job(
             self.coordinator.api.query,
-            f"vm/id/{self._data['id']}/start",
-            "post",
-            {"overcommit": overcommit},
+            "virt.instance.start",
+            [self._data["id"]],
         )
 
     async def stop(self):
         """Stop a VM."""
         tmp_vm = await self.hass.async_add_executor_job(
-            self.coordinator.api.query, f"vm/id/{self._data['id']}"
+            self.coordinator.api.query,
+            "virt.instance.get_instance",
+            [self._data["id"]],
         )
 
         if "status" not in tmp_vm:
             _LOGGER.error("VM %s (%s) invalid", self._data["name"], self._data["id"])
             return
 
-        if tmp_vm["status"]["state"] != "RUNNING":
+        if tmp_vm["status"] != "RUNNING":
             _LOGGER.warning(
                 "VM %s (%s) is not up", self._data["name"], self._data["id"]
             )
             return
 
         await self.hass.async_add_executor_job(
-            self.coordinator.api.query, f"vm/id/{self._data['id']}/stop", "post"
+            self.coordinator.api.query,
+            "virt.instance.stop",
+            [self._data["id"], {"timeout": 0, "force": True}],
         )
 
 
@@ -189,7 +122,9 @@ class TrueNASServiceBinarySensor(TrueNASBinarySensor):
     async def start(self):
         """Start a Service."""
         tmp_service = await self.hass.async_add_executor_job(
-            self.coordinator.api.query, f"service/id/{self._data['id']}"
+            self.coordinator.api.query,
+            "service.get_instance",
+            [self._data["id"]],
         )
 
         if "state" not in tmp_service:
@@ -208,16 +143,18 @@ class TrueNASServiceBinarySensor(TrueNASBinarySensor):
 
         await self.hass.async_add_executor_job(
             self.coordinator.api.query,
-            "service/start",
-            "post",
-            {"service": self._data["service"]},
+            "service.start",
+            [self._data["service"]],
         )
+
         await self.coordinator.async_refresh()
 
     async def stop(self):
         """Stop a Service."""
         tmp_service = await self.hass.async_add_executor_job(
-            self.coordinator.api.query, f"service/id/{self._data['id']}"
+            self.coordinator.api.query,
+            "service.get_instance",
+            [self._data["id"]],
         )
 
         if "state" not in tmp_service:
@@ -236,16 +173,17 @@ class TrueNASServiceBinarySensor(TrueNASBinarySensor):
 
         await self.hass.async_add_executor_job(
             self.coordinator.api.query,
-            "service/stop",
-            "post",
-            {"service": self._data["service"]},
+            "service.stop",
+            [self._data["service"]],
         )
         await self.coordinator.async_refresh()
 
     async def restart(self):
         """Restart a Service."""
         tmp_service = await self.hass.async_add_executor_job(
-            self.coordinator.api.query, f"service/id/{self._data['id']}"
+            self.coordinator.api.query,
+            "service.get_instance",
+            [self._data["id"]],
         )
 
         if "state" not in tmp_service:
@@ -264,16 +202,18 @@ class TrueNASServiceBinarySensor(TrueNASBinarySensor):
 
         await self.hass.async_add_executor_job(
             self.coordinator.api.query,
-            "service/restart",
-            "post",
-            {"service": self._data["service"]},
+            "service.restart",
+            [self._data["service"]],
         )
+
         await self.coordinator.async_refresh()
 
     async def reload(self):
         """Reload a Service."""
         tmp_service = await self.hass.async_add_executor_job(
-            self.coordinator.api.query, f"service/id/{self._data['id']}"
+            self.coordinator.api.query,
+            "service.get_instance",
+            [self._data["id"]],
         )
 
         if "state" not in tmp_service:
@@ -292,10 +232,10 @@ class TrueNASServiceBinarySensor(TrueNASBinarySensor):
 
         await self.hass.async_add_executor_job(
             self.coordinator.api.query,
-            "service/reload",
-            "post",
-            {"service": self._data["service"]},
+            "service.reload",
+            [self._data["service"]],
         )
+
         await self.coordinator.async_refresh()
 
 
@@ -306,47 +246,49 @@ class TrueNASAppBinarySensor(TrueNASBinarySensor):
     """Define a TrueNAS Applications Binary Sensor."""
 
     async def start(self):
-        """Start a VM."""
-        tmp_vm = await self.hass.async_add_executor_job(
-            self.coordinator.api.query, f"/chart/release/id/{self._data['id']}"
+        """Start an App."""
+        tmp_app = await self.hass.async_add_executor_job(
+            self.coordinator.api.query,
+            "app.get_instance",
+            [self._data["id"]],
         )
 
-        if "status" not in tmp_vm:
-            _LOGGER.error("VM %s (%s) invalid", self._data["name"], self._data["id"])
+        if tmp_app is None or "state" not in tmp_app:
+            _LOGGER.error("App %s (%s) invalid", self._data["name"], self._data["id"])
             return
 
-        if tmp_vm["status"] == "ACTIVE":
+        if tmp_app["state"] == "RUNNING":
             _LOGGER.warning(
-                "VM %s (%s) is not down", self._data["name"], self._data["id"]
+                "App %s (%s) is not down", self._data["name"], self._data["id"]
             )
             return
 
         await self.hass.async_add_executor_job(
             self.coordinator.api.query,
-            "/chart/release/scale",
-            "post",
-            {"release_name": self._data["id"], "scale_options": {"replica_count": 1}},
+            "app.start",
+            [self._data["id"]],
         )
 
     async def stop(self):
-        """Stop a VM."""
-        tmp_vm = await self.hass.async_add_executor_job(
-            self.coordinator.api.query, f"/chart/release/id/{self._data['id']}"
+        """Stop an App."""
+        tmp_app = await self.hass.async_add_executor_job(
+            self.coordinator.api.query,
+            "app.get_instance",
+            [self._data["id"]],
         )
 
-        if "status" not in tmp_vm:
-            _LOGGER.error("VM %s (%s) invalid", self._data["name"], self._data["id"])
+        if tmp_app is None or "state" not in tmp_app:
+            _LOGGER.error("App %s (%s) invalid", self._data["name"], self._data["id"])
             return
 
-        if tmp_vm["status"] != "ACTIVE":
+        if tmp_app["state"] != "RUNNING":
             _LOGGER.warning(
-                "VM %s (%s) is not up", self._data["name"], self._data["id"]
+                "App %s (%s) is not up", self._data["name"], self._data["id"]
             )
             return
 
         await self.hass.async_add_executor_job(
             self.coordinator.api.query,
-            "/chart/release/scale",
-            "post",
-            {"release_name": self._data["id"], "scale_options": {"replica_count": 0}},
+            "app.stop",
+            [self._data["id"]],
         )
