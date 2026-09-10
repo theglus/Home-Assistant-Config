@@ -71,6 +71,16 @@ FRIGIDAIRE_TO_HA_MODE = {
     frigidaire.Mode.DRY: HVACMode.DRY,
 }
 
+# Detail.MODE_STATE is the mode the appliance reports it is actually running, as opposed to
+# Detail.MODE which is what was requested. Only the concrete running modes are mapped:
+# anything else (ECO, AUTO, SMART) is a setting rather than an activity and falls through to
+# the mode-derived fallback in hvac_action.
+FRIGIDAIRE_MODE_STATE_TO_HA_ACTION = {
+    frigidaire.Mode.COOL: HVACAction.COOLING,
+    frigidaire.Mode.FAN: HVACAction.FAN,
+    frigidaire.Mode.DRY: HVACAction.DRYING,
+}
+
 FRIGIDAIRE_TO_HA_FAN_SPEED = {
     frigidaire.FanSpeed.AUTO: FAN_AUTO,
     frigidaire.FanSpeed.LOW: FAN_LOW,
@@ -279,10 +289,26 @@ class FrigidaireClimate(CoordinatorEntity[FrigidaireApplianceCoordinator], Clima
         appliance_state = _normalize_enum_value(self._details.get(frigidaire.Detail.APPLIANCE_STATE))
         if appliance_state != frigidaire.ApplianceState.RUNNING:
             return HVACAction.IDLE
-        # Running — report the action that matches the active mode rather than
-        # collapsing everything to COOLING.
+
+        # Prefer the appliance's reported modeState over the requested mode. In ECO/AUTO the
+        # requested mode says nothing about what the unit is doing right now, so this is the
+        # only way to distinguish actually cooling from just running the fan. Note that
+        # hvac_mode deliberately stays on the requested mode — that is the user's selection
+        # and must not flap as the compressor cycles.
+        mode_state = FRIGIDAIRE_MODE_STATE_TO_HA_ACTION.get(
+            _normalize_enum_value(self._details.get(frigidaire.Detail.MODE_STATE))
+        )
+        if mode_state is not None:
+            return mode_state
+
+        # No modeState reported — fall back to the action implied by the active mode rather
+        # than collapsing everything to COOLING.
         if mode == HVACMode.FAN_ONLY:
             return HVACAction.FAN
+        # The opt-in temperature-based estimate only refines hvac_action on appliances
+        # that do not report modeState; real telemetry above always wins.
+        if self.coordinator.compressor_estimation_enabled and self.coordinator.compressor_running is False:
+            return HVACAction.IDLE
         if mode == HVACMode.DRY:
             return HVACAction.DRYING
         return HVACAction.COOLING
@@ -417,9 +443,26 @@ class FrigidaireClimate(CoordinatorEntity[FrigidaireApplianceCoordinator], Clima
                 return
             appliance_state = _normalize_enum_value(self._details.get(frigidaire.Detail.APPLIANCE_STATE))
             frigidaire_mode = _normalize_enum_value(self._details.get(frigidaire.Detail.MODE))
-            if appliance_state == frigidaire.ApplianceState.OFF or frigidaire_mode == frigidaire.Mode.OFF:
-                self._client.execute_action(self._appliance, frigidaire.Action.set_power(frigidaire.Power.ON))
-                # temperature reverts to default when the device is turned on
+            was_off = appliance_state == frigidaire.ApplianceState.OFF or frigidaire_mode == frigidaire.Mode.OFF
+            _LOGGER.debug(
+                "Turn-on requested; cloud reports appliance_state=%s mode=%s", appliance_state, frigidaire_mode
+            )
+            # Always send power-on. The cloud reports the DESIRED state, not the hardware
+            # state: after a single failed turn-on it keeps reporting RUNNING, so gating
+            # set_power on it skips the power command on every retry and the unit never
+            # starts. Power is a set (ON/OFF), not a toggle, so this is harmless on a unit
+            # that really is running.
+            self._client.execute_action(self._appliance, frigidaire.Action.set_power(frigidaire.Power.ON))
+            self._client.execute_action(
+                self._appliance, frigidaire.Action.set_mode(HA_TO_FRIGIDAIRE_HVAC_MODE[hvac_mode])
+            )
+            if was_off:
+                # The appliance forgets its setpoint when powered on, and engaging the mode
+                # restores that default, so the remembered setpoint must be re-sent last.
+                # On the stale-RUNNING retry path the cloud still says RUNNING, so was_off is
+                # False and the setpoint is deliberately not re-sent; the next poll picks up the
+                # appliance's default instead, which is the trade-off for not doubling write
+                # traffic on every mode change.
                 current_temp = self.target_temperature
                 if current_temp is not None:
                     self._client.execute_action(
@@ -428,9 +471,6 @@ class FrigidaireClimate(CoordinatorEntity[FrigidaireApplianceCoordinator], Clima
                             int(current_temp), HA_TO_FRIGIDAIRE_UNIT[self.temperature_unit]
                         ),
                     )
-            self._client.execute_action(
-                self._appliance, frigidaire.Action.set_mode(HA_TO_FRIGIDAIRE_HVAC_MODE[hvac_mode])
-            )
 
         self._optimistic_hvac_mode = hvac_mode
         self._set_optimistic_window()

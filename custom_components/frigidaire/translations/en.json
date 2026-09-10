@@ -24,11 +24,19 @@
                     "display_light": "Display Light",
                     "ui_lock": "Child Lock",
                     "check_filter": "Check Filter",
-                    "filter_runtime": "Filter runtime"
+                    "bucket_status": "Bucket Status",
+                    "filter_runtime": "Filter runtime",
+                    "compressor": "Enable compressor estimate",
+                    "cool_hysteresis": "Cooling hysteresis (degrees)",
+                    "compressor_off_delay": "Compressor off delay (seconds)"
                 },
                 "data_description": {
                     "check_filter": "Problem sensor that turns on when the filter state is CLEAN, CHANGE, or BUY. Use it to trigger filter-maintenance notifications.",
-                    "filter_runtime": "Cumulative air-filter runtime reported by the appliance in native seconds. Home Assistant converts it to the configured display unit."
+                    "bucket_status": "Shows Full when the water bucket needs emptying and Empty otherwise. Dehumidifiers only — models that report no bucket signal show as unavailable.",
+                    "filter_runtime": "Cumulative air-filter runtime reported by the appliance in native seconds. Home Assistant converts it to the configured display unit.",
+                    "compressor": "Opt-in temperature-based estimate, not device telemetry. Adds a Compressor Estimate diagnostic sensor and refines hvac_action while enabled on appliances that do not report modeState.",
+                    "cool_hysteresis": "Temperature deadband around the setpoint used by the estimate. Zero disables the deadband.",
+                    "compressor_off_delay": "How long the room must remain below the lower deadband boundary before the estimate changes to idle."
                 }
             }
         }
@@ -43,14 +51,32 @@
                     "display_light": "Display Light",
                     "ui_lock": "Child Lock",
                     "check_filter": "Check Filter",
-                    "filter_runtime": "Filter runtime"
+                    "bucket_status": "Bucket Status",
+                    "filter_runtime": "Filter runtime",
+                    "compressor": "Enable compressor estimate",
+                    "cool_hysteresis": "Cooling hysteresis (degrees)",
+                    "compressor_off_delay": "Compressor off delay (seconds)"
                 },
                 "data_description": {
                     "check_filter": "Problem sensor that turns on when the filter state is CLEAN, CHANGE, or BUY. Use it to trigger filter-maintenance notifications.",
-                    "filter_runtime": "Cumulative air-filter runtime reported by the appliance in native seconds. Home Assistant converts it to the configured display unit."
+                    "bucket_status": "Shows Full when the water bucket needs emptying and Empty otherwise. Dehumidifiers only — models that report no bucket signal show as unavailable.",
+                    "filter_runtime": "Cumulative air-filter runtime reported by the appliance in native seconds. Home Assistant converts it to the configured display unit.",
+                    "compressor": "Opt-in temperature-based estimate, not device telemetry. Adds a Compressor Estimate diagnostic sensor and refines hvac_action while enabled on appliances that do not report modeState.",
+                    "cool_hysteresis": "Temperature deadband around the setpoint used by the estimate. Zero disables the deadband.",
+                    "compressor_off_delay": "How long the room must remain below the lower deadband boundary before the estimate changes to idle."
                 }
             }
         }
     },
-    "title": "Frigidaire"
+    "title": "Frigidaire",
+    "entity": {
+        "binary_sensor": {
+            "bucket_status": {
+                "state": {
+                    "off": "Empty",
+                    "on": "Full"
+                }
+            }
+        }
+    }
 }

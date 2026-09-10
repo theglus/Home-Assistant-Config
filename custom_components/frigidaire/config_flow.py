@@ -17,6 +17,11 @@ import frigidaire
 from .auth_store import AUTH_FILE, load_auth, save_auth
 from .const import (
     BINARY_SENSOR_OPTIONS,
+    CONF_COMPRESSOR_ESTIMATE,
+    CONF_COMPRESSOR_OFF_DELAY,
+    CONF_COOL_HYSTERESIS,
+    DEFAULT_COMPRESSOR_OFF_DELAY,
+    DEFAULT_COOL_HYSTERESIS,
     DOMAIN,
     SENSOR_OPTIONS,
     SWITCH_OPTIONS,
@@ -29,8 +34,25 @@ STEP_USER_DATA_SCHEMA = vol.Schema({"username": str, "password": str})
 ALL_OPTIONS = {**SWITCH_OPTIONS, **BINARY_SENSOR_OPTIONS, **SENSOR_OPTIONS}
 
 
-def _device_schema(current: dict) -> vol.Schema:
-    return vol.Schema({vol.Optional(key, default=current.get(key, False)): bool for key in ALL_OPTIONS})
+def _device_schema(current: dict, appliance: frigidaire.Appliance | None = None) -> vol.Schema:
+    fields: dict = {vol.Optional(key, default=current.get(key, False)): bool for key in ALL_OPTIONS}
+
+    if appliance is not None and appliance.destination == frigidaire.Destination.AIR_CONDITIONER:
+        fields[vol.Optional(CONF_COMPRESSOR_ESTIMATE, default=current.get(CONF_COMPRESSOR_ESTIMATE, False))] = bool
+        fields[
+            vol.Optional(
+                CONF_COOL_HYSTERESIS,
+                default=float(current.get(CONF_COOL_HYSTERESIS, DEFAULT_COOL_HYSTERESIS)),
+            )
+        ] = vol.All(vol.Coerce(float), vol.Range(min=0, max=10))
+        fields[
+            vol.Optional(
+                CONF_COMPRESSOR_OFF_DELAY,
+                default=int(current.get(CONF_COMPRESSOR_OFF_DELAY, DEFAULT_COMPRESSOR_OFF_DELAY)),
+            )
+        ] = vol.All(vol.Coerce(int), vol.Range(min=0, max=3600))
+
+    return vol.Schema(fields)
 
 
 async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> list[frigidaire.Appliance]:
@@ -74,7 +96,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         self._user_input: dict[str, Any] = {}
         self._appliances: list[frigidaire.Appliance] = []
         self._pending_appliances: list[frigidaire.Appliance] = []
-        self._options: dict[str, dict[str, bool]] = {}
+        self._options: dict[str, dict[str, Any]] = {}
 
     @staticmethod
     def async_get_options_flow(config_entry: config_entries.ConfigEntry) -> config_entries.OptionsFlow:
@@ -122,7 +144,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             self._pending_appliances.pop(0)
             return await self._async_next_device_step()
 
-        schema = _device_schema({})
+        schema = _device_schema({}, appliance)
         return self.async_show_form(
             step_id="device",
             data_schema=schema,
@@ -137,7 +159,7 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
         self._entry_id = config_entry.entry_id
         self._appliances: list[frigidaire.Appliance] = []
         self._pending_appliances: list[frigidaire.Appliance] = []
-        self._options: dict[str, dict[str, bool]] = {}
+        self._options: dict[str, dict[str, Any]] = {}
 
     async def async_step_init(self, user_input: dict[str, Any] | None = None) -> FlowResult:
         """Load appliances then start per-device steps."""
@@ -162,7 +184,7 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
             self._pending_appliances.pop(0)
             return await self._async_next_device_step()
 
-        schema = _device_schema(current)
+        schema = _device_schema(current, appliance)
         return self.async_show_form(
             step_id="device",
             data_schema=schema,

@@ -27,7 +27,7 @@ import frigidaire
 
 from .const import DOMAIN
 from .coordinator import FrigidaireApplianceCoordinator
-from .diagnostics import filter_needs_attention, normalize_alerts
+from .diagnostics import bucket_is_full, filter_needs_attention, normalize_alerts
 from .helpers import suggest_area
 
 _LOGGER = logging.getLogger(__name__)
@@ -178,25 +178,20 @@ class FrigidaireDehumidifier(CoordinatorEntity[FrigidaireApplianceCoordinator], 
         }
 
         # The following attributes only exist on some models of dehumidifier
-        bin_full = False
         alerts = normalize_alerts(self._details.get(frigidaire.Detail.ALERTS))
         if alerts is not None:
             attrib["active_alerts"] = alerts
-            bin_full = "BUCKET_FULL" in alerts
 
-        # Fallback to waterBucketLevel if alert is not set
-        if not bin_full:
-            water_bucket_level = self._details.get(frigidaire.Detail.WATER_BUCKET_LEVEL)
-            if water_bucket_level == 1:
-                bin_full = True
-
-        # Fallback to waterTankFull if neither alert nor waterBucketLevel is set
-        if not bin_full:
-            water_tank_full = _normalize_enum_value(self._details.get(frigidaire.Detail.WATER_TANK_FULL))
-            if water_tank_full in ("YES", True):
-                bin_full = True
-
-        attrib["bin_full"] = bin_full
+        # Shared with the Bucket Status binary sensor; None (unreported) stays
+        # False here to preserve the attribute's historical always-bool shape.
+        attrib["bin_full"] = (
+            bucket_is_full(
+                alerts,
+                self._details.get(frigidaire.Detail.WATER_BUCKET_LEVEL),
+                self._details.get(frigidaire.Detail.WATER_TANK_FULL),
+            )
+            or False
+        )
 
         return attrib
 
