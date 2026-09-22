@@ -20,12 +20,7 @@
       exclude:
         entity_id:
         - sensor.pixel_5_battery_level
-        - sensor.jeffrey_glusman_internal_battery_level
-        - sensor.ipad_battery_level
-        - sensor.macintoshbook_air_internal_battery_level
         - sensor.browsermod_pixel_browser_battery
-        - sensor.mi_magic_cube_battery
-        - sensor.lenovo_smart_tab_m8_battery
       actions:
       - data:
           title: '⚠️ Battery:'
@@ -217,13 +212,8 @@
         action: notify.telegram
       exclude:
         entity_id:
-        - sensor.macintoshbook_air_internal_battery_level
-        - sensor.ipad_battery_level
         - sensor.pixel_5_battery_level
-        - sensor.samsung_flip_battery_level
-        - sensor.mi_magic_cube_battery
         - sensor.browsermod_pixel_browser_battery
-        - sensor.lenovo_smart_tab_m8_battery
       time: 09:00:00
 - id: '1696625276509'
   alias: Reset PowerCal at Startup
