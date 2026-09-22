@@ -1,0 +1,28 @@
+#################################################################
+## Dockhand Template Sensors
+## UI-managed template sensors derived from the Dockhand MQTT
+## event sensor.
+#
+## NOTE: Config commented out for documentation purposes.
+#################################################################
+# - sensor:
+#     # Dockhand Event Type
+#     - name: "Dockhand Event Type"
+#       unique_id: dockhand_event_type
+#       icon: mdi:tag-outline
+#       state: >-
+#         {{ state_attr('sensor.dockhand_event', 'event_type') }}
+#
+#     # Dockhand Message
+#     - name: "Dockhand Message"
+#       unique_id: dockhand_message
+#       icon: mdi:message-text-outline
+#       state: >-
+#         {{ state_attr('sensor.dockhand_event', 'message') }}
+#
+#     # Dockhand Severity
+#     - name: "Dockhand Severity"
+#       unique_id: dockhand_severity
+#       icon: mdi:alert-circle-outline
+#       state: >-
+#         {{ state_attr('sensor.dockhand_event', 'type') }}

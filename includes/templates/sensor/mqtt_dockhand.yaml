@@ -1,0 +1,18 @@
+#################################################################
+## Dockhand MQTT Sensors
+#
+## Template sensors for Dockhand notifications.
+#################################################################
+- trigger:
+    - platform: mqtt
+      topic: "dockhand/events"
+
+  sensor:
+    - name: "Dockhand Event"
+      unique_id: dockhand_event
+      state: "{{ trigger.payload_json.title }}"
+      attributes:
+        message: "{{ trigger.payload_json.message }}"
+        event_type: "{{ trigger.payload_json.eventType }}"
+        type: "{{ trigger.payload_json.type }}"
+        timestamp: "{{ trigger.payload_json.timestamp }}"
