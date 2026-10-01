@@ -21,16 +21,15 @@ action:
           - service: media_player.volume_set
             target:
               entity_id:
-                - media_player.loft_nest_hub
-                - media_player.smart_clock
+                - media_player.loft_nest_hub_cast
+                - media_player.smart_clock_cast
             data:
               volume_level: 0.5
           - service: media_player.volume_set
             target:
               entity_id:
-                - media_player.bookshelf_speakers
-                - media_player.upstairs_speakers
-                - media_player.loft_bathroom
+                - media_player.bookshelf_speakers_cast
+                - media_player.loft_bathroom_cast
             data:
               volume_level: 0.3
           - service: notify.mobile_app_pixel_5
@@ -41,8 +40,8 @@ action:
       - service: media_player.volume_set
         target:
           entity_id:
-            - media_player.loft_nest_hub
-            - media_player.smart_clock
+            - media_player.loft_nest_hub_cast
+            - media_player.smart_clock_cast
         data:
           volume_level: 0.6
       - service: media_player.volume_set
@@ -50,9 +49,8 @@ action:
           volume_level: 0.4
         target:
           entity_id:
-            - media_player.bookshelf_speakers
-            - media_player.upstairs_speakers
-            - media_player.loft_bathroom
+            - media_player.bookshelf_speakers_cast
+            - media_player.loft_bathroom_cast
       - service: notify.mobile_app_pixel_5
         data:
           title: 📢 Farnsworth

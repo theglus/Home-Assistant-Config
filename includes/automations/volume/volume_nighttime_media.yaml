@@ -9,7 +9,7 @@ description: "Turn down volume at nighttime after playing media."
 trigger:
   - platform: state
     entity_id:
-      - media_player.loft_bathroom
+      - media_player.loft_bathroom_cast
     to: "off"
     for:
       hours: 0
@@ -19,7 +19,7 @@ trigger:
     alias: When Loft Bathroom media player 'Off' for 2 seconds
   - platform: state
     entity_id:
-      - media_player.loft_nest_hub
+      - media_player.loft_nest_hub_cast
     to: "off"
     for:
       hours: 0
@@ -44,7 +44,7 @@ action:
             data:
               volume_level: 0.4
             target:
-              entity_id: media_player.loft_bathroom
+              entity_id: media_player.loft_bathroom_cast
         alias: Loft Bathroom
       - conditions:
           - condition: trigger
@@ -56,6 +56,6 @@ action:
             data:
               volume_level: 0.6
             target:
-              entity_id: media_player.loft_nest_hub
+              entity_id: media_player.loft_nest_hub_cast
         alias: Loft Nest Hub
 mode: single
