@@ -244,8 +244,7 @@ cards:
                           overflow: hidden;
                         }
                       entities:
-                        - entity: vacuum.winston
-                          attribute: battery_level
+                        - entity: sensor.winston_battery
                           name: Battery
                           icon: mdi:battery
 
